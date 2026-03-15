@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg-black: #000000;
+  --color-bg-charcoal: #111111;
+  --color-bg-soft-gray: #2a2a2a;
+  --color-text-gray: #8a8a8a;
+  --color-text-white: #ffffff;
+  --color-accent-red: #9A0002;
+
+  --font-sans: 'Poppins', sans-serif;
+
+  --background-image-halftone: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Enable class-based dark mode in Tailwind v4 */
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  body {
+    @apply bg-white text-black dark:bg-[#050505] dark:text-white font-sans antialiased overflow-x-hidden transition-colors duration-300;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/40 dark:bg-[#111111]/40 backdrop-blur-xl border border-black/5 dark:border-white/5;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-black to-neutral-500 dark:from-white dark:to-neutral-500;
+  }
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+@theme {
+  --animate-scroll: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+}
