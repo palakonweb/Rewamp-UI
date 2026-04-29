@@ -66,9 +66,6 @@ const BentoGrid = () => {
                 className="grid grid-cols-1 md:grid-cols-4 md:auto-rows-[250px] gap-4 w-full h-auto min-h-[500px] max-w-5xl px-4 md:px-0 mx-auto relative z-10"
             >
 
-                {/* ------------------------------------------------------------- */}
-                {/* 1. Instant Search (Top Left) */}
-                {/* ------------------------------------------------------------- */}
                 <motion.div
                     variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
                     whileHover={{ y: -5, transition: { duration: 0.2, ease: "easeOut" } }}
@@ -85,7 +82,7 @@ const BentoGrid = () => {
 
                             <div className="absolute right-2 px-1.5 py-0.5 rounded text-[9px] bg-white/5 text-white/40 border border-white/10 font-mono flex items-center gap-0.5">
                                 <Command size={8} /> K
-                            </div>
+                            </div>''
                         </div>
 
                         {/* Faux dropdown results */}

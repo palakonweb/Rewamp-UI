@@ -38,17 +38,16 @@ const Hero = () => {
             </motion.h1>
 
             {/* Subtext */}
-            <motion.p
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                className="relative z-10 mt-6 text-base sm:text-[17px] text-black/60 dark:text-white/80 max-w-[500px] font-light leading-[1.6]"
+                className="relative z-10 mt-6 text-base sm:text-[17px] max-w-[500px] font-light leading-[1.6]"
             >
-                <p className="text-black/60 dark:text-text-gray text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed mb-10 relative z-10">
+                <p className="text-black/60 dark:text-white/80 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed mb-10 relative z-10">
                     Turn simple prompts into beautiful, production-ready UI components instantly.<br />
-
                 </p>
-            </motion.p>
+            </motion.div>
 
             {/* Action Area - Unified Toggle Style with Liquid Metal Border */}
             <motion.form

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Sun, Moon } from 'lucide-react';
 
-const Navbar = ({ isDarkMode, toggleTheme }) => {
+const Navbar = ({ isDarkMode, toggleTheme, onBrowse }) => {
     return (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-4 flex justify-center" style={{ perspective: '1000px' }}>
             <motion.nav
@@ -48,6 +48,7 @@ const Navbar = ({ isDarkMode, toggleTheme }) => {
                         </motion.button>
 
                         <motion.button
+                            onClick={onBrowse}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-black/90 dark:text-white/90 text-[13px] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300 group"

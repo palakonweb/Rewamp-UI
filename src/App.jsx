@@ -6,9 +6,11 @@ import PromptToUISection from './components/PromptToUISection';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
+import ComponentShowcaseLayout from './components/ComponentShowcaseLayout';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [currentView, setCurrentView] = useState('landing');
 
   // Initialize theme on mount
   useEffect(() => {
@@ -33,8 +35,10 @@ function App() {
       </div>
 
       <div className="w-full max-w-[1440px] relative z-10 flex flex-col px-6 md:px-12 lg:px-16 pb-20 overflow-visible">
-        <div className="flex flex-col min-h-screen">
-          <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        {currentView === 'landing' ? (
+          <>
+            <div className="flex flex-col min-h-screen">
+              <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} onBrowse={() => setCurrentView('gallery')} />
           <div className="flex-1 flex flex-col justify-center pb-20">
             <Hero />
           </div>
@@ -49,6 +53,10 @@ function App() {
           </div>
           <Footer />
         </div>
+        </>
+        ) : (
+          <ComponentShowcaseLayout onBack={() => setCurrentView('landing')} />
+        )}
       </div >
     </div >
   );
