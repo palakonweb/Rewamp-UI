@@ -1,12 +1,28 @@
 import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Bed, Bath, Expand, MapPin, Heart, ArrowUpRight } from 'lucide-react';
 
 const promptContent = `Real estate card with full-bleed background image of a highland house, top left dark transparent pill 'Newly Listed', bottom dark blurred gradient overlay. Carousel pagination dots in center. Crisp text for pricing '$200k', location '254 Highland Ave', and utility icons (Bed/Bath/Sqft) separated by subtle vertical dividers in the footer. Premium, high-contrast, moody aesthetic.`;
 
+const images = [
+  "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1600607687920-4e2a09be1587?q=80&w=800&auto=format&fit=crop"
+];
+
 export default function HighlandRealEstateCardShowcase() {
   const [copied, setCopied] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   const ref = useRef(null);
@@ -49,11 +65,18 @@ export default function HighlandRealEstateCardShowcase() {
           <motion.div style={{ x: parX, y: parY, scale: 1.12 }} className="absolute inset-0">
             {/* Base gradient scenery */}
             <div className="absolute inset-0 bg-gradient-to-b from-slate-700 via-emerald-900/80 to-[#060e0a]" />
-            {/* Unsplash house image */}
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-75"
-              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=800&auto=format&fit=crop')" }}
-            />
+            {/* Auto slideshow images */}
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={currentImage}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.75 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url('${images[currentImage]}')` }}
+              />
+            </AnimatePresence>
           </motion.div>
 
           {/* ── Gradient Overlay (bottom 55% of card) ── */}
@@ -110,15 +133,19 @@ export default function HighlandRealEstateCardShowcase() {
 
             {/* Pagination dots */}
             <div className="flex justify-center gap-1.5 mb-5">
-              {[true, false, false, false].map((active, i) => (
+              {images.map((_, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.6 }}
                   className="rounded-full cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImage(i);
+                  }}
                   style={{
-                    width: active ? 16 : 6,
+                    width: currentImage === i ? 16 : 6,
                     height: 6,
-                    background: active ? '#fff' : 'rgba(255,255,255,0.3)',
+                    background: currentImage === i ? '#fff' : 'rgba(255,255,255,0.3)',
                     transition: 'width 0.3s, background 0.3s',
                   }}
                 />

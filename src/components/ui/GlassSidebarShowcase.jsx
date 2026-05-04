@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Copy, Check, LayoutDashboard, Database, CreditCard, Settings, Compass } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Copy, Check, LayoutDashboard, Database, CreditCard, Settings, Compass, HelpCircle } from 'lucide-react';
 
-const promptContent = `heavy blur frosted glass sidebar with slowly floating ambient gradient backgrounds behind it`;
+const promptContent = `Ultra-premium heavy blur frosted glass sidebar. Features slowly floating ambient gradient orbs behind it and smooth Framer Motion active-state sliding indicators.`;
 
 export default function GlassSidebarShowcase() {
     const [copied, setCopied] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [hoveredIndex, setHoveredIndex] = useState(null);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+    const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
     const links = [
         { icon: LayoutDashboard, label: "Dashboard" },
@@ -24,79 +21,110 @@ export default function GlassSidebarShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[450px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#ebebeb] dark:bg-[#07070a] shadow-xl flex group">
+            <div className="relative w-full h-[550px] rounded-[24px] overflow-hidden border border-white/10 bg-[#000] shadow-xl flex group">
                 
                 {/* Visualizer Background (to show off the glass) */}
-                <div className="absolute inset-0 overflow-hidden z-0">
+                <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
                     <motion.div 
                         animate={{ 
-                            x: [0, 100, 0], 
-                            y: [0, -50, 0],
-                            scale: [1, 1.2, 1]
+                            x: [0, 150, 0, -100, 0], 
+                            y: [0, -100, 50, -50, 0],
+                            scale: [1, 1.5, 0.8, 1.2, 1]
                         }}
-                        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                        className="absolute -top-10 -left-10 w-96 h-96 bg-purple-500/30 dark:bg-fuchsia-900/40 rounded-full blur-[80px]"
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute top-0 left-0 w-[400px] h-[400px] bg-violet-600/40 rounded-full blur-[100px] mix-blend-screen"
                     />
                     <motion.div 
                         animate={{ 
-                            x: [0, -100, 0], 
-                            y: [0, 50, 0],
-                            scale: [1, 1.2, 1]
+                            x: [0, -150, 50, 100, 0], 
+                            y: [0, 100, -50, 50, 0],
+                            scale: [1, 0.8, 1.5, 0.9, 1]
                         }}
-                        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                        className="absolute bottom-10 left-32 w-80 h-80 bg-cyan-500/20 dark:bg-blue-900/30 rounded-full blur-[80px]"
+                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                        className="absolute bottom-0 right-10 w-[500px] h-[500px] bg-cyan-600/30 rounded-full blur-[100px] mix-blend-screen"
                     />
+                    {/* Noise Texture */}
+                    <div className="absolute inset-0 opacity-20 mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
                 </div>
 
                 {/* 🎯 THE GLASS SIDEBAR */}
-                <aside className="relative z-10 w-64 h-full bg-white/40 dark:bg-[#111111]/50 backdrop-blur-3xl border-r border-white/40 dark:border-white/10 shadow-[20px_0_40px_rgba(0,0,0,0.05)] flex flex-col py-8 px-4">
+                <aside className="relative z-10 w-[260px] h-full bg-white/[0.02] backdrop-blur-[40px] border-r border-white/10 shadow-[20px_0_40px_rgba(0,0,0,0.3)] flex flex-col py-8 px-4">
+                    
+                    {/* Inner glowing edge */}
+                    <div className="absolute inset-0 pointer-events-none border-r border-white/5 mask-image:linear-gradient(to_bottom,black,transparent)" />
+
                     {/* Brand */}
-                    <div className="flex items-center gap-2 px-4 mb-10">
-                        <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 shadow-sm" />
-                        <span className="font-bold text-lg tracking-tight text-black dark:text-white">Aura</span>
+                    <div className="flex items-center gap-3 px-4 mb-10">
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-400 to-cyan-400 shadow-[0_0_20px_rgba(99,102,241,0.4)] flex items-center justify-center">
+                            <div className="w-3 h-3 bg-white rounded-full mix-blend-overlay" />
+                        </div>
+                        <span className="font-bold text-xl tracking-tight text-white drop-shadow-md">Aura</span>
                     </div>
 
                     {/* Navigation Items */}
-                    <nav className="flex flex-col gap-2">
+                    <nav className="flex flex-col gap-1 relative" onMouseLeave={() => setHoveredIndex(null)}>
                         {links.map((link, index) => {
                             const isActive = activeIndex === index;
+                            const isHovered = hoveredIndex === index;
+                            
                             return (
                                 <button
                                     key={index}
                                     onClick={() => setActiveIndex(index)}
-                                    className={`relative flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-300 ${
+                                    onMouseEnter={() => setHoveredIndex(index)}
+                                    className={`relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 z-10 ${
                                         isActive 
-                                            ? 'text-black dark:text-white bg-white/60 dark:bg-white/10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
-                                            : 'text-black/60 dark:text-white/60 hover:bg-white/30 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'
+                                            ? 'text-white' 
+                                            : 'text-white/50 hover:text-white/90'
                                     }`}
                                 >
-                                    <link.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
-                                    <span className="text-[14px] font-medium">{link.label}</span>
-                                    
-                                    {isActive && (
-                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-indigo-500 rounded-r-full shadow-[0_0_10px_indigo]"></div>
+                                    {/* Hover Background Bubble (Framer Motion) */}
+                                    {isHovered && !isActive && (
+                                        <motion.div
+                                            layoutId="glassHoverBubble"
+                                            className="absolute inset-0 bg-white/5 rounded-xl z-0"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                        />
                                     )}
+
+                                    {/* Active Background Bubble */}
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="glassActiveBubble"
+                                            className="absolute inset-0 bg-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] rounded-xl z-0 border border-white/10"
+                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                        >
+                                            {/* Glowing Active Indicator Line */}
+                                            <div className="absolute left-0 top-[20%] bottom-[20%] w-[3px] bg-cyan-400 rounded-r-full shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+                                        </motion.div>
+                                    )}
+
+                                    <link.icon size={18} strokeWidth={isActive ? 2.5 : 2} className="relative z-10" />
+                                    <span className="text-[13px] font-medium tracking-wide relative z-10">{link.label}</span>
                                 </button>
                             );
                         })}
                     </nav>
 
-                    {/* Bottom Area */}
-                    <div className="mt-auto px-4">
-                        <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
-                            <p className="text-[12px] font-semibold text-indigo-900 dark:text-indigo-200 mb-1">Pro Plan Active</p>
-                            <p className="text-[11px] text-indigo-900/60 dark:text-indigo-200/60">Renews in 14 days</p>
-                        </div>
+                    {/* Bottom Help Area */}
+                    <div className="mt-auto">
+                        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/50 hover:text-white hover:bg-white/5 transition-colors">
+                            <HelpCircle size={18} />
+                            <span className="text-[13px] font-medium tracking-wide">Support</span>
+                        </button>
                     </div>
                 </aside>
 
                 {/* Dummy Content */}
                 <div className="relative z-10 flex-1 p-10 opacity-60">
-                    <div className="w-1/3 h-8 bg-black/10 dark:bg-white/10 rounded-lg mb-8"></div>
-                    <div className="w-full h-40 bg-black/5 dark:bg-white/5 rounded-2xl border border-white/20 dark:border-white/5 backdrop-blur-md mb-6"></div>
+                    <div className="w-1/3 h-8 bg-white/10 rounded-lg mb-8 backdrop-blur-md border border-white/5"></div>
+                    <div className="w-full h-40 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-md mb-6 shadow-2xl"></div>
                 </div>
                 
-                <span className="absolute bottom-6 right-6 z-20 text-black/50 dark:text-white/50 text-[13px] font-semibold tracking-widest uppercase">Frosted Glass</span>
+                <span className="absolute bottom-6 right-6 z-20 text-white/30 text-[11px] font-semibold tracking-widest uppercase">Premium Glass Sidebar</span>
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

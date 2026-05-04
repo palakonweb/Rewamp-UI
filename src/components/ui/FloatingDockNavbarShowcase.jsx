@@ -1,83 +1,89 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Home, Search, Bell, Mail, User } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { Copy, Check, Home, Search, Bell, Mail, User, Settings, Command } from 'lucide-react';
 
-const promptContent = `macos inspired floating dock navbar with smooth scaling spring animations on hover`;
+const promptContent = `macOS physics floating dock. True magnification calculations based on cursor distance using Framer Motion springs and useMotionValue.`;
+
+// Individual Icon Component with its own distance calculations
+function DockIcon({ icon: Icon, label, mouseX }) {
+  const ref = useRef(null);
+
+  // Distance from this icon to the mouse
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  // Calculate dynamic scale and width based on distance
+  const widthSync = useTransform(distance, [-150, 0, 150], [48, 80, 48]);
+  const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
+
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div className="relative flex flex-col items-center">
+        <AnimatePresence>
+            {hovered && (
+                <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                    animate={{ opacity: 1, y: -10, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute -top-12 px-3 py-1.5 rounded-lg bg-black text-white text-[12px] font-medium tracking-wide whitespace-nowrap shadow-xl z-20"
+                >
+                    {label}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-black"></div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+
+        <motion.div
+            ref={ref}
+            style={{ width, height: width }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className="flex items-center justify-center rounded-2xl bg-[#1e1e24] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),_0_8px_20px_rgba(0,0,0,0.4)] border border-white/5 cursor-pointer origin-bottom"
+        >
+            <Icon className="text-white/80 w-1/2 h-1/2" />
+        </motion.div>
+    </div>
+  );
+}
 
 export default function FloatingDockNavbarShowcase() {
     const [copied, setCopied] = useState(false);
-    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+    const mouseX = useMotionValue(Infinity);
 
     const icons = [
-        { icon: Home, label: "Home" },
+        { icon: Command, label: "Dashboard" },
         { icon: Search, label: "Search" },
         { icon: Bell, label: "Notifications" },
         { icon: Mail, label: "Messages" },
-        { icon: User, label: "Profile" }
+        { icon: User, label: "Profile" },
+        { icon: Settings, label: "Settings" }
     ];
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#f5f5f7] dark:bg-[#0a0a0a] shadow-xl flex items-end justify-center pb-8 group">
+            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#050505] shadow-xl flex items-end justify-center pb-12 group">
                 
-                {/* 🎯 THE NAVBAR */}
-                <div className="relative flex items-center gap-2 p-3 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-                    {icons.map((item, index) => {
-                        // Calculate scale based on distance from hovered index
-                        let scale = 1;
-                        let filter = 'blur(0px)';
-                        
-                        if (hoveredIndex !== null) {
-                            const distance = Math.abs(hoveredIndex - index);
-                            if (distance === 0) scale = 1.4;
-                            else if (distance === 1) scale = 1.15;
-                            else scale = 0.95;
-                        }
+                {/* Background Grid */}
+                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
-                        return (
-                            <div key={index} className="relative flex flex-col items-center">
-                                {/* Tooltip */}
-                                <AnimatePresence>
-                                    {hoveredIndex === index && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                                            animate={{ opacity: 1, y: -8, scale: 1 }}
-                                            exit={{ opacity: 0, y: 10, scale: 0.8 }}
-                                            transition={{ duration: 0.2 }}
-                                            className="absolute -top-12 px-3 py-1.5 rounded-lg bg-black text-white text-[11px] font-medium tracking-wide whitespace-nowrap shadow-xl"
-                                        >
-                                            {item.label}
-                                            {/* Tooltip triangle */}
-                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-black"></div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-
-                                {/* Icon Button */}
-                                <motion.button
-                                    onMouseEnter={() => setHoveredIndex(index)}
-                                    onMouseLeave={() => setHoveredIndex(null)}
-                                    animate={{ 
-                                        scale: scale,
-                                        y: hoveredIndex === index ? -8 : 0
-                                    }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                                    className="w-12 h-12 rounded-xl flex items-center justify-center bg-white dark:bg-[#1a1a1a] shadow-[0_4px_10px_rgba(0,0,0,0.05),_inset_0_2px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),_0_4px_10px_rgba(0,0,0,0.5)] border border-black/5 dark:border-white/5 mx-1"
-                                >
-                                    <item.icon size={20} className="text-black/70 dark:text-white/70" />
-                                </motion.button>
-                            </div>
-                        );
-                    })}
-                </div>
+                {/* 🎯 THE NAVBAR DOCK */}
+                <motion.div 
+                    onMouseMove={(e) => mouseX.set(e.pageX)}
+                    onMouseLeave={() => mouseX.set(Infinity)}
+                    className="relative flex items-end gap-3 p-3 rounded-3xl bg-[#0a0a0c]/80 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] h-[74px]"
+                >
+                    {icons.map((item, index) => (
+                        <DockIcon key={index} icon={item.icon} label={item.label} mouseX={mouseX} />
+                    ))}
+                </motion.div>
                 
-                <span className="absolute bottom-6 text-black/30 dark:text-white/30 text-[13px] font-semibold tracking-widest uppercase">Floating Dock</span>
+                <span className="absolute bottom-6 text-white/20 text-[11px] font-semibold tracking-widest uppercase pointer-events-none">True Physics Dock</span>
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

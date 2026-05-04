@@ -1,75 +1,65 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Power } from 'lucide-react';
+import { Copy, Check, Sparkles } from 'lucide-react';
 
-const promptContent = `SVG Border Beam Button, glowing beam of light continuously traces the perimeter of the button using SVG stroke-dashoffset, dynamic gradients, ultra-premium technical aesthetic`;
+const promptContent = `Aceternity-style moving border button. A continuous conic gradient spins behind a dark pill, creating a mesmerizing glowing border trace effect.`;
 
 export default function SVGBorderBeamButtonShowcase() {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-16 flex flex-col items-center justify-center min-h-[400px]" style={{ background: '#0a0a0f' }}>
+      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/10 p-16 flex flex-col items-center justify-center min-h-[400px] bg-[#050505]">
         
-        <p className="text-[10px] uppercase tracking-[0.3em] mb-12 text-white/30">SVG Border Beam</p>
+        <p className="absolute top-10 text-[10px] uppercase tracking-[0.3em] mb-12 text-white/30">
+          Moving Border Button
+        </p>
+
+        {/* Ambient background grid */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
         {/* The Button Container */}
-        <motion.div 
-          className="relative group cursor-pointer"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          {/* Main Button Body */}
-          <div className="relative px-8 py-4 rounded-xl flex items-center gap-3 bg-[#111116] z-10">
-            <Power size={18} className="text-cyan-400 group-hover:text-white transition-colors duration-300" />
-            <span className="text-white font-medium tracking-wide">Initialize System</span>
-          </div>
+        <div className="relative group">
+           
+           {/* Outer spinning gradient mask */}
+           <div className="absolute -inset-[2px] rounded-full overflow-hidden blur-[2px] opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+               <motion.div 
+                   animate={{ rotate: 360 }}
+                   transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                   className="absolute inset-[-100%] w-[300%] h-[300%]"
+                   style={{
+                       background: 'conic-gradient(from 90deg at 50% 50%, transparent 0%, transparent 70%, #38bdf8 85%, #818cf8 100%)'
+                   }}
+               />
+           </div>
 
-          {/* SVG Border Tracer */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none rounded-xl" style={{ overflow: 'visible' }}>
-            <defs>
-              <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00f2fe" />
-                <stop offset="50%" stopColor="#4facfe" />
-                <stop offset="100%" stopColor="transparent" />
-              </linearGradient>
-            </defs>
-            {/* Base dim border */}
-            <rect 
-              x="0" y="0" width="100%" height="100%" rx="12" 
-              fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" 
-            />
-            {/* Animated glowing beam */}
-            <motion.rect 
-              x="0" y="0" width="100%" height="100%" rx="12" 
-              fill="none" stroke="url(#beamGradient)" strokeWidth="2"
-              strokeDasharray="100 300" // Length of beam vs gap
-              initial={{ strokeDashoffset: 400 }}
-              animate={{ 
-                strokeDashoffset: [400, 0], // Move the beam around
-                opacity: isHovered ? [0.6, 1, 0.6] : 0.6
-              }}
-              transition={{ 
-                strokeDashoffset: { duration: 3, repeat: Infinity, ease: "linear" },
-                opacity: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
-              }}
-              style={{ filter: 'drop-shadow(0 0 8px rgba(79,172,254,0.6))' }}
-            />
-          </svg>
+           {/* Sharp inner spinning gradient for the crisp border line */}
+           <div className="absolute -inset-[1px] rounded-full overflow-hidden">
+               <motion.div 
+                   animate={{ rotate: 360 }}
+                   transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                   className="absolute inset-[-100%] w-[300%] h-[300%]"
+                   style={{
+                       background: 'conic-gradient(from 90deg at 50% 50%, transparent 0%, transparent 75%, #38bdf8 90%, #818cf8 100%)'
+                   }}
+               />
+           </div>
 
-          {/* Background Glow */}
-          <div className="absolute inset-0 bg-cyan-500/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-        </motion.div>
+           {/* Main Dark Button Body */}
+           <button className="relative flex items-center gap-3 px-8 py-4 bg-[#0a0a0c] rounded-full z-10 group-hover:bg-[#111116] transition-colors duration-300 border border-white/[0.02]">
+             <Sparkles size={16} className="text-sky-400 group-hover:text-white transition-colors duration-300" />
+             <span className="text-white/90 font-medium tracking-wide text-sm">Deploy Application</span>
+           </button>
+
+           {/* Huge ambient glow on hover */}
+           <div className="absolute inset-0 bg-sky-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-full" />
+        </div>
 
       </div>
 
       <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex-1 min-w-0"><p className="text-[11px] text-black/40 dark:text-white/40 uppercase tracking-widest font-semibold mb-2">Prompt</p><code className="text-[12px] text-black/70 dark:text-white/70 font-mono leading-relaxed">{promptContent}</code></div>
+        <div className="flex-1 min-w-0"><p className="text-[11px] text-black/40 dark:text-white/40 uppercase tracking-widest font-semibold mb-2">Prompt Setup</p><code className="text-[12px] text-black/70 dark:text-white/70 font-mono leading-relaxed">{promptContent}</code></div>
         <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all shrink-0">
           {copied ? <><Check size={16} className="text-emerald-500" /><span className="text-[13px] font-medium text-emerald-500">Copied</span></> : <><Copy size={16} className="text-black/60 dark:text-white/60" /><span className="text-[13px] font-medium text-black/70 dark:text-white/70">Copy</span></>}
         </button>

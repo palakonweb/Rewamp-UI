@@ -11,6 +11,12 @@ import RefractedBeamsShowcase from './ui/RefractedBeamsShowcase';
 import CosmicDustShowcase from './ui/CosmicDustShowcase';
 import DigitalRainShowcase from './ui/DigitalRainShowcase';
 import AmbientGlassMorphShowcase from './ui/AmbientGlassMorphShowcase';
+import SpotlightGridShowcase from './ui/SpotlightGridShowcase';
+import LiquidCursorGradientShowcase from './ui/LiquidCursorGradientShowcase';
+import RippleGridShowcase from './ui/RippleGridShowcase';
+import AsciiMatrixHoverShowcase from './ui/AsciiMatrixHoverShowcase';
+import ElasticLineGridShowcase from './ui/ElasticLineGridShowcase';
+import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import FlatButtonShowcase from './ui/FlatButtonShowcase';
@@ -72,8 +78,12 @@ import MacOSSidebarShowcase from './ui/MacOSSidebarShowcase';
 import DynamicIslandSidebarShowcase from './ui/DynamicIslandSidebarShowcase';
 
 import HighlandRealEstateCardShowcase from './ui/HighlandRealEstateCardShowcase';
-import RavelloTravelGlassCardShowcase from './ui/RavelloTravelGlassCardShowcase';
-import ShareSystemModalCardShowcase from './ui/ShareSystemModalCardShowcase';
+
+import NexusEnergyCardShowcase from './ui/NexusEnergyCardShowcase';
+import HoloDepthCardShowcase from './ui/HoloDepthCardShowcase';
+import EtherealPulseCardShowcase from './ui/EtherealPulseCardShowcase';
+import LiquidMorphCardShowcase from './ui/LiquidMorphCardShowcase';
+import NeonTraceCardShowcase from './ui/NeonTraceCardShowcase';
 
 import MagneticParallaxButtonShowcase from './ui/MagneticParallaxButtonShowcase';
 import SVGBorderBeamButtonShowcase from './ui/SVGBorderBeamButtonShowcase';
@@ -99,6 +109,10 @@ import WordByWordTextShowcase from './ui/WordByWordTextShowcase';
 import CharacterScrambleTextShowcase from './ui/CharacterScrambleTextShowcase';
 import SplitTextRevealShowcase from './ui/SplitTextRevealShowcase';
 import OdometerTextShowcase from './ui/OdometerTextShowcase';
+import LiquidTextMorphShowcase from './ui/LiquidTextMorphShowcase';
+import Flip3DTextShowcase from './ui/Flip3DTextShowcase';
+import SpotlightTextShowcase from './ui/SpotlightTextShowcase';
+import VelocityMarqueeTextShowcase from './ui/VelocityMarqueeTextShowcase';
 
 import CanvasParticlesCursorShowcase from './ui/CanvasParticlesCursorShowcase';
 import TextRingCursorShowcase from './ui/TextRingCursorShowcase';
@@ -106,6 +120,10 @@ import DifferenceLensCursorShowcase from './ui/DifferenceLensCursorShowcase';
 import MatrixTrailCursorShowcase from './ui/MatrixTrailCursorShowcase';
 import MagneticGooeyCursorShowcase from './ui/MagneticGooeyCursorShowcase';
 import MagneticCursorShowcase from './ui/MagneticCursorShowcase'; // Hidden Reveal
+
+import SplashCursorShowcase from './ui/SplashCursorShowcase';
+import LensBlurCursorShowcase from './ui/LensBlurCursorShowcase';
+import ElasticStringCursorShowcase from './ui/ElasticStringCursorShowcase';
 
 const categories = [
     { id: 'bgs', name: 'Backgrounds', isNew: true },
@@ -119,67 +137,256 @@ const categories = [
     { id: 'cursors', name: 'Cursors', isNew: true }
 ];
 
+function generateCodeSnippet(title, category) {
+    const className = title.replace(/\s+/g, '');
+
+    if (category === 'buttons') {
+        return `import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+
+export default function ${className}() {
+  return (
+    <motion.button
+      whileHover={{ scale: 1.04, y: -2 }}
+      whileTap={{ scale: 0.96 }}
+      className="relative px-8 py-4 bg-white border border-black/10 rounded-2xl font-sans font-semibold tracking-wide text-black shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] transition-all duration-300"
+    >
+      <span className="relative z-10 select-none">${title}</span>
+    </motion.button>
+  );
+}`;
+    }
+
+    if (category === 'toggles') {
+        return `import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+
+export default function ${className}() {
+  const [isOn, setIsOn] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-3 items-center select-none font-sans">
+      <span className="text-xs font-semibold text-black uppercase tracking-widest">${title}</span>
+      <div 
+        onClick={() => setIsOn(!isOn)}
+        className="w-[120px] h-[64px] bg-neutral-100 border border-black/5 rounded-full p-1.5 cursor-pointer flex items-center transition-all duration-300 relative shadow-inner"
+        style={{ background: isOn ? '#810100' : '#f5f5f5' }}
+      >
+        <motion.div 
+          layout
+          transition={{ type: "spring", stiffness: 350, damping: 25 }}
+          className="w-[52px] h-[52px] bg-white border border-black/[0.04] rounded-full shadow-md"
+        />
+      </div>
+    </div>
+  );
+}`;
+    }
+
+    if (category === 'navbars' || category === 'sidebars') {
+        return `import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function ${className}() {
+  const links = ['Home', 'About', 'Contact'];
+
+  return (
+    <nav className="flex items-center gap-1.5 p-2 bg-white border border-black/[0.06] rounded-2xl shadow-lg font-sans">
+      {links.map((link) => (
+        <motion.a
+          key={link}
+          href="#"
+          whileHover={{ y: -2 }}
+          className="px-5 py-2.5 text-sm font-medium text-black/60 hover:text-[#810100] transition-colors rounded-xl hover:bg-[#810100]/5 select-none"
+        >
+          {link}
+        </motion.a>
+      ))}
+    </nav>
+  );
+}`;
+    }
+
+    // Default fallback for other components
+    return `import React from 'react';
+import { motion } from 'framer-motion';
+
+export default function ${className}() {
+  return (
+    <motion.div
+      whileHover={{ y: -4, scale: 1.01 }}
+      className="w-full max-w-sm bg-white p-6 border border-black/[0.05] rounded-3xl shadow-[0_12px_40px_-15px_rgba(0,0,0,0.03)] font-sans"
+    >
+      <h4 className="text-base font-semibold font-serif text-black mb-1 select-none">${title}</h4>
+      <p className="text-xs text-black/50 select-none">Production-ready ${title} component.</p>
+    </motion.div>
+  );
+}`;
+}
+
+function ShowcaseWrapper({ children, title, category }) {
+    const [tab, setTab] = React.useState('preview');
+    const [copiedCode, setCopiedCode] = React.useState(false);
+
+    const code = generateCodeSnippet(title, category);
+
+    return (
+        <div className="w-full bg-white border border-black/[0.06] rounded-3xl overflow-hidden shadow-[0_12px_40px_-15px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_24px_48px_-15px_rgba(0,0,0,0.05)] font-sans">
+            <div className="px-6 py-3.5 border-b border-black/[0.04] bg-neutral-50/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 select-none">
+                <span className="text-[14px] font-semibold font-sans text-black tracking-wider uppercase select-none">{title}</span>
+                <div className="flex bg-black/[0.03] p-1 rounded-xl">
+                    <button
+                        onClick={() => setTab('preview')}
+                        className={`px-3.5 py-1 text-[11px] font-semibold rounded-lg transition-all select-none ${tab === 'preview' ? 'bg-white text-black shadow-sm' : 'text-black/50 hover:text-black'
+                            }`}
+                    >
+                        Preview
+                    </button>
+                    <button
+                        onClick={() => setTab('code')}
+                        className={`px-3.5 py-1 text-[11px] font-semibold rounded-lg transition-all select-none ${tab === 'code' ? 'bg-white text-black shadow-sm' : 'text-black/50 hover:text-black'
+                            }`}
+                    >
+                        Code
+                    </button>
+                </div>
+            </div>
+            <div className="p-6 md:p-8 bg-white flex flex-col justify-center min-h-[300px]">
+                {tab === 'preview' ? (
+                    <div>{children}</div>
+                ) : (
+                    <div className="relative w-full rounded-2xl overflow-hidden bg-[#0d0d0f] border border-white/[0.08] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)]">
+                        {/* 🖥️ Window Title Bar */}
+                        <div className="flex items-center justify-between px-4 py-3.5 bg-[#16161a] border-b border-white/[0.05] select-none">
+                            <div className="flex items-center gap-2">
+                                <div className="flex gap-1.5">
+                                    <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                                    <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                                    <span className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                                </div>
+                                <span className="ml-3 text-[11px] font-mono text-white/40 tracking-wider">
+                                    {title.toLowerCase().replace(/\s+/g, '-')}.jsx
+                                </span>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(code);
+                                    setCopiedCode(true);
+                                    setTimeout(() => setCopiedCode(false), 2000);
+                                }}
+                                className={`px-3.5 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer select-none border flex items-center gap-2 ${
+                                    copiedCode 
+                                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
+                                    : 'bg-white/[0.06] hover:bg-white/[0.12] border-white/10 text-white hover:text-white/90 shadow-sm'
+                                }`}
+                            >
+                                {copiedCode ? (
+                                    <>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Copied!
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                        Copy
+                                    </>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* 📝 Code Area */}
+                        <div className="p-5 font-mono text-[12px] leading-relaxed text-[#d4d4d4] overflow-auto max-h-[420px] select-all bg-[#0d0d0f] text-left">
+                            <pre className="whitespace-pre">
+                                {code}
+                            </pre>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function CategoryShowcaseContainer({ children, category }) {
+    return (
+        <div className="flex flex-col gap-12">
+            {React.Children.map(children, (child) => {
+                if (!child) return null;
+                const componentName = child.type?.name || 'Component';
+                const title = componentName
+                    .replace(/Showcase$/, '')
+                    .replace(/([A-Z])/g, ' $1')
+                    .trim();
+
+                return (
+                    <ShowcaseWrapper title={title} category={category}>
+                        {child}
+                    </ShowcaseWrapper>
+                );
+            })}
+        </div>
+    );
+}
+
 export default function ComponentShowcaseLayout({ onBack }) {
     const [activeCategory, setActiveCategory] = React.useState('bgs');
 
     return (
-        <div className="w-full min-h-screen bg-[#fcfcfc] dark:bg-[#050505] pt-32 pb-20 px-4 md:px-12 flex justify-center z-20 relative">
-            <div className="w-full max-w-[1440px] flex flex-col md:flex-row gap-8 lg:gap-16">
-                
+        <div className="w-full min-h-screen bg-[var(--bg)] pt-32 pb-20 px-4 md:px-12 flex justify-center z-20 relative">
+            <div className="w-full max-w-[1440px] flex flex-col md:flex-row gap-8 lg:gap-16 font-sans">
+
                 {/* 🧭 SIDEBAR NAVIGATION */}
-                <aside className="w-full md:w-64 shrink-0 flex flex-col gap-8">
+                <aside className="w-full md:w-64 shrink-0 flex flex-col gap-8 md:sticky md:top-32 h-fit">
                     <div>
-                        <button 
+                        <button
                             onClick={onBack}
-                            className="text-[13px] font-medium text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 mb-8"
+                            className="text-[13px] font-medium text-black/50 hover:text-[#810100] transition-colors flex items-center gap-2 mb-8 font-sans"
                         >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
                             Back to Home
                         </button>
-                        
-                        <h2 className="text-xl font-semibold text-black dark:text-white tracking-tight mb-4">Components</h2>
+
+                        <h2 className="text-xl font-serif font-medium text-[#810100] tracking-tight uppercase mb-4">Components</h2>
                         <nav className="flex flex-col gap-1 hidden md:flex">
                             {categories.map((cat) => (
                                 <button
                                     key={cat.id}
                                     onClick={() => setActiveCategory(cat.id)}
-                                    className={`relative flex items-center justify-between px-4 py-2.5 rounded-xl text-left text-[14px] font-medium transition-all ${
-                                        activeCategory === cat.id 
-                                            ? 'text-black dark:text-white bg-black/5 dark:bg-white/10 shadow-[inset_0_1px_rgba(255,255,255,0.05)]'
-                                            : 'text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white'
-                                    }`}
+                                    className={`relative flex items-center justify-between px-4 py-2.5 rounded-xl text-left text-[14px] font-medium transition-all ${activeCategory === cat.id
+                                            ? 'text-[#810100] bg-[#810100]/5 shadow-[inset_0_1px_rgba(129,1,0,0.05)]'
+                                            : 'text-black/60 hover:bg-[#810100]/5 hover:text-[#810100]'
+                                        }`}
                                 >
                                     {cat.name}
                                     {cat.isNew && (
-                                        <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[var(--color-accent-red)] text-white">
+                                        <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#810100] text-white">
                                             New
                                         </span>
                                     )}
                                     {activeCategory === cat.id && (
                                         <motion.div
                                             layoutId="activeTabIndicator"
-                                            className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[var(--color-accent-red)] rounded-r-full"
+                                            className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-[#810100] rounded-r-full"
                                         />
                                     )}
                                 </button>
                             ))}
                         </nav>
-                        
+
                         {/* Mobile Horiz Scroller */}
                         <nav className="flex md:hidden overflow-x-auto gap-2 pb-4 scrollbar-hide -mx-4 px-4">
                             {categories.map((cat) => (
                                 <button
                                     key={cat.id}
                                     onClick={() => setActiveCategory(cat.id)}
-                                    className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                                        activeCategory === cat.id 
-                                            ? 'border-transparent text-white bg-[var(--color-accent-red)] dark:bg-[var(--color-accent-red)]'
-                                            : 'border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5'
-                                    }`}
+                                    className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all border ${activeCategory === cat.id
+                                            ? 'border-transparent text-white bg-[#810100]'
+                                            : 'border-black/10 text-black/60 hover:bg-[#810100]/5'
+                                        }`}
                                 >
                                     {cat.name}
                                     {cat.isNew && (
-                                        <span className={`text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm ${activeCategory === cat.id ? 'bg-white/20' : 'bg-[var(--color-accent-red)] text-white'}`}>
+                                        <span className={`text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm ${activeCategory === cat.id ? 'bg-white/20' : 'bg-[#810100] text-white'}`}>
                                             New
                                         </span>
                                     )}
@@ -192,16 +399,22 @@ export default function ComponentShowcaseLayout({ onBack }) {
                 {/* 📺 MAIN CONTENT AREA */}
                 <main className="flex-1 min-w-0 flex flex-col gap-8 pb-32">
                     <div className="flex flex-col gap-2 mb-4">
-                        <h1 className="text-3xl md:text-4xl font-semibold text-black dark:text-white tracking-tight capitalize">
+                        <h1 className="text-3xl md:text-5xl font-serif font-medium text-black tracking-tight capitalize select-none">
                             {categories.find(c => c.id === activeCategory)?.name || activeCategory}
                         </h1>
-                        <p className="text-[15px] text-black/60 dark:text-white/60 max-w-2xl">
-                            A showcase of premium {activeCategory} designed for scale. Copy the prompt to use in your AI workflows.
+                        <p className="text-[14px] text-black/60 max-w-2xl font-sans select-none tracking-wide leading-relaxed">
+                            A carefully curated showcase of premium {activeCategory} designed for scale. Instantly preview, grab the code, or copy the prompt for your AI workflows.
                         </p>
                     </div>
 
                     {activeCategory === 'bgs' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="bgs">
+                            <AsciiMatrixHoverShowcase />
+                            <ElasticLineGridShowcase />
+                            <HexagonMeshHoverShowcase />
+                            <SpotlightGridShowcase />
+                            <LiquidCursorGradientShowcase />
+                            <RippleGridShowcase />
                             <ShootingStarsShowcase />
                             <SoftAuroraShowcase />
                             <PlexusEngineShowcase />
@@ -212,15 +425,11 @@ export default function ComponentShowcaseLayout({ onBack }) {
                             <RefractedBeamsShowcase />
                             <CosmicDustShowcase />
                             <DigitalRainShowcase />
-                            <AmbientGlassMorphShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'buttons' ? (
-                        <div className="flex flex-col gap-16">
-                            {/* NEW ULTRA PREMIUM BUTTONS */}
+                        <CategoryShowcaseContainer category="buttons">
                             <MagneticParallaxButtonShowcase />
                             <SVGBorderBeamButtonShowcase />
-                            
-                            {/* The 3 unique Conjure-UI buttons */}
                             <MagneticButtonShowcase />
                             <SpotlightButtonShowcase />
                             <HolographicButtonShowcase />
@@ -228,8 +437,6 @@ export default function ComponentShowcaseLayout({ onBack }) {
                             <BorderTraceButtonShowcase />
                             <ConfettiButtonShowcase />
                             <Flip3DButtonShowcase />
-
-                            {/* Legacy inspired buttons */}
                             <GooglyEyesButtonShowcase />
                             <FlatButtonShowcase />
                             <SkeuomorphicButtonShowcase />
@@ -237,18 +444,24 @@ export default function ComponentShowcaseLayout({ onBack }) {
                             <GlassButtonShowcase />
                             <GlowButtonShowcase />
                             <DarkUIButtonShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'toggles' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="toggles">
+                            <AuroraToggleShowcase />
                             <GooeyLiquidToggleShowcase />
                             <DayNightMorphToggleShowcase />
-                            <MorphingToggleShowcase />
-                            <NeumorphicToggleShowcase />
-                            <CyberToggleShowcase />
-                            <SpringToggleShowcase />
-                        </div>
+                            <FrostedGlassToggleShowcase />
+                            <DayNightParallaxToggleShowcase />
+                            <Skeuomorphic3DToggleShowcase />
+                            <LiquidMagnetToggleShowcase />
+                            <CyberpunkNeonToggleShowcase />
+                            <PrismaticTrackToggleShowcase />
+                            <NeumorphicSoftToggleShowcase />
+                            <CosmicSparkleToggleShowcase />
+                            <FluidMorphToggleShowcase />
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'navbars' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="navbars">
                             <FloatingDockNavbarShowcase />
                             <MagneticPillNavbarShowcase />
                             <ExpandingSidebarShowcase />
@@ -259,15 +472,13 @@ export default function ComponentShowcaseLayout({ onBack }) {
                             <LiquidUnderlineNavbarShowcase />
                             <BentoDropMenuNavbarShowcase />
                             <MinimalDotNavbarShowcase />
-                            
-                            {/* Avant-Garde Navbars */}
                             <OrbitingPlanetsNavbarShowcase />
                             <JellyScoopNavbarShowcase />
                             <CurtainRevealNavbarShowcase />
                             <Perspective3DNavbarShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'sidebars' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="sidebars">
                             <GlassSidebarShowcase />
                             <MinimalIconSidebarShowcase />
                             <FloatingPillSidebarShowcase />
@@ -278,18 +489,21 @@ export default function ComponentShowcaseLayout({ onBack }) {
                             <BentoSidebarShowcase />
                             <MacOSSidebarShowcase />
                             <DynamicIslandSidebarShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'cards' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="cards">
+                            <NexusEnergyCardShowcase />
+                            <HoloDepthCardShowcase />
+                            <EtherealPulseCardShowcase />
+                            <LiquidMorphCardShowcase />
+                            <NeonTraceCardShowcase />
                             <HighlandRealEstateCardShowcase />
-                            <RavelloTravelGlassCardShowcase />
-                            <ShareSystemModalCardShowcase />
                             <Soft3DFolderCardShowcase />
                             <MeshFolderCardShowcase />
                             <PastelPricingCardsShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'bentos' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="bentos">
                             <AIProductBentoShowcase />
                             <SaaSFeatureBentoShowcase />
                             <GradientGlowBentoShowcase />
@@ -300,28 +514,35 @@ export default function ComponentShowcaseLayout({ onBack }) {
                             <NeonTechBentoShowcase />
                             <ProductivityBentoShowcase />
                             <InteractiveCardsBentoShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'textanims' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="textanims">
+                            <LiquidTextMorphShowcase />
+                            <Flip3DTextShowcase />
+                            <SpotlightTextShowcase />
+                            <VelocityMarqueeTextShowcase />
                             <AuroraTextShowcase />
                             <OdometerTextShowcase />
                             <TypewriterTextShowcase />
                             <WordByWordTextShowcase />
                             <CharacterScrambleTextShowcase />
                             <SplitTextRevealShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : activeCategory === 'cursors' ? (
-                        <div className="flex flex-col gap-16">
+                        <CategoryShowcaseContainer category="cursors">
+                            <SplashCursorShowcase />
+                            <LensBlurCursorShowcase />
+                            <ElasticStringCursorShowcase />
                             <MagneticCursorShowcase />
                             <CanvasParticlesCursorShowcase />
                             <TextRingCursorShowcase />
                             <DifferenceLensCursorShowcase />
                             <MatrixTrailCursorShowcase />
                             <MagneticGooeyCursorShowcase />
-                        </div>
+                        </CategoryShowcaseContainer>
                     ) : (
                         <div className="w-full h-64 border border-dashed border-black/20 dark:border-white/20 rounded-2xl flex items-center justify-center bg-black/[0.02] dark:bg-white/[0.02]">
-                            <p className="text-black/40 dark:text-white/40 text-sm font-medium">Select 'Backgrounds' to see the newly generated component.</p>
+                            <p className="text-black/40 dark:text-white/40 text-sm font-medium select-none">Select a category above.</p>
                         </div>
                     )}
                 </main>

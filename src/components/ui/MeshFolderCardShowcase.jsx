@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, FileText, Image as ImageIcon, BarChart2 } from 'lucide-react';
 
-const promptContent = `A square dark folder card where the top half is a vibrant animated mesh gradient background, and the bottom half is a dark folder flap overlaying it. Displays '04 Tags' and '1012 Shots' in typography. High contrast, clean SaaS UI.`;
+const promptContent = `A realistic 3D folder card. Hovering opens the front flap and slides out paper files. Vibrant dynamic neon backgrounds transition smoothly.`;
 
 export default function MeshFolderCardShowcase() {
   const [copied, setCopied] = useState(false);
@@ -12,8 +12,8 @@ export default function MeshFolderCardShowcase() {
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
 
-  const rotX = useSpring(useTransform(my, [0, 1], [5, -5]), { stiffness: 100, damping: 25 });
-  const rotY = useSpring(useTransform(mx, [0, 1], [-5, 5]), { stiffness: 100, damping: 25 });
+  const rotX = useSpring(useTransform(my, [0, 1], [15, -15]), { stiffness: 100, damping: 25 });
+  const rotY = useSpring(useTransform(mx, [0, 1], [-15, 15]), { stiffness: 100, damping: 25 });
 
   const onMove = (e) => {
     if (!ref.current) return;
@@ -25,56 +25,105 @@ export default function MeshFolderCardShowcase() {
 
   return (
     <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-black/5 dark:border-white/5 flex items-center justify-center min-h-[600px] bg-[#fdfdfd] dark:bg-[#050505] perspective-[1000px]">
+      <div className="relative w-full rounded-[24px] overflow-hidden border border-black/5 dark:border-white/5 flex items-center justify-center min-h-[600px] bg-[#f5f5f5] dark:bg-[#09090b] perspective-[1200px]">
         
          <motion.div 
             ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
-            style={{ rotateX: rotX, rotateY: rotY }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="relative w-[300px] h-[300px] rounded-[32px] overflow-hidden shadow-2xl cursor-pointer bg-black p-[2px]"
+            style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
+            whileHover="hover"
+            initial="rest"
+            className="relative w-[300px] h-[260px] cursor-pointer group mt-16"
          >
-            {/* The animated mesh gradient background (back folder wall) */}
-            <div className="w-full h-full rounded-[30px] overflow-hidden relative">
-               <div className="absolute inset-0 bg-[#ff7a00]" />
+            {/* 📁 Folder Back Cover */}
+            <div 
+                className="absolute inset-0 bg-[#161618] border border-white/10 shadow-2xl overflow-hidden" 
+                style={{ 
+                    transform: "translateZ(-20px)",
+                    clipPath: "polygon(0% 10%, 55% 10%, 65% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                    borderRadius: "0 16px 16px 16px"
+                }}
+            >
+               {/* Color Transitioning Neon Background */}
                <motion.div 
-                  animate={{ scale: [1, 1.2, 1], x: [0, 50, 0], y: [0, 30, 0] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-[-20%] left-[-20%] w-[150%] h-[150%] bg-[radial-gradient(ellipse_at_center,_#ff0080_0%,_transparent_60%)] mix-blend-screen opacity-80"
+                   animate={{ 
+                       background: [
+                           "radial-gradient(circle at 0% 0%, #ff0080 0%, transparent 70%), radial-gradient(circle at 100% 100%, #ff8c00 0%, transparent 70%)",
+                           "radial-gradient(circle at 100% 0%, #7928ca 0%, transparent 70%), radial-gradient(circle at 0% 100%, #ff0080 0%, transparent 70%)",
+                           "radial-gradient(circle at 100% 100%, #00dfd8 0%, transparent 70%), radial-gradient(circle at 0% 0%, #007cf0 0%, transparent 70%)",
+                           "radial-gradient(circle at 0% 100%, #ff8c00 0%, transparent 70%), radial-gradient(circle at 100% 0%, #ff0080 0%, transparent 70%)",
+                           "radial-gradient(circle at 0% 0%, #ff0080 0%, transparent 70%), radial-gradient(circle at 100% 100%, #ff8c00 0%, transparent 70%)"
+                       ] 
+                   }}
+                   transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                   className="absolute inset-0 opacity-80"
                />
-               <motion.div 
-                  animate={{ scale: [1, 1.5, 1], x: [0, -40, 0], y: [0, -50, 0] }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute bottom-[-10%] right-[-10%] w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_#ffd700_0%,_transparent_60%)] mix-blend-screen opacity-60"
-               />
+               {/* Dark glass overlay to make it look like a sleek folder */}
+               <div className="absolute inset-0 bg-black/50 backdrop-blur-[10px]" />
+            </div>
 
-               {/* Black Folder Flap */}
-               {/* Using SVG clip path to create the actual folder tab cut out on the left side */}
-               <div className="absolute bottom-0 left-0 w-full h-[65%] bg-[#1c1c1f] shadow-[0_-5px_20px_rgba(0,0,0,0.5)] border-t border-white/5"
+            {/* 📄 Files inside the folder */}
+            <motion.div 
+                variants={{
+                    rest: { y: 10, rotateZ: 0 },
+                    hover: { y: -80, rotateZ: -2, transition: { type: "spring", stiffness: 200, damping: 20, delay: 0.05 } }
+                }}
+                className="absolute top-4 left-4 right-4 h-[220px] bg-white dark:bg-[#e2e2e2] rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col p-4 border border-black/10 origin-bottom"
+                style={{ transform: "translateZ(-10px)" }}
+            >
+                <div className="w-full h-10 bg-black/5 rounded-lg mb-3 flex items-center px-3 gap-2 text-black/40">
+                    <FileText size={16} /> <div className="h-2 w-24 bg-black/10 rounded-full" />
+                </div>
+                <div className="w-full h-10 bg-black/5 rounded-lg mb-3 flex items-center px-3 gap-2 text-black/40">
+                    <ImageIcon size={16} /> <div className="h-2 w-32 bg-black/10 rounded-full" />
+                </div>
+                <div className="flex gap-3">
+                     <div className="h-20 flex-1 bg-indigo-50 dark:bg-indigo-900/10 rounded-lg border border-indigo-100 dark:border-indigo-900/20 flex items-center justify-center">
+                          <BarChart2 className="text-indigo-400 opacity-50" />
+                     </div>
+                     <div className="h-20 flex-1 bg-rose-50 dark:bg-rose-900/10 rounded-lg border border-rose-100 dark:border-rose-900/20" />
+                </div>
+            </motion.div>
+
+            {/* 📁 Folder Front Flap */}
+            <motion.div 
+                variants={{
+                    rest: { rotateX: 0 },
+                    hover: { rotateX: -30, transition: { type: "spring", stiffness: 200, damping: 20 } }
+                }}
+                style={{ transformOrigin: "bottom", transformStyle: "preserve-3d", transform: "translateZ(0px)" }}
+                className="absolute bottom-0 left-0 w-full h-[75%] bg-[#1a1a1c] shadow-[0_-5px_30px_rgba(0,0,0,0.4)] border-t border-white/10"
+            >
+               <div className="absolute inset-0 bg-[#1a1a1c] overflow-hidden"
                   style={{
-                     clipPath: 'polygon(0% 15%, 35% 15%, 45% 0%, 100% 0%, 100% 100%, 0% 100%)'
+                     clipPath: 'polygon(0% 12%, 35% 12%, 45% 0%, 100% 0%, 100% 100%, 0% 100%)',
+                     borderRadius: '0 16px 16px 16px'
                   }}
                >
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none" />
+                  
                   {/* Flap Content */}
-                  <div className="w-full h-full p-6 flex flex-col justify-between">
+                  <div className="w-full h-full p-6 flex flex-col justify-between" style={{ transform: "translateZ(1px)" }}>
                      <div className="mt-4">
-                        <h3 className="text-white font-bold text-[16px] leading-tight mb-1">Designs</h3>
-                        <p className="text-white/40 text-[12px]">Web & App Designs</p>
+                        <h3 className="text-white font-bold text-[18px] tracking-tight mb-1">Brand Assets</h3>
+                        <p className="text-white/40 text-[13px] font-medium tracking-wide">Q3 Campaign</p>
                      </div>
 
                      <div className="flex items-end justify-between font-bold">
                         <div className="text-white flex items-end gap-1">
-                           <span className="text-[32px] leading-none tracking-tighter">04</span>
-                           <span className="text-[12px] pb-1">Tags</span>
+                           <span className="text-[36px] leading-none tracking-tighter">12</span>
+                           <span className="text-[13px] pb-1 text-white/50">Files</span>
                         </div>
-                        <div className="text-white/60 text-[11px] pb-1">
-                           1012 Shots
+                        <div className="text-emerald-400 text-[11px] pb-1.5 px-3 py-1.5 bg-emerald-400/10 rounded-full border border-emerald-400/20 uppercase tracking-widest font-semibold">
+                           Shared
                         </div>
                      </div>
                   </div>
                </div>
-            </div>
+            </motion.div>
+            
          </motion.div>
+         
+         <span className="absolute bottom-6 right-6 text-black/20 dark:text-white/20 text-[13px] font-semibold tracking-widest uppercase z-10 pointer-events-none">3D Hover Folder</span>
       </div>
 
       <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

@@ -318,14 +318,8 @@ export default function AmbientGlassMorphShowcase() {
       {/* ── Preview Stage ── */}
       <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.06] flex items-center justify-center" style={{ minHeight: 520 }}>
 
-        {/* Animated aurora background */}
-        <AuroraBlobs blobs={v.blobs} bg={v.bg} key={activeVariant} />
-
-        {/* Ambient top vignette */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(0,0,0,0.25) 100%)' }}
-        />
+        {/* Light theme plain background */}
+        <div className="absolute inset-0 bg-[#0f111a]" />
 
         {/* Glass card — centered */}
         <div className="relative z-10 flex items-center justify-center w-full py-14 px-4">

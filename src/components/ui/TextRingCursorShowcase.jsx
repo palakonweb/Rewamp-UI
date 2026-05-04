@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, ArrowRight } from 'lucide-react';
 
-const promptContent = `Text Ring Cursor, clean premium agency aesthetic, circular text rotating around the cursor on a spring, expands and speeds up rotation when hovering interactive elements`;
+const promptContent = `Text Ring Cursor, dark mode premium agency aesthetic. Circular text rotates smoothly around the cursor pointer on a spring, expanding heavily and glowing neon when hovering interactive elements.`;
 
 export default function TextRingCursorShowcase() {
   const [copied, setCopied] = useState(false);
@@ -12,13 +12,13 @@ export default function TextRingCursorShowcase() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
-  // Spring settings for the ring
-  const springX = useSpring(cursorX, { stiffness: 150, damping: 20 });
-  const springY = useSpring(cursorY, { stiffness: 150, damping: 20 });
+  // Spring settings
+  const springX = useSpring(cursorX, { stiffness: 200, damping: 20 });
+  const springY = useSpring(cursorY, { stiffness: 200, damping: 20 });
 
-  const [isHoveringCard, setIsHoveringCard] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const text = "EXPLORE • DISCOVER • CREATE • ";
+  const text = "SCROLL TO DISCOVER • SCROLL TO DISCOVER • ";
   const characters = text.split("");
 
   const handleMouseMove = (e) => {
@@ -34,18 +34,29 @@ export default function TextRingCursorShowcase() {
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={() => { cursorX.set(-100); cursorY.set(-100); }}
-        className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-16 flex flex-col items-center justify-center min-h-[500px]" 
-        style={{ background: '#fafafa' }} // clean light background
+        className="relative w-full rounded-[24px] overflow-hidden border border-white/10 p-16 flex flex-col items-center justify-center min-h-[600px] bg-[#0c0c0e]" 
       >
-        <p className="absolute top-10 text-[10px] uppercase tracking-[0.3em] font-bold text-black/30">
-          Text Ring Cursor
+        <p className="absolute top-10 text-[11px] uppercase tracking-[0.4em] font-semibold text-white/30">
+          Typographic Cursor
         </p>
 
         {/* Inner static dot */}
         <motion.div 
-          className="absolute w-2 h-2 bg-black rounded-full pointer-events-none z-50"
+          className="absolute flex items-center justify-center pointer-events-none z-50"
           style={{ x: springX, y: springY, translateX: '-50%', translateY: '-50%' }}
-        />
+        >
+           <motion.div 
+               animate={{ scale: isHovering ? 0 : 1, opacity: isHovering ? 0 : 1 }}
+               className="w-2 h-2 bg-white rounded-full shadow-[0_0_10px_white]"
+           />
+           {/* Center icon that appears on hover */}
+           <motion.div
+               animate={{ scale: isHovering ? 1 : 0, opacity: isHovering ? 1 : 0 }}
+               className="absolute w-10 h-10 bg-emerald-400 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(52,211,153,0.4)]"
+           >
+               <ArrowRight className="text-black w-4 h-4" />
+           </motion.div>
+        </motion.div>
 
         {/* The rotating text ring */}
         <motion.div 
@@ -53,20 +64,20 @@ export default function TextRingCursorShowcase() {
           style={{ 
             x: springX, y: springY, 
             translateX: '-50%', translateY: '-50%',
-            width: isHoveringCard ? 120 : 80, 
-            height: isHoveringCard ? 120 : 80,
+            width: isHovering ? 180 : 100, 
+            height: isHovering ? 180 : 100,
           }}
           animate={{ rotate: 360 }}
-          transition={{ duration: isHoveringCard ? 4 : 10, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: isHovering ? 3 : 12, repeat: Infinity, ease: "linear" }}
         >
           {characters.map((char, i) => {
             const rotation = (360 / characters.length) * i;
             return (
               <span
                 key={i}
-                className="absolute text-[9px] font-bold tracking-widest text-black"
+                className={`absolute text-[10px] font-bold tracking-widest transition-colors duration-300 ${isHovering ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]' : 'text-white/60'}`}
                 style={{
-                  transform: `rotate(${rotation}deg) translateY(${isHoveringCard ? -50 : -35}px)`,
+                  transform: `rotate(${rotation}deg) translateY(${isHovering ? -80 : -45}px)`,
                   transformOrigin: "center",
                 }}
               >
@@ -76,26 +87,23 @@ export default function TextRingCursorShowcase() {
           })}
         </motion.div>
 
-        {/* Interactive Cards */}
-        <div className="flex gap-6 z-20">
-          {[1, 2].map((item) => (
-            <div 
-              key={item}
-              onMouseEnter={() => setIsHoveringCard(true)}
-              onMouseLeave={() => setIsHoveringCard(false)}
-              className="w-48 h-64 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex items-center justify-center pointer-events-auto transition-transform hover:-translate-y-2 duration-500"
+        {/* Interactive Target */}
+        <div className="z-20 flex flex-col items-center">
+            <motion.div 
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+              whileHover={{ scale: 1.05 }}
+              className="w-64 aspect-[4/3] bg-white/[0.03] rounded-2xl border border-white/10 flex items-center justify-center pointer-events-auto cursor-none overflow-hidden relative group"
             >
-              <div className="w-24 h-24 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">
-                <span className="text-black/20 font-bold text-xl">0{item}</span>
-              </div>
-            </div>
-          ))}
+               <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-80 transition-opacity duration-700 grayscale group-hover:grayscale-0" alt="abstract" />
+               <div className="absolute inset-0 bg-black/40" />
+               <span className="relative z-10 text-white font-bold tracking-widest text-sm uppercase">Hover Me</span>
+            </motion.div>
         </div>
-
       </div>
 
-      <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex-1 min-w-0"><p className="text-[11px] text-black/40 dark:text-white/40 uppercase tracking-widest font-semibold mb-2">Prompt</p><code className="text-[12px] text-black/70 dark:text-white/70 font-mono leading-relaxed">{promptContent}</code></div>
+      <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+        <div className="flex-1 min-w-0"><p className="text-[11px] text-black/40 dark:text-white/40 uppercase tracking-widest font-semibold mb-2">Prompt Setup</p><code className="text-[13px] text-black/80 dark:text-white/80 font-mono block overflow-hidden text-ellipsis w-full">{promptContent}</code></div>
         <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all shrink-0">
           {copied ? <><Check size={16} className="text-emerald-500" /><span className="text-[13px] font-medium text-emerald-500">Copied</span></> : <><Copy size={16} className="text-black/60 dark:text-white/60" /><span className="text-[13px] font-medium text-black/70 dark:text-white/70">Copy</span></>}
         </button>

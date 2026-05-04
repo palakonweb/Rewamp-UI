@@ -1,58 +1,60 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Home, Search, Compass, MessageCircle, Settings } from 'lucide-react';
 
-const promptContent = `tab bar where the active bounding box dynamically morphs its width and border radius to swallow active text`;
+const promptContent = `Fluid Pill Navbar. A highly polished glassmorphic navigation bar where the active tab background smoothly glides and morphs between items using Framer Motion layoutId.`;
 
 export default function MorphingTabNavbarShowcase() {
     const [copied, setCopied] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(1);
+    const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+    const [activeTab, setActiveTab] = useState("Home");
 
-    const tabs = ["Home", "Components Database", "API", "Changelog"];
+    const tabs = [
+        { id: "Home", icon: Home },
+        { id: "Search", icon: Search },
+        { id: "Explore", icon: Compass },
+        { id: "Messages", icon: MessageCircle },
+        { id: "Settings", icon: Settings },
+    ];
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#eaeaeb] dark:bg-[#111111] shadow-xl flex items-center justify-center p-8 group">
+            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#09090b] shadow-xl flex items-center justify-center">
                 
                 {/* 🎯 THE MORPHING NAVBAR */}
-                <nav className="relative flex items-center gap-2 p-2 rounded-[24px] bg-white dark:bg-[#050505] shadow-sm border border-black/5 dark:border-white/5 overflow-hidden">
-                    {tabs.map((tab, index) => {
-                        const isActive = activeIndex === index;
-                        // Morphing logic implies a tightly wrapping layout box.
-                        
+                <nav className="relative flex items-center p-2 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                    {tabs.map((tab) => {
+                        const isActive = activeTab === tab.id;
                         return (
                             <button
-                                key={tab}
-                                onClick={() => setActiveIndex(index)}
-                                className={`relative z-10 px-4 py-2 transition-colors duration-300 ${
-                                    isActive ? 'text-white dark:text-black' : 'text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white'
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`relative flex items-center gap-2 px-6 py-3 rounded-full transition-colors duration-300 ${
+                                    isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
                                 }`}
                             >
-                                <span className="relative z-20 font-medium text-[14px]">
-                                    {tab}
-                                </span>
-                                
+                                {/* The Sliding Background Bubble */}
                                 {isActive && (
                                     <motion.div
-                                        layoutId="morphing-tab"
-                                        // Standard tabs use pills, but a "morphing" tab often feels more square-ish or perfectly hugs the text shape
-                                        className="absolute inset-0 bg-black dark:bg-white rounded-lg -z-10 shadow-md"
-                                        initial={false}
+                                        layoutId="activeTabBubble"
+                                        className="absolute inset-0 bg-white/10 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] mix-blend-screen"
                                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                     />
                                 )}
+                                
+                                <span className="relative z-10 flex items-center justify-center">
+                                    <tab.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                                </span>
+                                <span className="relative z-10 text-[14px] font-medium tracking-wide">
+                                    {tab.id}
+                                </span>
                             </button>
                         );
                     })}
                 </nav>
                 
-                <span className="absolute bottom-6 text-black/30 dark:text-white/30 text-[13px] font-semibold tracking-widest uppercase">Morphing Tab</span>
+                <span className="absolute bottom-6 text-white/20 text-[11px] font-semibold tracking-widest uppercase">Fluid Pill Navbar</span>
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
