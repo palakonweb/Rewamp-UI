@@ -81,7 +81,7 @@ export function SiteFooter() {
           {/* Brand */}
           <div className="lg:w-[280px] shrink-0">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-4 h-4 rounded-full" style={{ backgroundColor: CHERRY }} />
+              <img src="/logo.png" alt="Conjure UI Logo" className="h-12 w-auto" />
               <span className="font-display font-bold text-xl tracking-wide text-gray-900 uppercase">Conjure UI</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-[240px] mb-6">

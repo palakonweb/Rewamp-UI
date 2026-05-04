@@ -251,9 +251,9 @@ function ShowcaseWrapper({ children, title, category }) {
                     </button>
                 </div>
             </div>
-            <div className="p-6 md:p-8 bg-white flex flex-col justify-center min-h-[300px]">
+            <div className="p-4 sm:p-6 md:p-8 bg-white flex flex-col justify-center min-h-[300px]">
                 {tab === 'preview' ? (
-                    <div>{children}</div>
+                    <div className="w-full overflow-x-auto flex justify-center py-4">{children}</div>
                 ) : (
                     <div className="relative w-full rounded-2xl overflow-hidden bg-[#0d0d0f] border border-white/[0.08] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)]">
                         {/* 🖥️ Window Title Bar */}

@@ -20,9 +20,20 @@ export function Preloader() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-b from-white via-white to-[#F7E6E6] select-none"
+          style={{ position: 'fixed' }}
         >
-          <div className="w-full max-w-4xl px-8 h-[240px] flex items-center justify-center">
-            <TextHoverEffect text="CONJURE UI" />
+          <div className="w-full max-w-4xl px-8 flex flex-col items-center justify-center gap-12">
+            <motion.img 
+              src="/logo.png" 
+              alt="Conjure UI Logo" 
+              className="h-24 md:h-32 w-auto"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <div className="w-full h-[240px] flex items-center justify-center">
+              <TextHoverEffect text="CONJURE UI" />
+            </div>
           </div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}

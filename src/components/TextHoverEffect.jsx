@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export function TextHoverEffect({ text, duration }) {
   const svgRef = useRef(null);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const [cursor, setCursor] = useState({ x: 450, y: 100 }); // Initialize to center of viewBox
   const [hovered, setHovered] = useState(false);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
 
@@ -55,7 +55,7 @@ export function TextHoverEffect({ text, duration }) {
       className="select-none"
     >
       <defs>
-        <linearGradient id="textGradient" gradientUnits="userSpaceOnUse" cx="50%" cy="50%" r="25%">
+        <linearGradient id="textGradient" gradientUnits="userSpaceOnUse" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#D2042D" />
           <stop offset="25%" stopColor="#ff1e46" />
           <stop offset="50%" stopColor="#8B0000" />
@@ -66,7 +66,9 @@ export function TextHoverEffect({ text, duration }) {
         <motion.radialGradient
           id="revealMask"
           gradientUnits="userSpaceOnUse"
-          r="25%"
+          cx={maskPosition.cx}
+          cy={maskPosition.cy}
+          r="20%"
           animate={maskPosition}
           transition={{ duration: duration ?? 0.15, ease: "easeOut" }}
         >

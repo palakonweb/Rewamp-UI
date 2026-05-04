@@ -28,7 +28,7 @@ export function Navbar() {
         className={`flex items-center justify-between transition-colors duration-500 ${
           scrolled
             ? 'mt-4 px-4 h-12 rounded-full bg-white/80 backdrop-blur-2xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.6)]'
-            : 'mt-0 px-8 md:px-12 h-16 w-full max-w-[1400px] bg-white border-b border-black/[0.06]'
+            : 'mt-0 px-4 md:px-8 lg:px-12 h-16 w-full max-w-[1400px] bg-white border-b border-black/[0.06]'
         }`}
         style={{
           width: scrolled ? 'auto' : '100%',
@@ -38,7 +38,11 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0 pr-4">
-          <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+          <img 
+            src="/logo.png" 
+            alt="Conjure UI Logo" 
+            className={`transition-all duration-500 w-auto ${scrolled ? 'h-10' : 'h-14'}`} 
+          />
           <AnimatePresence>
             {!scrolled && (
               <motion.span 
