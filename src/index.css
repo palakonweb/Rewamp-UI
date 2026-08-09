@@ -79,6 +79,14 @@
 }
 
 @layer utilities {
+  /* Dashboard showcase embeds: each ui/*Showcase.jsx renders its own inline
+     "prompt" footer (label + <code> + copy button). The dashboard shows the
+     prompt in the card's Prompt tab instead, so hide the component's own
+     footer wherever it's embedded there. */
+  .prompt-embed div:has(> div > code):has(> button) {
+    display: none !important;
+  }
+
   .font-display {
     font-family: var(--font-display);
   }
@@ -119,6 +127,11 @@
       0 4px 14px rgba(0, 0, 0, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
     border-radius: 6px;
+  }
+
+  /* Shared background for showcase preview frames */
+  .inner-card-bg {
+    background: #F1F1F1;
   }
 
   /* Liquid metal rotating border */

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `"Liquid Metal Button": white rounded-full pill with a continuously rotating liquid-chrome conic-gradient border and dark medium-weight text — the same moving border treatment used site-wide for liquid-metal surfaces.`;
+const promptContent = `Shimmer button: clean white pill with a subtle grey border. A narrow soft light streak periodically sweeps diagonally across the surface like light reflecting off a polished surface, repeating every few seconds and accelerating once on click. Lifts 1-2px on hover.`;
 
-export default function LiquidMetalButtonShowcase() {
+export default function ShimmerButtonShowcase() {
     const [copied, setCopied] = useState(false);
+    const [burst, setBurst] = useState(0);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(promptContent);
@@ -16,20 +17,23 @@ export default function LiquidMetalButtonShowcase() {
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
             <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8">
-                <div className="relative p-[2px] rounded-full overflow-hidden">
+                <motion.button
+                    onClick={() => setBurst((b) => b + 1)}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="relative px-10 py-4 min-w-[220px] flex items-center justify-center rounded-full overflow-hidden select-none bg-white border border-black/10"
+                    style={{ boxShadow: '0 6px 18px -12px rgba(0,0,0,0.12)' }}
+                >
                     <motion.div
-                        className="absolute inset-[-45%]"
-                        style={{ background: 'conic-gradient(from 0deg, #c0c0c0, #810100, #d4d4d4, rgba(129,1,0,0.6), #e8e8e8, #810100, #c0c0c0)' }}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                        key={burst}
+                        className="absolute inset-y-0 w-10 pointer-events-none"
+                        style={{ background: 'linear-gradient(115deg, transparent, rgba(0,0,0,0.06), rgba(255,255,255,0.9), rgba(0,0,0,0.06), transparent)' }}
+                        initial={{ left: '-20%' }}
+                        animate={{ left: '120%' }}
+                        transition={{ duration: burst % 2 === 1 ? 0.35 : 0.85, ease: 'easeInOut', repeat: Infinity, repeatDelay: 1.8 }}
                     />
-                    <button
-                        className="relative z-10 px-9 py-3.5 rounded-full select-none bg-white"
-                        style={{ boxShadow: '0 8px 20px -12px rgba(0,0,0,0.15)' }}
-                    >
-                        <span className="relative z-10 text-[16px] font-medium text-[#1B1717]/80">Liquid Metal Button</span>
-                    </button>
-                </div>
+                    <span className="relative z-10 text-[16px] font-semibold text-noir">Shimmer Button</span>
+                </motion.button>
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
