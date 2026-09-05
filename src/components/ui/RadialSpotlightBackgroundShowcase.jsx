@@ -72,7 +72,7 @@ export default function RadialSpotlightBackgroundShowcase() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="px-3 py-1 mb-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white/70 text-[11px] font-medium tracking-widest uppercase shadow-xl"
                     >
-                        Conjure UI
+                        Purrform
                     </motion.div>
                     
                     <motion.h1 

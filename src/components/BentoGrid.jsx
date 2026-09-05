@@ -284,7 +284,7 @@ const BentoGrid = () => {
                                 </motion.div>
                             </div>
                             <div className="p-4 font-mono text-[10px] md:text-[11px] leading-relaxed text-white/80 select-all">
-                                <span className="text-emerald-400">npx</span> conjure-ui@latest <span className="text-[#a5d6ff]">add</span> search-bar
+                                <span className="text-emerald-400">npx</span> purrform-ui@latest <span className="text-[#a5d6ff]">add</span> search-bar
                             </div>
                         </div>
                     </div>

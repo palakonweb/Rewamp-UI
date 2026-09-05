@@ -58,7 +58,7 @@ function FlipCard() {
         >
           <div className="flex items-center gap-2 mb-5 pb-3 border-b border-black/[0.06]">
             <div className="w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white" style={{ background: `linear-gradient(135deg, ${CHERRY}, #ff1e46)` }}>C</div>
-            <span className="text-[10px] text-gray-500 font-mono font-semibold">conjure-agent</span>
+            <span className="text-[10px] text-gray-500 font-mono font-semibold">purrform-agent</span>
             <span className="ml-auto text-[8px] px-1.5 py-0.5 rounded bg-green-500/20 text-green-700 font-mono">ready</span>
           </div>
 
@@ -185,7 +185,7 @@ export function DomeGalleryCTA() {
         </div>
       </motion.div>
 
-      {/* Bottom gradient — soft merge with CONJURE section */}
+      {/* Bottom gradient — soft merge with PURRFORM section */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-white z-20 pointer-events-none" />
     </section>
   );

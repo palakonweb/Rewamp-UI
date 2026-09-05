@@ -19,8 +19,8 @@ const Navbar = ({ isDarkMode, toggleTheme, onBrowse }) => {
                 <div className="relative w-full flex justify-between items-center px-6 py-3 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[100px] shadow-[inset_0_1px_1px_rgba(255,255,255,1),0_16px_40px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_16px_40px_rgba(0,0,0,0.6)]">
                     {/* Left: Logo */}
                     <div className="flex items-center gap-3">
-                        <img src="/logo.png" alt="Conjure UI Logo" className="w-8 h-8 object-contain" />
-                        <span className="text-black dark:text-white font-medium text-[15px] tracking-tight">Conjure UI</span>
+                        <img src="/purrform-logo.png" alt="Purrform Logo" className="w-8 h-8 object-contain" />
+                        <span className="text-black dark:text-white font-medium text-[15px] tracking-tight">Purrform</span>
                     </div>
 
                     {/* Links */}

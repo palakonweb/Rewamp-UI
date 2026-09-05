@@ -115,7 +115,7 @@ export default function ElasticStringCursorShowcase() {
                     <div className="px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/20 shadow-lg flex items-center gap-2">
                         <Command className="w-3.5 h-3.5 text-black/60 dark:text-white/60" />
                         <span className="text-[11px] font-bold text-black/80 dark:text-white/80 tracking-widest uppercase">
-                            Conjure
+                            Purrform
                         </span>
                     </div>
                 </motion.div>

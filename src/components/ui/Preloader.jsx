@@ -24,15 +24,15 @@ export function Preloader() {
         >
           <div className="w-full max-w-4xl px-8 flex flex-col items-center justify-center gap-12">
             <motion.img 
-              src="/logo.png" 
-              alt="Conjure UI Logo" 
+              src="/purrform-logo.png" 
+              alt="Purrform Logo" 
               className="h-24 md:h-32 w-auto"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             />
             <div className="w-full h-[240px] flex items-center justify-center">
-              <TextHoverEffect text="CONJURE UI" />
+              <TextHoverEffect text="PURRFORM" />
             </div>
           </div>
           <motion.div

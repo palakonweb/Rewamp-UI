@@ -68,7 +68,7 @@ function PreviewCard({ item }) {
         </div>
       </div>
       <div className="vcard-footer">
-        <span className="vcard-brand">CONJURE</span>
+        <span className="vcard-brand">PURRFORM</span>
       </div>
     </div>
   );

@@ -190,7 +190,7 @@ function AIUnderstandsDesign() {
                </div>
             </div>
             <div className="text-[8px] text-[var(--text-2)] leading-[1.6] mt-4 font-medium max-w-[180px]">
-              "Conjure entirely changed how I build. Components are clean and consistent."
+              "Purrform entirely changed how I build. Components are clean and consistent."
             </div>
           </motion.div>
           
@@ -479,8 +479,8 @@ function LivePreview() {
                  🤖
               </div>
               <div className="flex flex-col justify-center">
-                <div className="text-[12px] font-bold text-[var(--text)] leading-tight mb-0.5">Conjure AI</div>
-                <div className="text-[9px] text-[var(--text-3)] italic">@conjure_dev</div>
+                <div className="text-[12px] font-bold text-[var(--text)] leading-tight mb-0.5">Purrform AI</div>
+                <div className="text-[9px] text-[var(--text-3)] italic">@purrform_dev</div>
               </div>
             </div>
             
@@ -544,7 +544,7 @@ export function FeaturesBento() {
         >
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-sm bg-[var(--accent)]"></div>
-            <span className="text-[11px] font-bold tracking-widest text-[var(--text)] uppercase font-sans">Conjure UI</span>
+            <span className="text-[11px] font-bold tracking-widest text-[var(--text)] uppercase font-sans">Purrform</span>
           </div>
 
           <div className="hidden md:block text-[13px] text-[var(--text-2)] font-medium tracking-wide font-sans">

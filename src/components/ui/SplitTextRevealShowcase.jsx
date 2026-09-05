@@ -4,7 +4,7 @@ import { Copy, Check } from 'lucide-react';
 
 const promptContent = `Split text reveal animation where individual characters fly in from random vertical offsets with staggered timing, each character animates independently, dark background, large bold heading, smooth easing with blur transition`;
 
-const text = "Conjure UI";
+const text = "Purrform";
 
 const charVariants = {
   hidden: (i) => ({

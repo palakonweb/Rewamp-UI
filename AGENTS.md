@@ -1,64 +1,71 @@
-# Conjure UI — Agent Guide
+# AGENTS.md — Purrform Rebuild
 
-This file is the source of truth for visual and structural consistency while we
-build **v2 of the component dashboard** (`/components`). Read this before
-touching anything under `src/components/ui`, `src/components/ComponentShowcaseLayout.jsx`,
-or any new dashboard chrome. The landing page (`src/pages/LandingPage.jsx` and
-its sections) is **out of scope** for v2 and keeps its existing serif/display
-look — do not change it unless explicitly asked.
+Read this before touching any code. It's the source of truth for the rebrand from **conjure-ui** to **Purrform**.
 
-## Scope of v2
+## Project identity
+- Old name: conjure-ui (prompt-to-component UI library, live at conjure-ui.vercel.app)
+- New name: **Purrform**
+- Logo: flat orange cat-face mark — rounded triangular ears, oval head, two ring-shaped eyes in Milk (#FFFDF2), thin whisker strokes, single Orange (#EC5E27) fill, no outlines or gradients. Recreate as a clean SVG rather than shipping the raster PNG.
 
-v2 is a rebuild of the **component dashboard UX**: sidebar navigation, search,
-and the preview/code grid. Reference layout: cream sidebar with logo + collapse
-toggle + icon nav, white main area with a search bar and a grid of bordered
-preview cards.
+## Tech stack detection — do this first
+1. Inspect `package.json` and the existing source to confirm the real framework, styling system, routing, and how prompt-to-component generation currently works.
+2. Don't assume a stack — adapt everything below to whatever the repo actually uses.
+3. This is a rebrand + layout overhaul, not a functional rewrite. Leave the generation logic alone unless a change is explicitly required to support the new UI (e.g. exposing the source prompt per component so it can be shown in a copy block).
 
-## Color palette (dashboard scope)
+## Design tokens
+**Primary**
+- `--color-orange: #EC5E27` — brand / primary actions
+- `--color-milk: #FFFDF2` — base background
 
-Already defined as Tailwind v4 theme tokens in `src/index.css` under `@theme` —
-use the utility classes, don't hardcode hex values.
+**Secondary**
+- `--color-burnt-orange: #D2471A` — hover / active states
+- `--color-peach: #FBA27A` — accents / highlights
+- `--color-sand: #F1E6D7` — surfaces / cards
 
-| Token | Hex | Tailwind utility | Use |
-|---|---|---|---|
-| Cotton | `#EDEBDD` | `bg-cotton` / `text-cotton` | Sidebar background, app shell background |
-| White | `#FFFFFF` | `bg-white` | Main content surface, cards |
-| Cherry Red | `#810100` | `bg-cherry` / `text-cherry` | Primary accent, active states, links, focus |
-| Maroon | `#630000` | `bg-maroon` / `text-maroon` | Accent hover/pressed state |
-| Noir Black | `#1B1717` | `bg-noir` / `text-noir` | Primary text, borders (via opacity), icons |
+**Neutrals**
+- `--color-charcoal: #1F1F1F` — high-emphasis text
+- `--color-stone: #6B6B6B` — secondary text
+- `--color-mist: #D9D9D6` — borders / dividers
+- `--color-cream: #FAF6ED` — subtle backgrounds
 
-Rules:
-- Sidebar background = cotton. Main content background = white.
-- Active nav item = cherry text on a cotton/white pill, never filled solid cherry background (keep it light — see mockup).
-- Borders use `border-noir/10` to `border-noir/20`, not gray. Never introduce a separate gray scale for the dashboard.
-- No new colors without adding them to this table first.
+**Semantic**
+- `--color-success: #16A34A`
+- `--color-warning: #FBBF24`
+- `--color-error: #EF4444`
 
-## Typography
+**Orange ramp** (for charts/badges/depth, darkest → lightest):
+`#7A2D12  #A63E1B  #D2471A  #EC5E27  #F17648  #F58F6A  #F9B494  #FCD5C2  #FEEBE1`
 
-**Inter, everywhere in the dashboard** — including headings. Do not use the
-landing page's `--font-display` (Sarpanch) or `--font-serif` (Playfair) inside
-`/components`. Use `font-sans` (already mapped to Inter in `src/index.css`).
+**Rule:** Orange is the only saturated accent anywhere in the UI. Peach/Sand/Cream carry the warmth in large surfaces — don't let Orange bleed into decorative backgrounds or it stops reading as an accent.
 
-- Headings: `font-sans`, normal case (not uppercase), medium/semibold weight — not the landing page's uppercase display treatment.
-- Body/UI text: `font-sans`, regular/medium weight.
-- Code blocks keep `font-mono` (Geist Mono).
+## Layout system (reference: evilcharts.com docs pages)
+Three-column shell:
+1. **Left sidebar** (~260px, fixed) — Purrform logo + wordmark; searchable nav tree of component categories, each expandable into its individual components/variants (mirrors evilcharts' "Area Chart → Default / Area Blocks" pattern).
+2. **Center panel** — component name + one-line description, a Preview/Code toggle, then a bordered live-preview canvas (Sand or Cream background, Mist border, generous padding).
+3. **Right rail** (~220px, fixed) — contextual navigation for the open category: sibling variants and/or on-page anchors, so people can jump between related components without leaving the page.
 
-## Layout conventions
+Every component page needs **two independently-copyable blocks** below the preview:
+- **Prompt block** — the natural-language prompt that generates this component. Own "Copy prompt" button, Sand background.
+- **Code block** — the resulting, syntax-highlighted source. Own "Copy code" button. Add a framework tab if more than one output target is supported.
 
-- Sidebar: fixed-width rail, collapsible to icon-only. Logo + wordmark at top, collapse toggle top-right of sidebar, nav list with `lucide-react` icons below.
-- Main content: search bar pinned at top, then a responsive card grid below (`grid-cols-1 sm:grid-cols-2 xl:grid-cols-3`, not the old single-column stacked list).
-- Preview cards: white background, `border border-noir/10`, sharp-ish corners (`rounded-xl`, not the old `rounded-3xl`), no heavy shadows — flat, like the mockup. Card header shows the component title + Preview/Code tab switch.
-- Icons: `lucide-react` only, `size={16}`–`18` in the sidebar.
+Both copy buttons swap to a check-mark for ~1.5s on click as confirmation.
 
-## Data structure (component registry)
+## Interaction & motion
+- The copy-button check-mark swap is the one deliberate motion moment. Keep hover/tab transitions quick and functional — no scroll-triggered reveals.
+- Respect `prefers-reduced-motion`.
+- Active sidebar item: Orange text/icon on a Sand pill, not a bare color swap.
 
-Do **not** add new categories via an `if/else` chain. `ComponentShowcaseLayout.jsx`
-uses a `categories` array (`{ id, name, icon, components: [] }`) — each
-`components` entry is `{ Component, title }`. Adding a component means pushing
-into the relevant category's `components` array, not adding a new branch.
+## Accessibility & responsiveness
+- Charcoal on Milk/Cream/Sand must pass WCAG AA for body text; Milk on Orange is fine for large/bold labels only — check smaller text separately.
+- Visible focus rings (Orange, 2px, offset) on the sidebar tree, tabs, and copy buttons.
+- Below ~960px: right rail collapses into a "Jump to" dropdown at the top of the center panel.
+- Below ~720px: left sidebar collapses into a slide-over from a header menu button.
 
-## When extending this doc
-
-If you introduce a new token, spacing rule, or pattern while working on the
-dashboard, add it to the relevant table/section above in the same change —
-don't let this file drift from the code.
+## Deliverable checklist
+- [ ] Logo recreated as SVG + favicon set
+- [ ] Global rebrand: package/site metadata, all "conjure-ui"/"Conjure" strings → "Purrform"
+- [ ] Design tokens implemented as CSS variables / theme config for the detected stack
+- [ ] Three-column shell built and responsive per the breakpoints above
+- [ ] Component page template: Preview/Code toggle + independent Prompt/Code copy blocks
+- [ ] Existing component catalog migrated into the new sidebar tree, no functional regressions
+- [ ] QA pass: contrast, focus states, mobile collapse behavior

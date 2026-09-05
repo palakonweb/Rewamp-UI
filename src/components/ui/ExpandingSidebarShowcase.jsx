@@ -44,7 +44,7 @@ export default function ExpandingSidebarShowcase() {
                             animate={{ opacity: isExpanded ? 1 : 0 }}
                             className="font-bold text-[15px] tracking-tight text-black dark:text-white"
                         >
-                            Conjure UI
+                            Purrform
                         </motion.span>
                     </div>
 

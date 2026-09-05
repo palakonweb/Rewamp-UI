@@ -12,7 +12,7 @@ const promptContent = `Dark developer tools bento grid with SVG terminal typing 
 // ── SVG Terminal with typing lines ──
 function TerminalSVG() {
   const lines = [
-    { text: '$ npm install @conjure/ui', color: '#7ec8a4', delay: 0.3 },
+    { text: '$ npm install @purrform/ui', color: '#7ec8a4', delay: 0.3 },
     { text: '  ✓ Installing dependencies...', color: '#6b7b8d', delay: 1.0 },
     { text: '  ✓ Built 142 components', color: '#6b7b8d', delay: 1.8 },
     { text: '  → Ready in 0.8s', color: '#7ec8a4', delay: 2.4 },

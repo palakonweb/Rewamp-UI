@@ -6,6 +6,42 @@
   --color-maroon: #630000;
   --color-noir: #1B1717;
   --color-cotton: #EDEBDD;
+
+  /* Dashboard neutral palette */
+  --color-app-bg: #F5F5F5;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #FAFAFA;
+  --color-ink: #2C2C2C;
+  --color-ink-2: #6E6E6E;
+  --color-ink-3: #8E8E8E;
+  --color-ink-4: #B3B3B3;
+  --color-line: #E1E1E1;
+  --color-line-subtle: #EAEAEA;
+
+  /* Purrform brand tokens */
+  --color-orange: #EC5E27;
+  --color-milk: #FFFDF2;
+  --color-burnt-orange: #D2471A;
+  --color-peach: #FBA27A;
+  --color-sand: #F1E6D7;
+  --color-charcoal: #1F1F1F;
+  --color-stone: #6B6B6B;
+  --color-mist: #D9D9D6;
+  --color-cream: #FAF6ED;
+  --color-success: #16A34A;
+  --color-warning: #FBBF24;
+  --color-error: #EF4444;
+
+  /* Orange ramp — darkest to lightest */
+  --color-orange-900: #7A2D12;
+  --color-orange-800: #A63E1B;
+  --color-orange-700: #D2471A;
+  --color-orange-600: #EC5E27;
+  --color-orange-500: #F17648;
+  --color-orange-400: #F58F6A;
+  --color-orange-300: #F9B494;
+  --color-orange-200: #FCD5C2;
+  --color-orange-100: #FEEBE1;
 }
 
 @layer base {
