@@ -38,7 +38,7 @@ export default function DocsShell({ slug, onNavigate }) {
                 <header className="md:hidden flex items-center gap-3 px-4 py-3 border-b border-mist sticky top-0 bg-white z-30">
                     <button
                         onClick={() => setMobileNavOpen(true)}
-                        className="text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange rounded"
+                        className="text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal rounded"
                         aria-label="Open menu"
                     >
                         <Menu size={20} strokeWidth={1.75} />
@@ -47,9 +47,11 @@ export default function DocsShell({ slug, onNavigate }) {
                     <span className="text-[14px] font-semibold text-charcoal">Purrform</span>
                 </header>
 
-                <div className="flex-1 px-4 sm:px-8 md:px-10 py-6 sm:py-10">
-                    <JumpToDropdown category={category} activeSlug={entry.slug} onNavigate={handleNavigate} />
-                    <ComponentDetail category={category} entry={entry} detail={readyDetails[entry.slug]} />
+                <div className="flex-1 px-6 sm:px-10 md:px-16 pt-10 sm:pt-14 pb-12 flex flex-col items-center">
+                    <div className="w-full max-w-[760px]">
+                        <JumpToDropdown category={category} activeSlug={entry.slug} onNavigate={handleNavigate} />
+                        <ComponentDetail category={category} entry={entry} detail={readyDetails[entry.slug]} />
+                    </div>
                 </div>
             </main>
 
