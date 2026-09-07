@@ -131,8 +131,9 @@
      device-mockup chrome, etc). Force just the outermost wrapper to a plain
      white canvas so the docs shell reads as one consistent surface — inner
      decorative elements (glows, gradients that are the actual demo) are
-     nested deeper and stay untouched. */
-  .prompt-embed > div:first-child {
+     nested deeper and stay untouched. Animated Backgrounds are exempt
+     (.preserve-bg) since their own background IS the component being shown. */
+  .prompt-embed:not(.preserve-bg) > div:first-child {
     background: #fff !important;
     background-image: none !important;
     box-shadow: none !important;

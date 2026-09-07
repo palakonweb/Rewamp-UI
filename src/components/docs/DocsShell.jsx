@@ -10,7 +10,7 @@ export default function DocsShell({ slug, onNavigate }) {
     const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
 
     const found = slug ? findComponentBySlug(slug) : null;
-    const fallback = findComponentBySlug('balloon-contact-button') || { category: categories[1], entry: categories[1].components[0] };
+    const fallback = findComponentBySlug('slide-to-confirm-button') || { category: categories[1], entry: categories[1].components[0] };
     const { category, entry } = found || fallback;
 
     React.useEffect(() => {

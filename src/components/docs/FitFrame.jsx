@@ -3,7 +3,7 @@ import React from 'react';
 // Measures a showcase's natural content size and scales it down (never up)
 // to fit its container, so every preview stays responsive regardless of the
 // fixed pixel widths individual showcases use internally.
-export default function FitFrame({ children }) {
+export default function FitFrame({ children, preserveBg = false }) {
     const outerRef = React.useRef(null);
     const innerRef = React.useRef(null);
     const [scale, setScale] = React.useState(1);
@@ -44,7 +44,7 @@ export default function FitFrame({ children }) {
                     transformOrigin: 'top center',
                     width: scale < 1 ? `${100 / scale}%` : '100%',
                 }}
-                className="flex justify-center prompt-embed"
+                className={`flex justify-center prompt-embed${preserveBg ? ' preserve-bg' : ''}`}
             >
                 {children}
             </div>

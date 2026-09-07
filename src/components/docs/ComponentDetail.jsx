@@ -33,7 +33,13 @@ export default function ComponentDetail({ category, entry, detail }) {
 
             <p className="text-[13px] font-medium text-stone">{category.name}</p>
 
-            <PreviewCard title={entry.title} Component={entry.Component} code={detail?.code} previewRef={previewRef} />
+            <PreviewCard
+                title={entry.title}
+                Component={entry.Component}
+                code={detail?.code}
+                previewRef={previewRef}
+                preserveBg={category.id === 'bgs'}
+            />
 
             <div className="rounded-lg bg-white border border-mist p-4 flex flex-col gap-2">
                 <p className="text-[11px] font-semibold text-stone uppercase tracking-widest select-none">Prompt</p>

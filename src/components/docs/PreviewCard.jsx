@@ -6,7 +6,7 @@ import { highlightJs } from './highlightCode';
 // Unified preview/code card: header has an icon+title on the left, a reset
 // (remount) button and Code/Preview tabs on the right. The code view gets a
 // small inline copy icon and a lightweight regex-based syntax highlight.
-export default function PreviewCard({ title, Component, code, previewRef }) {
+export default function PreviewCard({ title, Component, code, previewRef, preserveBg = false }) {
     const [tab, setTab] = React.useState('preview');
     const [resetKey, setResetKey] = React.useState(0);
     const [copied, setCopied] = React.useState(false);
@@ -63,7 +63,7 @@ export default function PreviewCard({ title, Component, code, previewRef }) {
 
                 {tab === 'preview' ? (
                     <div ref={previewRef} className="w-full min-h-[220px] p-4 sm:p-6 flex items-center justify-center overflow-auto">
-                        <FitFrame key={resetKey}>
+                        <FitFrame key={resetKey} preserveBg={preserveBg}>
                             <Component />
                         </FitFrame>
                     </div>
