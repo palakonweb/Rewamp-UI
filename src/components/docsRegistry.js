@@ -3,6 +3,7 @@ import {
     MousePointerClick,
     ToggleLeft,
     MousePointer2,
+    PanelTop,
 } from 'lucide-react';
 
 import ShootingStarsShowcase from './ui/ShootingStarsShowcase';
@@ -32,9 +33,11 @@ import GlossButtonShowcase from './ui/GlossButtonShowcase';
 import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
 
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
+import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
+import { appleNavbarCode, appleNavbarPrompt } from './ui/appleNavbarSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -116,6 +119,16 @@ export const categories = [
             SplashCursorShowcase,
         ),
     },
+    {
+        id: 'navbars',
+        name: 'Navbars',
+        icon: PanelTop,
+        size: 'lg',
+        description: 'Floating, sticky, and responsive navigation bars with spring physics.',
+        components: entries(
+            AppleNavbarShowcase,
+        ),
+    },
 ];
 
 // Slugs that have a full reference-quality migration: real source code block,
@@ -125,6 +138,12 @@ export const readyDetails = {
     'slide-to-confirm-button': {
         description: 'A slide-to-confirm button — drag the handle across the track to complete the order.',
         code: slideToConfirmSource,
+    },
+    'apple-navbar': {
+        description: 'Apple-style macOS floating glassmorphism capsule navbar with magnetic Framer Motion hover states, responsive mobile modal, and download button.',
+        prompt: appleNavbarPrompt,
+        code: appleNavbarCode,
+        techStack: 'TypeScript · Framer Motion · Tailwind CSS',
     },
 };
 
