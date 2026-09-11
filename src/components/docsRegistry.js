@@ -35,12 +35,15 @@ import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
 
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
 import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
+import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
 import { appleNavbarCode, appleNavbarPrompt } from './ui/appleNavbarSource';
 import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
 import { pixelSnowPrompt } from './ui/pixelSnowSource';
+import pillExpandNavbarSource from './ui/PillExpandNavbarShowcase.jsx?raw';
+import { pillExpandNavbarPrompt } from './ui/pillExpandNavbarSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -129,7 +132,7 @@ export const categories = [
         size: 'lg',
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
         components: entries(
-            AppleNavbarShowcase,
+            AppleNavbarShowcase, PillExpandNavbarShowcase,
         ),
     },
 ];
@@ -153,6 +156,12 @@ export const readyDetails = {
         prompt: pixelSnowPrompt,
         code: pixelSnowSource,
         techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'pill-expand-navbar': {
+        description: 'A compact black pill bottom navbar where the active or hovered tab smoothly expands to reveal its label, while the rest stay collapsed to icon-only.',
+        prompt: pillExpandNavbarPrompt,
+        code: pillExpandNavbarSource,
+        techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
 
