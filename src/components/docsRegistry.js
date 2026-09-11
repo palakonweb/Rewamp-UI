@@ -23,6 +23,7 @@ import AsciiMatrixHoverShowcase from './ui/AsciiMatrixHoverShowcase';
 import ElasticLineGridShowcase from './ui/ElasticLineGridShowcase';
 import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
 import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
+import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
@@ -45,6 +46,8 @@ import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
 import { appleNavbarCode, appleNavbarPrompt } from './ui/appleNavbarSource';
 import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
 import { pixelSnowPrompt } from './ui/pixelSnowSource';
+import waterCausticsSource from './ui/backgrounds/WaterCaustics.jsx?raw';
+import { waterCausticsPrompt } from './ui/waterCausticsSource';
 import pillExpandNavbarSource from './ui/PillExpandNavbarShowcase.jsx?raw';
 import { pillExpandNavbarPrompt } from './ui/pillExpandNavbarSource';
 import pixelDotNavbarSource from './ui/PixelDotNavbarShowcase.jsx?raw';
@@ -98,7 +101,7 @@ export const categories = [
             ShootingStarsShowcase, SoftAuroraShowcase, PlexusEngineShowcase,
             ParticleWaveShowcase, HyperspeedWarpShowcase, SineRibbonsShowcase,
             AmbientGlowOrbsShowcase, RefractedBeamsShowcase, CosmicDustShowcase,
-            DigitalRainShowcase, PixelSnowBackgroundShowcase,
+            DigitalRainShowcase, PixelSnowBackgroundShowcase, WaterCausticsBackgroundShowcase,
         ),
     },
     {
@@ -163,6 +166,12 @@ export const readyDetails = {
         description: 'A ray-marched, pixelated snowfall background rendered with a custom three.js shader — chunky retro flakes, wind drift, and distance fade.',
         prompt: pixelSnowPrompt,
         code: pixelSnowSource,
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'water-caustics-background': {
+        description: 'An animated water-caustics background rendered with a custom three.js shader — the crisscrossing light-web pattern and twinkling glints you see refracted on a swimming-pool floor, drifting over a deep-to-shallow color gradient.',
+        prompt: waterCausticsPrompt,
+        code: waterCausticsSource,
         techStack: 'React · three.js (WebGL) · GLSL',
     },
     'pill-expand-navbar': {
