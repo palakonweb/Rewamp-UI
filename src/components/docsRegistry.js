@@ -36,6 +36,7 @@ import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
 import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
+import PixelDotNavbarShowcase from './ui/PixelDotNavbarShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -44,6 +45,8 @@ import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
 import { pixelSnowPrompt } from './ui/pixelSnowSource';
 import pillExpandNavbarSource from './ui/PillExpandNavbarShowcase.jsx?raw';
 import { pillExpandNavbarPrompt } from './ui/pillExpandNavbarSource';
+import pixelDotNavbarSource from './ui/PixelDotNavbarShowcase.jsx?raw';
+import { pixelDotNavbarPrompt } from './ui/pixelDotNavbarSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -132,7 +135,7 @@ export const categories = [
         size: 'lg',
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
         components: entries(
-            AppleNavbarShowcase, PillExpandNavbarShowcase,
+            AppleNavbarShowcase, PillExpandNavbarShowcase, PixelDotNavbarShowcase,
         ),
     },
 ];
@@ -161,6 +164,12 @@ export const readyDetails = {
         description: 'A compact black pill bottom navbar where the active or hovered tab smoothly expands to reveal its label, while the rest stay collapsed to icon-only.',
         prompt: pillExpandNavbarPrompt,
         code: pillExpandNavbarSource,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'pixel-dot-navbar': {
+        description: 'A minimalist navbar with tiny dashed-outline pixel icons made of individual dots that scatter on idle and snap into an accent-colored square on hover/active.',
+        prompt: pixelDotNavbarPrompt,
+        code: pixelDotNavbarSource,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
