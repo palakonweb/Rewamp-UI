@@ -1,28 +1,30 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   Color,
+  HalfFloatType,
+  LinearFilter,
   Mesh,
   OrthographicCamera,
   PlaneGeometry,
+  RGBAFormat,
   Scene,
   ShaderMaterial,
   Vector2,
   Vector3,
-  WebGLRenderer
+  WebGLRenderer,
+  WebGLRenderTarget
 } from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 import './WaterCaustics.css';
 
-const vertexShader = `
+const fullscreenVertexShader = `
 void main() {
   gl_Position = vec4(position, 1.0);
 }
 `;
 
-const fragmentShader = `
+// ---------- PASS 1: water / caustics (renders to an HDR half-float target) ----------
+const waterFragmentShader = `
 precision highp float;
 
 uniform float uTime;
@@ -33,15 +35,11 @@ uniform vec3 uLineColor;
 uniform vec3 uEdgeColor;
 uniform float uSpeed;
 uniform float uScale;
-uniform float uIntensity;
+uniform float uRefract;
+uniform float uRipple;
 
 float hash1(vec2 p) {
   return fract(sin(dot(p, vec2(41.3, 289.1))) * 43758.5453123);
-}
-
-vec2 hash2(vec2 p) {
-  p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
-  return fract(sin(p) * 43758.5453123);
 }
 
 float valueNoise(vec2 p) {
@@ -66,74 +64,27 @@ float fbm(vec2 p) {
   return sum;
 }
 
-// Organic caustic cell field via Voronoi (F2 - F1 gives thin bright
-// borders tracing irregular polygonal cells; the nearest-seed offset lets
-// each cell get its own soft directional "lit dome" shading — brighter
-// toward a fixed light direction, darker on the far side — instead of a
-// flat fill, so the cells read as smooth, sunlit bulges rather than a
-// flat crack pattern). Seed points drift over time so cells slowly flow.
-void voronoiCell(vec2 uv, float t, vec2 lightDir, out float edge, out float highlight) {
-  vec2 p = floor(uv);
-  vec2 f = fract(uv);
+// Classic layered-refraction caustic net. The large -250.0 offset is
+// load-bearing: it sets the scale of p relative to the intensity term
+// below, which is what produces genuine branching light filaments
+// instead of noise or a saturated wash. Do not simplify it to a small
+// centered range -- it changes the ratio and breaks the pattern.
+float caustic(vec2 uv, float t, float tileMult, float intensity) {
+  const float TAU = 6.28318530718;
+  vec2 p = mod(uv * tileMult * TAU, TAU) - 250.0;
+  vec2 i = p;
+  float c = 1.0;
 
-  float minDist1 = 8.0;
-  float minDist2 = 8.0;
-  vec2 nearestOffset = vec2(0.0);
-
-  for (int y = -1; y <= 1; y++) {
-    for (int x = -1; x <= 1; x++) {
-      vec2 neighbor = vec2(float(x), float(y));
-      vec2 cellId = p + neighbor;
-      vec2 point = hash2(cellId);
-      point += 0.55 * sin(t * 0.3 + 6.2831 * point + cellId.yx * 0.6);
-      vec2 diff = neighbor + point - f;
-      float dist = length(diff);
-
-      if (dist < minDist1) {
-        minDist2 = minDist1;
-        minDist1 = dist;
-        nearestOffset = diff;
-      } else if (dist < minDist2) {
-        minDist2 = dist;
-      }
-    }
+  for (int n = 0; n < 5; n++) {
+    float tt = t * (1.0 - 3.5 / float(n + 1));
+    i = p + vec2(cos(tt - i.x) + sin(tt + i.y), sin(tt - i.y) + cos(tt + i.x));
+    float sx = sin(i.x + tt) / intensity;
+    float cy = cos(i.y + tt) / intensity;
+    c += 1.0 / length(vec2(p.x / sx, p.y / cy));
   }
-
-  edge = minDist2 - minDist1;
-
-  // Shift the query point toward the light direction before measuring
-  // distance to the seed, so the brightest spot inside the cell sits off
-  // to one side rather than dead-center — a cheap fake of a lit, rounded
-  // surface rather than a flat disc.
-  float litDist = length(nearestOffset + lightDir * 0.4);
-  highlight = 1.0 - smoothstep(0.0, 0.85, litDist);
-}
-
-// Sparse, crisp water-bubble highlights: a small hard-edged disc with a
-// bright rim, not a soft blurred blob, so they read as tiny points of
-// light rather than a smear. Each one flickers in and out on its own
-// slow noise-driven timer, distinct from the caustic net.
-float sunGlints(vec2 uv, float t) {
-  vec2 grid = uv * 6.0;
-  vec2 cellId = floor(grid);
-  vec2 local = fract(grid) - 0.5;
-
-  vec2 jitter = hash2(cellId) - 0.5;
-  local -= jitter * 0.75;
-
-  float flicker = valueNoise(cellId * 1.7 + t * 0.08);
-  float glintActive = smoothstep(0.6, 0.92, flicker);
-
-  float radius = 0.05 + hash1(cellId + 3.1) * 0.03;
-  float d = length(local);
-
-  // Hard-edged core plus a thin bright rim just outside it — crisp, not
-  // feathered — so it reads as a distinct droplet of light.
-  float core = 1.0 - step(radius, d);
-  float rim = (1.0 - step(radius * 1.6, d)) - (1.0 - step(radius * 1.15, d));
-  float bubble = clamp(core + rim * 0.7, 0.0, 1.0);
-
-  return bubble * glintActive;
+  c /= 5.0;
+  c = 1.17 - pow(c, 1.4);
+  return pow(abs(c), 8.0);
 }
 
 void main() {
@@ -143,95 +94,150 @@ void main() {
 
   float t = uTime * uSpeed;
 
-  // Two-pass flow-noise domain warp (classic Perlin "domain warping"):
-  // warp the coordinates with one FBM field, then warp again using that
-  // result to offset the sampling point of a second FBM field. This is
-  // what gives continuous, swirling, fluid-like motion — like the
-  // liquid/silk references — instead of independently wobbling points.
-  vec2 warp1 = vec2(
-    fbm(aspectUv * 0.8 + t * 0.03),
-    fbm(aspectUv * 0.8 + 5.3 - t * 0.025)
-  );
-  vec2 warp2 = vec2(
-    fbm(aspectUv * 0.8 + warp1 * 1.4 + t * 0.02 + 1.7),
-    fbm(aspectUv * 0.8 + warp1 * 1.4 - t * 0.017 + 9.2)
-  );
-  vec2 flowWarp = warp2 - 0.5;
-  vec2 flowUv = aspectUv + flowWarp * 0.5;
+  // Three overlapping layers at different scale/speed/intensity: fine
+  // sharp net, a medium counter-flowing net, and a large slow layer
+  // that creates bigger sunlit patches -- real pool caustics are never
+  // one uniform frequency, they're several wave trains overlapping.
+  float causticA = caustic(aspectUv, t * 0.6, uScale, uRefract);
+  float causticB = caustic(aspectUv, t * -0.42, uScale * 1.7, uRefract * 1.6);
+  float causticC = caustic(aspectUv, t * 0.23, uScale * 0.45, uRefract * 0.5);
+  float c = causticA * 0.62 + causticB * 0.42 + causticC * 0.3;
 
-  vec2 uvA = flowUv * uScale;
-  vec2 uvB = mat2(0.7, -0.7, 0.7, 0.7) * flowUv * uScale * 1.6 + 5.2;
-
-  vec2 lightDir = normalize(vec2(-0.4, 0.6));
-
-  float edgeA, highlightA;
-  voronoiCell(uvA, t * 0.6, lightDir, edgeA, highlightA);
-  float causticA = pow(1.0 - smoothstep(0.0, 0.08, edgeA), 2.8);
-
-  float edgeB, highlightB;
-  voronoiCell(uvB, t * -0.4, lightDir, edgeB, highlightB);
-  float causticB = pow(1.0 - smoothstep(0.0, 0.05, edgeB), 3.2);
-
-  float caustic = clamp((causticA * 0.6 + causticB * 0.4) * uIntensity, 0.0, 1.0);
-
-  // The water body's own shading is continuous, driven by the same flow
-  // field as everything else — never locked to individual cell IDs, or
-  // it reads as a mosaic of separately-colored tiles instead of one
-  // body of water. A plain light-to-white gradient toward where the
-  // light lands, plus a little large-scale flow-noise breathing, is all
-  // the base needs; the bright net alone should carry the cell shapes.
+  vec2 lightDir = normalize(vec2(-0.35, 0.55));
   float gradientT = clamp(dot(uv - 0.5, lightDir) + 0.5, 0.0, 1.0);
-  vec3 gradientBase = mix(uDeepColor, uMidColor, gradientT);
-  gradientBase = mix(gradientBase, vec3(1.0), pow(gradientT, 2.2) * 0.5);
+  vec3 base = mix(uDeepColor, uMidColor, gradientT);
 
-  float breathe = fbm(aspectUv * 0.5 + flowWarp * 0.3 + t * 0.04);
-  vec3 base = mix(gradientBase, gradientBase * 1.08, breathe);
+  float breathe = fbm(aspectUv * 0.6 + t * 0.06);
+  base *= mix(0.94, 1.04, breathe);
 
-  // Large, slow-rolling depth pockets: a big soft noise field darkens or
-  // lightens broad patches of the water independent of the cell net, the
-  // way real light shafts pool unevenly over an uneven lake bed instead
-  // of lighting everything the same amount.
-  float depthField = fbm(aspectUv * 0.35 - flowWarp * 0.2 + t * 0.02);
-  base *= mix(0.82, 1.06, depthField);
+  float microRipple = fbm(aspectUv * 40.0 + t * 1.4) - 0.5;
+  base += microRipple * uRipple;
 
-  // A subtle rolling wave: two long, slow sine ripples add a gentle sheen
-  // that sweeps across the whole surface, on top of the caustic net.
-  float wave = sin(aspectUv.x * 2.2 + aspectUv.y * 1.3 + t * 0.9) * 0.02
-             + sin(aspectUv.x * 3.6 - aspectUv.y * 2.0 - t * 0.6) * 0.015;
-  base += wave;
+  vec3 causticColor = mix(uLineColor, uEdgeColor, smoothstep(0.15, 0.55, c));
+  causticColor = mix(causticColor, vec3(1.0), smoothstep(0.55, 1.1, c));
 
-  vec3 causticColor = mix(uLineColor, uEdgeColor, smoothstep(0.2, 0.9, caustic));
-  vec3 softWhite = mix(uEdgeColor, vec3(1.0), 0.7);
-  causticColor = mix(causticColor, softWhite, smoothstep(0.9, 1.0, caustic));
+  vec3 color = mix(base, causticColor, clamp(c * 1.1, 0.0, 1.0));
 
-  vec3 color = mix(base, causticColor, caustic * 0.85);
+  // Extra HDR punch on the very brightest peaks, left unclamped here
+  // on purpose -- this pass writes to a half-float target so values
+  // over 1.0 survive into the bloom extraction pass instead of being
+  // clipped immediately.
+  color += vec3(1.1, 1.15, 1.2) * pow(clamp(c, 0.0, 3.0), 3.0) * 0.6;
 
-  float glint = sunGlints(aspectUv, t);
-  color += softWhite * glint * 0.55;
+  float vignette = smoothstep(1.25, 0.35, length(uv - 0.5) * 1.2);
+  color *= mix(0.9, 1.0, vignette);
 
-  float vignette = smoothstep(1.2, 0.3, length(uv - 0.5) * 1.25);
-  color *= mix(0.85, 1.0, vignette);
+  gl_FragColor = vec4(color, 1.0);
+}
+`;
 
-  color = clamp(color, 0.0, 1.0);
+// ---------- PASS 2: bright extraction ----------
+const brightFragmentShader = `
+precision highp float;
+uniform sampler2D uTex;
+uniform vec2 uResolution;
+uniform float uThreshold;
+void main() {
+  vec2 uv = gl_FragCoord.xy / uResolution.xy;
+  vec3 color = texture2D(uTex, uv).rgb;
+  vec3 bright = max(color - vec3(uThreshold), 0.0);
+  gl_FragColor = vec4(bright, 1.0);
+}
+`;
+
+// ---------- PASS 3/4: separable gaussian blur ----------
+const blurFragmentShader = `
+precision highp float;
+uniform sampler2D uTex;
+uniform vec2 uResolution;
+uniform vec2 uDirection;
+void main() {
+  vec2 uv = gl_FragCoord.xy / uResolution.xy;
+  vec2 texel = uDirection / uResolution;
+  vec3 sum = vec3(0.0);
+  float weights[5];
+  weights[0] = 0.227027;
+  weights[1] = 0.1945946;
+  weights[2] = 0.1216216;
+  weights[3] = 0.054054;
+  weights[4] = 0.016216;
+  sum += texture2D(uTex, uv).rgb * weights[0];
+  for (int i = 1; i < 5; i++) {
+    float fi = float(i);
+    sum += texture2D(uTex, uv + texel * fi).rgb * weights[i];
+    sum += texture2D(uTex, uv - texel * fi).rgb * weights[i];
+  }
+  gl_FragColor = vec4(sum, 1.0);
+}
+`;
+
+// ---------- PASS 5: composite (base + bloom, chromatic fringe, filmic tonemap) ----------
+const compositeFragmentShader = `
+precision highp float;
+uniform sampler2D uBase;
+uniform sampler2D uBloom;
+uniform vec2 uResolution;
+uniform float uBloomStrength;
+uniform float uExposure;
+void main() {
+  vec2 uv = gl_FragCoord.xy / uResolution.xy;
+
+  // Tiny chromatic fringe on the bloom sample only, radiating from
+  // center -- a subtle lens-like fringing around the brightest
+  // highlights, the way real overexposed water sparkle photographs.
+  vec2 dir = uv - 0.5;
+  float fringe = 0.0015;
+  float bloomR = texture2D(uBloom, uv + dir * fringe).r;
+  float bloomG = texture2D(uBloom, uv).g;
+  float bloomB = texture2D(uBloom, uv - dir * fringe).b;
+  vec3 bloom = vec3(bloomR, bloomG, bloomB);
+
+  vec3 base = texture2D(uBase, uv).rgb;
+  vec3 color = base + bloom * uBloomStrength;
+
+  // Filmic-ish exposure tonemap so highlights roll off softly instead
+  // of clipping to a hard flat white disc.
+  color = vec3(1.0) - exp(-color * uExposure);
 
   gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
 }
 `;
 
 function hexToVector3(hex) {
-  const threeColor = new Color(hex);
-  return new Vector3(threeColor.r, threeColor.g, threeColor.b);
+  const c = new Color(hex);
+  return new Vector3(c.r, c.g, c.b);
+}
+
+function makeFullscreenScene(material) {
+  const scene = new Scene();
+  const geometry = new PlaneGeometry(2, 2);
+  scene.add(new Mesh(geometry, material));
+  return { scene, geometry };
+}
+
+function makeRenderTarget(w, h) {
+  return new WebGLRenderTarget(Math.max(1, w), Math.max(1, h), {
+    minFilter: LinearFilter,
+    magFilter: LinearFilter,
+    format: RGBAFormat,
+    type: HalfFloatType,
+    depthBuffer: false,
+    stencilBuffer: false
+  });
 }
 
 export default function WaterCaustics({
-  deepColor = '#2E7EA0',
-  midColor = '#6BB4D4',
-  lineColor = '#B3E2EF',
-  edgeColor = '#EAFAFD',
-  speed = 0.16,
-  scale = 7.5,
-  intensity = 1.0,
-  bloom = false,
+  deepColor = '#0A6FA8',
+  midColor = '#189CEA',
+  lineColor = '#49C6FE',
+  edgeColor = '#FFFFFF',
+  speed = 0.35,
+  scale = 1.0,
+  refract = 0.005,
+  ripple = 0.025,
+  bloomStrength = 0.8,
+  threshold = 0.7,
+  exposure = 1.15,
   className = '',
   style = {}
 }) {
@@ -239,14 +245,59 @@ export default function WaterCaustics({
   const animationRef = useRef(0);
   const isVisibleRef = useRef(true);
   const rendererRef = useRef(null);
-  const composerRef = useRef(null);
-  const materialRef = useRef(null);
   const resizeTimeoutRef = useRef(null);
+  const pixelRatioRef = useRef(1);
+
+  const waterMaterialRef = useRef(null);
+  const brightMaterialRef = useRef(null);
+  const blurHMaterialRef = useRef(null);
+  const blurVMaterialRef = useRef(null);
+  const compositeMaterialRef = useRef(null);
+
+  const scenesRef = useRef(null); // { water, bright, blurH, blurV, composite }
+  const cameraRef = useRef(null);
+  const targetsRef = useRef(null); // { water, bright, blurH, blurV }
 
   const deepColorVector = useMemo(() => hexToVector3(deepColor), [deepColor]);
   const midColorVector = useMemo(() => hexToVector3(midColor), [midColor]);
   const lineColorVector = useMemo(() => hexToVector3(lineColor), [lineColor]);
   const edgeColorVector = useMemo(() => hexToVector3(edgeColor), [edgeColor]);
+
+  const buildTargets = useCallback((width, height) => {
+    const pr = pixelRatioRef.current;
+    const fw = Math.max(1, Math.floor(width * pr));
+    const fh = Math.max(1, Math.floor(height * pr));
+    const bw = Math.max(1, Math.floor(fw / 2));
+    const bh = Math.max(1, Math.floor(fh / 2));
+
+    const prevTargets = targetsRef.current;
+    if (prevTargets) {
+      prevTargets.water.dispose();
+      prevTargets.bright.dispose();
+      prevTargets.blurH.dispose();
+      prevTargets.blurV.dispose();
+    }
+
+    const targets = {
+      water: makeRenderTarget(fw, fh),
+      bright: makeRenderTarget(bw, bh),
+      blurH: makeRenderTarget(bw, bh),
+      blurV: makeRenderTarget(bw, bh)
+    };
+    targetsRef.current = targets;
+
+    const water = waterMaterialRef.current;
+    const bright = brightMaterialRef.current;
+    const blurH = blurHMaterialRef.current;
+    const blurV = blurVMaterialRef.current;
+    const composite = compositeMaterialRef.current;
+
+    if (water) water.uniforms.uResolution.value.set(fw, fh);
+    if (bright) bright.uniforms.uResolution.value.set(bw, bh);
+    if (blurH) blurH.uniforms.uResolution.value.set(bw, bh);
+    if (blurV) blurV.uniforms.uResolution.value.set(bw, bh);
+    if (composite) composite.uniforms.uResolution.value.set(fw, fh);
+  }, []);
 
   const handleResize = useCallback(() => {
     if (resizeTimeoutRef.current) {
@@ -255,17 +306,14 @@ export default function WaterCaustics({
     resizeTimeoutRef.current = window.setTimeout(() => {
       const container = containerRef.current;
       const renderer = rendererRef.current;
-      const composer = composerRef.current;
-      const material = materialRef.current;
-      if (!container || !renderer || !material) return;
+      if (!container || !renderer) return;
 
       const w = container.offsetWidth;
       const h = container.offsetHeight;
       renderer.setSize(w, h);
-      composer?.setSize(w, h);
-      material.uniforms.uResolution.value.set(w, h);
+      buildTargets(w, h);
     }, 100);
-  }, []);
+  }, [buildTargets]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -286,8 +334,9 @@ export default function WaterCaustics({
     const container = containerRef.current;
     if (!container) return;
 
-    const scene = new Scene();
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    cameraRef.current = camera;
+
     const renderer = new WebGLRenderer({
       antialias: false,
       alpha: false,
@@ -296,60 +345,117 @@ export default function WaterCaustics({
       depth: false
     });
 
-    const dpr = Math.min(window.devicePixelRatio, 2);
-    renderer.setPixelRatio(dpr);
+    const pr = Math.min(window.devicePixelRatio, 2);
+    pixelRatioRef.current = pr;
+    renderer.setPixelRatio(pr);
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    const material = new ShaderMaterial({
-      vertexShader,
-      fragmentShader,
+    const waterMaterial = new ShaderMaterial({
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: waterFragmentShader,
       uniforms: {
         uTime: { value: 0 },
-        uResolution: { value: new Vector2(container.offsetWidth, container.offsetHeight) },
+        uResolution: { value: new Vector2(1, 1) },
         uDeepColor: { value: deepColorVector.clone() },
         uMidColor: { value: midColorVector.clone() },
         uLineColor: { value: lineColorVector.clone() },
         uEdgeColor: { value: edgeColorVector.clone() },
         uSpeed: { value: speed },
         uScale: { value: scale },
-        uIntensity: { value: intensity }
+        uRefract: { value: refract },
+        uRipple: { value: ripple }
       }
     });
-    materialRef.current = material;
+    waterMaterialRef.current = waterMaterial;
 
-    const geometry = new PlaneGeometry(2, 2);
-    scene.add(new Mesh(geometry, material));
+    const brightMaterial = new ShaderMaterial({
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: brightFragmentShader,
+      uniforms: {
+        uTex: { value: null },
+        uResolution: { value: new Vector2(1, 1) },
+        uThreshold: { value: threshold }
+      }
+    });
+    brightMaterialRef.current = brightMaterial;
 
-    let composer = null;
-    if (bloom) {
-      composer = new EffectComposer(renderer);
-      composer.addPass(new RenderPass(scene, camera));
-      const bloomPass = new UnrealBloomPass(
-        new Vector2(container.offsetWidth, container.offsetHeight),
-        0.6,
-        0.4,
-        0.85
-      );
-      composer.addPass(bloomPass);
-      composerRef.current = composer;
-    }
+    const blurHMaterial = new ShaderMaterial({
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: blurFragmentShader,
+      uniforms: {
+        uTex: { value: null },
+        uResolution: { value: new Vector2(1, 1) },
+        uDirection: { value: new Vector2(1, 0) }
+      }
+    });
+    blurHMaterialRef.current = blurHMaterial;
+
+    const blurVMaterial = new ShaderMaterial({
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: blurFragmentShader,
+      uniforms: {
+        uTex: { value: null },
+        uResolution: { value: new Vector2(1, 1) },
+        uDirection: { value: new Vector2(0, 1) }
+      }
+    });
+    blurVMaterialRef.current = blurVMaterial;
+
+    const compositeMaterial = new ShaderMaterial({
+      vertexShader: fullscreenVertexShader,
+      fragmentShader: compositeFragmentShader,
+      uniforms: {
+        uBase: { value: null },
+        uBloom: { value: null },
+        uResolution: { value: new Vector2(1, 1) },
+        uBloomStrength: { value: bloomStrength },
+        uExposure: { value: exposure }
+      }
+    });
+    compositeMaterialRef.current = compositeMaterial;
+
+    const water = makeFullscreenScene(waterMaterial);
+    const bright = makeFullscreenScene(brightMaterial);
+    const blurH = makeFullscreenScene(blurHMaterial);
+    const blurV = makeFullscreenScene(blurVMaterial);
+    const composite = makeFullscreenScene(compositeMaterial);
+    scenesRef.current = { water, bright, blurH, blurV, composite };
+
+    buildTargets(container.offsetWidth, container.offsetHeight);
 
     window.addEventListener('resize', handleResize);
 
     const startTime = performance.now();
     const animate = () => {
       animationRef.current = requestAnimationFrame(animate);
+      if (!isVisibleRef.current) return;
 
-      if (isVisibleRef.current) {
-        material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
-        if (composer) {
-          composer.render();
-        } else {
-          renderer.render(scene, camera);
-        }
-      }
+      const targets = targetsRef.current;
+      if (!targets) return;
+
+      waterMaterial.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
+
+      renderer.setRenderTarget(targets.water);
+      renderer.render(water.scene, camera);
+
+      brightMaterial.uniforms.uTex.value = targets.water.texture;
+      renderer.setRenderTarget(targets.bright);
+      renderer.render(bright.scene, camera);
+
+      blurHMaterial.uniforms.uTex.value = targets.bright.texture;
+      renderer.setRenderTarget(targets.blurH);
+      renderer.render(blurH.scene, camera);
+
+      blurVMaterial.uniforms.uTex.value = targets.blurH.texture;
+      renderer.setRenderTarget(targets.blurV);
+      renderer.render(blurV.scene, camera);
+
+      compositeMaterial.uniforms.uBase.value = targets.water.texture;
+      compositeMaterial.uniforms.uBloom.value = targets.blurV.texture;
+      renderer.setRenderTarget(null);
+      renderer.render(composite.scene, camera);
     };
     animate();
 
@@ -359,32 +465,64 @@ export default function WaterCaustics({
       if (resizeTimeoutRef.current) {
         clearTimeout(resizeTimeoutRef.current);
       }
-      composer?.dispose();
-      composerRef.current = null;
+
+      const targets = targetsRef.current;
+      if (targets) {
+        targets.water.dispose();
+        targets.bright.dispose();
+        targets.blurH.dispose();
+        targets.blurV.dispose();
+      }
+      targetsRef.current = null;
+
+      [water, bright, blurH, blurV, composite].forEach(({ geometry }) => geometry.dispose());
+      [waterMaterial, brightMaterial, blurHMaterial, blurVMaterial, compositeMaterial].forEach((m) => m.dispose());
+
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
       renderer.forceContextLoss();
-      geometry.dispose();
-      material.dispose();
+
       rendererRef.current = null;
-      materialRef.current = null;
+      waterMaterialRef.current = null;
+      brightMaterialRef.current = null;
+      blurHMaterialRef.current = null;
+      blurVMaterialRef.current = null;
+      compositeMaterialRef.current = null;
+      scenesRef.current = null;
+      cameraRef.current = null;
     };
-  }, [handleResize, bloom]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleResize, buildTargets]);
+
+  // Live-update uniforms when props change, without tearing down the
+  // renderer/render-targets/animation loop.
+  useEffect(() => {
+    const water = waterMaterialRef.current;
+    if (!water) return;
+
+    water.uniforms.uSpeed.value = speed;
+    water.uniforms.uScale.value = scale;
+    water.uniforms.uRefract.value = refract;
+    water.uniforms.uRipple.value = ripple;
+    water.uniforms.uDeepColor.value.copy(deepColorVector);
+    water.uniforms.uMidColor.value.copy(midColorVector);
+    water.uniforms.uLineColor.value.copy(lineColorVector);
+    water.uniforms.uEdgeColor.value.copy(edgeColorVector);
+  }, [speed, scale, refract, ripple, deepColorVector, midColorVector, lineColorVector, edgeColorVector]);
 
   useEffect(() => {
-    const material = materialRef.current;
-    if (!material) return;
+    const bright = brightMaterialRef.current;
+    if (bright) bright.uniforms.uThreshold.value = threshold;
+  }, [threshold]);
 
-    material.uniforms.uSpeed.value = speed;
-    material.uniforms.uScale.value = scale;
-    material.uniforms.uIntensity.value = intensity;
-    material.uniforms.uDeepColor.value.copy(deepColorVector);
-    material.uniforms.uMidColor.value.copy(midColorVector);
-    material.uniforms.uLineColor.value.copy(lineColorVector);
-    material.uniforms.uEdgeColor.value.copy(edgeColorVector);
-  }, [speed, scale, intensity, deepColorVector, midColorVector, lineColorVector, edgeColorVector]);
+  useEffect(() => {
+    const composite = compositeMaterialRef.current;
+    if (!composite) return;
+    composite.uniforms.uBloomStrength.value = bloomStrength;
+    composite.uniforms.uExposure.value = exposure;
+  }, [bloomStrength, exposure]);
 
   return <div ref={containerRef} className={`water-caustics-container ${className}`} style={style} />;
 }

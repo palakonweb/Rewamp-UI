@@ -4,7 +4,7 @@
   position: relative;
   overflow: hidden;
   contain: layout style paint;
-  background: #2e7ea0;
+  background: #0a6fa8;
 }
 
 .water-caustics-container canvas {

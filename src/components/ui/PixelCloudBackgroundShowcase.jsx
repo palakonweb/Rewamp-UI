@@ -18,15 +18,15 @@ export default function PixelCloudBackgroundShowcase() {
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
             {/* PREVIEW SECTION — live PixelCloud (three.js / WebGL) */}
-            <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#4FADF5] shadow-2xl">
+            <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#3876ba] shadow-2xl">
                 <div className="absolute inset-0 z-0">
                     <PixelCloud
-                        skyColor="#4FADF5"
-                        cloudShadowColor="#95D2EF"
-                        cloudHighlightColor="#F5F5F5"
-                        speed={0.03}
+                        cloudColor="#fbf8f2"
+                        skyTopColor="#3876ba"
+                        skyBottomColor="#8cbfe8"
+                        speed={1}
+                        count={6}
                         pixelSize={6}
-                        grain={0.04}
                     />
                 </div>
             </div>

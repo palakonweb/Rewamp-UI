@@ -14,77 +14,162 @@ import {
 import './PixelCloud.css';
 
 const vertexShader = `
+varying vec2 vUv;
 void main() {
+  vUv = uv;
   gl_Position = vec4(position, 1.0);
 }
 `;
 
+// Ported from Aceternity UI's Cloud Shader (domain-warped billow noise,
+// asymmetric dome-top/flat-base envelope, self-shadowing via a second
+// density sample toward the sun), then pixelated: fragCoord is snapped to
+// a chunky grid before any sampling, and both the density field and its
+// self-shadow occlusion are quantized into flat steps instead of smooth
+// gradients — together that turns the soft photographic clouds into
+// flat-shaded, blocky pixel-art ones while keeping the original cloud
+// silhouettes and drift.
 const fragmentShader = `
 precision highp float;
 
-uniform float uTime;
+varying vec2 vUv;
+
 uniform vec2 uResolution;
-uniform vec3 uSkyColor;
-uniform vec3 uCloudShadowColor;
-uniform vec3 uCloudHighlightColor;
-uniform float uSpeed;
+uniform float uTime;
+uniform float uCount;
+uniform vec3 uCloudColor;
+uniform vec3 uSkyTopColor;
+uniform vec3 uSkyBottomColor;
 uniform float uPixelSize;
-uniform float uGrain;
+
+const mat2 R = mat2(0.80, 0.60, -0.60, 0.80);
 
 float hash(vec2 p) {
-  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+  return fract(sin(dot(p, vec2(41.31, 289.17))) * 26737.367);
 }
 
-float noise(vec2 p) {
+float vnoise(vec2 p) {
   vec2 i = floor(p);
   vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
   float a = hash(i);
   float b = hash(i + vec2(1.0, 0.0));
   float c = hash(i + vec2(0.0, 1.0));
   float d = hash(i + vec2(1.0, 1.0));
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
 float fbm(vec2 p) {
-  float v = 0.0;
+  float sum = 0.0;
   float amp = 0.5;
-  for (int i = 0; i < 5; i++) {
-    v += amp * noise(p);
-    p *= 2.0;
+  for (int i = 0; i < 4; i++) {
+    sum += amp * vnoise(p);
+    p = R * p * 2.03 + 19.19;
     amp *= 0.5;
   }
-  return v;
+  return sum;
+}
+
+// billow noise: sharp puffy ridges, like cauliflower cloud tops
+float billow(vec2 p) {
+  float sum = 0.0;
+  float amp = 0.5;
+  for (int i = 0; i < 5; i++) {
+    sum += amp * (1.0 - abs(2.0 * vnoise(p) - 1.0));
+    p = R * p * 2.11 + 13.37;
+    amp *= 0.5;
+  }
+  return sum;
+}
+
+// raw density for one cloud at point p
+float cloudDensity(vec2 p, vec2 c, vec2 r, float seed, float t) {
+  vec2 q = p - c;
+
+  // envelope: dome above the center, flat base below
+  float ry = q.y > 0.0 ? r.y : r.y * 0.42;
+  float env = 1.0 - length(vec2(q.x / r.x, q.y / ry));
+  if (env < -0.35) return 0.0;
+
+  vec2 dp = q * (2.4 / r.x) + seed;
+  dp += 0.6 * vec2(
+    fbm(dp * 1.4 + t * 0.04),
+    fbm(dp * 1.4 + 7.7 - t * 0.03)
+  );
+  float detail = billow(dp * 1.6);
+
+  return env + (detail - 0.62) * 0.62;
+}
+
+// shades one cloud and blends it over the current color — quantized into
+// flat density/occlusion steps so the shading reads as posterized bands.
+vec3 shadeCloud(vec3 color, vec3 sky, vec2 p, vec2 c, vec2 r, float seed, float t, float dist) {
+  float d = cloudDensity(p, c, r, seed, t);
+  d = floor(d / 0.1) * 0.1;
+  if (d < 0.02) return color;
+
+  float dUp = cloudDensity(p + vec2(0.0, r.y * 0.55), c, r, seed, t);
+  float occl = clamp((dUp - d) * 1.1 + d * 0.55, 0.0, 1.0);
+  occl = floor(occl * 3.0) / 3.0;
+
+  vec3 lit = uCloudColor * 1.04;
+  vec3 shadow = mix(uCloudColor * 0.60, sky, 0.38);
+  vec3 cloudCol = mix(lit, shadow, occl * 0.85);
+
+  float alpha = step(0.02, d);
+  cloudCol = mix(cloudCol, sky, dist * 0.35);
+
+  return mix(color, cloudCol, alpha);
+}
+
+// one drifting cloud: horizontal wrap + gentle vertical bob
+vec3 cloudPass(vec3 color, vec3 sky, vec2 p, float aspect, float t,
+               float spd, float phase, float y, vec2 r, float seed, float dist) {
+  float cx = mix(-r.x - 0.25, aspect + r.x + 0.25, fract(t * spd + phase));
+  float cy = y + sin(t * 0.05 + phase * 6.2831) * 0.012;
+  return shadeCloud(color, sky, p, vec2(cx, cy), r, seed, t, dist);
 }
 
 void main() {
-  // Snap to a chunky pixel grid FIRST so every downstream noise sample
-  // stays blocky — this is what makes the clouds read as pixel art
-  // instead of a smooth soft-edged blob.
-  vec2 uv = gl_FragCoord.xy;
-  vec2 pixelUv = floor(uv / uPixelSize) * uPixelSize;
-  vec2 p = pixelUv / uResolution;
-  p.x *= uResolution.x / uResolution.y;
+  // Snap to a chunky pixel grid FIRST so every downstream sample stays
+  // blocky — this is what turns the original shader's smooth clouds into
+  // pixel art instead of soft photographic ones.
+  vec2 pixelCoord = floor(gl_FragCoord.xy / uPixelSize) * uPixelSize;
+  vec2 uv = pixelCoord / uResolution;
 
-  float t = uTime * uSpeed;
+  float aspect = uResolution.x / uResolution.y;
+  vec2 p = vec2(uv.x * aspect, uv.y);
+  float t = uTime;
 
-  // Two FBM layers drifting sideways at different speeds/scales give a
-  // cheap parallax: a dominant foreground mass plus smaller distant puffs.
-  float layer1 = fbm(p * 3.0 + vec2(t * 0.6, 0.0));
-  float layer2 = fbm(p * 5.0 - vec2(t * 1.1, 0.0) + 50.0);
-  float clouds = max(layer1 - 0.15, layer2 - 0.25);
+  vec3 sky = mix(uSkyBottomColor, uSkyTopColor, uv.y);
+  vec3 color = sky;
 
-  // Hard thresholds (not smoothstep) posterize the field into exactly
-  // three flat bands — sky, shadow underside, lit highlight — with no
-  // gradient between them.
-  vec3 color = uSkyColor;
-  if (clouds > 0.28) color = uCloudShadowColor;
-  if (clouds > 0.40) color = uCloudHighlightColor;
+  // faint haze band near the horizon
+  color = mix(color, uSkyBottomColor * 1.06, smoothstep(0.35, 0.0, uv.y) * 0.5);
 
-  float grain = hash(gl_FragCoord.xy + uTime) * uGrain - (uGrain * 0.5);
-  color += grain;
+  // far layer: small, high, slow
+  if (uCount > 5.5) {
+    color = cloudPass(color, sky, p, aspect, t, 0.006, 0.10, 0.84, vec2(0.20, 0.10), 43.7, 1.0);
+  }
+  if (uCount > 4.5) {
+    color = cloudPass(color, sky, p, aspect, t, 0.008, 0.62, 0.73, vec2(0.24, 0.12), 71.3, 0.85);
+  }
 
-  gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+  // middle layer
+  if (uCount > 3.5) {
+    color = cloudPass(color, sky, p, aspect, t, 0.011, 0.33, 0.60, vec2(0.34, 0.16), 17.3, 0.55);
+  }
+  if (uCount > 2.5) {
+    color = cloudPass(color, sky, p, aspect, t, 0.013, 0.80, 0.47, vec2(0.30, 0.15), 29.9, 0.45);
+  }
+
+  // near layer: big, low, fast
+  if (uCount > 1.5) {
+    color = cloudPass(color, sky, p, aspect, t, 0.016, 0.05, 0.35, vec2(0.46, 0.20), 91.1, 0.15);
+  }
+  color = cloudPass(color, sky, p, aspect, t, 0.020, 0.48, 0.20, vec2(0.56, 0.24), 57.2, 0.0);
+
+  gl_FragColor = vec4(color, 1.0);
 }
 `;
 
@@ -94,12 +179,12 @@ function hexToVector3(hex) {
 }
 
 export default function PixelCloud({
-  skyColor = '#4FADF5',
-  cloudShadowColor = '#95D2EF',
-  cloudHighlightColor = '#F5F5F5',
-  speed = 0.03,
+  cloudColor = '#fbf8f2',
+  skyTopColor = '#3876ba',
+  skyBottomColor = '#8cbfe8',
+  speed = 1,
+  count = 6,
   pixelSize = 6,
-  grain = 0.04,
   className = '',
   style = {}
 }) {
@@ -109,10 +194,12 @@ export default function PixelCloud({
   const rendererRef = useRef(null);
   const materialRef = useRef(null);
   const resizeTimeoutRef = useRef(null);
+  const speedRef = useRef(speed);
+  speedRef.current = speed;
 
-  const skyColorVector = useMemo(() => hexToVector3(skyColor), [skyColor]);
-  const cloudShadowColorVector = useMemo(() => hexToVector3(cloudShadowColor), [cloudShadowColor]);
-  const cloudHighlightColorVector = useMemo(() => hexToVector3(cloudHighlightColor), [cloudHighlightColor]);
+  const cloudColorVector = useMemo(() => hexToVector3(cloudColor), [cloudColor]);
+  const skyTopColorVector = useMemo(() => hexToVector3(skyTopColor), [skyTopColor]);
+  const skyBottomColorVector = useMemo(() => hexToVector3(skyBottomColor), [skyBottomColor]);
 
   const handleResize = useCallback(() => {
     if (resizeTimeoutRef.current) {
@@ -126,6 +213,7 @@ export default function PixelCloud({
 
       const w = container.offsetWidth;
       const h = container.offsetHeight;
+      if (w === 0 || h === 0) return;
       renderer.setSize(w, h);
       material.uniforms.uResolution.value.set(w, h);
     }, 100);
@@ -172,12 +260,11 @@ export default function PixelCloud({
       uniforms: {
         uTime: { value: 0 },
         uResolution: { value: new Vector2(container.offsetWidth, container.offsetHeight) },
-        uSkyColor: { value: skyColorVector.clone() },
-        uCloudShadowColor: { value: cloudShadowColorVector.clone() },
-        uCloudHighlightColor: { value: cloudHighlightColorVector.clone() },
-        uSpeed: { value: speed },
-        uPixelSize: { value: pixelSize },
-        uGrain: { value: grain }
+        uCount: { value: count },
+        uCloudColor: { value: cloudColorVector.clone() },
+        uSkyTopColor: { value: skyTopColorVector.clone() },
+        uSkyBottomColor: { value: skyBottomColorVector.clone() },
+        uPixelSize: { value: pixelSize }
       }
     });
     materialRef.current = material;
@@ -186,13 +273,15 @@ export default function PixelCloud({
     scene.add(new Mesh(geometry, material));
 
     window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
 
     const startTime = performance.now();
     const animate = () => {
       animationRef.current = requestAnimationFrame(animate);
 
       if (isVisibleRef.current) {
-        material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
+        material.uniforms.uTime.value = ((performance.now() - startTime) * 0.001) * speedRef.current;
         renderer.render(scene, camera);
       }
     };
@@ -201,6 +290,7 @@ export default function PixelCloud({
     return () => {
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       if (resizeTimeoutRef.current) {
         clearTimeout(resizeTimeoutRef.current);
       }
@@ -220,13 +310,12 @@ export default function PixelCloud({
     const material = materialRef.current;
     if (!material) return;
 
-    material.uniforms.uSpeed.value = speed;
+    material.uniforms.uCount.value = count;
     material.uniforms.uPixelSize.value = pixelSize;
-    material.uniforms.uGrain.value = grain;
-    material.uniforms.uSkyColor.value.copy(skyColorVector);
-    material.uniforms.uCloudShadowColor.value.copy(cloudShadowColorVector);
-    material.uniforms.uCloudHighlightColor.value.copy(cloudHighlightColorVector);
-  }, [speed, pixelSize, grain, skyColorVector, cloudShadowColorVector, cloudHighlightColorVector]);
+    material.uniforms.uCloudColor.value.copy(cloudColorVector);
+    material.uniforms.uSkyTopColor.value.copy(skyTopColorVector);
+    material.uniforms.uSkyBottomColor.value.copy(skyBottomColorVector);
+  }, [count, pixelSize, cloudColorVector, skyTopColorVector, skyBottomColorVector]);
 
   return <div ref={containerRef} className={`pixel-cloud-container ${className}`} style={style} />;
 }

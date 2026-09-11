@@ -21,13 +21,17 @@ export default function WaterCausticsBackgroundShowcase() {
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#2E7EA0] shadow-2xl">
                 <div className="absolute inset-0 z-0">
                     <WaterCaustics
-                        deepColor="#2E7EA0"
-                        midColor="#6BB4D4"
-                        lineColor="#B3E2EF"
-                        edgeColor="#EAFAFD"
-                        speed={0.16}
-                        scale={7.5}
-                        intensity={1.0}
+                        deepColor="#0A6FA8"
+                        midColor="#189CEA"
+                        lineColor="#49C6FE"
+                        edgeColor="#FFFFFF"
+                        speed={0.35}
+                        scale={1.0}
+                        refract={0.005}
+                        ripple={0.025}
+                        bloomStrength={0.8}
+                        threshold={0.7}
+                        exposure={1.15}
                     />
                 </div>
             </div>

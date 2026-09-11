@@ -24,6 +24,7 @@ import ElasticLineGridShowcase from './ui/ElasticLineGridShowcase';
 import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
 import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
 import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcase';
+import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
@@ -48,6 +49,8 @@ import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
 import { pixelSnowPrompt } from './ui/pixelSnowSource';
 import waterCausticsSource from './ui/backgrounds/WaterCaustics.jsx?raw';
 import { waterCausticsPrompt } from './ui/waterCausticsSource';
+import pixelCloudSource from './ui/backgrounds/PixelCloud.jsx?raw';
+import { pixelCloudPrompt } from './ui/pixelCloudSource';
 import pillExpandNavbarSource from './ui/PillExpandNavbarShowcase.jsx?raw';
 import { pillExpandNavbarPrompt } from './ui/pillExpandNavbarSource';
 import pixelDotNavbarSource from './ui/PixelDotNavbarShowcase.jsx?raw';
@@ -102,6 +105,7 @@ export const categories = [
             ParticleWaveShowcase, HyperspeedWarpShowcase, SineRibbonsShowcase,
             AmbientGlowOrbsShowcase, RefractedBeamsShowcase, CosmicDustShowcase,
             DigitalRainShowcase, PixelSnowBackgroundShowcase, WaterCausticsBackgroundShowcase,
+            PixelCloudBackgroundShowcase,
         ),
     },
     {
@@ -172,6 +176,12 @@ export const readyDetails = {
         description: 'An animated water-caustics background rendered with a custom three.js shader — the crisscrossing light-web pattern and twinkling glints you see refracted on a swimming-pool floor, drifting over a deep-to-shallow color gradient.',
         prompt: waterCausticsPrompt,
         code: waterCausticsSource,
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'pixel-cloud-background': {
+        description: 'A procedural retro pixel-art cloud background rendered with a custom three.js shader — posterized 3-tone clouds snapped to a chunky pixel grid, drifting slowly sideways over a flat sky-blue base.',
+        prompt: pixelCloudPrompt,
+        code: pixelCloudSource,
         techStack: 'React · three.js (WebGL) · GLSL',
     },
     'pill-expand-navbar': {
