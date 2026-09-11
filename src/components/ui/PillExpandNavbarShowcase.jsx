@@ -40,13 +40,13 @@ export default function PillExpandNavbarShowcase() {
                         return (
                             <motion.button
                                 key={item.id}
-                                layout
                                 onClick={() => setActive(item.id)}
                                 onMouseEnter={() => setHovered(item.id)}
-                                transition={{ type: 'spring', stiffness: 260, damping: 30, mass: 0.9 }}
+                                animate={{ width: isExpanded ? 100 : 32 }}
+                                transition={{ type: 'spring', stiffness: 140, damping: 24, mass: 1.1 }}
                                 whileTap={{ scale: 0.94 }}
                                 className={`h-8 flex items-center justify-center rounded-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${
-                                    isExpanded ? 'bg-white/15 px-3 gap-1.5' : 'w-8'
+                                    isExpanded ? 'bg-white/15 gap-1.5 px-3' : ''
                                 } ${isActive && !isExpanded ? 'bg-white/10' : ''}`}
                                 aria-label={item.label}
                                 aria-current={isActive ? 'page' : undefined}
@@ -56,7 +56,7 @@ export default function PillExpandNavbarShowcase() {
                                     {isExpanded && (
                                         <motion.span
                                             initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1, transition: { duration: 0.3, delay: 0.15 } }}
+                                            animate={{ opacity: 1, transition: { duration: 0.35, delay: 0.2 } }}
                                             exit={{ opacity: 0, transition: { duration: 0.15 } }}
                                             className="text-white text-[13px] font-medium whitespace-nowrap"
                                         >
