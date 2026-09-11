@@ -22,6 +22,7 @@ import RippleGridShowcase from './ui/RippleGridShowcase';
 import AsciiMatrixHoverShowcase from './ui/AsciiMatrixHoverShowcase';
 import ElasticLineGridShowcase from './ui/ElasticLineGridShowcase';
 import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
+import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
@@ -38,6 +39,8 @@ import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
 import { appleNavbarCode, appleNavbarPrompt } from './ui/appleNavbarSource';
+import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
+import { pixelSnowPrompt } from './ui/pixelSnowSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -85,7 +88,7 @@ export const categories = [
             ShootingStarsShowcase, SoftAuroraShowcase, PlexusEngineShowcase,
             ParticleWaveShowcase, HyperspeedWarpShowcase, SineRibbonsShowcase,
             AmbientGlowOrbsShowcase, RefractedBeamsShowcase, CosmicDustShowcase,
-            DigitalRainShowcase,
+            DigitalRainShowcase, PixelSnowBackgroundShowcase,
         ),
     },
     {
@@ -144,6 +147,12 @@ export const readyDetails = {
         prompt: appleNavbarPrompt,
         code: appleNavbarCode,
         techStack: 'TypeScript · Framer Motion · Tailwind CSS',
+    },
+    'pixel-snow-background': {
+        description: 'A ray-marched, pixelated snowfall background rendered with a custom three.js shader — chunky retro flakes, wind drift, and distance fade.',
+        prompt: pixelSnowPrompt,
+        code: pixelSnowSource,
+        techStack: 'React · three.js (WebGL) · GLSL',
     },
 };
 

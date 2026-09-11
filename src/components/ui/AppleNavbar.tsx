@@ -47,15 +47,36 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
     return (
-        <header className={`w-full flex justify-center items-center select-none z-50 px-6 sm:px-10 lg:px-16 ${className}`}>
-            {/* Desktop / Tablet Navbar — flush to top, squared top corners, rounded bottom */}
-            <div className="hidden md:block relative w-full max-w-4xl">
+        <header className={`relative w-full select-none z-50 ${className}`}>
+            {/* Thin full-bleed line across the very top — the "MacBook bezel" the notch flares out of */}
+            <div className="hidden md:block absolute top-0 left-0 right-0 h-[3px] bg-black/95" />
+
+            {/* Desktop / Tablet Navbar — a narrower "notch" centered under the line, flaring out via small concave corners, large convex rounded-bottom */}
+            <div className="hidden md:flex justify-center w-full">
             <motion.nav
                 initial={{ y: -24, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                className="flex items-center justify-between gap-3 lg:gap-6 w-full px-3.5 lg:px-5 py-2.5 lg:py-3 rounded-b-[18px] bg-black/95 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-colors duration-300"
+                className="relative flex items-center justify-between gap-3 lg:gap-6 w-[calc(100%-4rem)] max-w-4xl px-5 lg:px-8 py-3 lg:py-3.5 rounded-b-[36px] bg-black/95 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-colors duration-300"
             >
+                {/* Left concave flare — hand-drawn path curving inward from the thin line into the notch's left edge */}
+                <svg
+                    className="absolute top-0 left-0 -translate-x-full w-2.5 h-2.5"
+                    viewBox="0 0 10 10"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                >
+                    <path d="M0,0 L10,0 L10,10 Q0,10 0,3 L0,0 Z" fill="rgba(0,0,0,0.95)" />
+                </svg>
+                {/* Right concave flare — mirrored */}
+                <svg
+                    className="absolute top-0 right-0 w-2.5 h-2.5 [transform:translateX(100%)_scaleX(-1)]"
+                    viewBox="0 0 10 10"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                >
+                    <path d="M0,0 L10,0 L10,10 Q0,10 0,3 L0,0 Z" fill="rgba(0,0,0,0.95)" />
+                </svg>
                 {/* Brand / Logo */}
                 <a
                     href="#"
@@ -179,7 +200,7 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({
                 <motion.div
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="flex items-center justify-between px-3.5 py-2.5 rounded-b-[18px] bg-black/95 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
+                    className="flex items-center justify-between px-3.5 py-2.5 rounded-b-[24px] bg-black/95 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
                 >
                     {/* Brand */}
                     <div className="flex items-center gap-2.5">

@@ -1,4 +1,4 @@
-export const appleNavbarPrompt = `Floating Apple-style macOS dynamic navbar for Purrform: A compact navbar flush against the top of the viewport with squared top corners and rounded bottom corners (18px radius), solid near-opaque black background (bg-black/95) with backdrop blur and soft drop shadow, generously inset from the viewport edges with wide balanced side padding so plenty of the page background shows on both sides. Left side features a small glossy red-gradient rounded-square app icon with a paw-print glyph and bold white brand title "Purrform". Center features tightly-spaced navigation links ("Components", "Features", "Templates", "Pricing") that never wrap or overlap, using smooth Framer Motion magnetic hover pill indicators and text color transitions from neutral-400 to white. Hovering a link reveals a larger floating mini browser-frame preview panel (380px wide) below the navbar — with mock traffic-light dots, a fake URL, and a gradient page-mockup card (title + skeleton lines + placeholder tiles) themed to that section, animated in with a spring scale/fade. Right side features a small solid white rounded pill button with a sparkle icon and "Browse" text, with spring press physics. Fully responsive: collapses below 768px into a compact black capsule with an animated hamburger toggle that expands into a black frosted dropdown sheet with spring entrance animations. Built with TypeScript and Framer Motion.`;
+export const appleNavbarPrompt = `MacBook-notch-inspired Apple-style dynamic navbar for Purrform: A thin flat black line (3px) spans the full width of the viewport at the very top. In the center, that line flares outward via a small hand-drawn concave curve (10px, SVG path, not a sharp corner) on each side into a wider, taller navbar "notch" (bg-black/95, backdrop blur), like the MacBook camera-housing/Dynamic-Island shape. The notch has squared top corners connected by the small concave flare and a large sweeping convex rounded-bottom corner (36px radius) that curves smoothly into the page background. Left side of the notch features a small glossy red-gradient rounded-square app icon with a paw-print glyph and bold white brand title "Purrform". Center features tightly-spaced navigation links ("Components", "Features", "Templates", "Pricing") that never wrap or overlap, using smooth Framer Motion magnetic hover pill indicators and text color transitions from neutral-400 to white. Hovering a link reveals a larger floating mini browser-frame preview panel (380px wide) below the navbar — with mock traffic-light dots, a fake URL, and a gradient page-mockup card (title + skeleton lines + placeholder tiles) themed to that section, animated in with a spring scale/fade. Right side features a small solid white rounded pill button with a sparkle icon and "Browse" text, with spring press physics. Fully responsive: collapses below 768px into a full-width black capsule with a large rounded-bottom corner, with an animated hamburger toggle that expands into a black frosted dropdown sheet with spring entrance animations. Built with TypeScript and Framer Motion.`;
 
 export const appleNavbarCode = `import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -49,15 +49,36 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
     return (
-        <header className={\`w-full flex justify-center items-center select-none z-50 px-6 sm:px-10 lg:px-16 \${className}\`}>
-            {/* Desktop / Tablet Navbar — flush to top, squared top corners, rounded bottom */}
-            <div className="hidden md:block relative w-full max-w-4xl">
+        <header className={\`relative w-full select-none z-50 \${className}\`}>
+            {/* Thin full-bleed line across the very top — the "MacBook bezel" the notch flares out of */}
+            <div className="hidden md:block absolute top-0 left-0 right-0 h-[3px] bg-black/95" />
+
+            {/* Desktop / Tablet Navbar — a narrower "notch" centered under the line, flaring out via small concave corners, large convex rounded-bottom */}
+            <div className="hidden md:flex justify-center w-full">
             <motion.nav
                 initial={{ y: -24, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                className="flex items-center justify-between gap-3 lg:gap-6 w-full px-3.5 lg:px-5 py-2.5 lg:py-3 rounded-b-[18px] bg-black/95 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-colors duration-300"
+                className="relative flex items-center justify-between gap-3 lg:gap-6 w-[calc(100%-4rem)] max-w-4xl px-5 lg:px-8 py-3 lg:py-3.5 rounded-b-[36px] bg-black/95 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-colors duration-300"
             >
+                {/* Left concave flare — hand-drawn path curving inward from the thin line into the notch's left edge */}
+                <svg
+                    className="absolute top-0 left-0 -translate-x-full w-2.5 h-2.5"
+                    viewBox="0 0 10 10"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                >
+                    <path d="M0,0 L10,0 L10,10 Q0,10 0,3 L0,0 Z" fill="rgba(0,0,0,0.95)" />
+                </svg>
+                {/* Right concave flare — mirrored */}
+                <svg
+                    className="absolute top-0 right-0 w-2.5 h-2.5 [transform:translateX(100%)_scaleX(-1)]"
+                    viewBox="0 0 10 10"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                >
+                    <path d="M0,0 L10,0 L10,10 Q0,10 0,3 L0,0 Z" fill="rgba(0,0,0,0.95)" />
+                </svg>
                 {/* Brand / Logo */}
                 <a
                     href="#"
@@ -181,7 +202,7 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({
                 <motion.div
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="flex items-center justify-between px-3.5 py-2.5 rounded-b-[18px] bg-black/95 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
+                    className="flex items-center justify-between px-3.5 py-2.5 rounded-b-[24px] bg-black/95 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
                 >
                     {/* Brand */}
                     <div className="flex items-center gap-2.5">
