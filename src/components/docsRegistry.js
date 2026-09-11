@@ -30,6 +30,7 @@ import AddToCartGlowButtonShowcase from './ui/AddToCartGlowButtonShowcase';
 import NeumorphicDownloadButtonShowcase from './ui/NeumorphicDownloadButtonShowcase';
 import RainbowButtonShowcase from './ui/RainbowButtonShowcase';
 import GlossButtonShowcase from './ui/GlossButtonShowcase';
+import ChromeBorderButtonShowcase from './ui/ChromeBorderButtonShowcase';
 
 import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
 
@@ -109,6 +110,7 @@ export const categories = [
         components: entries(
             GooglyEyesButtonShowcase, GlossButtonShowcase, NeumorphicDownloadButtonShowcase,
             AddToCartGlowButtonShowcase, RainbowButtonShowcase, SlideToConfirmButtonShowcase,
+            ChromeBorderButtonShowcase,
         ),
     },
     {
