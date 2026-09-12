@@ -30,13 +30,13 @@ import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcas
 import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
-import GooeyMorphButtonShowcase from './ui/GooeyMorphButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
 import AddToCartGlowButtonShowcase from './ui/AddToCartGlowButtonShowcase';
 import NeumorphicDownloadButtonShowcase from './ui/NeumorphicDownloadButtonShowcase';
 import RainbowButtonShowcase from './ui/RainbowButtonShowcase';
 import GlossButtonShowcase from './ui/GlossButtonShowcase';
 import ChromeBorderButtonShowcase from './ui/ChromeBorderButtonShowcase';
+import BookACallButtonShowcase from './ui/BookACallButton';
 
 import AuroraTextShowcase from './ui/AuroraTextShowcase';
 import CharacterScrambleTextShowcase from './ui/CharacterScrambleTextShowcase';
@@ -137,9 +137,9 @@ export const categories = [
         size: 'sm',
         description: 'Tactile, physically-animated buttons — press states, glows, and material effects.',
         components: entries(
-            GooglyEyesButtonShowcase, GooeyMorphButtonShowcase, GlossButtonShowcase, NeumorphicDownloadButtonShowcase,
+            GooglyEyesButtonShowcase, GlossButtonShowcase, NeumorphicDownloadButtonShowcase,
             AddToCartGlowButtonShowcase, RainbowButtonShowcase, SlideToConfirmButtonShowcase,
-            ChromeBorderButtonShowcase,
+            ChromeBorderButtonShowcase, BookACallButtonShowcase,
         ),
     },
     {
