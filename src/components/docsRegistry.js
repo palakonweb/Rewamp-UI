@@ -4,7 +4,9 @@ import {
     ToggleLeft,
     MousePointer2,
     PanelTop,
+    PanelLeft,
     Type as TypeIcon,
+    Search as SearchIcon,
 } from 'lucide-react';
 
 import ShootingStarsShowcase from './ui/ShootingStarsShowcase';
@@ -58,6 +60,9 @@ import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
 import PixelDotNavbarShowcase from './ui/PixelDotNavbarShowcase';
 import DarkModeMobileNavbarShowcase from './ui/DarkModeMobileNavbarShowcase';
+
+import AnimatedSearchDemo from './ui/AnimatedSearchDemo';
+import SidebarShowcase from './ui/Sidebar';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -179,6 +184,26 @@ export const categories = [
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
         components: entries(
             AppleNavbarShowcase, PillExpandNavbarShowcase, PixelDotNavbarShowcase, DarkModeMobileNavbarShowcase,
+        ),
+    },
+    {
+        id: 'search-bars',
+        name: 'Search Bars',
+        icon: SearchIcon,
+        size: 'sm',
+        description: 'Search inputs with self-animating states, morphing icons, and expanding capsules.',
+        components: entries(
+            AnimatedSearchDemo,
+        ),
+    },
+    {
+        id: 'sidebars',
+        name: 'Sidebars',
+        icon: PanelLeft,
+        size: 'sm',
+        description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations.',
+        components: entries(
+            SidebarShowcase,
         ),
     },
 ];
