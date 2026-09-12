@@ -4,6 +4,7 @@ import {
     ToggleLeft,
     MousePointer2,
     PanelTop,
+    Type as TypeIcon,
 } from 'lucide-react';
 
 import ShootingStarsShowcase from './ui/ShootingStarsShowcase';
@@ -35,7 +36,22 @@ import RainbowButtonShowcase from './ui/RainbowButtonShowcase';
 import GlossButtonShowcase from './ui/GlossButtonShowcase';
 import ChromeBorderButtonShowcase from './ui/ChromeBorderButtonShowcase';
 
+import AuroraTextShowcase from './ui/AuroraTextShowcase';
+import CharacterScrambleTextShowcase from './ui/CharacterScrambleTextShowcase';
+import CountUpTextShowcase from './ui/CountUpTextShowcase';
+import Flip3DTextShowcase from './ui/Flip3DTextShowcase';
+import GradientRevealTextShowcase from './ui/GradientRevealTextShowcase';
+import LiquidTextMorphShowcase from './ui/LiquidTextMorphShowcase';
+import OdometerTextShowcase from './ui/OdometerTextShowcase';
+import SplitTextRevealShowcase from './ui/SplitTextRevealShowcase';
+import SpotlightTextShowcase from './ui/SpotlightTextShowcase';
+import TextRingCursorShowcase from './ui/TextRingCursorShowcase';
+import TypewriterTextShowcase from './ui/TypewriterTextShowcase';
+import VelocityMarqueeTextShowcase from './ui/VelocityMarqueeTextShowcase';
+import WordByWordTextShowcase from './ui/WordByWordTextShowcase';
+
 import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
+import LandscapeOrbToggleShowcase from './ui/LandscapeOrbToggleShowcase';
 
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
 import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
@@ -122,13 +138,27 @@ export const categories = [
         ),
     },
     {
+        id: 'text',
+        name: 'Text Animations',
+        icon: TypeIcon,
+        size: 'sm',
+        description: 'Kinetic typography — reveals, scrambles, morphs, and counters.',
+        components: entries(
+            SplitTextRevealShowcase, WordByWordTextShowcase, CharacterScrambleTextShowcase,
+            GradientRevealTextShowcase, AuroraTextShowcase, SpotlightTextShowcase,
+            LiquidTextMorphShowcase, Flip3DTextShowcase, TypewriterTextShowcase,
+            OdometerTextShowcase, CountUpTextShowcase, VelocityMarqueeTextShowcase,
+            TextRingCursorShowcase,
+        ),
+    },
+    {
         id: 'toggles',
         name: 'Toggles',
         icon: ToggleLeft,
         size: 'sm',
         description: 'Switches and toggles with elastic, skeuomorphic, and ambient motion.',
         components: entries(
-            DayNightSkyToggleShowcase,
+            DayNightSkyToggleShowcase, LandscapeOrbToggleShowcase,
         ),
     },
     {
