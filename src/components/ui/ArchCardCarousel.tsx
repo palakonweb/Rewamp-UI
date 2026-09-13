@@ -28,16 +28,18 @@ export interface ArchCardCarouselProps {
 
 export default function ArchCardCarousel({
   images = STOCK_IMAGES,
-  radius = 760,
-  stepAngleDeg = 11.6,
-  cardWidth = 180,
-  cardHeight = 248,
+  radius = 800,
+  stepAngleDeg = 13.5,
+  cardWidth = 156,
+  cardHeight = 218,
   className = '',
 }: ArchCardCarouselProps) {
   const [rotation, setRotation] = useState(0);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
+  const isHoveredRef = useRef(false);
   const startXRef = useRef(0);
   const startRotationRef = useRef(0);
   const velocityRef = useRef(0);
@@ -52,17 +54,22 @@ export default function ArchCardCarousel({
 
   // Exact animation timeline matching Recording 2026-09-13 220628.mp4:
   // 0.0s - 0.5s: Hold at Center
-  // 0.5s - 2.1s: Smoothly slide to the Right (+17.5 degrees)
+  // 0.5s - 2.1s: Smoothly slide to the Right (+18.0 degrees)
   // 2.1s - 2.9s: Hold at Peak Right
   // 2.9s - 4.5s: Smoothly slide back to Center
-  // 4.5s - 5.1s: Hold at Center, loop
+  // 4.5s - 5.2s: Hold at Center, loop
+  // * On hover, the animation freezes in place, resuming smoothly when unhovered.
   useEffect(() => {
     let animId: number;
-    let startTime = performance.now();
+    let accumulatedTime = 0;
+    let lastStamp = performance.now();
     const cycleDuration = 5200; // 5.2s full cycle
-    const maxAmplitudeDeg = stepAngleDeg * 1.55; // Glide distance matching video (~1.55 card steps)
+    const maxAmplitudeDeg = stepAngleDeg * 1.55;
 
     const tick = (now: number) => {
+      const dt = now - lastStamp;
+      lastStamp = now;
+
       const timeSinceInteract = now - userInteractedTimeRef.current;
 
       if (isDraggingRef.current) {
@@ -72,9 +79,13 @@ export default function ArchCardCarousel({
         currentRotationRef.current += velocityRef.current;
         velocityRef.current *= 0.92;
         setRotation(currentRotationRef.current);
+      } else if (isHoveredRef.current) {
+        // Hover active: Pause animation and maintain current rotation smoothly
+        setRotation(currentRotationRef.current);
       } else if (timeSinceInteract > 1200) {
-        // Exact animated sequence from the video
-        const elapsed = (now - startTime) % cycleDuration;
+        // Increment animation clock only when active and not hovered
+        accumulatedTime += dt;
+        const elapsed = accumulatedTime % cycleDuration;
         const progress = elapsed / cycleDuration;
         let targetDeg = 0;
 
@@ -162,9 +173,16 @@ export default function ArchCardCarousel({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
+        onMouseEnter={() => {
+          isHoveredRef.current = true;
+        }}
+        onMouseLeave={() => {
+          isHoveredRef.current = false;
+          setHoveredCardIndex(null);
+        }}
         className="relative w-full overflow-hidden flex items-end justify-center cursor-grab active:cursor-grabbing touch-pan-y"
         style={{
-          height: `${cardHeight + 140}px`,
+          height: `${cardHeight + 165}px`,
         }}
       >
         {/* ── Giant Bottom Convex Dome Arc (matching video horizon) ── */}
@@ -173,7 +191,7 @@ export default function ArchCardCarousel({
           style={{
             width: `${radius * 2}px`,
             height: `${radius * 2}px`,
-            bottom: `-${radius * 2 - (cardHeight + 85)}px`,
+            bottom: `-${radius * 2 - (cardHeight + 90)}px`,
             left: '50%',
             transform: 'translateX(-50%)',
             background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F5F3ED 42%, #E7E3D8 100%)',
@@ -197,7 +215,7 @@ export default function ArchCardCarousel({
             const offsetDeg = (offsetAngle * 180) / Math.PI;
 
             // Visible arc horizon
-            if (Math.abs(offsetDeg) > 52) return null;
+            if (Math.abs(offsetDeg) > 55) return null;
 
             // Convex circular path:
             // x moves out, y drops down from the crest
@@ -209,21 +227,30 @@ export default function ArchCardCarousel({
 
             // Distance scaling and z-index layering
             const distFromCenter = Math.abs(offsetDeg);
-            const scale = Math.max(0.86, 1.0 - (distFromCenter / 52) * 0.15);
-            const opacity = distFromCenter > 44 ? 1 - (distFromCenter - 44) / 8 : 1;
-            const zIndex = Math.round(100 - distFromCenter * 1.5);
+            const baseScale = Math.max(0.86, 1.0 - (distFromCenter / 55) * 0.15);
+            const isHovered = hoveredCardIndex === i;
+            const scale = isHovered ? baseScale * 1.025 : baseScale;
+            const opacity = distFromCenter > 46 ? 1 - (distFromCenter - 46) / 9 : 1;
+            const zIndex = isHovered ? 250 : Math.round(100 - distFromCenter * 1.5);
             const isCenter = distFromCenter < stepAngleDeg / 2;
 
             return (
               <div
                 key={i}
+                onMouseEnter={() => {
+                  setHoveredCardIndex(i);
+                  isHoveredRef.current = true;
+                }}
+                onMouseLeave={() => {
+                  setHoveredCardIndex(null);
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   userInteractedTimeRef.current = performance.now();
                   currentRotationRef.current = -i * stepAngleDeg;
                   setRotation(currentRotationRef.current);
                 }}
-                className="absolute pointer-events-auto cursor-pointer transition-shadow duration-300"
+                className="absolute pointer-events-auto cursor-pointer transition-all duration-300 ease-out"
                 style={{
                   width: `${cardWidth}px`,
                   height: `${cardHeight}px`,
@@ -231,18 +258,33 @@ export default function ArchCardCarousel({
                   transform: `translate3d(${x}px, ${y}px, 0px) rotateZ(${rotateZ}deg) scale(${scale})`,
                   zIndex,
                   opacity,
-                  filter: `drop-shadow(0 ${14 - distFromCenter * 0.16}px ${20 + (isCenter ? 12 : 0)}px rgba(0, 0, 0, ${0.18 + (isCenter ? 0.08 : 0)}))`,
+                  filter: isHovered
+                    ? 'drop-shadow(0 14px 28px rgba(0, 0, 0, 0.12))'
+                    : `drop-shadow(0 ${14 - distFromCenter * 0.16}px ${20 + (isCenter ? 12 : 0)}px rgba(0, 0, 0, ${0.18 + (isCenter ? 0.08 : 0)}))`,
                 }}
               >
-                {/* Pure Borderless Rounded Image Card (matching video) */}
-                <div className="w-full h-full rounded-[22px] overflow-hidden bg-zinc-200 border border-black/5 shadow-xs transition-transform duration-200 hover:scale-[1.02]">
+                {/* Pure Borderless Rounded Image Card with soft, delicate hover glow */}
+                <div
+                  className={`w-full h-full rounded-[22px] overflow-hidden bg-zinc-200 transition-all duration-500 ease-out relative ${
+                    isHovered
+                      ? 'border border-black/10 shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_0_24px_3px_rgba(236,94,39,0.13),0_0_8px_1px_rgba(255,255,255,0.8)]'
+                      : 'border border-black/5 shadow-xs'
+                  }`}
+                >
                   <img
                     src={src}
                     alt={`Card ${i + 1}`}
-                    className="w-full h-full object-cover select-none pointer-events-none"
+                    className={`w-full h-full object-cover select-none pointer-events-none transition-transform duration-500 ease-out ${
+                      isHovered ? 'scale-[1.025]' : 'scale-100'
+                    }`}
                     loading="lazy"
                     draggable={false}
                   />
+
+                  {/* Soft ambient inner sheen on hover */}
+                  {isHovered && (
+                    <div className="absolute inset-0 pointer-events-none rounded-[22px] ring-1 ring-inset ring-white/30 bg-gradient-to-t from-white/10 via-transparent to-white/15" />
+                  )}
                 </div>
               </div>
             );

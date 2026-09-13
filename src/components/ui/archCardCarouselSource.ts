@@ -19,12 +19,16 @@ const STOCK_IMAGES = [
   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
 ];
 
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 export default function ArchCardCarousel({
   images = STOCK_IMAGES,
-  radius = 860,
-  stepAngleDeg = 14.0,
-  cardWidth = 185,
-  cardHeight = 255,
+  radius = 760,
+  stepAngleDeg = 11.6,
+  cardWidth = 180,
+  cardHeight = 248,
 }: {
   images?: string[];
   radius?: number;
@@ -40,39 +44,56 @@ export default function ArchCardCarousel({
   const lastXRef = useRef(0);
   const lastTimeRef = useRef(0);
   const userInteractedTimeRef = useRef(0);
+  const currentRotationRef = useRef(0);
 
   const count = images.length;
   const stepAngleRad = (stepAngleDeg * Math.PI) / 180;
   const totalSpanRad = count * stepAngleRad;
 
   useEffect(() => {
-    let startTime = performance.now();
-    let currentDeg = 0;
     let animId: number;
+    let startTime = performance.now();
+    const cycleDuration = 5200;
+    const maxAmplitudeDeg = stepAngleDeg * 1.55;
 
-    const loop = (now: number) => {
-      const elapsedSec = (now - startTime) / 1000;
-      const timeSinceInteract = (now - userInteractedTimeRef.current) / 1000;
+    const tick = (now: number) => {
+      const timeSinceInteract = now - userInteractedTimeRef.current;
 
-      if (!isDraggingRef.current) {
-        if (Math.abs(velocityRef.current) > 0.04) {
-          currentDeg += velocityRef.current;
-          velocityRef.current *= 0.93;
-          setRotation(currentDeg);
-        } else if (timeSinceInteract > 1.2) {
-          // Smooth pendulum oscillation: slides right, eases, slides left, eases
-          const osc = Math.sin((elapsedSec - 1.2) * 0.75);
-          const smoothOsc = Math.sign(osc) * Math.pow(Math.abs(osc), 0.85);
-          const targetDeg = smoothOsc * (stepAngleDeg * 2.1);
-          currentDeg += (targetDeg - currentDeg) * 0.05;
-          setRotation(currentDeg);
+      if (isDraggingRef.current) {
+        // Dragging
+      } else if (Math.abs(velocityRef.current) > 0.04) {
+        currentRotationRef.current += velocityRef.current;
+        velocityRef.current *= 0.92;
+        setRotation(currentRotationRef.current);
+      } else if (timeSinceInteract > 1200) {
+        const elapsed = (now - startTime) % cycleDuration;
+        const progress = elapsed / cycleDuration;
+        let targetDeg = 0;
+
+        if (progress < 0.10) {
+          targetDeg = 0;
+        } else if (progress < 0.42) {
+          const segProgress = (progress - 0.10) / 0.32;
+          targetDeg = easeInOutCubic(segProgress) * maxAmplitudeDeg;
+        } else if (progress < 0.56) {
+          targetDeg = maxAmplitudeDeg;
+        } else if (progress < 0.88) {
+          const segProgress = (progress - 0.56) / 0.32;
+          targetDeg = (1 - easeInOutCubic(segProgress)) * maxAmplitudeDeg;
+        } else {
+          targetDeg = 0;
         }
+
+        currentRotationRef.current += (targetDeg - currentRotationRef.current) * 0.08;
+        setRotation(currentRotationRef.current);
+      } else {
+        setRotation(currentRotationRef.current);
       }
 
-      animId = requestAnimationFrame(loop);
+      animId = requestAnimationFrame(tick);
     };
 
-    animId = requestAnimationFrame(loop);
+    animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
   }, [stepAngleDeg]);
 
@@ -118,7 +139,7 @@ export default function ArchCardCarousel({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         className="relative w-full overflow-hidden flex items-end justify-center cursor-grab active:cursor-grabbing touch-pan-y"
-        style={{ height: \`\${cardHeight + 160}px\` }}
+        style={{ height: \`\${cardHeight + 140}px\` }}
       >
         {/* Dome arc horizon */}
         <div
@@ -126,12 +147,12 @@ export default function ArchCardCarousel({
           style={{
             width: \`\${radius * 2}px\`,
             height: \`\${radius * 2}px\`,
-            bottom: \`-\${radius * 2 - (cardHeight + 110)}px\`,
+            bottom: \`-\${radius * 2 - (cardHeight + 85)}px\`,
             left: '50%',
             transform: 'translateX(-50%)',
-            background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F5F3ED 40%, #E6E2D6 100%)',
-            border: '1px solid rgba(0, 0, 0, 0.08)',
-            boxShadow: '0 -25px 60px -15px rgba(0, 0, 0, 0.07)',
+            background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F5F3ED 42%, #E7E3D8 100%)',
+            border: '1px solid rgba(0, 0, 0, 0.07)',
+            boxShadow: '0 -20px 50px -15px rgba(0, 0, 0, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.9)',
           }}
         />
 
@@ -144,7 +165,7 @@ export default function ArchCardCarousel({
             if (offsetAngle > totalSpanRad / 2) offsetAngle -= totalSpanRad;
 
             const offsetDeg = (offsetAngle * 180) / Math.PI;
-            if (Math.abs(offsetDeg) > 58) return null;
+            if (Math.abs(offsetDeg) > 52) return null;
 
             const x = radius * Math.sin(offsetAngle);
             const y = radius * (1 - Math.cos(offsetAngle));
@@ -168,11 +189,11 @@ export default function ArchCardCarousel({
                   filter: \`drop-shadow(0 \${16 - dist * 0.18}px 22px rgba(0, 0, 0, 0.16))\`,
                 }}
               >
-                <div className="w-full h-full rounded-[24px] overflow-hidden bg-zinc-200 border border-black/5 shadow-xs transition-transform duration-200 hover:scale-[1.02]">
+                <div className="w-full h-full rounded-[22px] overflow-hidden bg-zinc-200 border border-black/5 shadow-xs transition-all duration-500 ease-out hover:border-black/10 hover:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_0_24px_3px_rgba(236,94,39,0.13)]">
                   <img
                     src={src}
                     alt={\`Card \${i + 1}\`}
-                    className="w-full h-full object-cover select-none pointer-events-none"
+                    className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-500 ease-out hover:scale-[1.025]"
                     draggable={false}
                   />
                 </div>
