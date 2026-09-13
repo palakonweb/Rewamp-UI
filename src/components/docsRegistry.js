@@ -8,6 +8,8 @@ import {
     Type as TypeIcon,
     Search as SearchIcon,
     CreditCard,
+    Bot,
+    Sparkles,
 } from 'lucide-react';
 
 import ShootingStarsShowcase from './ui/ShootingStarsShowcase';
@@ -29,6 +31,9 @@ import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
 import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
 import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcase';
 import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
+import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
+import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
+import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
@@ -91,6 +96,9 @@ import { matteFolderCardPrompt, matteFolderCardCode } from './ui/matteFolderCard
 import { animatedSearchPrompt, animatedSearchCode } from './ui/animatedSearchSource';
 import { fluidWaveNavbarPrompt, fluidWaveNavbarCode } from './ui/fluidWaveNavbarSource';
 import { glassOrbTogglePrompt, glassOrbToggleCode } from './ui/glassOrbToggleSource';
+import { fluidMorphOrbPrompt, fluidMorphOrbCode } from './ui/fluidMorphOrbSource';
+import { wireframeRingOrbPrompt, wireframeRingOrbCode } from './ui/wireframeRingOrbSource';
+import { particleDotOrbPrompt, particleDotOrbCode } from './ui/particleDotOrbSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -231,6 +239,30 @@ export const categories = [
             MatteFolderCardShowcase,
         ),
     },
+    {
+        id: 'ai-ui',
+        name: 'UI for AI',
+        icon: Bot,
+        size: 'md',
+        description: 'Interactive AI interfaces, Claude-style reasoning streams, thinking indicators, and 3D assistant companions.',
+        components: [
+            {
+                Component: ParticleDotOrbShowcase,
+                title: 'Particle Dot Orb',
+                slug: 'particle-dot-orb',
+            },
+            {
+                Component: FluidMorphOrbShowcase,
+                title: 'Fluid Morph Orb',
+                slug: 'fluid-morph-orb',
+            },
+            {
+                Component: WireframeRingOrbShowcase,
+                title: 'Wireframe Ring Orb',
+                slug: 'wireframe-ring-orb',
+            },
+        ],
+    },
 ];
 
 // Slugs that have a full reference-quality migration: real source code block,
@@ -319,11 +351,35 @@ export const readyDetails = {
         code: glassOrbToggleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
+    'particle-dot-orb': {
+        description: 'A minimalist white AI thinking capsule featuring a 3D Fibonacci particle sphere on the left and shimmery reasoning text on the right.',
+        prompt: particleDotOrbPrompt,
+        code: particleDotOrbCode,
+        techStack: 'React · Three.js (WebGL) · Framer Motion',
+    },
+    'fluid-morph-orb': {
+        description: 'A minimalist white AI thinking capsule featuring a velvety 3D fluid morphing orb on the left and shimmery reasoning text on the right.',
+        prompt: fluidMorphOrbPrompt,
+        code: fluidMorphOrbCode,
+        techStack: 'React · Three.js (WebGL) · Framer Motion · GLSL',
+    },
+    'claude-thinking-orb': {
+        description: 'A minimalist white AI thinking capsule featuring a velvety 3D fluid morphing orb on the left and shimmery reasoning text on the right.',
+        prompt: fluidMorphOrbPrompt,
+        code: fluidMorphOrbCode,
+        techStack: 'React · Three.js (WebGL) · Framer Motion · GLSL',
+    },
+    'wireframe-ring-orb': {
+        description: 'A minimalist white AI thinking capsule featuring a 3D wireframe contour ring orb on the left and shimmery reasoning text on the right.',
+        prompt: wireframeRingOrbPrompt,
+        code: wireframeRingOrbCode,
+        techStack: 'React · Three.js (WebGL) · Framer Motion',
+    },
 };
 
 export function findComponentBySlug(slug) {
     for (const category of categories) {
-        const entry = category.components.find((c) => c.slug === slug);
+        const entry = category.components.find((c) => c.slug === slug || (slug === 'claude-thinking-orb' && c.slug === 'fluid-morph-orb'));
         if (entry) return { category, entry };
     }
     return null;

@@ -66,7 +66,7 @@ export default function ComponentDetail({ category, entry, detail }) {
                 Component={entry.Component}
                 code={detail?.code}
                 previewRef={previewRef}
-                preserveBg={category.id === 'bgs' || category.id === 'cards'}
+                preserveBg={category.id === 'bgs' || category.id === 'cards' || category.id === 'ai-ui'}
             />
 
             {/* Prompt Block — Sand background, own Copy button per AGENTS.md */}
