@@ -1,4 +1,15 @@
-import { useState, useRef } from "react";
+export const animatedSearchPrompt = `Create an interactive hover-expandable search capsule component in React:
+- Idle state: A compact, clean circular capsule (64px) with a minimalist search icon centered on a crisp white surface.
+- Hover interaction: Activates strictly on hover (not automated), smoothly expanding via spring physics into a full 420px wide search bar.
+- Contents:
+  - Search icon smoothly shifts color/accent and gives visual feedback.
+  - Reveals an interactive search input with placeholder "Search for something..." and a subtle "⌘K" keyboard badge.
+  - Interactive typing with instant clear (✕) button when text is entered.
+  - Retains expanded form while focused or when containing search text.
+  - Smoothly collapses back to the compact circular pill when the mouse leaves.
+- Styling: High-precision spring animations, layered ambient drop shadows, and clean modern typography.`;
+
+export const animatedSearchCode = `import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
 
@@ -107,3 +118,4 @@ export default function AnimatedSearchDemo() {
     </div>
   );
 }
+`;
