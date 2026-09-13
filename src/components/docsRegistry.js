@@ -7,6 +7,7 @@ import {
     PanelLeft,
     Type as TypeIcon,
     Search as SearchIcon,
+    CreditCard,
 } from 'lucide-react';
 
 import ShootingStarsShowcase from './ui/ShootingStarsShowcase';
@@ -56,6 +57,7 @@ import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
 import LandscapeOrbToggleShowcase from './ui/LandscapeOrbToggleShowcase';
 
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
+import PillTrailCursorShowcase from './ui/PillTrailCursorShowcase';
 import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
 import PixelDotNavbarShowcase from './ui/PixelDotNavbarShowcase';
@@ -63,6 +65,7 @@ import DarkModeMobileNavbarShowcase from './ui/DarkModeMobileNavbarShowcase';
 
 import AnimatedSearchDemo from './ui/AnimatedSearchDemo';
 import SidebarShowcase from './ui/Sidebar';
+import WalletCardRevealShowcase from './ui/WalletCardRevealShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -79,6 +82,8 @@ import pixelDotNavbarSource from './ui/PixelDotNavbarShowcase.jsx?raw';
 import { pixelDotNavbarPrompt } from './ui/pixelDotNavbarSource';
 import darkModeMobileNavbarSource from './ui/DarkModeMobileNavbarShowcase.jsx?raw';
 import { darkModeMobileNavbarPrompt } from './ui/darkModeMobileNavbarSource';
+import { pillTrailPrompt, pillTrailCode } from './ui/pillTrailSource';
+import { walletCardRevealPrompt, walletCardRevealCode } from './ui/walletCardRevealSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -174,6 +179,7 @@ export const categories = [
         description: 'Custom cursor replacements — trails, lenses, and magnetic effects.',
         components: entries(
             SplashCursorShowcase,
+            PillTrailCursorShowcase,
         ),
     },
     {
@@ -204,6 +210,16 @@ export const categories = [
         description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations.',
         components: entries(
             SidebarShowcase,
+        ),
+    },
+    {
+        id: 'cards',
+        name: 'Cards',
+        icon: CreditCard,
+        size: 'md',
+        description: 'Layered, interactive, and tactile card components with physical animations.',
+        components: entries(
+            WalletCardRevealShowcase,
         ),
     },
 ];
@@ -256,6 +272,18 @@ export const readyDetails = {
         description: 'A white floating pill toolbar with a dark gliding active indicator between circular icon buttons, soft gray hover states, and white tooltips showing each icon\'s label.',
         prompt: darkModeMobileNavbarPrompt,
         code: darkModeMobileNavbarSource,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'pill-trail-cursor': {
+        description: 'An animated cursor trail of colorful biotech pills following the mouse with fluid path physics, staying strictly horizontal and stacking gracefully along curves over an editorial helix.tech white canvas.',
+        prompt: pillTrailPrompt,
+        code: pillTrailCode,
+        techStack: 'React · TypeScript · rAF Physics',
+    },
+    'wallet-card-reveal': {
+        description: 'A tactile fintech leather wallet card with a hidden layered stack of payment cards (Stripe, Wise, PayPal) that smoothly fan out on clicking the interactive eye toggle.',
+        prompt: walletCardRevealPrompt,
+        code: walletCardRevealCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
