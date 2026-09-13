@@ -23,18 +23,18 @@ export default function GlassOrbToggle({
 
   return (
     <div className={`relative flex flex-col items-center justify-center select-none ${className}`}>
-      {/* ── Ambient Glow Behind the Toggle ── */}
+      {/* ── Ambient Glow Behind the Toggle (matches video bloom) ── */}
       <motion.div
         animate={{
-          opacity: isLight ? 0.35 : 0.08,
-          scale: isLight ? 1.2 : 0.9,
+          opacity: isLight ? 0.32 : 0.05,
+          scale: isLight ? 1.25 : 0.85,
         }}
-        transition={{ duration: 0.6, ease: 'easeInOut' }}
-        className="absolute w-[280px] h-[160px] rounded-full filter blur-[40px] pointer-events-none"
+        transition={{ duration: 0.55, ease: 'easeInOut' }}
+        className="absolute w-[320px] h-[180px] rounded-full filter blur-[50px] pointer-events-none"
         style={{
           background: isLight
-            ? 'radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(200, 200, 220, 0.2) 60%, transparent 100%)'
-            : 'radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
+            ? 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(180, 180, 200, 0.25) 50%, transparent 80%)'
+            : 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%)',
         }}
       />
 
@@ -43,151 +43,156 @@ export default function GlassOrbToggle({
         onClick={toggle}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className="relative w-[236px] h-[78px] rounded-full cursor-pointer p-1 flex items-center justify-between overflow-visible transition-colors duration-500"
+        whileHover={{ scale: 1.015 }}
+        whileTap={{ scale: 0.985 }}
+        className="relative w-[248px] h-[78px] rounded-full cursor-pointer flex items-center justify-between overflow-visible transition-colors duration-450"
         style={{
-          backgroundColor: isLight ? '#38383F' : '#141416',
+          backgroundColor: isLight ? '#56565E' : '#18181B',
           boxShadow: isLight
-            ? 'inset 0 2px 6px rgba(0,0,0,0.5), inset 0 -1px 2px rgba(255,255,255,0.15), 0 12px 30px -8px rgba(0,0,0,0.6)'
-            : 'inset 0 3px 8px rgba(0,0,0,0.8), inset 0 -1px 2px rgba(255,255,255,0.06), 0 16px 36px -10px rgba(0,0,0,0.7)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+            ? 'inset 0 3px 8px rgba(0,0,0,0.35), inset 0 -1px 2px rgba(255,255,255,0.2), 0 16px 36px -10px rgba(0,0,0,0.5)'
+            : 'inset 0 3px 8px rgba(0,0,0,0.8), inset 0 -1px 2px rgba(255,255,255,0.06), 0 16px 36px -10px rgba(0,0,0,0.6)',
+          border: isLight
+            ? '1px solid rgba(255, 255, 255, 0.18)'
+            : '1px solid rgba(255, 255, 255, 0.07)',
         }}
       >
-        {/* Track Label: "Dark" on the left */}
-        <div className="w-[110px] h-full flex items-center justify-center pl-2">
+        {/* Track Label: "Dark" on the left half */}
+        <div className="w-[124px] h-full flex items-center justify-center pl-3">
           <motion.span
             animate={{
-              opacity: isLight ? 0.92 : 0.25,
-              x: isLight ? 0 : -4,
+              opacity: isLight ? 0.95 : 0,
+              scale: isLight ? 1 : 0.9,
             }}
-            transition={{ duration: 0.35 }}
-            className="text-[17px] font-semibold text-white tracking-tight font-sans"
+            transition={{ duration: 0.3 }}
+            className="text-[17.5px] font-medium text-white tracking-normal font-sans"
           >
             Dark
           </motion.span>
         </div>
 
-        {/* Track Label: "Light" on the right */}
-        <div className="w-[110px] h-full flex items-center justify-center pr-2">
+        {/* Track Label: "Light" on the right half */}
+        <div className="w-[124px] h-full flex items-center justify-center pr-3">
           <motion.span
             animate={{
-              opacity: isLight ? 0.25 : 0.92,
-              x: isLight ? 4 : 0,
+              opacity: isLight ? 0 : 0.95,
+              scale: isLight ? 0.9 : 1,
             }}
-            transition={{ duration: 0.35 }}
-            className="text-[17px] font-semibold text-white tracking-tight font-sans"
+            transition={{ duration: 0.3 }}
+            className="text-[17.5px] font-medium text-white tracking-normal font-sans"
           >
             Light
           </motion.span>
         </div>
 
-        {/* ── Oversized 3D Glass Orb Thumb (Liquid Crystal Lens) ── */}
+        {/* ── Oversized 3D Glass Sphere Thumb (Liquid Crystal Lens) ── */}
         <motion.div
           animate={{
-            x: isLight ? 130 : -4,
+            x: isLight ? 154 : -10,
           }}
           transition={{
             type: 'spring',
-            stiffness: 280,
-            damping: 24,
-            mass: 0.9,
+            stiffness: 260,
+            damping: 23,
+            mass: 0.85,
           }}
-          className="absolute -top-[14px] left-0 w-[106px] h-[106px] rounded-full cursor-grab active:cursor-grabbing pointer-events-none z-30"
+          className="absolute -top-[13px] left-0 w-[104px] h-[104px] rounded-full pointer-events-none z-30 flex items-center justify-center"
         >
-          {/* Glass Sphere Multi-Layer Material */}
-          <div className="relative w-full h-full rounded-full overflow-hidden shadow-[0_20px_40px_-8px_rgba(0,0,0,0.85),0_0_25px_rgba(255,255,255,0.12)]">
+          {/* Glass Sphere Material */}
+          <div className="relative w-full h-full rounded-full overflow-hidden shadow-[0_18px_38px_-6px_rgba(0,0,0,0.75),0_0_20px_rgba(255,255,255,0.14)]">
             
-            {/* Backdrop Blur to refract underneath track & text */}
-            <div className="absolute inset-0 backdrop-blur-[5px]" />
+            {/* Backdrop Blur to refract underlying track & labels */}
+            <div className="absolute inset-0 backdrop-blur-[4px]" />
 
-            {/* Spherical Depth Gradient (Convex Lens shading) */}
+            {/* Clear Spherical Glass Convex Shading */}
             <div
               className="absolute inset-0 rounded-full"
               style={{
                 background:
-                  'radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(20, 20, 25, 0.45) 75%, rgba(10, 10, 14, 0.85) 100%)',
+                  'radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 35%, rgba(0, 0, 0, 0.12) 65%, rgba(0, 0, 0, 0.48) 100%)',
               }}
             />
 
             {/* Specular Rim Light Ring */}
-            <div className="absolute inset-0 rounded-full border border-white/30" />
+            <div className="absolute inset-0 rounded-full border border-white/40" />
 
-            {/* Top-Left Crisp Specular Reflection */}
+            {/* Top-Left Crisp Curved Specular Reflection Arc */}
             <div
-              className="absolute top-2.5 left-3.5 w-9 h-5 rounded-full pointer-events-none"
+              className="absolute top-2 left-3 w-10 h-5 rounded-full pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%)',
-                transform: 'rotate(-25deg)',
-                filter: 'blur(0.6px)',
+                  'radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 45%, transparent 80%)',
+                transform: 'rotate(-28deg)',
+                filter: 'blur(0.5px)',
               }}
             />
 
-            {/* Bottom-Right Subsurface Reflection Meniscus */}
+            {/* Bottom-Right Subsurface Meniscus Glow */}
             <div
-              className="absolute bottom-2.5 right-4 w-11 h-6 rounded-full pointer-events-none"
+              className="absolute bottom-2.5 right-3.5 w-11 h-6 rounded-full pointer-events-none"
               style={{
                 background:
-                  'radial-gradient(ellipse at 50% 80%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.1) 60%, transparent 100%)',
-                transform: 'rotate(-15deg)',
-                filter: 'blur(1px)',
+                  'radial-gradient(ellipse at 50% 80%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 60%, transparent 100%)',
+                transform: 'rotate(-18deg)',
+                filter: 'blur(1.2px)',
               }}
             />
 
             {/* Inner Glowing Celestial Icon (Moon or Sun) */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center z-10">
               <AnimatePresence mode="wait">
                 {!isLight ? (
                   <motion.div
                     key="moon"
-                    initial={{ scale: 0.5, opacity: 0, rotate: -35 }}
+                    initial={{ scale: 0.45, opacity: 0, rotate: -30 }}
                     animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                    exit={{ scale: 0.5, opacity: 0, rotate: 35 }}
-                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                    exit={{ scale: 0.45, opacity: 0, rotate: 30 }}
+                    transition={{ duration: 0.26, ease: 'easeOut' }}
                     className="relative flex items-center justify-center"
                   >
                     {/* Moon Glow Aura */}
-                    <div className="absolute w-10 h-10 rounded-full bg-white/20 filter blur-[8px]" />
+                    <div className="absolute w-9 h-9 rounded-full bg-white/20 filter blur-[7px]" />
 
-                    {/* Crescent Moon SVG matching video */}
+                    {/* Waxing Crescent Moon matching video: back on left, horns point right */}
                     <svg
-                      viewBox="0 0 32 32"
-                      className="w-[32px] h-[32px] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.85)]"
+                      viewBox="0 0 24 24"
+                      className="w-[30px] h-[30px] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.95)]"
                       fill="currentColor"
+                      style={{ transform: 'rotate(-38deg)' }}
                     >
-                      <path d="M 23.5 16 C 23.5 22.35 18.35 27.5 12 27.5 C 10.1 27.5 8.3 27.04 6.7 26.22 C 12.8 28.5 19.5 25.5 21.8 19.4 C 22.8 16.7 22.8 13.7 21.6 11.2 C 20.7 9.3 19.2 7.7 17.4 6.6 C 21.1 8.4 23.5 12 23.5 16 Z" />
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                     </svg>
                   </motion.div>
                 ) : (
                   <motion.div
                     key="sun"
-                    initial={{ scale: 0.5, opacity: 0, rotate: 45 }}
+                    initial={{ scale: 0.45, opacity: 0, rotate: 45 }}
                     animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                    exit={{ scale: 0.5, opacity: 0, rotate: -45 }}
-                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                    exit={{ scale: 0.45, opacity: 0, rotate: -45 }}
+                    transition={{ duration: 0.26, ease: 'easeOut' }}
                     className="relative flex items-center justify-center"
                   >
                     {/* Sun Glow Aura */}
-                    <div className="absolute w-12 h-12 rounded-full bg-white/25 filter blur-[9px]" />
+                    <div className="absolute w-11 h-11 rounded-full bg-white/25 filter blur-[8px]" />
 
-                    {/* Radiant Sun SVG matching video */}
+                    {/* Radiant Sun matching video: central disc + 8 rounded pill beams */}
                     <svg
-                      viewBox="0 0 36 36"
-                      className="w-[36px] h-[36px] text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
+                      viewBox="0 0 40 40"
+                      className="w-[36px] h-[36px] text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.95)]"
                       fill="currentColor"
                     >
                       {/* Sun Central Disc */}
-                      <circle cx="18" cy="18" r="7.5" />
-                      {/* 8 Radiating Beams */}
-                      <line x1="18" y1="3.5" x2="18" y2="6.5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="18" y1="29.5" x2="18" y2="32.5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="3.5" y1="18" x2="6.5" y2="18" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="29.5" y1="18" x2="32.5" y2="18" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="7.7" y1="7.7" x2="9.9" y2="9.9" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="26.1" y1="26.1" x2="28.3" y2="28.3" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="7.7" y1="28.3" x2="9.9" y2="26.1" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="26.1" y1="9.9" x2="28.3" y2="7.7" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <circle cx="20" cy="20" r="8" />
+
+                      {/* 8 Radiating Beams with rounded caps */}
+                      <line x1="20" y1="4" x2="20" y2="7.5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <line x1="20" y1="32.5" x2="20" y2="36" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <line x1="4" y1="20" x2="7.5" y2="20" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <line x1="32.5" y1="20" x2="36" y2="20" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      
+                      <line x1="8.7" y1="8.7" x2="11.2" y2="11.2" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <line x1="28.8" y1="28.8" x2="31.3" y2="31.3" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <line x1="8.7" y1="31.3" x2="11.2" y2="28.8" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                      <line x1="28.8" y1="11.2" x2="31.3" y2="8.7" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
                     </svg>
                   </motion.div>
                 )}
