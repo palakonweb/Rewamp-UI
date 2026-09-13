@@ -45,92 +45,56 @@ export default function MatteFolderCard({
       {/* ── Inner Rounded Bezel Housing ── */}
       <div className="relative w-full h-full rounded-[28px] overflow-hidden bg-[#0F0F12]">
         
-        {/* ── 1. Living Animated Aurora Mesh Gradient Background ── */}
+        {/* ── 1. Living Animated Gradient Background (Gloss Button Style) ── */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Base ambient tone */}
+          {/* Base ambient backdrop */}
           <div className="absolute inset-0 bg-[#16161D]" />
 
-          {/* Drifting gradient orbs with heavy blur */}
-          <div className="absolute inset-0 filter blur-[42px] opacity-95">
-            {/* Orb 1: Warm Amber / Sunlight Yellow */}
-            <motion.div
-              animate={{
-                x: [-20, 35, -15, -20],
-                y: [-15, 20, -10, -15],
-                scale: [1, 1.2, 0.95, 1],
-              }}
-              transition={{
-                duration: 9,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute -top-10 -left-6 w-52 h-52 rounded-full"
-              style={{
-                background: 'radial-gradient(circle, #FEE066 0%, #F59E0B 75%, transparent 100%)',
-              }}
-            />
-
-            {/* Orb 2: Vivid Peach / Coral Rose */}
-            <motion.div
-              animate={{
-                x: [25, -20, 15, 25],
-                y: [10, -25, 20, 10],
-                scale: [1.1, 0.9, 1.15, 1.1],
-              }}
-              transition={{
-                duration: 11,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute top-2 left-16 w-56 h-56 rounded-full"
-              style={{
-                background: 'radial-gradient(circle, #FB7185 0%, #E11D48 70%, transparent 100%)',
-              }}
-            />
-
-            {/* Orb 3: Radiant Violet / Magenta */}
-            <motion.div
-              animate={{
-                x: [10, -30, 20, 10],
-                y: [-20, 25, -15, -20],
-                scale: [0.95, 1.25, 1, 0.95],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute -top-8 -right-8 w-60 h-60 rounded-full"
-              style={{
-                background: 'radial-gradient(circle, #C084FC 0%, #9333EA 60%, transparent 100%)',
-              }}
-            />
-
-            {/* Orb 4: Sky Blue / Cyan Highlight */}
-            <motion.div
-              animate={{
-                x: [-15, 25, -20, -15],
-                y: [20, -15, 10, 20],
-                scale: [1, 1.15, 0.9, 1],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="absolute top-12 right-0 w-44 h-44 rounded-full"
-              style={{
-                background: 'radial-gradient(circle, #38BDF8 0%, #3B82F6 70%, transparent 100%)',
-              }}
-            />
-          </div>
-
-          {/* Gentle film grain texture overlay for tactile realism */}
-          <div
-            className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-overlay"
+          {/* Shifting iridescent aurora gradient like Gloss Button */}
+          <motion.div
+            className="absolute -inset-6"
             style={{
-              backgroundImage: 'radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1px)',
-              backgroundSize: '8px 8px',
+              background:
+                'linear-gradient(115deg, #FEE066 0%, #FBBF24 10%, #FB7185 22%, #F43F5E 34%, #C084FC 46%, #8B5CF6 58%, #38BDF8 70%, #FEE066 84%, #FB7185 100%)',
+              backgroundSize: '190% 190%',
+            }}
+            animate={{
+              backgroundPosition: ['0% 40%', '100% 60%', '0% 40%'],
+            }}
+            transition={{
+              duration: 6.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+
+          {/* Subtle secondary radial light drift for added depth */}
+          <motion.div
+            className="absolute inset-0 opacity-70 filter blur-[32px] pointer-events-none mix-blend-screen"
+            style={{
+              background:
+                'radial-gradient(circle at 40% 30%, rgba(254, 224, 102, 0.8) 0%, rgba(244, 114, 182, 0.6) 45%, rgba(192, 132, 252, 0.6) 75%, transparent 100%)',
+              backgroundSize: '180% 180%',
+            }}
+            animate={{
+              backgroundPosition: ['100% 50%', '0% 50%', '100% 50%'],
+            }}
+            transition={{
+              duration: 9,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+
+          {/* Fixed glossy highlight sheen (matching Gloss Button aesthetic) */}
+          <div className="pointer-events-none absolute inset-x-3 top-1.5 h-16 rounded-full bg-gradient-to-b from-white/30 via-white/10 to-transparent blur-[4px]" />
+
+          {/* Gentle tactile film grain texture */}
+          <div
+            className="absolute inset-0 opacity-[0.06] pointer-events-none mix-blend-overlay"
+            style={{
+              backgroundImage: 'radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)',
+              backgroundSize: '6px 6px',
             }}
           />
         </div>

@@ -86,6 +86,7 @@ import { darkModeMobileNavbarPrompt } from './ui/darkModeMobileNavbarSource';
 import { pillTrailPrompt, pillTrailCode } from './ui/pillTrailSource';
 import { walletCardRevealPrompt, walletCardRevealCode } from './ui/walletCardRevealSource';
 import { matteFolderCardPrompt, matteFolderCardCode } from './ui/matteFolderCardSource';
+import { animatedSearchPrompt, animatedSearchCode } from './ui/animatedSearchSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -293,6 +294,12 @@ export const readyDetails = {
         description: 'A sleek modern folder card featuring a living animated aurora mesh gradient and an inverted-fillet matte dark flap with high-contrast typography and interactive hover tilt.',
         prompt: matteFolderCardPrompt,
         code: matteFolderCardCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'animated-search-demo': {
+        description: 'A minimalist circular search capsule that smoothly expands on hover with cushioned spring physics into an interactive search bar with ⌘K badge and instant clear action.',
+        prompt: animatedSearchPrompt,
+        code: animatedSearchCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
