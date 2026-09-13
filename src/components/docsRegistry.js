@@ -55,6 +55,7 @@ import WordByWordTextShowcase from './ui/WordByWordTextShowcase';
 
 import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
 import LandscapeOrbToggleShowcase from './ui/LandscapeOrbToggleShowcase';
+import GlassOrbToggleShowcase from './ui/GlassOrbToggleShowcase';
 
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
 import PillTrailCursorShowcase from './ui/PillTrailCursorShowcase';
@@ -62,6 +63,7 @@ import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
 import PixelDotNavbarShowcase from './ui/PixelDotNavbarShowcase';
 import DarkModeMobileNavbarShowcase from './ui/DarkModeMobileNavbarShowcase';
+import FluidWaveNavbarShowcase from './ui/FluidWaveNavbarShowcase';
 
 import AnimatedSearchDemo from './ui/AnimatedSearchDemo';
 import SidebarShowcase from './ui/Sidebar';
@@ -87,6 +89,8 @@ import { pillTrailPrompt, pillTrailCode } from './ui/pillTrailSource';
 import { walletCardRevealPrompt, walletCardRevealCode } from './ui/walletCardRevealSource';
 import { matteFolderCardPrompt, matteFolderCardCode } from './ui/matteFolderCardSource';
 import { animatedSearchPrompt, animatedSearchCode } from './ui/animatedSearchSource';
+import { fluidWaveNavbarPrompt, fluidWaveNavbarCode } from './ui/fluidWaveNavbarSource';
+import { glassOrbTogglePrompt, glassOrbToggleCode } from './ui/glassOrbToggleSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -171,7 +175,7 @@ export const categories = [
         size: 'sm',
         description: 'Switches and toggles with elastic, skeuomorphic, and ambient motion.',
         components: entries(
-            DayNightSkyToggleShowcase, LandscapeOrbToggleShowcase,
+            DayNightSkyToggleShowcase, LandscapeOrbToggleShowcase, GlassOrbToggleShowcase,
         ),
     },
     {
@@ -193,6 +197,7 @@ export const categories = [
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
         components: entries(
             AppleNavbarShowcase, PillExpandNavbarShowcase, PixelDotNavbarShowcase, DarkModeMobileNavbarShowcase,
+            FluidWaveNavbarShowcase,
         ),
     },
     {
@@ -300,6 +305,18 @@ export const readyDetails = {
         description: 'A minimalist circular search capsule that smoothly expands on hover with cushioned spring physics into an interactive search bar with ⌘K badge and instant clear action.',
         prompt: animatedSearchPrompt,
         code: animatedSearchCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'fluid-wave-navbar': {
+        description: 'A floating white pill navbar with an organic dark grey fluid wave indicator that glides along the bottom edge on hover with spring physics.',
+        prompt: fluidWaveNavbarPrompt,
+        code: fluidWaveNavbarCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'glass-orb-toggle': {
+        description: 'A tactile dark/light mode toggle with an oversized 3D crystal glass sphere that smoothly slides across a pill track with realistic refractive optics, caustics, and celestial icons.',
+        prompt: glassOrbTogglePrompt,
+        code: glassOrbToggleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
