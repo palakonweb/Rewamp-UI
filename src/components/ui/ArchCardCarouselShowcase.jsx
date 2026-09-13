@@ -39,7 +39,7 @@ export default function ArchCardCarouselShowcase() {
 
                 {/* ── The Arch Card Carousel ── */}
                 <div className="w-full mt-6">
-                    <ArchCardCarousel autoPlaySpeed={0} />
+                    <ArchCardCarousel />
                 </div>
             </div>
         </div>

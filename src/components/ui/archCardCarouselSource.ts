@@ -1,169 +1,84 @@
-export const archCardCarouselPrompt = `Create an interactive curved arch card carousel (wheel deck slider) matching modern editorial motion design:
-- Geometry: Cards are dynamically arranged along a convex circular arch / convex wheel with radius ~900px, tangential z-rotation following the curve curvature.
-- Center Stage: Cards rise towards the apex at the center with natural scale and drop shadow, descending and angling gracefully towards the outer wings.
-- Tactile Physics: Smooth pointer drag and swipe with instantaneous velocity tracking, friction damping, spring snapping, and horizontal mouse wheel support.
-- Dome Track: A soft subtle convex radial surface beneath the cards highlighting the wheel track.
-- Controls: Smooth autoplay toggle, previous/next buttons, and interactive card indicators.
-- Tech: React, Framer Motion, TypeScript, Tailwind CSS.`;
+export const archCardCarouselPrompt = `Create an animated curved arch card carousel with smooth pendulum gliding motion:
+- Cards: Borderless rounded portrait stock images riding along a circular convex wheel trajectory.
+- Animation: Continuous smooth harmonic pendulum oscillation (gliding right, pausing gently, gliding left) matching reference motion design.
+- Geometry: Tangential z-rotation aligned with the circle normal, apex elevation, and depth scaling.
+- Dome Track: A large subtle circular dome horizon at the bottom.
+- Interactive: Touch and pointer drag to freely scrub and inspect cards with inertia coasting.
+- Tech: React, TypeScript, Tailwind CSS, and requestAnimationFrame physics.`;
 
-export const archCardCarouselCode = `import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Play, Pause, RotateCcw } from 'lucide-react';
+export const archCardCarouselCode = `import React, { useState, useEffect, useRef } from 'react';
 
-export interface CardItem {
-  id: string;
-  title: string;
-  category: string;
-  color: string;
-  customContent?: React.ReactNode;
-}
-
-const DEMO_CARDS: CardItem[] = [
-  {
-    id: '1',
-    title: 'Typographic Poster',
-    category: 'Editorial',
-    color: '#18181B',
-    customContent: (
-      <div className="w-full h-full bg-[#1A1A1E] text-white flex flex-col justify-between p-5 select-none">
-        <span className="text-[10px] font-mono tracking-widest text-white/50">N° 01 / ARCH</span>
-        <div className="my-auto space-y-[-8px]">
-          <h2 className="text-4xl font-black tracking-tighter text-white">OK</h2>
-          <h2 className="text-4xl font-black tracking-tighter text-zinc-400">RO</h2>
-          <h2 className="text-3xl font-black tracking-tighter text-white/20">GRO</h2>
-        </div>
-        <span className="text-[10px] font-mono text-zinc-400">100% PURE</span>
-      </div>
-    ),
-  },
-  {
-    id: '2',
-    title: 'Ceramic Form',
-    category: 'Sculpture',
-    color: '#D4CEBC',
-    customContent: (
-      <div className="w-full h-full bg-[#E5DFC9] relative p-5 flex flex-col justify-between">
-        <span className="text-[10px] font-mono text-[#786D5C] uppercase">Studio Vessel</span>
-        <div className="w-24 h-36 mx-auto bg-stone-300 rounded-full shadow-lg" />
-        <span className="text-xs font-semibold text-[#5A5042]">Form Study</span>
-      </div>
-    ),
-  },
-  {
-    id: '3',
-    title: 'Woven Blanket',
-    category: 'Textile',
-    color: '#C92A2A',
-    customContent: (
-      <div className="w-full h-full bg-[#B31D1D] p-5 text-white flex flex-col justify-between">
-        <span className="text-[10px] font-mono uppercase text-white/70">Nordic Weave</span>
-        <div className="w-32 h-32 mx-auto bg-emerald-700 rounded-lg shadow-inner" />
-        <span className="text-xs font-semibold">Wool 98%</span>
-      </div>
-    ),
-  },
-  {
-    id: '4',
-    title: 'Avian Focus',
-    category: 'Fauna',
-    color: '#212529',
-    customContent: (
-      <div className="w-full h-full bg-[#111113] p-5 text-white flex flex-col justify-end">
-        <span className="text-[10px] font-mono uppercase text-zinc-400">Studio</span>
-        <h4 className="text-base font-semibold">Columba Livia</h4>
-      </div>
-    ),
-  },
-  {
-    id: '5',
-    title: 'Nocturne Profile',
-    category: 'Portrait',
-    color: '#09090B',
-    customContent: (
-      <div className="w-full h-full bg-[#070709] p-5 text-white flex flex-col justify-between">
-        <span className="text-[10px] font-mono text-white/40">50MM F/1.2</span>
-        <h4 className="text-base font-semibold text-white/90">Luminescence</h4>
-      </div>
-    ),
-  },
-  {
-    id: '6',
-    title: 'Cobalt Arc',
-    category: 'Abstract',
-    color: '#3B82F6',
-    customContent: (
-      <div className="w-full h-full bg-[#7CA1D8] p-5 text-black flex flex-col justify-between">
-        <span className="text-[10px] font-mono font-bold text-black/60">№ 42</span>
-        <h4 className="text-base font-bold">CONCENTRIC</h4>
-      </div>
-    ),
-  },
-  {
-    id: '7',
-    title: 'Chroma Field',
-    category: 'Digital',
-    color: '#84CC16',
-    customContent: (
-      <div className="w-full h-full bg-[#1C1917] p-5 text-white flex flex-col justify-between">
-        <span className="text-[10px] font-mono text-lime-400">SPECTRUM 08</span>
-        <h4 className="text-base font-bold text-lime-400">SYNAPSE</h4>
-      </div>
-    ),
-  },
+const STOCK_IMAGES = [
+  'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
 ];
 
 export default function ArchCardCarousel({
-  cards = DEMO_CARDS,
-  radius = 920,
-  stepAngleDeg = 14.5,
-  cardWidth = 195,
-  cardHeight = 265,
+  images = STOCK_IMAGES,
+  radius = 860,
+  stepAngleDeg = 14.0,
+  cardWidth = 185,
+  cardHeight = 255,
 }: {
-  cards?: CardItem[];
+  images?: string[];
   radius?: number;
   stepAngleDeg?: number;
   cardWidth?: number;
   cardHeight?: number;
 }) {
   const [rotation, setRotation] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const containerRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const startRotationRef = useRef(0);
   const velocityRef = useRef(0);
   const lastXRef = useRef(0);
   const lastTimeRef = useRef(0);
+  const userInteractedTimeRef = useRef(0);
 
+  const count = images.length;
   const stepAngleRad = (stepAngleDeg * Math.PI) / 180;
-  const count = cards.length;
   const totalSpanRad = count * stepAngleRad;
 
   useEffect(() => {
-    const centerIndex = (Math.round(-rotation / stepAngleDeg) % count + count) % count;
-    setActiveIndex(centerIndex);
-  }, [rotation, stepAngleDeg, count]);
-
-  useEffect(() => {
+    let startTime = performance.now();
+    let currentDeg = 0;
     let animId: number;
-    const loop = () => {
+
+    const loop = (now: number) => {
+      const elapsedSec = (now - startTime) / 1000;
+      const timeSinceInteract = (now - userInteractedTimeRef.current) / 1000;
+
       if (!isDraggingRef.current) {
-        if (Math.abs(velocityRef.current) > 0.02) {
-          setRotation((prev) => prev + velocityRef.current);
-          velocityRef.current *= 0.94;
-        } else if (isPlaying) {
-          setRotation((prev) => prev - 0.18);
+        if (Math.abs(velocityRef.current) > 0.04) {
+          currentDeg += velocityRef.current;
+          velocityRef.current *= 0.93;
+          setRotation(currentDeg);
+        } else if (timeSinceInteract > 1.2) {
+          // Smooth pendulum oscillation: slides right, eases, slides left, eases
+          const osc = Math.sin((elapsedSec - 1.2) * 0.75);
+          const smoothOsc = Math.sign(osc) * Math.pow(Math.abs(osc), 0.85);
+          const targetDeg = smoothOsc * (stepAngleDeg * 2.1);
+          currentDeg += (targetDeg - currentDeg) * 0.05;
+          setRotation(currentDeg);
         }
       }
+
       animId = requestAnimationFrame(loop);
     };
+
     animId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animId);
-  }, [isPlaying]);
+  }, [stepAngleDeg]);
 
   const onPointerDown = (e: React.PointerEvent) => {
     isDraggingRef.current = true;
+    userInteractedTimeRef.current = performance.now();
     startXRef.current = e.clientX;
     lastXRef.current = e.clientX;
     startRotationRef.current = rotation;
@@ -174,62 +89,62 @@ export default function ArchCardCarousel({
 
   const onPointerMove = (e: React.PointerEvent) => {
     if (!isDraggingRef.current) return;
-    const dx = e.clientX - startXRef.current;
-    setRotation(startRotationRef.current + (dx / radius) * (180 / Math.PI) * 1.35);
-
+    userInteractedTimeRef.current = performance.now();
+    const currentX = e.clientX;
     const now = performance.now();
     const dt = Math.max(now - lastTimeRef.current, 1);
-    velocityRef.current = ((e.clientX - lastXRef.current) / dt) * 0.45;
-    lastXRef.current = e.clientX;
+
+    const deltaX = currentX - startXRef.current;
+    const degDelta = (deltaX / radius) * (180 / Math.PI) * 1.35;
+    setRotation(startRotationRef.current + degDelta);
+
+    velocityRef.current = ((currentX - lastXRef.current) / dt) * 0.5;
+    lastXRef.current = currentX;
     lastTimeRef.current = now;
   };
 
   const onPointerUp = (e: React.PointerEvent) => {
     isDraggingRef.current = false;
+    userInteractedTimeRef.current = performance.now();
     try {
       (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {}
   };
 
-  const rotateTo = (i: number) => {
-    velocityRef.current = 0;
-    setRotation(-i * stepAngleDeg);
-  };
-
   return (
-    <div className="w-full flex flex-col items-center select-none">
+    <div className="relative w-full flex flex-col items-center select-none">
       <div
-        ref={containerRef}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        className="relative w-full overflow-hidden flex items-end justify-center cursor-grab active:cursor-grabbing"
-        style={{ height: \`\${cardHeight + 175}px\` }}
+        className="relative w-full overflow-hidden flex items-end justify-center cursor-grab active:cursor-grabbing touch-pan-y"
+        style={{ height: \`\${cardHeight + 160}px\` }}
       >
-        {/* Dome arc */}
+        {/* Dome arc horizon */}
         <div
           className="absolute rounded-full pointer-events-none"
           style={{
             width: \`\${radius * 2}px\`,
             height: \`\${radius * 2}px\`,
-            bottom: \`-\${radius * 2 - (cardHeight + 115)}px\`,
+            bottom: \`-\${radius * 2 - (cardHeight + 110)}px\`,
             left: '50%',
             transform: 'translateX(-50%)',
-            background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F1EEE7 45%, #E5E1D5 100%)',
+            background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F5F3ED 40%, #E6E2D6 100%)',
             border: '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 -25px 60px -15px rgba(0, 0, 0, 0.07)',
           }}
         />
 
         {/* Cards along arch */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          {cards.map((card, i) => {
+          {images.map((src, i) => {
             const rotRad = (rotation * Math.PI) / 180;
             const baseAngle = i * stepAngleRad + rotRad;
             let offsetAngle = ((baseAngle % totalSpanRad) + totalSpanRad) % totalSpanRad;
             if (offsetAngle > totalSpanRad / 2) offsetAngle -= totalSpanRad;
 
             const offsetDeg = (offsetAngle * 180) / Math.PI;
-            if (Math.abs(offsetDeg) > 55) return null;
+            if (Math.abs(offsetDeg) > 58) return null;
 
             const x = radius * Math.sin(offsetAngle);
             const y = radius * (1 - Math.cos(offsetAngle));
@@ -237,56 +152,34 @@ export default function ArchCardCarousel({
 
             return (
               <div
-                key={card.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  rotateTo(i);
+                key={i}
+                onClick={() => {
+                  userInteractedTimeRef.current = performance.now();
+                  setRotation(-i * stepAngleDeg);
                 }}
                 className="absolute pointer-events-auto cursor-pointer"
                 style={{
                   width: \`\${cardWidth}px\`,
                   height: \`\${cardHeight}px\`,
                   transformOrigin: '50% 100%',
-                  transform: \`translate3d(\${x}px, \${y}px, 0px) rotateZ(\${offsetDeg}deg) scale(\${Math.max(0.86, 1.0 - (dist / 55) * 0.16)})\`,
+                  transform: \`translate3d(\${x}px, \${y}px, 0px) rotateZ(\${offsetDeg}deg) scale(\${Math.max(0.85, 1.0 - (dist / 58) * 0.16)})\`,
                   zIndex: Math.round(100 - dist * 1.5),
-                  opacity: dist > 46 ? 1 - (dist - 46) / 9 : 1,
-                  filter: \`drop-shadow(0 \${14 - dist * 0.18}px 20px rgba(0,0,0,0.14))\`,
+                  opacity: dist > 48 ? 1 - (dist - 48) / 10 : 1,
+                  filter: \`drop-shadow(0 \${16 - dist * 0.18}px 22px rgba(0, 0, 0, 0.16))\`,
                 }}
               >
-                <div className="w-full h-full rounded-[22px] overflow-hidden border border-black/8 bg-white shadow-xs">
-                  {card.customContent}
+                <div className="w-full h-full rounded-[24px] overflow-hidden bg-zinc-200 border border-black/5 shadow-xs transition-transform duration-200 hover:scale-[1.02]">
+                  <img
+                    src={src}
+                    alt={\`Card \${i + 1}\`}
+                    className="w-full h-full object-cover select-none pointer-events-none"
+                    draggable={false}
+                  />
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
-
-      {/* Controls */}
-      <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-black/8 shadow-sm mt-3">
-        <button
-          onClick={() => setRotation((r) => r + stepAngleDeg)}
-          className="p-1.5 rounded-full bg-black/5 hover:bg-black/10 text-black/70 cursor-pointer"
-        >
-          <ChevronLeft size={16} />
-        </button>
-        <div className="flex items-center gap-1.5">
-          {cards.map((card, idx) => (
-            <button
-              key={card.id}
-              onClick={() => rotateTo(idx)}
-              className={\`transition-all rounded-full cursor-pointer \${
-                activeIndex === idx ? 'w-5 h-2 bg-[#EC5E27]' : 'w-2 h-2 bg-black/20'
-              }\`}
-            />
-          ))}
-        </div>
-        <button
-          onClick={() => setRotation((r) => r - stepAngleDeg)}
-          className="p-1.5 rounded-full bg-black/5 hover:bg-black/10 text-black/70 cursor-pointer"
-        >
-          <ChevronRight size={16} />
-        </button>
       </div>
     </div>
   );
