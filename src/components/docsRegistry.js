@@ -66,6 +66,7 @@ import DarkModeMobileNavbarShowcase from './ui/DarkModeMobileNavbarShowcase';
 import AnimatedSearchDemo from './ui/AnimatedSearchDemo';
 import SidebarShowcase from './ui/Sidebar';
 import WalletCardRevealShowcase from './ui/WalletCardRevealShowcase';
+import MatteFolderCardShowcase from './ui/MatteFolderCardShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -84,6 +85,7 @@ import darkModeMobileNavbarSource from './ui/DarkModeMobileNavbarShowcase.jsx?ra
 import { darkModeMobileNavbarPrompt } from './ui/darkModeMobileNavbarSource';
 import { pillTrailPrompt, pillTrailCode } from './ui/pillTrailSource';
 import { walletCardRevealPrompt, walletCardRevealCode } from './ui/walletCardRevealSource';
+import { matteFolderCardPrompt, matteFolderCardCode } from './ui/matteFolderCardSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -220,6 +222,7 @@ export const categories = [
         description: 'Layered, interactive, and tactile card components with physical animations.',
         components: entries(
             WalletCardRevealShowcase,
+            MatteFolderCardShowcase,
         ),
     },
 ];
@@ -284,6 +287,12 @@ export const readyDetails = {
         description: 'A tactile fintech leather wallet card with a hidden layered stack of payment cards (Stripe, Wise, PayPal) that smoothly fan out on clicking the interactive eye toggle.',
         prompt: walletCardRevealPrompt,
         code: walletCardRevealCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'matte-folder-card': {
+        description: 'A sleek modern folder card featuring a living animated aurora mesh gradient and an inverted-fillet matte dark flap with high-contrast typography and interactive hover tilt.',
+        prompt: matteFolderCardPrompt,
+        code: matteFolderCardCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
