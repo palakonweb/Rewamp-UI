@@ -34,6 +34,7 @@ import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
 import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
 import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
 import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
+import ParticleMorphOrbShowcase from './ui/ParticleMorphOrbShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
@@ -74,6 +75,7 @@ import AnimatedSearchDemo from './ui/AnimatedSearchDemo';
 import SidebarShowcase from './ui/Sidebar';
 import WalletCardRevealShowcase from './ui/WalletCardRevealShowcase';
 import MatteFolderCardShowcase from './ui/MatteFolderCardShowcase';
+import ArchCardCarouselShowcase from './ui/ArchCardCarouselShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -93,12 +95,14 @@ import { darkModeMobileNavbarPrompt } from './ui/darkModeMobileNavbarSource';
 import { pillTrailPrompt, pillTrailCode } from './ui/pillTrailSource';
 import { walletCardRevealPrompt, walletCardRevealCode } from './ui/walletCardRevealSource';
 import { matteFolderCardPrompt, matteFolderCardCode } from './ui/matteFolderCardSource';
+import { archCardCarouselPrompt, archCardCarouselCode } from './ui/archCardCarouselSource';
 import { animatedSearchPrompt, animatedSearchCode } from './ui/animatedSearchSource';
 import { fluidWaveNavbarPrompt, fluidWaveNavbarCode } from './ui/fluidWaveNavbarSource';
 import { glassOrbTogglePrompt, glassOrbToggleCode } from './ui/glassOrbToggleSource';
 import { fluidMorphOrbPrompt, fluidMorphOrbCode } from './ui/fluidMorphOrbSource';
 import { wireframeRingOrbPrompt, wireframeRingOrbCode } from './ui/wireframeRingOrbSource';
 import { particleDotOrbPrompt, particleDotOrbCode } from './ui/particleDotOrbSource';
+import { particleMorphOrbPrompt, particleMorphOrbCode } from './ui/particleMorphOrbSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -237,6 +241,7 @@ export const categories = [
         components: entries(
             WalletCardRevealShowcase,
             MatteFolderCardShowcase,
+            ArchCardCarouselShowcase,
         ),
     },
     {
@@ -260,6 +265,11 @@ export const categories = [
                 Component: WireframeRingOrbShowcase,
                 title: 'Wireframe Ring Orb',
                 slug: 'wireframe-ring-orb',
+            },
+            {
+                Component: ParticleMorphOrbShowcase,
+                title: 'Particle Morph Orb',
+                slug: 'particle-morph-orb',
             },
         ],
     },
@@ -333,6 +343,12 @@ export const readyDetails = {
         code: matteFolderCardCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
+    'arch-card-carousel': {
+        description: 'An interactive curved arch card carousel where cards ride tangentially along a convex wheel trajectory with drag physics, tangent rotation, and inertia.',
+        prompt: archCardCarouselPrompt,
+        code: archCardCarouselCode,
+        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
+    },
     'animated-search-demo': {
         description: 'A minimalist circular search capsule that smoothly expands on hover with cushioned spring physics into an interactive search bar with ⌘K badge and instant clear action.',
         prompt: animatedSearchPrompt,
@@ -374,6 +390,12 @@ export const readyDetails = {
         prompt: wireframeRingOrbPrompt,
         code: wireframeRingOrbCode,
         techStack: 'React · Three.js (WebGL) · Framer Motion',
+    },
+    'particle-morph-orb': {
+        description: 'A dark obsidian AI thinking capsule featuring a 3D morphing particle cloud orb on the left and shimmery reasoning text on the right.',
+        prompt: particleMorphOrbPrompt,
+        code: particleMorphOrbCode,
+        techStack: 'React · Three.js (WebGL) · GLSL · Framer Motion',
     },
 };
 

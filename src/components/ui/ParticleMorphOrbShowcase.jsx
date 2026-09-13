@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Play, Pause, RotateCcw } from 'lucide-react';
-import FluidMorphOrb from './FluidMorphOrb';
-import { fluidMorphOrbPrompt } from './fluidMorphOrbSource';
+import ParticleMorphOrb from './ParticleMorphOrb';
+import { particleMorphOrbPrompt } from './particleMorphOrbSource';
 
 const PHRASES = [
-    'pondering...',
-    'manifesting vibes...',
-    'brewing thoughts...',
-    'hold up a sec...',
-    'crafting magic...',
-    'all set for you 💫',
+    'deep thinking...',
+    'manifesting...',
+    'cooking in the dark...',
+    'hold up wait...',
+    'let him cook...',
+    'done bestie 🔥',
 ];
 
-export default function FluidMorphOrbShowcase() {
+export default function ParticleMorphOrbShowcase() {
     const [copied, setCopied] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(true);
@@ -29,7 +29,7 @@ export default function FluidMorphOrbShowcase() {
     }, [isPlaying]);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(fluidMorphOrbPrompt);
+        navigator.clipboard.writeText(particleMorphOrbPrompt);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -42,13 +42,13 @@ export default function FluidMorphOrbShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Studio Canvas ── */}
+            {/* ── Dark Matte Studio Canvas ── */}
             <div
-                className="relative w-full rounded-[28px] border border-black/8 overflow-hidden shadow-sm flex flex-col items-center justify-center p-8 sm:p-14 select-none min-h-[380px]"
+                className="relative w-full rounded-[28px] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center justify-center p-8 sm:p-14 select-none min-h-[380px]"
                 style={{
-                    backgroundColor: '#F5F7FA',
+                    backgroundColor: '#09090C',
                     backgroundImage: `
-                        radial-gradient(circle at 50% 45%, #FFFFFF 0%, #EEF2F7 60%, #E2E8F0 100%)
+                        radial-gradient(circle at 50% 45%, #15151B 0%, #09090C 70%, #050507 100%)
                     `,
                 }}
             >
@@ -57,28 +57,31 @@ export default function FluidMorphOrbShowcase() {
                     <button
                         onClick={() => setIsPlaying(!isPlaying)}
                         title={isPlaying ? 'Pause cycling' : 'Play cycling'}
-                        className="p-1.5 rounded-lg bg-white/80 hover:bg-white text-black/60 hover:text-black transition-all border border-black/8 shadow-xs cursor-pointer"
+                        className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition-all border border-white/10 shadow-xs cursor-pointer"
                     >
                         {isPlaying ? <Pause size={14} /> : <Play size={14} />}
                     </button>
                     <button
                         onClick={handleReset}
                         title="Restart phrase sequence"
-                        className="p-1.5 rounded-lg bg-white/80 hover:bg-white text-black/60 hover:text-black transition-all border border-black/8 shadow-xs cursor-pointer"
+                        className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition-all border border-white/10 shadow-xs cursor-pointer"
                     >
                         <RotateCcw size={14} />
                     </button>
                 </div>
 
-                {/* ── WHITE AI THINKING PILL: Cobalt Fluid Orb on LEFT, Shimmery Text on RIGHT ── */}
+                {/* ── DARK AI THINKING PILL: 3D Particle Morph Orb on LEFT, Shimmery Text on RIGHT ── */}
                 <motion.div
                     layout
                     transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-                    className="relative flex items-center gap-3.5 pl-3.5 pr-6 py-2.5 rounded-full border border-black/10 shadow-lg shadow-black/5 backdrop-blur-md bg-white cursor-default my-auto"
+                    className="relative flex items-center gap-3.5 pl-3.5 pr-6 py-2.5 rounded-full border border-white/12 shadow-2xl backdrop-blur-xl bg-[#16161B] cursor-default my-auto"
+                    style={{
+                        boxShadow: '0 20px 45px -15px rgba(0, 0, 0, 0.85), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12)',
+                    }}
                 >
-                    {/* LEFT: 3D Fluid Morph Orb */}
-                    <div className="relative w-10 h-10 shrink-0 flex items-center justify-center rounded-full overflow-hidden">
-                        <FluidMorphOrb size={40} speed={1.0} variant="fluid" />
+                    {/* LEFT: 3D Undulating Particle Morph Orb */}
+                    <div className="relative w-12 h-12 shrink-0 flex items-center justify-center rounded-full">
+                        <ParticleMorphOrb size={48} speed={1.0} />
                     </div>
 
                     {/* RIGHT: Shimmery Text */}
@@ -92,7 +95,7 @@ export default function FluidMorphOrbShowcase() {
                                 transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                                 className="text-[15px] sm:text-[15.5px] font-sans font-medium tracking-normal select-none"
                                 style={{
-                                    backgroundImage: 'linear-gradient(90deg, #18181B 0%, #71717A 40%, #18181B 80%)',
+                                    backgroundImage: 'linear-gradient(90deg, #E4E4E7 0%, #A1A1AA 40%, #E4E4E7 80%)',
                                     backgroundSize: '200% 100%',
                                     WebkitBackgroundClip: 'text',
                                     WebkitTextFillColor: 'transparent',
@@ -113,7 +116,7 @@ export default function FluidMorphOrbShowcase() {
                         Prompt Setup
                     </p>
                     <code className="text-[13px] text-black/80 font-mono block overflow-hidden text-ellipsis w-full line-clamp-3">
-                        {fluidMorphOrbPrompt}
+                        {particleMorphOrbPrompt}
                     </code>
                 </div>
                 <button

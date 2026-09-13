@@ -2,7 +2,7 @@ export const particleDotOrbPrompt = `Create an AI thinking capsule in clean whit
 - Pill Capsule: Pure white floating pill (rounded-full, bg-white, border border-black/10, soft shadow).
 - Left: 3D rotating Fibonacci particle sphere rendered with Three.js (crisp charcoal dots with depth scaling).
 - Right: Shimmery text with animated light sweep, smoothly switching through AI reasoning phrases:
-  "thinking..." -> "manifesting...." -> "cooking...." -> "hold.upp..." -> "let me cookkk............" -> "donebestiee..."
+  "thinking..." -> "connecting dots..." -> "cooking up ideas..." -> "hold tight..." -> "let me cook..." -> "done bestie ✨"
 - Tech: React, Three.js (WebGL), and Framer Motion.`;
 
 export const particleDotOrbCode = `import React, { useEffect, useRef, useState } from 'react';
@@ -11,11 +11,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const PHRASES = [
   'thinking...',
-  'manifesting....',
-  'cooking....',
-  'hold.upp...',
-  'let me cookkk............',
-  'donebestiee...',
+  'connecting dots...',
+  'cooking up ideas...',
+  'hold tight...',
+  'let me cook...',
+  'done bestie ✨',
 ];
 
 export default function ParticleDotCapsule() {

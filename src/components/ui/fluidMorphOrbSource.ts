@@ -2,7 +2,7 @@ export const fluidMorphOrbPrompt = `Create a sleek AI thinking indicator capsule
 - Layout: A compact floating dark matte pill capsule (rounded-full, bg-[#1E1E23], border border-white/12, shadow-2xl).
 - Left: An interactive 3D animated orb (supports Particle Matrix dot cloud with Fibonacci distribution, or Cobalt Fluid morphing mesh).
 - Right: Smooth cycling reasoning status text with blur-fade transitions:
-  "thinking..." -> "manifesting...." -> "cooking...." -> "hold.upp..." -> "let me cookkk............" -> "donebestiee..."
+  "pondering..." -> "manifesting vibes..." -> "brewing thoughts..." -> "hold up a sec..." -> "crafting magic..." -> "all set for you 💫"
 - Tech: React, Three.js (WebGL), custom GLSL shaders, and Framer Motion.`;
 
 export const fluidMorphOrbCode = `import React, { useEffect, useRef } from 'react';

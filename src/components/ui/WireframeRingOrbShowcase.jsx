@@ -5,12 +5,12 @@ import WireframeRingOrb from './WireframeRingOrb';
 import { wireframeRingOrbPrompt } from './wireframeRingOrbSource';
 
 const PHRASES = [
-    'thinking...',
-    'manifesting....',
-    'cooking....',
-    'hold.upp...',
-    'let me cookkk............',
-    'donebestiee...',
+    'analyzing...',
+    'mapping contours...',
+    'simulating...',
+    'hold on tight...',
+    'piecing it together...',
+    'nailed it 🎯',
 ];
 
 export default function WireframeRingOrbShowcase() {

@@ -6,11 +6,11 @@ import { particleDotOrbPrompt } from './particleDotOrbSource';
 
 const PHRASES = [
     'thinking...',
-    'manifesting....',
-    'cooking....',
-    'hold.upp...',
-    'let me cookkk............',
-    'donebestiee...',
+    'connecting dots...',
+    'cooking up ideas...',
+    'hold tight...',
+    'let me cook...',
+    'done bestie ✨',
 ];
 
 export default function ParticleDotOrbShowcase() {
