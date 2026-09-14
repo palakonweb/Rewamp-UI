@@ -30,7 +30,9 @@ import ElasticLineGridShowcase from './ui/ElasticLineGridShowcase';
 import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
 import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
 import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcase';
+import GradientWaveBackgroundShowcase from './ui/GradientWaveBackgroundShowcase';
 import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
+import { gradientWavePrompt, gradientWaveCode } from './ui/gradientWaveSource';
 import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
 import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
 import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
@@ -155,7 +157,7 @@ export const categories = [
             ParticleWaveShowcase, HyperspeedWarpShowcase, SineRibbonsShowcase,
             AmbientGlowOrbsShowcase, RefractedBeamsShowcase, CosmicDustShowcase,
             DigitalRainShowcase, PixelSnowBackgroundShowcase, WaterCausticsBackgroundShowcase,
-            PixelCloudBackgroundShowcase,
+            GradientWaveBackgroundShowcase, PixelCloudBackgroundShowcase,
         ),
     },
     {
@@ -306,9 +308,15 @@ export const readyDetails = {
         techStack: 'React · three.js (WebGL) · GLSL',
     },
     'water-caustics-background': {
-        description: 'An animated water-caustics background rendered with a custom three.js shader — the crisscrossing light-web pattern and twinkling glints you see refracted on a swimming-pool floor, drifting over a deep-to-shallow color gradient.',
+        description: 'An authentic animated swimming pool water-caustics background matching sunlit turquoise pool footage — shimmering caustic light nets, gentle surface wave ripples, and deep refractive water depth.',
         prompt: waterCausticsPrompt,
         code: waterCausticsSource,
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'gradient-wave-background': {
+        description: 'A luminous chromatic silk fluid wave background with undulating S-curved caustic light ribbons over a deep midnight navy base, featuring electric fuchsia, neon rose, and royal violet waves with HDR bloom.',
+        prompt: gradientWavePrompt,
+        code: gradientWaveCode,
         techStack: 'React · three.js (WebGL) · GLSL',
     },
     'pixel-cloud-background': {

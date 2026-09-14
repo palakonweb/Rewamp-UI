@@ -18,20 +18,14 @@ export default function WaterCausticsBackgroundShowcase() {
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
             {/* PREVIEW SECTION — live WaterCaustics (three.js / WebGL) */}
-            <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#2E7EA0] shadow-2xl">
+            <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#104E63] shadow-2xl">
                 <div className="absolute inset-0 z-0">
                     <WaterCaustics
-                        deepColor="#0A6FA8"
-                        midColor="#189CEA"
-                        lineColor="#49C6FE"
-                        edgeColor="#FFFFFF"
                         speed={0.35}
                         scale={1.0}
-                        refract={0.005}
-                        ripple={0.025}
-                        bloomStrength={0.8}
-                        threshold={0.7}
-                        exposure={1.15}
+                        bloomStrength={0.50}
+                        threshold={0.75}
+                        exposure={1.05}
                     />
                 </div>
             </div>
