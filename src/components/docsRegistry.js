@@ -32,7 +32,11 @@ import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
 import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcase';
 import GradientWaveBackgroundShowcase from './ui/GradientWaveBackgroundShowcase';
 import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
+import SilkWavesBackgroundShowcase from './ui/SilkWavesBackgroundShowcase';
+import LayeredPaperWavesBackgroundShowcase from './ui/LayeredPaperWavesBackgroundShowcase';
 import { gradientWavePrompt, gradientWaveCode } from './ui/gradientWaveSource';
+import { silkWavesPrompt, silkWavesCode } from './ui/silkWavesSource';
+import { layeredPaperWavesPrompt, layeredPaperWavesCode } from './ui/layeredPaperWavesSource';
 import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
 import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
 import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
@@ -158,6 +162,7 @@ export const categories = [
             AmbientGlowOrbsShowcase, RefractedBeamsShowcase, CosmicDustShowcase,
             DigitalRainShowcase, PixelSnowBackgroundShowcase, WaterCausticsBackgroundShowcase,
             GradientWaveBackgroundShowcase, PixelCloudBackgroundShowcase,
+            SilkWavesBackgroundShowcase, LayeredPaperWavesBackgroundShowcase,
         ),
     },
     {
@@ -323,6 +328,18 @@ export const readyDetails = {
         description: 'A procedural retro pixel-art cloud background rendered with a custom three.js shader — posterized 3-tone clouds snapped to a chunky pixel grid, drifting slowly sideways over a flat sky-blue base.',
         prompt: pixelCloudPrompt,
         code: pixelCloudSource,
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'silk-waves-background': {
+        description: 'An iridescent flowing satin silk background matching deep electric-violet fabric footage — undulating liquid drapes sweeping diagonally with silver-lavender specular ridge crests and cool ambient teal lighting.',
+        prompt: silkWavesPrompt,
+        code: silkWavesCode,
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'layered-paper-waves-background': {
+        description: 'A tactile layered papercraft wave background matching pastel topographic cutout footage — seven physical curved paper strata with soft ambient drop shadows, crisp cut bevels, and a chromatic powder-blue to blush-rose gradient.',
+        prompt: layeredPaperWavesPrompt,
+        code: layeredPaperWavesCode,
         techStack: 'React · three.js (WebGL) · GLSL',
     },
     'apple-navbar': {
