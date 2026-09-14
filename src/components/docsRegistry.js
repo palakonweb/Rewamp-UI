@@ -35,6 +35,7 @@ import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
 import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
 import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
 import ParticleMorphOrbShowcase from './ui/ParticleMorphOrbShowcase';
+import MarbledFluidOrbShowcase from './ui/MarbledFluidOrbShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
@@ -76,6 +77,7 @@ import SidebarShowcase from './ui/Sidebar';
 import WalletCardRevealShowcase from './ui/WalletCardRevealShowcase';
 import MatteFolderCardShowcase from './ui/MatteFolderCardShowcase';
 import ArchCardCarouselShowcase from './ui/ArchCardCarouselShowcase';
+import FrostedFolderCardShowcase from './ui/FrostedFolderCardShowcase';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -96,6 +98,7 @@ import { pillTrailPrompt, pillTrailCode } from './ui/pillTrailSource';
 import { walletCardRevealPrompt, walletCardRevealCode } from './ui/walletCardRevealSource';
 import { matteFolderCardPrompt, matteFolderCardCode } from './ui/matteFolderCardSource';
 import { archCardCarouselPrompt, archCardCarouselCode } from './ui/archCardCarouselSource';
+import { frostedFolderCardPrompt, frostedFolderCardCode } from './ui/frostedFolderCardSource';
 import { animatedSearchPrompt, animatedSearchCode } from './ui/animatedSearchSource';
 import { fluidWaveNavbarPrompt, fluidWaveNavbarCode } from './ui/fluidWaveNavbarSource';
 import { glassOrbTogglePrompt, glassOrbToggleCode } from './ui/glassOrbToggleSource';
@@ -103,6 +106,7 @@ import { fluidMorphOrbPrompt, fluidMorphOrbCode } from './ui/fluidMorphOrbSource
 import { wireframeRingOrbPrompt, wireframeRingOrbCode } from './ui/wireframeRingOrbSource';
 import { particleDotOrbPrompt, particleDotOrbCode } from './ui/particleDotOrbSource';
 import { particleMorphOrbPrompt, particleMorphOrbCode } from './ui/particleMorphOrbSource';
+import { marbledFluidOrbPrompt, marbledFluidOrbCode } from './ui/marbledFluidOrbSource';
 
 // ---------------------------------------------------------------------------
 // Component registry — data-driven, no per-category if/else branches.
@@ -242,6 +246,7 @@ export const categories = [
             WalletCardRevealShowcase,
             MatteFolderCardShowcase,
             ArchCardCarouselShowcase,
+            FrostedFolderCardShowcase,
         ),
     },
     {
@@ -251,6 +256,11 @@ export const categories = [
         size: 'md',
         description: 'Interactive AI interfaces, Claude-style reasoning streams, thinking indicators, and 3D assistant companions.',
         components: [
+            {
+                Component: MarbledFluidOrbShowcase,
+                title: 'Marbled Fluid Orb',
+                slug: 'marbled-fluid-orb',
+            },
             {
                 Component: ParticleDotOrbShowcase,
                 title: 'Particle Dot Orb',
@@ -307,6 +317,12 @@ export const readyDetails = {
         code: pixelCloudSource,
         techStack: 'React · three.js (WebGL) · GLSL',
     },
+    'apple-navbar': {
+        description: 'An authentic MacBook Dynamic Notch Navbar that rests as a compact camera notch at the top bezel and fluidly expands on hover into a sleek macOS NotchNook navbar with live widgets, calendar, music controls, and quick action pills.',
+        prompt: appleNavbarPrompt,
+        code: appleNavbarCode,
+        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
+    },
     'pill-expand-navbar': {
         description: 'A compact black pill bottom navbar where the active or hovered tab smoothly, slowly expands to a fixed width to reveal its label, keeping the overall navbar width constant while the rest stay collapsed to icon-only.',
         prompt: pillExpandNavbarPrompt,
@@ -349,6 +365,12 @@ export const readyDetails = {
         code: archCardCarouselCode,
         techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
     },
+    'frosted-folder-card': {
+        description: 'A tactile 3D card featuring a dark obsidian folder with a frosted acrylic flap and three wireframe document sheets that fan out upward on hover with spring physics.',
+        prompt: frostedFolderCardPrompt,
+        code: frostedFolderCardCode,
+        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
+    },
     'animated-search-demo': {
         description: 'A minimalist circular search capsule that smoothly expands on hover with cushioned spring physics into an interactive search bar with ⌘K badge and instant clear action.',
         prompt: animatedSearchPrompt,
@@ -366,6 +388,12 @@ export const readyDetails = {
         prompt: glassOrbTogglePrompt,
         code: glassOrbToggleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'marbled-fluid-orb': {
+        description: 'A minimalist white AI thinking capsule in light mode featuring an iridescent marbled silk fluid sphere with coral, rose, peach, and violet ribbons on the left and shimmery reasoning text on the right.',
+        prompt: marbledFluidOrbPrompt,
+        code: marbledFluidOrbCode,
+        techStack: 'React · Three.js (WebGL) · Framer Motion · GLSL',
     },
     'particle-dot-orb': {
         description: 'A minimalist white AI thinking capsule featuring a 3D Fibonacci particle sphere on the left and shimmery reasoning text on the right.',

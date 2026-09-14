@@ -1,295 +1,429 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { PawPrint, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { PawPrint, Sparkles, Play, Pause, SkipForward, SkipBack, Settings, Camera, Music, Check, Folder } from 'lucide-react';
 
 export interface NavItem {
-    label: string;
-    href: string;
-    badge?: string;
+  label: string;
+  href: string;
+  badge?: string;
 }
 
-const PREVIEW_ACCENTS = [
-    'from-[#FF6B6B] to-[#B91C1C]',
-    'from-[#3B82F6] to-[#1E40AF]',
-    'from-[#A855F7] to-[#6D28D9]',
-    'from-[#22C55E] to-[#0F766E]',
-    'from-[#F59E0B] to-[#B45309]',
-    'from-[#EC4899] to-[#9D174D]',
-];
-
 export interface AppleNavbarProps {
-    brandName?: string;
-    logoUrl?: string;
-    items?: NavItem[];
-    downloadText?: string;
-    onDownload?: () => void;
-    activeHref?: string;
-    className?: string;
+  brandName?: string;
+  items?: NavItem[];
+  downloadText?: string;
+  onDownload?: () => void;
+  activeHref?: string;
+  className?: string;
+  /** Force expanded state */
+  alwaysExpanded?: boolean;
+  /** Resting notch display mode: 'ai-thinking' (matching user screenshot) or 'camera' */
+  notchMode?: 'ai-thinking' | 'camera';
+  /** Custom action text in AI Thinking mode */
+  actionText?: string;
 }
 
 const DEFAULT_ITEMS: NavItem[] = [
-    { label: 'Components', href: '#components' },
-    { label: 'Features', href: '#features' },
-    { label: 'Templates', href: '#templates' },
-    { label: 'Pricing', href: '#pricing' },
+  { label: 'Components', href: '#components' },
+  { label: 'Features', href: '#features' },
+  { label: 'Templates', href: '#templates' },
+  { label: 'Pricing', href: '#pricing' },
+];
+
+const CALENDAR_DAYS = [
+  { day: 'S', date: 10 },
+  { day: 'M', date: 11 },
+  { day: 'T', date: 12 },
+  { day: 'W', date: 13, isToday: true },
+  { day: 'T', date: 14 },
+  { day: 'F', date: 15 },
+  { day: 'S', date: 16 },
+];
+
+const AI_STEPS = [
+  'Read input.tsx 23 lines',
+  'Analyzed design tokens',
+  'Editing AppleNavbar.tsx',
+  'Compiling Vite bundle',
 ];
 
 export const AppleNavbar: React.FC<AppleNavbarProps> = ({
-    brandName = 'Purrform',
-    items = DEFAULT_ITEMS,
-    downloadText = 'Browse',
-    onDownload,
-    activeHref = '#components',
-    className = '',
+  brandName = 'Purrform',
+  items = DEFAULT_ITEMS,
+  downloadText = 'Browse',
+  onDownload,
+  activeHref = '#components',
+  className = '',
+  alwaysExpanded = false,
+  notchMode = 'ai-thinking',
+  actionText,
 }) => {
-    const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-    const [currentHref, setCurrentHref] = useState<string>(activeHref);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeTab, setActiveTab] = useState<'nook' | 'tray'>('nook');
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [hoveredNavIdx, setHoveredNavIdx] = useState<number | null>(null);
+  const [currentHref, setCurrentHref] = useState(activeHref);
+  const [reminderAdded, setReminderAdded] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
 
-    return (
-        <header className={`relative w-full select-none z-50 ${className}`}>
-            {/* Thin full-bleed line across the very top — the "MacBook bezel" the notch flares out of */}
-            <div className="hidden md:block absolute top-0 left-0 right-0 h-[3px] bg-black/95" />
+  // Cycle through AI steps when in AI thinking mode
+  useEffect(() => {
+    if (notchMode !== 'ai-thinking' || actionText) return;
+    const timer = setInterval(() => {
+      setStepIndex((prev) => (prev + 1) % AI_STEPS.length);
+    }, 3600);
+    return () => clearInterval(timer);
+  }, [notchMode, actionText]);
 
-            {/* Desktop / Tablet Navbar — a narrower "notch" centered under the line, flaring out via small concave corners, large convex rounded-bottom */}
-            <div className="hidden md:flex justify-center w-full">
-            <motion.nav
-                initial={{ y: -24, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                className="relative flex items-center justify-between gap-3 lg:gap-6 w-[calc(100%-4rem)] max-w-4xl px-5 lg:px-8 py-3 lg:py-3.5 rounded-b-[36px] bg-black/95 backdrop-blur-md shadow-[0_16px_40px_rgba(0,0,0,0.35)] transition-colors duration-300"
+  const expanded = alwaysExpanded || isHovered;
+  const currentActionText = actionText || AI_STEPS[stepIndex];
+
+  const handleAddReminder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setReminderAdded(true);
+    setTimeout(() => setReminderAdded(false), 2000);
+  };
+
+  // Dimensions based on mode
+  const restingWidth = notchMode === 'ai-thinking' ? 276 : 184;
+  const restingHeight = notchMode === 'ai-thinking' ? 66 : 33;
+  const restingRadius = notchMode === 'ai-thinking' ? 24 : 18;
+
+  return (
+    <header className={`relative w-full select-none flex justify-center z-50 ${className}`}>
+      {/* ── Top Bezel Line ── */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-black pointer-events-none" />
+
+      {/* ── Dynamic MacBook Notch Container ── */}
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setHoveredNavIdx(null);
+        }}
+        className="relative flex justify-center"
+      >
+        <motion.nav
+          layout
+          initial={false}
+          animate={{
+            width: expanded ? 710 : restingWidth,
+            height: expanded ? 104 : restingHeight,
+            borderBottomLeftRadius: expanded ? 28 : restingRadius,
+            borderBottomRightRadius: expanded ? 28 : restingRadius,
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 360,
+            damping: 28,
+            mass: 0.85,
+          }}
+          className={`relative bg-black border-x border-b border-white/[0.08] shadow-[0_20px_48px_rgba(0,0,0,0.65)] cursor-pointer overflow-hidden flex flex-col justify-between ${
+            expanded
+              ? 'p-3.5 sm:p-4'
+              : notchMode === 'ai-thinking'
+              ? 'px-4 pt-2 pb-2.5 items-center justify-center'
+              : 'px-3 py-1.5 items-center justify-center'
+          }`}
+          style={{
+            maxWidth: 'calc(100vw - 2rem)',
+          }}
+        >
+          {/* ── Left Concave Flare (curves seamlessly out into the top bezel) ── */}
+          <svg
+            className="absolute top-0 left-0 -translate-x-full w-4 h-4 pointer-events-none"
+            viewBox="0 0 16 16"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path d="M0,0 L16,0 L16,16 C16,7 9,0 0,0 Z" fill="#000000" />
+          </svg>
+
+          {/* ── Right Concave Flare (mirrored curve into the top bezel) ── */}
+          <svg
+            className="absolute top-0 right-0 translate-x-full w-4 h-4 pointer-events-none [transform:scaleX(-1)]"
+            viewBox="0 0 16 16"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path d="M0,0 L16,0 L16,16 C16,7 9,0 0,0 Z" fill="#000000" />
+          </svg>
+
+          {/* ══════════════════════════════════════════════════════════════════ */}
+          {/* 1. RESTING STATE A: CLAUDE AI CODE THINKING NOTCH (USER IMAGE)    */}
+          {/* ══════════════════════════════════════════════════════════════════ */}
+          {!expanded && notchMode === 'ai-thinking' && (
+            <motion.div
+              key="notch-ai-thinking"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex flex-col items-center justify-center w-full h-full text-center select-none"
             >
-                {/* Left concave flare — hand-drawn path curving inward from the thin line into the notch's left edge */}
-                <svg
-                    className="absolute top-0 left-0 -translate-x-full w-2.5 h-2.5"
-                    viewBox="0 0 10 10"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                >
-                    <path d="M0,0 L10,0 L10,10 Q0,10 0,3 L0,0 Z" fill="rgba(0,0,0,0.95)" />
-                </svg>
-                {/* Right concave flare — mirrored */}
-                <svg
-                    className="absolute top-0 right-0 w-2.5 h-2.5 [transform:translateX(100%)_scaleX(-1)]"
-                    viewBox="0 0 10 10"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                >
-                    <path d="M0,0 L10,0 L10,10 Q0,10 0,3 L0,0 Z" fill="rgba(0,0,0,0.95)" />
-                </svg>
-                {/* Brand / Logo */}
-                <a
-                    href="#"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentHref('#');
-                    }}
-                    className="flex items-center gap-2.5 text-white group shrink-0"
-                >
-                    {/* Rounded-square app icon with Purrform paw glyph */}
-                    <div className="relative w-6 h-6 rounded-[6px] bg-gradient-to-b from-[#FF6B6B] via-[#EF4444] to-[#B91C1C] flex items-center justify-center overflow-hidden shadow-[0_2px_6px_rgba(239,68,68,0.45),inset_0_1px_1px_rgba(255,255,255,0.5)] transition-transform duration-200 group-hover:scale-105">
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
-                        <PawPrint size={13} className="text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]" strokeWidth={2.2} />
-                    </div>
+              {/* Top Sub-line: Read input.tsx 23 lines */}
+              <span className="text-[13px] text-[#A1A1AA] font-mono tracking-tight leading-none truncate max-w-[240px]">
+                {currentActionText}
+              </span>
 
-                    <span className="font-semibold text-[13px] text-white tracking-tight">
-                        {brandName}
-                    </span>
-                </a>
-
-                {/* Nav Links with Magnetic Framer Motion Pill */}
-                <div
-                    className="relative flex items-center gap-0 min-w-0 overflow-hidden"
-                    onMouseLeave={() => setHoveredIdx(null)}
-                >
-                    {items.map((item, index) => {
-                        const isActive = currentHref === item.href;
-                        return (
-                            <a
-                                key={item.label}
-                                href={item.href}
-                                onMouseEnter={() => setHoveredIdx(index)}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setCurrentHref(item.href);
-                                }}
-                                className={`relative shrink-0 px-2 lg:px-3 py-1.5 text-[11.5px] lg:text-[12.5px] font-medium whitespace-nowrap transition-colors duration-200 z-10 ${
-                                    isActive ? 'text-white' : 'text-neutral-400 hover:text-white'
-                                }`}
-                            >
-                                {hoveredIdx === index && (
-                                    <motion.span
-                                        layoutId="navbar-hover-pill"
-                                        className="absolute inset-0 rounded-full bg-white/10 -z-10"
-                                        transition={{ type: 'spring', stiffness: 450, damping: 32 }}
-                                    />
-                                )}
-                                {isActive && hoveredIdx === null && (
-                                    <span className="absolute inset-0 rounded-full bg-white/[0.06] -z-10" />
-                                )}
-                                <span className="relative flex items-center gap-1.5">
-                                    {item.label}
-                                    {item.badge && (
-                                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded-full bg-white/10 text-white/80">
-                                            {item.badge}
-                                        </span>
-                                    )}
-                                </span>
-                            </a>
-                        );
-                    })}
-                </div>
-
-                {/* CTA Browse Button */}
-                <div className="shrink-0">
-                    <motion.button
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={onDownload}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-black font-semibold text-[12px] tracking-tight whitespace-nowrap hover:bg-neutral-100 transition-colors shadow-[0_2px_10px_rgba(255,255,255,0.15)]"
-                    >
-                        <Sparkles size={12} className="fill-current" />
-                        <span>{downloadText}</span>
-                    </motion.button>
-                </div>
-            </motion.nav>
-
-            {/* Hover Preview Frame — mini page mockup for the hovered nav item */}
-            <AnimatePresence>
-                {hoveredIdx !== null && (
-                    <motion.div
-                        key={hoveredIdx}
-                        initial={{ opacity: 0, y: -6, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                        className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[380px] rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d] shadow-[0_24px_48px_rgba(0,0,0,0.45)] z-30 pointer-events-none"
-                    >
-                        {/* Mock browser chrome */}
-                        <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/10 bg-white/[0.03]">
-                            <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                            <span className="ml-2 text-[11.5px] text-neutral-500 truncate">
-                                purrform.dev{items[hoveredIdx].href}
-                            </span>
-                        </div>
-                        {/* Mock page preview */}
-                        <div className={`relative h-[220px] bg-gradient-to-br ${PREVIEW_ACCENTS[hoveredIdx % PREVIEW_ACCENTS.length]} p-5 flex flex-col gap-2 overflow-hidden`}>
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_60%)]" />
-                            <span className="relative text-[15px] font-semibold text-white/95 tracking-tight">
-                                {items[hoveredIdx].label}
-                            </span>
-                            <div className="relative flex flex-col gap-1.5 mt-1">
-                                <span className="h-2 w-3/4 rounded-full bg-white/40" />
-                                <span className="h-2 w-1/2 rounded-full bg-white/25" />
-                            </div>
-                            <div className="relative grid grid-cols-3 gap-2 mt-auto">
-                                <span className="h-10 rounded-md bg-white/15" />
-                                <span className="h-10 rounded-md bg-white/15" />
-                                <span className="h-10 rounded-md bg-white/15" />
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-            </div>
-
-            {/* Mobile Capsule & Animated Dropdown */}
-            <div className="relative w-full max-w-[420px] md:hidden">
+              {/* Bottom Main line: Glowing Orange Pill + Thinking */}
+              <div className="flex items-center justify-center gap-2.5 mt-2">
+                {/* Glowing breathing orange indicator pill */}
                 <motion.div
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="flex items-center justify-between px-3.5 py-2.5 rounded-b-[24px] bg-black/95 backdrop-blur-md shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
+                  animate={{
+                    scaleX: [1, 1.08, 1],
+                    opacity: [0.85, 1, 0.85],
+                  }}
+                  transition={{
+                    duration: 2.2,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                  className="w-[22px] h-[7.5px] rounded-full bg-[#EC5E27] shadow-[0_0_12px_rgba(236,94,39,0.85),0_0_4px_rgba(251,162,122,0.9)]"
+                />
+                <span className="text-[16px] font-medium text-white tracking-tight leading-none">
+                  Thinking
+                </span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ══════════════════════════════════════════════════════════════════ */}
+          {/* 1. RESTING STATE B: MACBOOK CAMERA NOTCH                          */}
+          {/* ══════════════════════════════════════════════════════════════════ */}
+          {!expanded && notchMode === 'camera' && (
+            <motion.div
+              key="notch-camera"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center justify-between w-full h-full px-2"
+            >
+              <div className="flex items-center gap-1 opacity-50">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+              </div>
+
+              {/* Camera Lens Aperture & LED */}
+              <div className="flex items-center gap-2">
+                <div className="relative w-3.5 h-3.5 rounded-full bg-[#070709] border border-white/20 flex items-center justify-center shadow-inner">
+                  <div className="w-1 h-1 rounded-full bg-emerald-500/70" />
+                  <div className="absolute top-0.5 right-0.5 w-0.5 h-0.5 rounded-full bg-white/80" />
+                </div>
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
+              </div>
+
+              <div className="flex items-center gap-1 opacity-40">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/30" />
+              </div>
+            </motion.div>
+          )}
+
+          {/* ══════════════════════════════════════════════════════════════════ */}
+          {/* 2. EXPANDED STATE: Full Dynamic Island & MacBook NotchNook Navbar */}
+          {/* ══════════════════════════════════════════════════════════════════ */}
+          {expanded && (
+            <motion.div
+              key="notch-expanded"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22, delay: 0.05 }}
+              className="w-full h-full flex flex-col justify-between gap-2"
+            >
+              {/* Top Header Row: Tabs + Calendar + Settings */}
+              <div className="flex items-center justify-between w-full text-white/80 text-[11px] font-medium border-b border-white/[0.08] pb-1.5 px-0.5">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTab('nook');
+                    }}
+                    className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+                      activeTab === 'nook'
+                        ? 'bg-white/18 text-white shadow-xs'
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    <Sparkles size={11} className="text-[#FBA27A]" />
+                    <span>Nook</span>
+                  </button>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTab('tray');
+                    }}
+                    className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+                      activeTab === 'tray'
+                        ? 'bg-white/18 text-white shadow-xs'
+                        : 'text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    <Folder size={11} />
+                    <span>Tray</span>
+                  </button>
+                </div>
+
+                {/* Calendar Strip */}
+                <div className="hidden sm:flex items-center gap-2 select-none">
+                  <span className="font-bold text-white text-[12px] tracking-tight">Aug</span>
+                  <div className="flex items-center gap-1.5 text-[10px] text-neutral-400">
+                    {CALENDAR_DAYS.map((item) => (
+                      <div
+                        key={item.date}
+                        className={`flex flex-col items-center justify-center w-5 h-5 rounded-full transition-colors ${
+                          item.isToday
+                            ? 'bg-[#007AFF] text-white font-bold shadow-[0_0_8px_rgba(0,122,255,0.6)]'
+                            : 'hover:text-white'
+                        }`}
+                      >
+                        <span>{item.date}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Settings */}
+                <div className="flex items-center gap-2 text-neutral-400">
+                  <button
+                    className="p-1 hover:text-white transition-colors cursor-pointer"
+                    title="Notch Settings"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Settings size={12} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Main Interactive Navbar Row */}
+              <div className="flex items-center justify-between gap-3 w-full">
+                {/* Media Widget / AI Assistant Icon */}
+                <div className="flex items-center gap-2.5 shrink-0">
+                  <div className="relative w-10 h-10 rounded-[10px] overflow-hidden bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] border border-white/15 shrink-0 flex items-center justify-center shadow-md">
+                    <div className="w-full h-full flex items-center justify-center bg-[#252528]">
+                      <PawPrint size={18} className="text-[#EC5E27]" />
+                    </div>
+                    <div className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-[#1ED760] flex items-center justify-center shadow-xs">
+                      <Music size={8} className="text-black" />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col justify-center min-w-0">
+                    <span className="text-white text-[12px] font-semibold tracking-tight truncate max-w-[85px] sm:max-w-[100px]">
+                      {brandName}
+                    </span>
+                    <span className="text-[10px] text-neutral-400 truncate max-w-[85px] sm:max-w-[100px]">
+                      Dynamic Notch
+                    </span>
+
+                    <div className="flex items-center gap-1.5 mt-0.5 text-neutral-300">
+                      <button onClick={(e) => e.stopPropagation()} className="hover:text-white transition-colors">
+                        <SkipBack size={10} />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsPlaying(!isPlaying);
+                        }}
+                        className="hover:text-white transition-colors"
+                      >
+                        {isPlaying ? <Pause size={10} /> : <Play size={10} />}
+                      </button>
+                      <button onClick={(e) => e.stopPropagation()} className="hover:text-white transition-colors">
+                        <SkipForward size={10} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Nav Links */}
+                <div
+                  className="hidden md:flex items-center gap-0.5 min-w-0"
+                  onMouseLeave={() => setHoveredNavIdx(null)}
                 >
-                    {/* Brand */}
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-[7px] bg-gradient-to-b from-[#FF6B6B] via-[#EF4444] to-[#B91C1C] flex items-center justify-center shadow-md">
-                            <PawPrint size={15} className="text-white" strokeWidth={2.2} />
-                        </div>
-                        <span className="font-semibold text-[14px] text-white tracking-tight">{brandName}</span>
-                    </div>
+                  {items.map((item, index) => {
+                    const isActive = currentHref === item.href;
+                    return (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        onMouseEnter={() => setHoveredNavIdx(index)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentHref(item.href);
+                        }}
+                        className={`relative px-2.5 py-1 text-[12px] font-medium transition-colors duration-200 z-10 ${
+                          isActive ? 'text-white' : 'text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        {hoveredNavIdx === index && (
+                          <motion.span
+                            layoutId="apple-navbar-pill"
+                            className="absolute inset-0 rounded-full bg-white/12 -z-10"
+                            transition={{ type: 'spring', stiffness: 480, damping: 34 }}
+                          />
+                        )}
+                        {isActive && hoveredNavIdx === null && (
+                          <span className="absolute inset-0 rounded-full bg-white/[0.08] -z-10" />
+                        )}
+                        <span>{item.label}</span>
+                      </a>
+                    );
+                  })}
+                </div>
 
-                    {/* Right: Download + Hamburger */}
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={onDownload}
-                            className="px-2.5 py-1 rounded-full bg-white text-black font-semibold text-[11px] tracking-tight hover:bg-neutral-100 transition-colors"
-                        >
-                            {downloadText}
-                        </button>
-
-                        <button
-                            onClick={() => setMobileMenuOpen((o) => !o)}
-                            aria-label="Toggle navigation"
-                            className="p-1.5 text-neutral-400 hover:text-white transition-colors"
-                        >
-                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                {mobileMenuOpen ? (
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                ) : (
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                                )}
-                            </svg>
-                        </button>
-                    </div>
-                </motion.div>
-
-                {/* Mobile Frosted Dropdown Menu */}
-                <AnimatePresence>
-                    {mobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                            animate={{ opacity: 1, y: 8, scale: 1 }}
-                            exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                            className="absolute left-0 right-0 top-full p-3 rounded-b-[18px] bg-black/95 backdrop-blur-md shadow-2xl flex flex-col gap-1 z-50"
-                        >
-                            {items.map((item, idx) => (
-                                <motion.a
-                                    key={item.label}
-                                    href={item.href}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: idx * 0.04 }}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setCurrentHref(item.href);
-                                        setMobileMenuOpen(false);
-                                    }}
-                                    className={`px-3 py-2 rounded-xl text-[14px] font-medium transition-colors flex items-center justify-between ${
-                                        currentHref === item.href
-                                            ? 'bg-white/10 text-white'
-                                            : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                                    }`}
-                                >
-                                    <span>{item.label}</span>
-                                    {item.badge && (
-                                        <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-white/10 text-white/80">
-                                            {item.badge}
-                                        </span>
-                                    )}
-                                </motion.a>
-                            ))}
-
-                            <div className="pt-2 mt-1 border-t border-white/10">
-                                <button
-                                    onClick={() => {
-                                        setMobileMenuOpen(false);
-                                        onDownload?.();
-                                    }}
-                                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white text-black font-semibold text-[13px] shadow-sm hover:bg-neutral-100 transition-colors"
-                                >
-                                    <Sparkles size={15} className="fill-current" />
-                                    <span>{downloadText} components</span>
-                                </button>
-                            </div>
-                        </motion.div>
+                {/* Right Action Buttons */}
+                <div className="flex items-center gap-2 shrink-0">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleAddReminder}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/18 text-white text-[11.5px] font-medium border border-white/10 transition-colors shadow-xs cursor-pointer"
+                  >
+                    {reminderAdded ? (
+                      <>
+                        <Check size={12} className="text-emerald-400" />
+                        <span className="text-emerald-400">Added</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={11} className="text-[#EC5E27]" />
+                        <span className="hidden sm:inline">Add To Reminders</span>
+                        <span className="sm:hidden">Remind</span>
+                      </>
                     )}
-                </AnimatePresence>
-            </div>
-        </header>
-    );
+                  </motion.button>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onDownload) onDownload();
+                    }}
+                    title="Mirror / Web Display"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex flex-col items-center justify-center transition-colors border border-white/10 cursor-pointer shrink-0"
+                  >
+                    <Camera size={13} />
+                  </button>
+
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onDownload) onDownload();
+                    }}
+                    className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-black font-semibold text-[11.5px] tracking-tight hover:bg-neutral-100 transition-colors shadow-[0_2px_12px_rgba(255,255,255,0.2)] cursor-pointer"
+                  >
+                    <span>{downloadText}</span>
+                  </motion.button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </motion.nav>
+      </div>
+    </header>
+  );
 };
 
 export default AppleNavbar;
