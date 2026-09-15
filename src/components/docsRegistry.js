@@ -92,6 +92,8 @@ import OrbitalCardArchShowcase from './ui/OrbitalCardArchShowcase';
 import { orbitalCardArchPrompt, orbitalCardArchCode } from './ui/orbitalCardArchSource';
 import Editorial3DOrbitCarouselShowcase from './ui/Editorial3DOrbitCarouselShowcase';
 import { editorial3DOrbitCarouselPrompt, editorial3DOrbitCarouselCode } from './ui/editorial3DOrbitCarouselSource';
+import FlightpathTOCShowcase from './ui/FlightpathTOCShowcase';
+import { flightpathTOCPrompt, flightpathTOCCode } from './ui/flightpathTOCSource';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -249,6 +251,7 @@ export const categories = [
         size: 'sm',
         description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations.',
         components: entries(
+            FlightpathTOCShowcase,
             SidebarShowcase,
         ),
     },
@@ -491,6 +494,12 @@ export const readyDetails = {
         description: 'A clock-arm ticking sequence of full-bleed surreal art posters moving along an airy diagonal path with architectural watermark text, refined rotation angles, and mechanical step springs.',
         prompt: editorial3DOrbitCarouselPrompt,
         code: editorial3DOrbitCarouselCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'flightpath-toc': {
+        description: 'An interactive "On This Page" tree navigation with a supersonic airplane traveler gliding along an organic curved SVG rail with spring physics.',
+        prompt: flightpathTOCPrompt,
+        code: flightpathTOCCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
