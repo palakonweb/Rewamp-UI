@@ -84,6 +84,14 @@ import WalletCardRevealShowcase from './ui/WalletCardRevealShowcase';
 import MatteFolderCardShowcase from './ui/MatteFolderCardShowcase';
 import ArchCardCarouselShowcase from './ui/ArchCardCarouselShowcase';
 import FrostedFolderCardShowcase from './ui/FrostedFolderCardShowcase';
+import DiagonalCardStackShowcase from './ui/DiagonalCardStackShowcase';
+import { diagonalCardStackPrompt, diagonalCardStackCode } from './ui/diagonalCardStackSource';
+import PerspectiveFlipDeckShowcase from './ui/PerspectiveFlipDeckShowcase';
+import { perspectiveFlipDeckPrompt, perspectiveFlipDeckCode } from './ui/perspectiveFlipDeckSource';
+import OrbitalCardArchShowcase from './ui/OrbitalCardArchShowcase';
+import { orbitalCardArchPrompt, orbitalCardArchCode } from './ui/orbitalCardArchSource';
+import Editorial3DOrbitCarouselShowcase from './ui/Editorial3DOrbitCarouselShowcase';
+import { editorial3DOrbitCarouselPrompt, editorial3DOrbitCarouselCode } from './ui/editorial3DOrbitCarouselSource';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -250,6 +258,10 @@ export const categories = [
         size: 'md',
         description: 'Layered, interactive, and tactile card components with physical animations.',
         components: entries(
+            DiagonalCardStackShowcase,
+            PerspectiveFlipDeckShowcase,
+            OrbitalCardArchShowcase,
+            Editorial3DOrbitCarouselShowcase,
             WalletCardRevealShowcase,
             MatteFolderCardShowcase,
             ArchCardCarouselShowcase,
@@ -449,6 +461,30 @@ export const readyDetails = {
         prompt: particleMorphOrbPrompt,
         code: particleMorphOrbCode,
         techStack: 'React · Three.js (WebGL) · GLSL · Framer Motion',
+    },
+    'diagonal-card-stack': {
+        description: 'An infinite diagonal cascading card conveyor that smoothly glides along a diagonal axis with drag scrub, pause-on-hover, and an isometric spring-physics collapse into a stacked card deck.',
+        prompt: diagonalCardStackPrompt,
+        code: diagonalCardStackCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'perspective-flip-deck': {
+        description: 'A 3D isometric perspective card deck carousel with sequential peeling flip transitions, spring-physics forward slide, and prominent typographic numbering.',
+        prompt: perspectiveFlipDeckPrompt,
+        code: perspectiveFlipDeckCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'orbital-card-arch': {
+        description: 'A 3D curved orbital card arch with subtle floating physics and smooth spring collapse into a centered card deck.',
+        prompt: orbitalCardArchPrompt,
+        code: orbitalCardArchCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'editorial-3d-orbit-carousel': {
+        description: 'A 3D tilted elliptical carousel of vibrant editorial poster cards with architectural watermark text, depth-scaling physics, and interactive orbital spin.',
+        prompt: editorial3DOrbitCarouselPrompt,
+        code: editorial3DOrbitCarouselCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
 
