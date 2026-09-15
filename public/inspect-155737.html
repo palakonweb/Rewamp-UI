@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Inspect 155737 Text Animation</title>
+  <style>
+    body { background: #111; color: #eee; font-family: sans-serif; padding: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+    .card { background: #222; padding: 8px; border-radius: 6px; text-align: center; }
+    canvas { width: 100%; border-radius: 4px; }
+    video { max-width: 500px; display: block; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Recording 2026-09-15 155737.mp4</h2>
+  <video id="vid" controls src="/Recording%202026-09-15%20155737.mp4"></video>
+  <div id="output" class="grid"></div>
+
+  <script>
+    const vid = document.getElementById('vid');
+    const out = document.getElementById('output');
+
+    vid.addEventListener('loadedmetadata', async () => {
+      const duration = vid.duration;
+      const step = 0.5;
+      for (let t = 0; t <= Math.min(duration, 9.0); t += step) {
+        await captureFrame(t);
+      }
+    });
+
+    function captureFrame(time) {
+      return new Promise((resolve) => {
+        vid.currentTime = time;
+        vid.onseeked = () => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          const title = document.createElement('div');
+          title.textContent = `Time: ${time.toFixed(2)}s`;
+          const canvas = document.createElement('canvas');
+          canvas.width = vid.videoWidth;
+          canvas.height = vid.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(vid, 0, 0);
+          card.appendChild(title);
+          card.appendChild(canvas);
+          out.appendChild(card);
+          resolve();
+        };
+      });
+    }
+  </script>
+</body>
+</html>

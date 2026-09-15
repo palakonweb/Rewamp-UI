@@ -98,6 +98,14 @@ import KineticLensSidebarShowcase from './ui/KineticLensSidebarShowcase';
 import { kineticLensSidebarPrompt, kineticLensSidebarCode } from './ui/kineticLensSidebarSource';
 import MorphSearchCapsuleShowcase from './ui/MorphSearchCapsuleShowcase';
 import { morphSearchCapsulePrompt, morphSearchCapsuleCode } from './ui/morphSearchCapsuleSource';
+import RainbowTypewriterBadgeShowcase from './ui/RainbowTypewriterBadgeShowcase';
+import { rainbowTypewriterBadgePrompt, rainbowTypewriterBadgeCode } from './ui/rainbowTypewriterBadgeSource';
+import GlowTextChipShowcase from './ui/GlowTextChipShowcase';
+import { glowTextChipPrompt, glowTextChipCode } from './ui/glowTextChipSource';
+import KineticReelTextShowcase from './ui/KineticReelTextShowcase';
+import { kineticReelTextPrompt, kineticReelTextCode } from './ui/kineticReelTextSource';
+import ContributionActivityShowcase from './ui/ContributionActivityShowcase';
+import { contributionActivityPrompt, contributionActivityCode } from './ui/contributionActivitySource';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -156,9 +164,8 @@ export function slugify(title) {
 
 function entries(...Comps) {
     return Comps.map((Comp) => {
-        const title = Comp.customTitle || titleFromComponent(Comp);
-        const slug = Comp.customSlug || slugify(title);
-        return { Component: Comp, title, slug };
+        const title = titleFromComponent(Comp);
+        return { Component: Comp, title, slug: slugify(title) };
     });
 }
 
@@ -199,6 +206,9 @@ export const categories = [
         size: 'sm',
         description: 'Kinetic typography — reveals, scrambles, morphs, and counters.',
         components: entries(
+            GlowTextChipShowcase,
+            KineticReelTextShowcase,
+            RainbowTypewriterBadgeShowcase,
             SplitTextRevealShowcase, WordByWordTextShowcase, CharacterScrambleTextShowcase,
             GradientRevealTextShowcase, AuroraTextShowcase, SpotlightTextShowcase,
             LiquidTextMorphShowcase, Flip3DTextShowcase, TypewriterTextShowcase,
@@ -268,6 +278,7 @@ export const categories = [
         size: 'md',
         description: 'Layered, interactive, and tactile card components with physical animations.',
         components: entries(
+            ContributionActivityShowcase,
             DiagonalCardStackShowcase,
             PerspectiveFlipDeckShowcase,
             OrbitalCardArchShowcase,
@@ -472,40 +483,10 @@ export const readyDetails = {
         code: particleMorphOrbCode,
         techStack: 'React · Three.js (WebGL) · GLSL · Framer Motion',
     },
-    'diagonal-card-stack': {
-        description: 'An infinite diagonal cascading card conveyor that smoothly glides along a diagonal axis with drag scrub, pause-on-hover, and an isometric spring-physics collapse into a stacked card deck.',
-        prompt: diagonalCardStackPrompt,
-        code: diagonalCardStackCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
-    'perspective-flip-deck': {
-        description: 'A 3D isometric perspective card deck carousel with sequential peeling flip transitions, spring-physics forward slide, and prominent typographic numbering.',
-        prompt: perspectiveFlipDeckPrompt,
-        code: perspectiveFlipDeckCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
-    'orbital-card-arch': {
-        description: 'A 3D curved orbital card arch with subtle floating physics and smooth spring collapse into a centered card deck.',
-        prompt: orbitalCardArchPrompt,
-        code: orbitalCardArchCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
-    'editorial-3d-orbit-carousel': {
-        description: 'A clock-arm ticking sequence of full-bleed surreal art posters moving along an airy diagonal path with architectural watermark text, refined rotation angles, and mechanical step springs.',
-        prompt: editorial3DOrbitCarouselPrompt,
-        code: editorial3DOrbitCarouselCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
-    'editorial3-d-orbit-carousel': {
-        description: 'A clock-arm ticking sequence of full-bleed surreal art posters moving along an airy diagonal path with architectural watermark text, refined rotation angles, and mechanical step springs.',
-        prompt: editorial3DOrbitCarouselPrompt,
-        code: editorial3DOrbitCarouselCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
-    'flightpath-toc': {
-        description: 'An interactive "On This Page" tree navigation with a supersonic airplane traveler gliding along an organic curved SVG rail with spring physics.',
-        prompt: flightpathTOCPrompt,
-        code: flightpathTOCCode,
+    'morph-search-capsule': {
+        description: 'An interactive search capsule where clicking the bar triggers an icon morph: the search magnifying glass turns and straightens into a blinking vertical text input caret.',
+        prompt: morphSearchCapsulePrompt,
+        code: morphSearchCapsuleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'kinetic-lens-sidebar': {
@@ -514,10 +495,58 @@ export const readyDetails = {
         code: kineticLensSidebarCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-    'morph-search-capsule': {
-        description: 'An interactive search capsule where clicking the bar triggers an icon morph: the search magnifying glass turns and straightens into a blinking vertical text input caret.',
-        prompt: morphSearchCapsulePrompt,
-        code: morphSearchCapsuleCode,
+    'flightpath-toc': {
+        description: 'A light-mode "On This Page" tree navigation with a supersonic plane gliding along a curved SVG bezier rail as you scroll between component sections.',
+        prompt: flightpathTOCPrompt,
+        code: flightpathTOCCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'rainbow-typewriter-badge': {
+        description: 'A dark rounded badge text effect with typewriter animation, a rhythmic blinking cursor, and an animated flowing rainbow gradient edge with dynamic chromatic lighting.',
+        prompt: rainbowTypewriterBadgePrompt,
+        code: rainbowTypewriterBadgeCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'glow-text-chip': {
+        description: 'A dark glass pill chip with large typewriter text, a classic hard-blinking cursor, and an animated rainbow spotlight on the right edge with a flowing chromatic gradient and glowing crisp edge bar.',
+        prompt: glowTextChipPrompt,
+        code: glowTextChipCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'kinetic-reel-text': {
+        description: 'A 3D kinetic slot-reel text animation with a static prefix and a vertical drum of items cycling through with perspective tilt, optical blur falloff, and mechanical spring inertia. Hover to pause, click to advance.',
+        prompt: kineticReelTextPrompt,
+        code: kineticReelTextCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'contribution-activity': {
+        description: 'A lilac GitHub-style 53-week contribution heatmap in a glass card, with a floating pill that expands into a Recent Activity contributor panel via Framer Motion shared layout animation.',
+        prompt: contributionActivityPrompt,
+        code: contributionActivityCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'diagonal-card-stack': {
+        description: 'A stacked diagonal card deck with perspective tilt and drag physics.',
+        prompt: diagonalCardStackPrompt,
+        code: diagonalCardStackCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'perspective-flip-deck': {
+        description: 'A perspective flip deck carousel where cards flip in 3D on navigation.',
+        prompt: perspectiveFlipDeckPrompt,
+        code: perspectiveFlipDeckCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'orbital-card-arch': {
+        description: 'Cards arranged along a convex orbital arch with tangent rotation and drag inertia.',
+        prompt: orbitalCardArchPrompt,
+        code: orbitalCardArchCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'editorial-3-d-orbit-carousel': {
+        description: 'An editorial 3D orbit carousel with cards arranged in a circular ring.',
+        prompt: editorial3DOrbitCarouselPrompt,
+        code: editorial3DOrbitCarouselCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };

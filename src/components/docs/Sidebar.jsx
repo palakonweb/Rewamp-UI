@@ -13,6 +13,17 @@ export default function Sidebar({ categories, activeSlug, onNavigate, query, onQ
     const trimmedQuery = query.trim().toLowerCase();
     const isSearching = trimmedQuery.length > 0;
 
+    const totalComponents = React.useMemo(() => {
+        return categories.reduce((sum, cat) => sum + (cat.components?.length || 0), 0);
+    }, [categories]);
+
+    const matchingCount = React.useMemo(() => {
+        if (!isSearching) return totalComponents;
+        return categories.reduce((sum, cat) => {
+            return sum + cat.components.filter((entry) => entry.title.toLowerCase().includes(trimmedQuery)).length;
+        }, 0);
+    }, [categories, isSearching, trimmedQuery, totalComponents]);
+
     return (
         <>
             {mobileOpen && (
@@ -41,7 +52,7 @@ export default function Sidebar({ categories, activeSlug, onNavigate, query, onQ
                     </button>
                 </div>
 
-                <div className="px-5 pb-5 shrink-0">
+                <div className="px-5 pb-4 shrink-0">
                     <div className="relative">
                         <Search size={15} strokeWidth={1.75} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone pointer-events-none" />
                         <input
@@ -51,6 +62,15 @@ export default function Sidebar({ categories, activeSlug, onNavigate, query, onQ
                             placeholder="Search components"
                             className="w-full bg-white border border-mist rounded-full pl-9 pr-3 py-2 text-[13px] text-charcoal placeholder:text-stone outline-none focus:border-charcoal transition-colors"
                         />
+                    </div>
+                    <div className="flex items-center justify-between pt-2 px-1 text-[11.5px] font-medium text-stone select-none">
+                        <span className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange animate-pulse" />
+                            <span>{isSearching ? 'Matching' : 'Total Components'}</span>
+                        </span>
+                        <span className="font-mono text-[11px] font-semibold text-charcoal bg-sand/60 px-2 py-0.5 rounded-full border border-mist/70">
+                            {isSearching ? `${matchingCount} / ${totalComponents}` : totalComponents}
+                        </span>
                     </div>
                 </div>
 
