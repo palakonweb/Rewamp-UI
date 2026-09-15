@@ -1,8 +1,8 @@
-export const flightpathTOCPrompt = `Create an interactive "On This Page" / Table of Contents tree navigation component in light mode with an animated airplane traveler gliding along an organic curved SVG rail.
+export const flightpathTOCPrompt = `Create a light-mode Purrform UI tree navigation component with an animated supersonic airplane traveler gliding along an organic curved SVG rail.
 
 Requirements:
-- Clean light mode aesthetic matching warm milk/cream/sand design tokens (#FFFDF2, #FAF6ED, #E8E2D5).
-- Vertical hierarchical navigation tree supporting root items and indented sub-items (e.g. Installation -> Prerequisites, Installation Steps).
+- Clean light mode aesthetic matching Purrform Milk/Cream tokens (#FFFDF2, #FAF6ED, #E8E2D5).
+- Displays real Purrform UI categories and components (Cards -> Diagonal Card Stack, Perspective Flip Deck, Orbital Card Arch, Editorial 3D Orbit; Sidebars -> Flightpath TOC; Navbars -> Apple Navbar; Buttons).
 - Continuous curved SVG rail connecting each item node with smooth cubic bezier S-curves when branching into nested sub-items.
 - An animated supersonic airplane indicator that physically glides along the curved rail from node to node with spring physics (stiffness: 360, damping: 26).
 - The airplane points towards the active text label, which transitions to bold charcoal.
@@ -11,7 +11,7 @@ Requirements:
 
 export const flightpathTOCCode = `import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Plane, List } from 'lucide-react';
+import { Plane, ListTree } from 'lucide-react';
 
 export function FlightpathTOC({
   items = null,
@@ -19,24 +19,27 @@ export function FlightpathTOC({
   onSelect = null,
   autoTour = true,
   tourInterval = 2200,
+  headerTitle = 'Purrform UI',
   className = '',
 }) {
   const defaultItems = useMemo(
     () => [
-      { id: 'installation', label: 'Installation', level: 0 },
-      { id: 'prerequisites', label: 'Prerequisites', level: 1 },
-      { id: 'installation-steps', label: 'Installation Steps', level: 1 },
-      { id: 'configuration', label: 'Configuration', level: 0 },
-      { id: 'usage', label: 'Usage', level: 0 },
-      { id: 'customizing-content', label: 'Customizing Content', level: 1 },
-      { id: 'submenu-content', label: 'Submenu Content', level: 1 },
-      { id: 'features', label: 'Features', level: 0 },
+      { id: 'cards', label: 'Cards', level: 0 },
+      { id: 'diagonal-card-stack', label: 'Diagonal Card Stack', level: 1 },
+      { id: 'perspective-flip-deck', label: 'Perspective Flip Deck', level: 1 },
+      { id: 'orbital-card-arch', label: 'Orbital Card Arch', level: 1 },
+      { id: 'editorial-3d-orbit-carousel', label: 'Editorial 3D Orbit', level: 1 },
+      { id: 'sidebars', label: 'Sidebars', level: 0 },
+      { id: 'flightpath-toc', label: 'Flightpath TOC', level: 1 },
+      { id: 'navbars', label: 'Navbars', level: 0 },
+      { id: 'apple-navbar', label: 'Apple Navbar', level: 1 },
+      { id: 'buttons', label: 'Buttons', level: 0 },
     ],
     []
   );
 
   const navItems = items || defaultItems;
-  const [currentId, setCurrentId] = useState(activeId || navItems[3].id);
+  const [currentId, setCurrentId] = useState(activeId || 'perspective-flip-deck');
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -55,10 +58,10 @@ export function FlightpathTOC({
     return () => clearInterval(timer);
   }, [autoTour, isHovered, navItems, tourInterval]);
 
-  const itemHeight = 36;
-  const startY = 22;
+  const itemHeight = 35;
+  const startY = 20;
   const rootX = 22;
-  const nestedX = 40;
+  const nestedX = 38;
 
   const nodes = useMemo(() => {
     return navItems.map((item, index) => ({
@@ -91,16 +94,16 @@ export function FlightpathTOC({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={\`relative w-[280px] rounded-2xl bg-[#FFFDF2] border border-[#E8E2D5] p-5 select-none shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06)] overflow-hidden \${className}\`}
+      className={\`relative w-[270px] sm:w-[285px] rounded-2xl bg-[#FFFDF2] border border-[#E8E2D5] p-5 select-none shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06)] overflow-hidden \${className}\`}
     >
       <div className="flex items-center gap-2 pb-3 mb-1 border-b border-[#EAE4D8]">
-        <List className="w-3.5 h-3.5 text-neutral-400" />
+        <ListTree className="w-3.5 h-3.5 text-neutral-400" />
         <span className="text-[11px] font-semibold font-mono tracking-widest uppercase text-neutral-400">
-          On This Page
+          {headerTitle}
         </span>
       </div>
 
-      <div className="relative" style={{ height: startY + nodes.length * itemHeight + 10 }}>
+      <div className="relative" style={{ height: startY + nodes.length * itemHeight + 8 }}>
         <svg className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-visible">
           <path
             d={railPath}
@@ -142,14 +145,18 @@ export function FlightpathTOC({
                 className="absolute flex items-center cursor-pointer pointer-events-auto"
                 style={{
                   top: node.y - 11,
-                  left: node.level === 0 ? 44 : 62,
+                  left: node.level === 0 ? 40 : 56,
                   height: 22,
                   right: 0,
                 }}
               >
                 <span
-                  className={\`text-[13px] tracking-tight whitespace-nowrap transition-colors \${
-                    isActive ? 'font-bold text-neutral-950' : 'font-normal text-neutral-500 hover:text-neutral-800'
+                  className={\`text-[12.5px] tracking-tight whitespace-nowrap transition-colors \${
+                    isActive
+                      ? 'font-bold text-neutral-950'
+                      : node.level === 0
+                      ? 'font-medium text-neutral-600 hover:text-neutral-900'
+                      : 'font-normal text-neutral-400 hover:text-neutral-700'
                   }\`}
                 >
                   {node.label}

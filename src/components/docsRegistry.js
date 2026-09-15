@@ -94,6 +94,10 @@ import Editorial3DOrbitCarouselShowcase from './ui/Editorial3DOrbitCarouselShowc
 import { editorial3DOrbitCarouselPrompt, editorial3DOrbitCarouselCode } from './ui/editorial3DOrbitCarouselSource';
 import FlightpathTOCShowcase from './ui/FlightpathTOCShowcase';
 import { flightpathTOCPrompt, flightpathTOCCode } from './ui/flightpathTOCSource';
+import KineticLensSidebarShowcase from './ui/KineticLensSidebarShowcase';
+import { kineticLensSidebarPrompt, kineticLensSidebarCode } from './ui/kineticLensSidebarSource';
+import MorphSearchCapsuleShowcase from './ui/MorphSearchCapsuleShowcase';
+import { morphSearchCapsulePrompt, morphSearchCapsuleCode } from './ui/morphSearchCapsuleSource';
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
@@ -241,6 +245,7 @@ export const categories = [
         size: 'sm',
         description: 'Search inputs with self-animating states, morphing icons, and expanding capsules.',
         components: entries(
+            MorphSearchCapsuleShowcase,
             AnimatedSearchDemo,
         ),
     },
@@ -251,6 +256,7 @@ export const categories = [
         size: 'sm',
         description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations.',
         components: entries(
+            KineticLensSidebarShowcase,
             FlightpathTOCShowcase,
             SidebarShowcase,
         ),
@@ -500,6 +506,18 @@ export const readyDetails = {
         description: 'An interactive "On This Page" tree navigation with a supersonic airplane traveler gliding along an organic curved SVG rail with spring physics.',
         prompt: flightpathTOCPrompt,
         code: flightpathTOCCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'kinetic-lens-sidebar': {
+        description: 'A vertical kinetic lens rolodex sidebar with cylindrical magnification physics, active dash prefix expansion, and smooth wheel inertia.',
+        prompt: kineticLensSidebarPrompt,
+        code: kineticLensSidebarCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'morph-search-capsule': {
+        description: 'An interactive search capsule where clicking the bar triggers an icon morph: the search magnifying glass turns and straightens into a blinking vertical text input caret.',
+        prompt: morphSearchCapsulePrompt,
+        code: morphSearchCapsuleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
 };
