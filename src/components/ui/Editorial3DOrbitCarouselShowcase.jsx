@@ -58,3 +58,6 @@ export default function Editorial3DOrbitCarouselShowcase() {
     </div>
   );
 }
+
+Editorial3DOrbitCarouselShowcase.customTitle = 'Editorial 3D Orbit Carousel';
+Editorial3DOrbitCarouselShowcase.customSlug = 'editorial-3d-orbit-carousel';

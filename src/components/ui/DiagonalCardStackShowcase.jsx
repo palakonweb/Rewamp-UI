@@ -8,16 +8,16 @@ export default function DiagonalCardStackShowcase() {
   const [speed, setSpeed] = useState(1.0);
 
   const cardsData = [
-    { id: '1', title: 'Stack 01', brand: 'rico.', badge: '01' },
-    { id: '2', title: 'Stack 01', brand: 'rico.', badge: '02' },
-    { id: '3', title: 'Stack 01', brand: 'rico.', badge: '03' },
-    { id: '4', title: 'Stack 01', brand: 'rico.', badge: '04' },
-    { id: '5', title: 'Stack 01', brand: 'rico.', badge: '05' },
-    { id: '6', title: 'Stack 01', brand: 'rico.', badge: '06' },
-    { id: '7', title: 'Stack 01', brand: 'rico.', badge: '07' },
-    { id: '8', title: 'Stack 01', brand: 'rico.', badge: '08' },
-    { id: '9', title: 'Stack 01', brand: 'rico.', badge: '09' },
-    { id: '10', title: 'Stack 01', brand: 'rico.', badge: '10' },
+    { id: '1', title: 'Stack 01', brand: 'rico.', badge: '01', image: '/cards/sky-curtain.png' },
+    { id: '2', title: 'Stack 02', brand: 'rico.', badge: '02', image: '/cards/airplane-sunset.png' },
+    { id: '3', title: 'Stack 03', brand: 'rico.', badge: '03', image: '/cards/rainbow-hill.png' },
+    { id: '4', title: 'Stack 04', brand: 'rico.', badge: '04', image: '/cards/train-window.jpg' },
+    { id: '5', title: 'Stack 05', brand: 'rico.', badge: '05', image: '/cards/kangaroo-planet.png' },
+    { id: '6', title: 'Stack 06', brand: 'rico.', badge: '06', image: '/cards/sky-curtain.png' },
+    { id: '7', title: 'Stack 07', brand: 'rico.', badge: '07', image: '/cards/airplane-sunset.png' },
+    { id: '8', title: 'Stack 08', brand: 'rico.', badge: '08', image: '/cards/rainbow-hill.png' },
+    { id: '9', title: 'Stack 09', brand: 'rico.', badge: '09', image: '/cards/train-window.jpg' },
+    { id: '10', title: 'Stack 10', brand: 'rico.', badge: '10', image: '/cards/kangaroo-planet.png' },
   ];
 
   return (

@@ -1,56 +1,119 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 /**
  * OrbitalCardArch
- * Exact recreation of Recording 154820.mp4:
- * Three-card orbital arch with gentle floating animation and smooth center deck collapse.
+ * Exact recreation of Recording 2026-09-15 154820.mp4:
+ * Cards gliding along a panoramic 3D curved horizon cylinder (rotateY, translateZ)
+ * with continuous scroll and center deck collapse.
  */
 export function OrbitalCardArch({
   cards = null,
   isStacked = false,
-  autoCycle = true,
-  cycleInterval = 2800,
-  cardSize = 215,
+  autoScroll = true,
+  speed = 1.0,
+  cardWidth = 220,
+  cardHeight = 220,
   className = '',
   onCardClick = null,
 }) {
+  const containerRef = useRef(null);
+  const [scrollX, setScrollX] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef({ x: 0, startScroll: 0 });
+  const animFrameRef = useRef(null);
+  const lastTimeRef = useRef(null);
+
+  // Default cards with the surreal art images
   const defaultCards = [
-    { id: '1', title: 'Orbit 7-03', brand: 'rico.' },
-    { id: '2', title: 'Orbit 7-03', brand: 'rico.' },
-    { id: '3', title: 'Orbit 7-03', brand: 'rico.' },
+    { id: '1', title: 'Orbit 7-01', brand: 'rico.', image: '/cards/sky-curtain.png' },
+    { id: '2', title: 'Orbit 7-02', brand: 'rico.', image: '/cards/airplane-sunset.png' },
+    { id: '3', title: 'Orbit 7-03', brand: 'rico.', image: '/cards/rainbow-hill.png' },
+    { id: '4', title: 'Orbit 7-04', brand: 'rico.', image: '/cards/train-window.jpg' },
+    { id: '5', title: 'Orbit 7-05', brand: 'rico.', image: '/cards/kangaroo-planet.png' },
   ];
 
   const cardList = cards || defaultCards;
-  const [activeSlotOffset, setActiveSlotOffset] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const numCards = cardList.length;
+  // Spacing along curved horizon
+  const stepDistance = 270;
+  const totalWidth = numCards * stepDistance;
 
-  // Auto-cycle through the 3 orbital positions
+  // Continuous cylindrical scroll (moving left)
   useEffect(() => {
-    if (!autoCycle || isPaused || isStacked) return;
-    const interval = setInterval(() => {
-      setActiveSlotOffset((prev) => (prev + 1) % 3);
-    }, cycleInterval);
-    return () => clearInterval(interval);
-  }, [autoCycle, isPaused, isStacked, cycleInterval]);
+    if (isStacked || !autoScroll || isHovered || isDragging) {
+      lastTimeRef.current = null;
+      return;
+    }
 
-  // Three slots along the orbital arch
-  const slotConfigs = [
-    { x: -250, y: 35, rotateZ: -12, scale: 0.94, zIndex: 10 }, // Left
-    { x: 0, y: 0, rotateZ: 0, scale: 1.0, zIndex: 20 },         // Center
-    { x: 250, y: 35, rotateZ: 12, scale: 0.94, zIndex: 10 },    // Right
-  ];
+    const animate = (time) => {
+      if (lastTimeRef.current != null) {
+        const dt = (time - lastTimeRef.current) / 1000;
+        const v = 50 * speed;
+        setScrollX((prev) => {
+          let next = prev - v * dt;
+          if (next < 0) next += totalWidth;
+          return next % totalWidth;
+        });
+      }
+      lastTimeRef.current = time;
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
+  }, [isStacked, autoScroll, isHovered, isDragging, speed, totalWidth]);
+
+  // Pointer drag along horizon
+  const handlePointerDown = (e) => {
+    if (isStacked) return;
+    setIsDragging(true);
+    dragStartRef.current = {
+      x: e.clientX,
+      startScroll: scrollX,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging || isStacked) return;
+    const dx = e.clientX - dragStartRef.current.x;
+    let next = dragStartRef.current.startScroll + dx;
+    while (next < 0) next += totalWidth;
+    setScrollX(next % totalWidth);
+  };
+
+  const handlePointerUp = (e) => {
+    if (isDragging) {
+      setIsDragging(false);
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch (err) {}
+    }
+  };
 
   return (
     <div
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      className={`relative w-full h-[460px] md:h-[500px] overflow-hidden select-none flex items-center justify-center rounded-2xl ${className}`}
+      ref={containerRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsDragging(false);
+      }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      className={`relative w-full h-[480px] md:h-[520px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
       style={{
         background: 'radial-gradient(ellipse at 50% 45%, #FFFFFF 0%, #E8EAED 50%, #C9CDD2 100%)',
+        perspective: 1200,
       }}
     >
-      {/* Studio Lighting Vignette */}
+      {/* Studio lighting vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -58,32 +121,53 @@ export function OrbitalCardArch({
         }}
       />
 
-      {/* Orbit Guide Arc (Subtle aesthetic backdrop curve) */}
-      <div 
-        className="absolute w-[640px] h-[340px] rounded-[50%] border border-neutral-300/40 pointer-events-none -top-16 opacity-30"
-      />
-
-      {/* 3-Card Interactive Stage */}
-      <div className="relative w-0 h-0 flex items-center justify-center pointer-events-none">
-        {cardList.slice(0, 3).map((card, idx) => {
-          // Calculate which slot this card currently occupies
-          const slotIndex = (idx + activeSlotOffset) % 3;
-          const config = slotConfigs[slotIndex];
-
-          let posX = config.x;
-          let posY = config.y;
-          let rotZ = config.rotateZ;
-          let scale = config.scale;
-          let zIndex = config.zIndex;
+      {/* 3D Panoramic Cylinder Stage */}
+      <div
+        className="relative w-0 h-0 flex items-center justify-center pointer-events-none"
+        style={{
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        {cardList.map((card, idx) => {
+          let posX = 0;
+          let posY = 0;
+          let rotY = 0;
+          let rotZ = 0;
+          let scale = 1;
+          let zIndex = 10;
+          let opacity = 1;
 
           if (isStacked) {
             // Collapsed into center card deck (shown at 00:04 of video)
             const stackOffset = idx;
             posX = -stackOffset * 3;
             posY = -stackOffset * 3;
+            rotY = 0;
             rotZ = 0;
             scale = 1 - stackOffset * 0.006;
-            zIndex = 30 - idx;
+            zIndex = 40 - idx;
+          } else {
+            // Position along curved cylinder
+            const basePos = idx * stepDistance;
+            let currentX = (basePos + scrollX) % totalWidth;
+            if (currentX > totalWidth / 2) {
+              currentX -= totalWidth;
+            }
+
+            posX = currentX;
+            // Cylindrical curvature calculations
+            // As x moves away from center, y drops slightly and rotY turns inwards
+            const normalizedX = currentX / 300; // -1 to +1
+            posY = Math.pow(normalizedX, 2) * 28;
+            rotY = -normalizedX * 24; // Left turns right (+), Right turns left (-)
+            rotZ = normalizedX * 7;
+            scale = Math.max(0.85, 1 - Math.abs(normalizedX) * 0.12);
+            zIndex = Math.round(50 - Math.abs(normalizedX) * 20);
+
+            // Fade if far out
+            if (Math.abs(currentX) > 420) {
+              opacity = Math.max(0, 1 - (Math.abs(currentX) - 420) / 100);
+            }
           }
 
           return (
@@ -93,71 +177,46 @@ export function OrbitalCardArch({
               animate={{
                 x: posX,
                 y: posY,
+                rotateY: rotY,
                 rotateZ: rotZ,
                 scale,
+                opacity,
               }}
               transition={{
                 type: 'spring',
-                stiffness: 240,
-                damping: 26,
-                mass: 0.85,
+                stiffness: 260,
+                damping: 28,
+                mass: 0.8,
               }}
               style={{
-                width: cardSize,
-                height: cardSize,
+                width: cardWidth,
+                height: cardHeight,
                 position: 'absolute',
-                top: -cardSize / 2,
-                left: -cardSize / 2,
+                top: -cardHeight / 2,
+                left: -cardWidth / 2,
                 zIndex,
+                transformStyle: 'preserve-3d',
               }}
               className="pointer-events-auto"
               onClick={() => onCardClick && onCardClick(card, idx)}
             >
-              {/* Card Surface */}
+              {/* Card Surface - Pure Image */}
               <div
-                className="group relative w-full h-full rounded-[22px] p-5 flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+                className="w-full h-full rounded-[24px] overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03]"
                 style={{
-                  background: 'linear-gradient(175deg, #18181A 0%, #121214 55%, #0B0B0C 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.18)',
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
                   boxShadow:
-                    slotIndex === 1 && !isStacked
-                      ? '0 26px 48px -10px rgba(0, 0, 0, 0.6), 0 8px 16px -4px rgba(0, 0, 0, 0.35)'
-                      : '0 16px 32px -8px rgba(0, 0, 0, 0.45)',
+                    Math.abs(posX) < 80 && !isStacked
+                      ? '0 30px 60px -12px rgba(0, 0, 0, 0.55), 0 10px 22px -5px rgba(0, 0, 0, 0.35)'
+                      : '0 16px 32px -8px rgba(0, 0, 0, 0.4)',
                 }}
               >
-                {/* Sheen overlay */}
-                <div
-                  className="absolute inset-0 pointer-events-none opacity-35"
-                  style={{
-                    background: 'radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.1) 0%, transparent 65%)',
-                  }}
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                  draggable={false}
                 />
-
-                {/* Top Section */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-[13px] font-medium tracking-tight text-white/90 select-none">
-                    {card.title || 'Orbit 7-03'}
-                  </span>
-
-                  {/* Top Right Double Dash Mark (from video) */}
-                  <div className="flex flex-col gap-[3px] items-end justify-center py-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                    <span className="w-3.5 h-[2px] rounded-full bg-white/50" />
-                    <span className="w-3.5 h-[2px] rounded-full bg-white/50" />
-                  </div>
-                </div>
-
-                {/* Middle Divider Line */}
-                <div className="relative z-10 w-full my-auto">
-                  <div className="w-full h-[1px] bg-white/[0.08]" />
-                </div>
-
-                {/* Bottom Section */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-[12px] font-normal tracking-tight text-white/45 select-none font-mono">
-                    {card.brand || 'rico.'}
-                  </span>
-                </div>
               </div>
             </motion.div>
           );

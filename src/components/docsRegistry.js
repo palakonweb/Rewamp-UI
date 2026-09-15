@@ -150,8 +150,9 @@ export function slugify(title) {
 
 function entries(...Comps) {
     return Comps.map((Comp) => {
-        const title = titleFromComponent(Comp);
-        return { Component: Comp, title, slug: slugify(title) };
+        const title = Comp.customTitle || titleFromComponent(Comp);
+        const slug = Comp.customSlug || slugify(title);
+        return { Component: Comp, title, slug };
     });
 }
 
@@ -481,6 +482,12 @@ export const readyDetails = {
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'editorial-3d-orbit-carousel': {
+        description: 'A 3D tilted elliptical carousel of vibrant editorial poster cards with architectural watermark text, depth-scaling physics, and interactive orbital spin.',
+        prompt: editorial3DOrbitCarouselPrompt,
+        code: editorial3DOrbitCarouselCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'editorial3-d-orbit-carousel': {
         description: 'A 3D tilted elliptical carousel of vibrant editorial poster cards with architectural watermark text, depth-scaling physics, and interactive orbital spin.',
         prompt: editorial3DOrbitCarouselPrompt,
         code: editorial3DOrbitCarouselCode,

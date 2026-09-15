@@ -25,18 +25,18 @@ export function DiagonalCardStack({
   const lastTimeRef = useRef(null);
   const dragStartRef = useRef({ x: 0, y: 0, startOffset: 0 });
 
-  // Default cards matching the exact video design: "Stack 01", divider, "rico."
+  // Default cards matching the exact video design with surreal art imagery
   const defaultCards = [
-    { id: '1', title: 'Stack 01', brand: 'rico.' },
-    { id: '2', title: 'Stack 01', brand: 'rico.' },
-    { id: '3', title: 'Stack 01', brand: 'rico.' },
-    { id: '4', title: 'Stack 01', brand: 'rico.' },
-    { id: '5', title: 'Stack 01', brand: 'rico.' },
-    { id: '6', title: 'Stack 01', brand: 'rico.' },
-    { id: '7', title: 'Stack 01', brand: 'rico.' },
-    { id: '8', title: 'Stack 01', brand: 'rico.' },
-    { id: '9', title: 'Stack 01', brand: 'rico.' },
-    { id: '10', title: 'Stack 01', brand: 'rico.' },
+    { id: '1', title: 'Stack 01', brand: 'rico.', image: '/cards/sky-curtain.png' },
+    { id: '2', title: 'Stack 02', brand: 'rico.', image: '/cards/airplane-sunset.png' },
+    { id: '3', title: 'Stack 03', brand: 'rico.', image: '/cards/rainbow-hill.png' },
+    { id: '4', title: 'Stack 04', brand: 'rico.', image: '/cards/train-window.jpg' },
+    { id: '5', title: 'Stack 05', brand: 'rico.', image: '/cards/kangaroo-planet.png' },
+    { id: '6', title: 'Stack 06', brand: 'rico.', image: '/cards/sky-curtain.png' },
+    { id: '7', title: 'Stack 07', brand: 'rico.', image: '/cards/airplane-sunset.png' },
+    { id: '8', title: 'Stack 08', brand: 'rico.', image: '/cards/rainbow-hill.png' },
+    { id: '9', title: 'Stack 09', brand: 'rico.', image: '/cards/train-window.jpg' },
+    { id: '10', title: 'Stack 10', brand: 'rico.', image: '/cards/kangaroo-planet.png' },
   ];
 
   const cardList = cards || defaultCards;
@@ -198,50 +198,22 @@ export function DiagonalCardStack({
               className="pointer-events-auto"
               onClick={() => onCardClick && onCardClick(card, idx)}
             >
-              {/* Card Surface */}
+              {/* Card Surface - Pure Image */}
               <div
-                className="group relative w-full h-full rounded-[22px] p-5 flex flex-col justify-between overflow-hidden cursor-pointer transition-transform duration-200"
+                className="w-full h-full rounded-[24px] overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
                 style={{
-                  background: 'linear-gradient(175deg, #18181A 0%, #121214 55%, #0B0B0C 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.18)',
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
                   boxShadow: isStacked
                     ? '0 12px 28px -6px rgba(0, 0, 0, 0.65), 0 0 1px rgba(0,0,0,0.85)'
-                    : '0 26px 46px -12px rgba(0, 0, 0, 0.58), 0 8px 18px -4px rgba(0, 0, 0, 0.35)',
+                    : '0 26px 46px -12px rgba(0, 0, 0, 0.55), 0 8px 18px -4px rgba(0, 0, 0, 0.35)',
                 }}
               >
-                {/* Subtle sheen highlight */}
-                <div 
-                  className="absolute inset-0 pointer-events-none opacity-30"
-                  style={{
-                    background: 'radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.1) 0%, transparent 65%)',
-                  }}
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                  draggable={false}
                 />
-
-                {/* Top Section */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-[13px] font-medium tracking-tight text-white/90 select-none">
-                    {card.title || 'Stack 01'}
-                  </span>
-
-                  {/* Top Right Double Dash Mark */}
-                  <div className="flex flex-col gap-[3px] items-end justify-center py-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                    <span className="w-3.5 h-[2px] rounded-full bg-white/50" />
-                    <span className="w-3.5 h-[2px] rounded-full bg-white/50" />
-                  </div>
-                </div>
-
-                {/* Middle Divider Line */}
-                <div className="relative z-10 w-full my-auto">
-                  <div className="w-full h-[1px] bg-white/[0.08]" />
-                </div>
-
-                {/* Bottom Section */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-[12px] font-normal tracking-tight text-white/45 select-none font-mono">
-                    {card.brand || 'rico.'}
-                  </span>
-                </div>
               </div>
             </motion.div>
           );

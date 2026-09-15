@@ -1,167 +1,55 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 
 /**
  * Editorial3DOrbitCarousel
- * Exact recreation of Recording 154902.mp4:
- * 3D tilted elliptical carousel of vibrant editorial poster cards with SHOWCASE watermark.
+ * Exact recreation of Recording 2026-09-15 154902.mp4:
+ * Cascading 3D diagonal conveyor stream of pure surreal art posters.
+ * Cards travel continuously from bottom-right towards top-left,
+ * tilting dynamically (from -14deg in center to +22deg at top-left exit)
+ * with SHOWCASE 11 architectural watermark and editor controls.
+ * Pure image cards with no black overlays and no text.
  */
 export function Editorial3DOrbitCarousel({
+  items = null,
   autoRotate = true,
   speed = 1.0,
+  cardWidth = 220,
+  cardHeight = 300,
   className = '',
 }) {
   const containerRef = useRef(null);
-  const [rotationAngle, setRotationAngle] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef({ x: 0, startAngle: 0 });
+  const dragStartRef = useRef({ x: 0, y: 0, startProgress: 0 });
   const animFrameRef = useRef(null);
   const lastTimeRef = useRef(null);
 
-  // Six distinct editorial poster designs from the reference video
-  const posterCards = [
-    {
-      id: 'red-duotone',
-      type: 'red',
-      render: () => (
-        <div className="w-full h-full bg-gradient-to-br from-[#881337] via-[#991B1B] to-[#450A0A] p-5 flex flex-col justify-between text-white relative overflow-hidden">
-          {/* Silhouette shadow backdrop */}
-          <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_70%_40%,#F43F5E,transparent_60%)]" />
-          <div className="relative z-10 text-[10px] tracking-widest font-mono uppercase text-red-200/70">
-            SHOWCASE · 01
-          </div>
-          <div className="relative z-10">
-            <h3 className="text-xl font-bold tracking-tight leading-tight">RED NOCTURNE</h3>
-            <p className="text-[11px] text-red-200/60 font-mono mt-1">NORSE BJØRGIN</p>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'stark-swiss',
-      type: 'white',
-      render: () => (
-        <div className="w-full h-full bg-[#FFFFFF] p-5 flex flex-col justify-between text-neutral-900 border border-neutral-200/80 relative overflow-hidden">
-          <div className="flex justify-between items-start">
-            <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-400">ARCHIVE</span>
-            <span className="w-2 h-2 rounded-full bg-neutral-900" />
-          </div>
-          {/* Oversized Typographic Character from video */}
-          <div className="my-auto flex flex-col items-center justify-center">
-            <div className="w-10 h-2 bg-neutral-900 mb-2 rounded-xs" />
-            <span className="text-[80px] font-black leading-none tracking-tighter">E</span>
-          </div>
-          <div className="text-[10px] font-mono text-neutral-400 tracking-wider">
-            EDITION · 11
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'gola-yellow',
-      type: 'yellow',
-      render: () => (
-        <div className="w-full h-full bg-[#FACC15] p-5 flex flex-col justify-between text-neutral-950 relative overflow-hidden">
-          {/* Quirky Eyewear Graphic from video */}
-          <div className="my-auto flex flex-col items-center justify-center">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-4xl font-serif leading-none -mt-4">'</span>
-              <div className="w-10 h-10 rounded-full border-[6px] border-neutral-950" />
-              <div className="w-10 h-10 rounded-full border-[6px] border-neutral-950" />
-            </div>
-            <span className="text-[26px] font-black tracking-tight mt-1">선글라스</span>
-            <span className="text-[8px] font-bold tracking-widest uppercase bg-neutral-950 text-[#FACC15] px-2 py-0.5 rounded-full mt-2">
-              GOLA EYEWEAR
-            </span>
-          </div>
-          <div className="text-[10px] font-mono text-neutral-800 tracking-widest">
-            COLLECTION 24
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'obsidian-bust',
-      type: 'dark',
-      render: () => (
-        <div className="w-full h-full bg-[#1C1C1F] p-5 flex flex-col justify-between text-white relative overflow-hidden border border-white/10">
-          <div className="text-[10px] font-mono tracking-widest text-neutral-400">
-            SCULPTURE
-          </div>
-          <div className="my-auto flex flex-col items-center justify-center opacity-85">
-            <div className="w-20 h-24 rounded-t-full bg-gradient-to-b from-neutral-600 via-neutral-700 to-neutral-900 flex items-center justify-center relative shadow-inner">
-              <div className="absolute bottom-0 w-28 h-8 bg-neutral-800 rounded-t-lg" />
-            </div>
-          </div>
-          <div className="flex justify-between items-center text-[10px] font-mono text-neutral-400">
-            <span>PROFILE</span>
-            <span>04</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'electric-blue',
-      type: 'blue',
-      render: () => (
-        <div className="w-full h-full bg-[#2563EB] p-5 flex flex-col justify-between text-white relative overflow-hidden">
-          <div className="flex justify-between items-center text-[10px] font-mono text-blue-200">
-            <span>INTERFACE</span>
-            <span className="px-2 py-0.5 rounded-full bg-[#A3E635] text-neutral-950 font-bold text-[9px] shadow-sm animate-bounce">
-              Hello!
-            </span>
-          </div>
-          {/* Big "Re-" typographic element from video */}
-          <div className="my-auto">
-            <span className="text-5xl font-black tracking-tighter block leading-none">
-              Re—
-            </span>
-            <span className="text-xs text-blue-100 font-mono mt-1 block">
-              3D Interactive
-            </span>
-          </div>
-          <div className="text-[10px] font-mono text-blue-200/80">
-            SYSTEM 2026
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: 'swiss-ai',
-      type: 'swiss',
-      render: () => (
-        <div className="w-full h-full bg-[#F5F5F7] p-5 flex flex-col justify-between text-neutral-900 border border-neutral-200/80 relative overflow-hidden">
-          <div>
-            <span className="text-[10px] font-mono text-neutral-400 tracking-widest uppercase block mb-1">
-              MANIFESTO
-            </span>
-            <h4 className="text-[13px] font-extrabold uppercase tracking-tight leading-snug">
-              HOW—TO—SURVIVE THE AI ERA →
-            </h4>
-          </div>
-          <div className="border-t border-neutral-300 pt-3">
-            <div className="text-[10px] font-mono text-neutral-500 uppercase">
-              OPEN CONFERENCE
-            </div>
-            <div className="text-[11px] font-bold text-neutral-800">
-              NORSE BJØRGIN
-            </div>
-            <div className="text-[10px] text-neutral-400 font-mono">
-              FRI—SUN · NOV 24
-            </div>
-          </div>
-        </div>
-      ),
-    },
+  // Pure surreal art images provided by the user
+  const defaultItems = [
+    { id: '1', image: '/cards/sky-curtain.png' },
+    { id: '2', image: '/cards/airplane-sunset.png' },
+    { id: '3', image: '/cards/rainbow-hill.png' },
+    { id: '4', image: '/cards/train-window.jpg' },
+    { id: '5', image: '/cards/kangaroo-planet.png' },
   ];
 
-  const totalCards = posterCards.length;
-  // Ellipse dimensions
-  const rx = 260; // horizontal radius
-  const ry = 95;  // vertical radius
+  const cards = items || defaultItems;
+  const numCards = cards.length;
 
-  // Continuous rotation loop
+  // Diagonal motion vector from bottom-right (dx: 125, dy: 85) to top-left (-125, -85)
+  // Matching the exact spacing and overlap from Recording 154902.mp4
+  const stepX = 125;
+  const stepY = 85;
+  const unitStep = Math.hypot(stepX, stepY);
+  const totalLength = numCards * unitStep;
+
+  const dirX = stepX / unitStep;
+  const dirY = stepY / unitStep;
+
+  // Continuous animation loop moving up-left
   useEffect(() => {
     if (!autoRotate || isHovered || isDragging) {
       lastTimeRef.current = null;
@@ -171,8 +59,12 @@ export function Editorial3DOrbitCarousel({
     const animate = (time) => {
       if (lastTimeRef.current != null) {
         const dt = (time - lastTimeRef.current) / 1000;
-        const angularVelocity = 0.55 * speed; // radians per second
-        setRotationAngle((prev) => (prev + angularVelocity * dt) % (2 * Math.PI));
+        const v = 58 * speed;
+        setProgress((prev) => {
+          let next = prev - v * dt;
+          if (next < 0) next += totalLength;
+          return next % totalLength;
+        });
       }
       lastTimeRef.current = time;
       animFrameRef.current = requestAnimationFrame(animate);
@@ -182,14 +74,15 @@ export function Editorial3DOrbitCarousel({
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [autoRotate, isHovered, isDragging, speed]);
+  }, [autoRotate, isHovered, isDragging, speed, totalLength]);
 
-  // Drag interaction
+  // Pointer drag to scrub along diagonal
   const handlePointerDown = (e) => {
     setIsDragging(true);
     dragStartRef.current = {
       x: e.clientX,
-      startAngle: rotationAngle,
+      y: e.clientY,
+      startProgress: progress,
     };
     e.currentTarget.setPointerCapture(e.pointerId);
   };
@@ -197,8 +90,11 @@ export function Editorial3DOrbitCarousel({
   const handlePointerMove = (e) => {
     if (!isDragging) return;
     const dx = e.clientX - dragStartRef.current.x;
-    const angleDelta = (dx / 180) * (Math.PI / 2);
-    setRotationAngle(dragStartRef.current.startAngle + angleDelta);
+    const dy = e.clientY - dragStartRef.current.y;
+    const projectedDelta = dx * dirX + dy * dirY;
+    let next = dragStartRef.current.startProgress + projectedDelta;
+    while (next < 0) next += totalLength;
+    setProgress(next % totalLength);
   };
 
   const handlePointerUp = (e) => {
@@ -222,88 +118,136 @@ export function Editorial3DOrbitCarousel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full h-[520px] md:h-[560px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
+      className={`relative w-full h-[580px] md:h-[640px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
       style={{
-        background: 'radial-gradient(ellipse at 50% 50%, #FAFBFD 0%, #E6E8EC 55%, #D0D4DA 100%)',
+        background: 'radial-gradient(ellipse at 50% 45%, #F8F9FA 0%, #E9ECEF 55%, #CED4DA 100%)',
+        perspective: 1400,
       }}
     >
-      {/* Giant Architectural Watermark Text from video: "SHOWCASE 11" */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-        <span className="text-[120px] sm:text-[160px] md:text-[200px] font-black tracking-tighter text-neutral-900/[0.07] uppercase whitespace-nowrap">
+      {/* Top Header Controls from Video: Arrow + SHOWCASE 11 */}
+      <div className="absolute top-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800">
+        <button className="p-1.5 rounded-full hover:bg-black/5 transition-colors pointer-events-auto cursor-pointer">
+          <ArrowLeft className="w-5 h-5 text-neutral-800" />
+        </button>
+        <span className="text-[11px] font-mono tracking-widest uppercase font-semibold text-neutral-500">
           SHOWCASE 11
         </span>
       </div>
 
-      {/* Tilted Perspective Plane */}
-      <div 
-        className="relative w-0 h-0 flex items-center justify-center pointer-events-none"
+      {/* Giant Architectural Background Watermark from Video: "SHOWCASE 11" */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+        <div className="flex items-center justify-center w-full px-6 opacity-[0.09] dark:opacity-[0.07]">
+          <span className="text-[120px] sm:text-[180px] md:text-[230px] font-black tracking-tighter text-black uppercase leading-none">
+            SH
+          </span>
+          <span className="w-24 sm:w-48" />
+          <span className="text-[120px] sm:text-[180px] md:text-[230px] font-black tracking-tighter text-black uppercase leading-none">
+            E 11
+          </span>
+        </div>
+      </div>
+
+      {/* 3D Diagonal Cylindrical Conveyor Anchor */}
+      <div
+        className="relative w-0 h-0 flex items-center justify-center pointer-events-none z-10"
         style={{
-          transform: 'rotateZ(-8deg)',
+          transformStyle: 'preserve-3d',
         }}
       >
-        {posterCards.map((card, idx) => {
-          // Angle for each card along the 3D orbit
-          const baseAngle = (idx / totalCards) * 2 * Math.PI;
-          const currentAngle = (baseAngle + rotationAngle) % (2 * Math.PI);
+        {cards.map((card, idx) => {
+          // Calculate continuous position along infinite diagonal loop
+          const basePos = idx * unitStep;
+          let currentPos = (basePos + progress) % totalLength;
+          if (currentPos > totalLength / 2) {
+            currentPos -= totalLength;
+          }
 
-          // 3D Elliptical Projection
-          const x = Math.sin(currentAngle) * rx;
-          const y = Math.cos(currentAngle) * ry;
+          const stepRatio = currentPos / unitStep; // approx -2 to +2 for visible cards
+          const posX = stepRatio * stepX;
+          const posY = stepRatio * stepY;
 
-          // Depth attributes (cos gives depth from -1 [back] to +1 [front])
-          const depth = Math.cos(currentAngle);
-          const normDepth = (depth + 1) / 2; // 0 (back) to 1 (front)
+          // Visual coordinates and rotation matching Recording 154902.mp4:
+          // - When stepRatio > 0 (bottom-right / center-right): rotateZ is around -14deg
+          // - As it crosses center (stepRatio approx -0.5 to 0): rotateZ is around -8deg to -6deg
+          // - As it exits at top-left (stepRatio < -0.8): rotateZ smoothly tilts up to +22deg!
+          let rotZ = -14;
+          if (stepRatio < 0) {
+            // Smoothly interpolate from -14deg up to +22deg as it moves towards top-left
+            const t = Math.min(1, Math.abs(stepRatio) / 1.5);
+            rotZ = -14 + t * 36; // -14 -> +22
+          }
 
-          const scale = 0.84 + normDepth * 0.26;
-          const zIndex = Math.round(normDepth * 50);
-          const opacity = 0.65 + normDepth * 0.35;
-          const rotZ = Math.sin(currentAngle) * -7;
+          // Depth scaling & zIndex matching video
+          // Center-right cards (stepRatio around 0.3) are on top and largest
+          const distFromFocus = Math.abs(stepRatio - 0.2);
+          const scale = Math.max(0.82, 1.16 - distFromFocus * 0.16);
+          // zIndex ensures lower-right card overlaps the card to its left
+          const zIndex = Math.round(50 - stepRatio * 15);
+
+          // Edge fade
+          const distFromCenter = Math.hypot(posX, posY);
+          const opacity = Math.max(0, 1 - Math.max(0, distFromCenter - 450) / 100);
 
           return (
             <motion.div
               key={card.id}
               initial={false}
               animate={{
-                x,
-                y,
+                x: posX,
+                y: posY,
                 scale,
                 opacity,
                 rotateZ: rotZ,
               }}
               transition={{
                 type: 'spring',
-                stiffness: 400,
-                damping: 40,
-                mass: 0.7,
+                stiffness: 420,
+                damping: 42,
+                mass: 0.75,
               }}
               style={{
-                width: 195,
-                height: 255,
+                width: cardWidth,
+                height: cardHeight,
                 position: 'absolute',
-                top: -127,
-                left: -97,
+                top: -cardHeight / 2,
+                left: -cardWidth / 2,
                 zIndex,
+                transformStyle: 'preserve-3d',
               }}
               className="pointer-events-auto"
               onClick={() => {
-                // Clicking a card smoothly brings it to front (depth = 1 => currentAngle = 0)
-                setRotationAngle((prev) => prev - currentAngle);
+                // Click card to pull it into center focus
+                setProgress((prev) => (prev - currentPos + totalLength) % totalLength);
               }}
             >
+              {/* Pure Card Surface - No text, No black overlays */}
               <div
-                className="w-full h-full rounded-[18px] overflow-hidden shadow-2xl transition-transform duration-200 hover:scale-[1.04] cursor-pointer"
+                className="w-full h-full rounded-[22px] overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
                 style={{
                   boxShadow:
-                    normDepth > 0.6
-                      ? '0 25px 50px -12px rgba(0, 0, 0, 0.45), 0 8px 18px -6px rgba(0, 0, 0, 0.25)'
-                      : '0 12px 24px -8px rgba(0, 0, 0, 0.25)',
+                    Math.abs(stepRatio) < 1.0
+                      ? '0 30px 60px -14px rgba(0, 0, 0, 0.45), 0 12px 24px -6px rgba(0, 0, 0, 0.25)'
+                      : '0 16px 32px -8px rgba(0, 0, 0, 0.25)',
+                  border: '1px solid rgba(255, 255, 255, 0.45)',
                 }}
               >
-                {card.render()}
+                <img
+                  src={card.image}
+                  alt="Artwork"
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                  draggable={false}
+                />
               </div>
             </motion.div>
           );
         })}
+      </div>
+
+      {/* Bottom Editor Bar from Video: JITTER · VIDEO · TEMPLATE */}
+      <div className="absolute bottom-3 left-6 right-6 flex items-center justify-between pointer-events-none z-20 text-[10px] font-mono tracking-wider uppercase text-neutral-500">
+        <span>JITTER</span>
+        <span className="font-semibold text-neutral-700">VIDEO</span>
+        <span>TEMPLATE</span>
       </div>
     </div>
   );
