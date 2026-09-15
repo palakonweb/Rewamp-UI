@@ -18,12 +18,12 @@ export default function Editorial3DOrbitCarouselShowcase() {
             {autoRotate ? (
               <>
                 <Pause className="w-3.5 h-3.5 text-neutral-500" />
-                <span>Pause Orbit</span>
+                <span>Pause Ticking</span>
               </>
             ) : (
               <>
                 <Play className="w-3.5 h-3.5 text-neutral-500" />
-                <span>Orbit</span>
+                <span>Auto-Tick</span>
               </>
             )}
           </button>
@@ -47,7 +47,7 @@ export default function Editorial3DOrbitCarouselShowcase() {
 
         <div className="flex items-center gap-2 text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
           <span className="w-1.5 h-1.5 rounded-full bg-[#EC5E27] animate-pulse" />
-          <span>Click any card to bring to front · Drag to spin</span>
+          <span>Clock-arm motion · Click card or drag to tick</span>
         </div>
       </div>
 

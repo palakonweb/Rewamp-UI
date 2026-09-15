@@ -482,13 +482,13 @@ export const readyDetails = {
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'editorial-3d-orbit-carousel': {
-        description: 'A 3D tilted elliptical carousel of vibrant editorial poster cards with architectural watermark text, depth-scaling physics, and interactive orbital spin.',
+        description: 'A clock-arm ticking sequence of full-bleed surreal art posters moving along an airy diagonal path with architectural watermark text, refined rotation angles, and mechanical step springs.',
         prompt: editorial3DOrbitCarouselPrompt,
         code: editorial3DOrbitCarouselCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'editorial3-d-orbit-carousel': {
-        description: 'A 3D tilted elliptical carousel of vibrant editorial poster cards with architectural watermark text, depth-scaling physics, and interactive orbital spin.',
+        description: 'A clock-arm ticking sequence of full-bleed surreal art posters moving along an airy diagonal path with architectural watermark text, refined rotation angles, and mechanical step springs.',
         prompt: editorial3DOrbitCarouselPrompt,
         code: editorial3DOrbitCarouselCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
