@@ -88,37 +88,37 @@ export function PerspectiveFlipDeck({
           const slot = (idx - activeIndex + numCards) % numCards;
           const isFront = slot === 0;
 
-          // Resting coordinates with generous breathing space:
-          // Front card (slot 0) at x: 35, y: 0
-          // Middle card (slot 1) at x: -35, y: -12
-          // Back card (slot 2) at x: -105, y: -24
-          let targetX = 35 - slot * 70;
-          let targetY = 0 - slot * 12;
-          let targetScale = 1 - slot * 0.04;
-          // Reduced angle per user request (gentle -14deg Y and 5deg X)
-          let targetRotY = -14;
-          let targetRotX = 5;
-          let targetRotZ = -1.5;
-          let targetOpacity = slot > 2 ? 0 : 1 - slot * 0.05;
+          // Straight deck coordinates: perfectly straight on, zero skew angle
+          // Front card (slot 0) centered at x: 20, y: 0
+          // Middle card (slot 1) offset slightly to the left at x: -40
+          // Back card (slot 2) offset to x: -100
+          let targetX = 20 - slot * 60;
+          let targetY = 0 - slot * 8;
+          let targetScale = 1 - slot * 0.035;
+          // Completely straight resting angles per user request
+          let targetRotY = 0;
+          let targetRotX = 0;
+          let targetRotZ = 0;
+          let targetOpacity = slot > 2 ? 0 : 1 - slot * 0.06;
           let zIndex = 30 - slot * 5;
 
           // When flip is in progress:
           if (isFlipping) {
             if (isFront) {
-              // The front card physically swings open around its right edge in 3D
-              targetRotY = 88;
-              targetRotX = 2;
-              targetRotZ = 3;
-              targetOpacity = 0.05; // Fades out at extreme edge-on angle
+              // The front card physically swings open around its right vertical hinge in 3D
+              targetRotY = 90;
+              targetRotX = 0;
+              targetRotZ = 0;
+              targetOpacity = 0;
               targetScale = 0.98;
               zIndex = 40;
             } else if (slot <= 3) {
-              // Cards behind slide forward into next slot position with breathing room
+              // Cards behind slide forward smoothly into next slot position
               const nextSlot = slot - 1;
-              targetX = 35 - nextSlot * 70;
-              targetY = 0 - nextSlot * 12;
-              targetScale = 1 - nextSlot * 0.04;
-              targetOpacity = nextSlot > 2 ? 0 : 1 - nextSlot * 0.05;
+              targetX = 20 - nextSlot * 60;
+              targetY = 0 - nextSlot * 8;
+              targetScale = 1 - nextSlot * 0.035;
+              targetOpacity = nextSlot > 2 ? 0 : 1 - nextSlot * 0.06;
               zIndex = 30 - nextSlot * 5;
             }
           }
@@ -137,7 +137,7 @@ export function PerspectiveFlipDeck({
                 rotateZ: targetRotZ,
               }}
               transition={{
-                duration: isFront && isFlipping ? 0.62 : 0.55,
+                duration: isFront && isFlipping ? 0.6 : 0.52,
                 ease: isFront && isFlipping ? [0.35, 0.85, 0.45, 1] : [0.34, 1.3, 0.64, 1],
               }}
               style={{
