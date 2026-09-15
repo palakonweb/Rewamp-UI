@@ -59,7 +59,7 @@ export default function GooglyEyesButtonShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#f5f5f7] shadow-xl flex items-center justify-center p-8 group">
+            <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8 group">
                 
                 {/* 🎯 THE BUTTON */}
                 <motion.button 
@@ -68,7 +68,7 @@ export default function GooglyEyesButtonShowcase() {
                     className="relative flex items-center gap-4 bg-black pl-8 pr-3 py-3 rounded-full shadow-2xl cursor-pointer select-none"
                     style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
-                    <span className="text-white text-xl font-semibold tracking-tight mr-4">Get in touch</span>
+                    <span className="text-white text-xl font-semibold tracking-tight mr-4 whitespace-nowrap">Get in touch</span>
                     <div className="flex items-center gap-2">
                         <Eye />
                         <Eye />

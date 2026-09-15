@@ -4,7 +4,7 @@ import { Copy, Check } from 'lucide-react';
 
 const promptContent = `Liquid Text Morph. Words melt and fuse into one another using an SVG feColorMatrix gooey filter and Framer Motion layout animations.`;
 
-const WORDS = ["IMAGINE", "DESIGN", "BUILD", "CONJURE"];
+const WORDS = ["IMAGINE", "DESIGN", "BUILD", "PURRFORM"];
 
 export default function LiquidTextMorphShowcase() {
     const [copied, setCopied] = useState(false);

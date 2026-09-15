@@ -39,8 +39,8 @@ export function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0 pr-4">
           <img 
-            src="/logo.png" 
-            alt="Conjure UI Logo" 
+            src="/purrform-logo.png" 
+            alt="Purrform Logo" 
             className={`transition-all duration-500 w-auto ${scrolled ? 'h-10' : 'h-14'}`} 
           />
           <AnimatePresence>
@@ -51,7 +51,7 @@ export function Navbar() {
                 exit={{ opacity: 0, width: 0 }}
                 className="font-display tracking-[0.12em] text-[var(--text)] text-[11px] whitespace-nowrap overflow-hidden"
               >
-                CONJURE UI
+                PURRFORM
               </motion.span>
             )}
           </AnimatePresence>

@@ -14,7 +14,7 @@ const COLOR_MAP = { message: '#60a5fa', star: '#fbbf24', zap: '#a78bfa', follow:
 
 const INITIAL = [
   { id: '1', type: 'message', title: 'New message from Sarah',   desc: '"The new components look incredible!"', time: '2m ago',  read: false },
-  { id: '2', type: 'star',    title: 'Conjure UI hit 12k stars', desc: 'Your repo is trending on GitHub 🚀',   time: '14m ago', read: false },
+  { id: '2', type: 'star',    title: 'Purrform hit 12k stars', desc: 'Your repo is trending on GitHub 🚀',   time: '14m ago', read: false },
   { id: '3', type: 'follow',  title: 'James Okafor followed you',desc: 'Head of Engineering @ Pulse Labs',    time: '1h ago',  read: false },
   { id: '4', type: 'zap',     title: 'Deploy succeeded',         desc: 'prod-v2.4.1 is live on edge network', time: '2h ago',  read: true  },
   { id: '5', type: 'like',    title: 'Priya liked your post',    desc: '"The glassmorphism article"',          time: '3h ago',  read: true  },

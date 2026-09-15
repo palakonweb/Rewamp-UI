@@ -89,7 +89,7 @@ const testimonials = [
         role: 'Frontend Lead @ Vercel',
         avatar: 'MT',
         avatarBg: 'from-violet-600 to-indigo-600',
-        quote: 'Conjure UI cut our design-to-dev handoff time in half. The quality is unreal.',
+        quote: 'Purrform cut our design-to-dev handoff time in half. The quality is unreal.',
         rating: 5,
     },
     {
@@ -245,7 +245,7 @@ const SocialProof = () => {
                         </span>
                     </h2>
                     <p className="text-black/50 dark:text-white/50 text-[16px] md:text-[18px] font-light leading-relaxed max-w-lg mx-auto">
-                        Conjure UI is the fastest way to go from idea to production-grade interface.
+                        Purrform is the fastest way to go from idea to production-grade interface.
                     </p>
                 </motion.div>
 

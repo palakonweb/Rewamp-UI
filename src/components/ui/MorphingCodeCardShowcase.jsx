@@ -202,7 +202,7 @@ export default function MorphingCodeCardShowcase() {
                                 <div className="w-2 h-2 rounded-full bg-emerald-400" />
                                 <span className="text-white/25 text-[10px] font-mono uppercase">{snap.lang}</span>
                             </div>
-                            <span className="text-white/20 text-[10px] font-mono">orbit://conjure-ui</span>
+                            <span className="text-white/20 text-[10px] font-mono">orbit://purrform-ui</span>
                         </div>
                     </div>
                 </div>

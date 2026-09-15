@@ -11,7 +11,7 @@ const promptContent = `testimonial card — auto-cycling quotes with staggered w
 
 const TESTIMONIALS = [
   {
-    quote: "Conjure UI cut our design-to-code time in half. Every component feels hand-crafted — the animations alone saved us weeks of work.",
+    quote: "Purrform cut our design-to-code time in half. Every component feels hand-crafted — the animations alone saved us weeks of work.",
     name: 'Sarah Chen', role: 'Head of Design @ Orbit Labs', rating: 5, color: '#a78bfa',
     initials: 'SC',
   },
@@ -21,12 +21,12 @@ const TESTIMONIALS = [
     initials: 'MW',
   },
   {
-    quote: "The dark mode implementation is flawless. Our users' first reaction is always 'how did you build this?' — Conjure makes us look like wizards.",
+    quote: "The dark mode implementation is flawless. Our users' first reaction is always 'how did you build this?' — Purrform makes us look like wizards.",
     name: 'Priya Anand', role: 'Product Lead @ Cipher Systems', rating: 5, color: '#22d3ee',
     initials: 'PA',
   },
   {
-    quote: "We shipped our entire dashboard UI in 3 days using Conjure. The Framer Motion integration is exactly what I needed without any of the usual pain.",
+    quote: "We shipped our entire dashboard UI in 3 days using Purrform. The Framer Motion integration is exactly what I needed without any of the usual pain.",
     name: 'James Okafor', role: 'CTO @ Pulse Analytics', rating: 5, color: '#4ade80',
     initials: 'JO',
   },

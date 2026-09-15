@@ -21,7 +21,7 @@ export function DocumentationPage() {
           </button>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[var(--accent)]" />
-            <span className="font-display tracking-[0.12em] text-[var(--text)] text-[11px] uppercase">Conjure UI</span>
+            <span className="font-display tracking-[0.12em] text-[var(--text)] text-[11px] uppercase">Purrform</span>
           </div>
           <span className="text-[12px] text-gray-400 font-mono hidden sm:block">/ docs</span>
         </div>
@@ -68,7 +68,7 @@ export function DocumentationPage() {
               Documentation
             </h1>
             <p className="text-lg text-gray-500 font-serif italic mb-12 leading-relaxed">
-              Everything you need to build stunning, agency-grade React applications using Conjure UI.
+              Everything you need to build stunning, agency-grade React applications using Purrform.
             </p>
 
             <section id="introduction" className="mb-16">
@@ -79,7 +79,7 @@ export function DocumentationPage() {
                 <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Introduction</h2>
               </div>
               <p className="text-[15px] text-gray-600 leading-[1.8] mb-6">
-                Conjure UI is not just a component library; it's a design system built for the modern web. Inspired by the absolute best in the industry (Aceternity, Linear, Vercel), Conjure UI provides a set of highly interactive, physically-accurate, and beautifully styled components that you can drop directly into your React codebase.
+                Purrform is not just a component library; it's a design system built for the modern web. Inspired by the absolute best in the industry (Aceternity, Linear, Vercel), Purrform provides a set of highly interactive, physically-accurate, and beautifully styled components that you can drop directly into your React codebase.
               </p>
               
               <div className="grid sm:grid-cols-2 gap-4 mt-8">
@@ -106,7 +106,7 @@ export function DocumentationPage() {
                 <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Installation</h2>
               </div>
               <p className="text-[15px] text-gray-600 leading-[1.8] mb-6">
-                To use Conjure UI components, you need a React environment with Tailwind CSS and Framer Motion installed.
+                To use Purrform components, you need a React environment with Tailwind CSS and Framer Motion installed.
               </p>
 
               <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800 mb-8">

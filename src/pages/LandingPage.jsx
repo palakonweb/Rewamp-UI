@@ -5,7 +5,7 @@ import { FeaturesBento } from '../components/sections/FeaturesBento'
 import { LiveProductDemo } from '../components/sections/LiveProductDemo'
 import { InfiniteSpiralGallery } from '../components/sections/InfiniteSpiralGallery'
 import { DomeGalleryCTA } from '../components/sections/DomeGalleryCTA'
-import { ConjureReveal } from '../components/sections/ConjureReveal'
+import { PurrformReveal } from '../components/sections/PurrformReveal'
 import { SiteFooter } from '../components/sections/SiteFooter'
 import { Navbar } from '../components/sections/Navbar'
 import SplashCursor from '../components/ui/SplashCursor'
@@ -34,7 +34,7 @@ export function LandingPage() {
             <LiveProductDemo />
             <InfiniteSpiralGallery />
             <DomeGalleryCTA />
-            <ConjureReveal />
+            <PurrformReveal />
             <SiteFooter />
           </div>
         </div>

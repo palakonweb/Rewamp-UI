@@ -204,7 +204,7 @@ export default function DataCardFlipperShowcase() {
         <div className="w-full flex items-center gap-3">
           <div className="w-2 h-2 rounded-full" style={{ background: GREEN, boxShadow: `0 0 8px ${GREEN}` }} />
           <code className="text-[11px] font-bold uppercase tracking-widest" style={{ color: `${GREEN}66` }}>
-            CONJURE_METRICS:// live_dashboard
+            PURRFORM_METRICS:// live_dashboard
           </code>
         </div>
 

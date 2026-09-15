@@ -20,7 +20,7 @@ export default function BentoDropMenuNavbarShowcase() {
                 
                 {/* 🎯 THE NAVBAR */}
                 <header className="relative w-full flex items-center justify-between p-4 bg-white/70 dark:bg-black/70 border border-white dark:border-white/10 backdrop-blur-lg rounded-2xl z-50">
-                    <span className="font-bold text-xl tracking-tight text-black dark:text-white">Conjure</span>
+                    <span className="font-bold text-xl tracking-tight text-black dark:text-white">Purrform</span>
                     <nav className="flex gap-2">
                         <div 
                             onMouseEnter={() => setIsMenuOpen(true)}
@@ -46,7 +46,7 @@ export default function BentoDropMenuNavbarShowcase() {
                                             {/* Bento Item 1 */}
                                             <div className="col-span-2 p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 cursor-pointer hover:scale-[1.02] transition-transform">
                                                 <Sparkles size={20} className="text-indigo-500 mb-2" />
-                                                <h4 className="text-[14px] font-semibold text-black dark:text-white mb-1">Conjure Core</h4>
+                                                <h4 className="text-[14px] font-semibold text-black dark:text-white mb-1">Purrform Core</h4>
                                                 <p className="text-[12px] text-black/60 dark:text-white/60 leading-tight">The ultimate UI animation engine for modern teams.</p>
                                             </div>
 

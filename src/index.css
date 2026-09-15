@@ -6,10 +6,47 @@
   --color-maroon: #630000;
   --color-noir: #1B1717;
   --color-cotton: #EDEBDD;
+
+  /* Dashboard neutral palette */
+  --color-app-bg: #F5F5F5;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #FAFAFA;
+  --color-ink: #2C2C2C;
+  --color-ink-2: #6E6E6E;
+  --color-ink-3: #8E8E8E;
+  --color-ink-4: #B3B3B3;
+  --color-line: #E1E1E1;
+  --color-line-subtle: #EAEAEA;
+
+  /* Purrform brand tokens */
+  --color-orange: #EC5E27;
+  --color-milk: #FFFDF2;
+  --color-burnt-orange: #D2471A;
+  --color-peach: #FBA27A;
+  --color-sand: #F1E6D7;
+  --color-charcoal: #1F1F1F;
+  --color-stone: #6B6B6B;
+  --color-mist: #D9D9D6;
+  --color-cream: #FAF6ED;
+  --color-success: #16A34A;
+  --color-warning: #FBBF24;
+  --color-error: #EF4444;
+
+  /* Orange ramp — darkest to lightest */
+  --color-orange-900: #7A2D12;
+  --color-orange-800: #A63E1B;
+  --color-orange-700: #D2471A;
+  --color-orange-600: #EC5E27;
+  --color-orange-500: #F17648;
+  --color-orange-400: #F58F6A;
+  --color-orange-300: #F9B494;
+  --color-orange-200: #FCD5C2;
+  --color-orange-100: #FEEBE1;
 }
 
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&display=swap');
@@ -27,6 +64,7 @@
     --glow: rgba(129, 1, 0, 0.18);
 
     --font-display: 'Sarpanch', sans-serif;
+    --font-heading: 'Quicksand', sans-serif;
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'Geist Mono', monospace;
@@ -55,18 +93,20 @@
   }
 
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--bg);
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #810100;
+    background: var(--color-mist);
     border-radius: 5px;
     border: 2px solid var(--bg);
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #a01010;
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-mist) transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -79,11 +119,43 @@
 }
 
 @layer utilities {
+  /* Dashboard showcase embeds: each ui/*Showcase.jsx renders its own inline
+     "prompt" footer (label + <code> + copy button). The dashboard shows the
+     prompt in the card's Prompt tab instead, so hide the component's own
+     footer wherever it's embedded there. */
+  .prompt-embed div:has(> div > code):has(> button) {
+    display: none !important;
+  }
+
+  /* Every showcase sets its own root background/shadow (dark canvases,
+     device-mockup chrome, etc). Force just the outermost wrapper to a plain
+     white canvas so the docs shell reads as one consistent surface — inner
+     decorative elements (glows, gradients that are the actual demo) are
+     nested deeper and stay untouched. Animated Backgrounds are exempt
+     (.preserve-bg) since their own background IS the component being shown. */
+  .prompt-embed:not(.preserve-bg) > div:first-child {
+    background: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
   .font-display {
     font-family: var(--font-display);
   }
   .font-sans {
     font-family: var(--font-sans);
+  }
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  /* Fully hidden scrollbar — still scrollable, just no visible track/thumb */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
   .font-mono {
     font-family: var(--font-mono);
@@ -119,6 +191,11 @@
       0 4px 14px rgba(0, 0, 0, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
     border-radius: 6px;
+  }
+
+  /* Shared background for showcase preview frames */
+  .inner-card-bg {
+    background: #F1F1F1;
   }
 
   /* Liquid metal rotating border */
@@ -181,4 +258,18 @@
   to {
     --angle: 360deg;
   }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-text-shimmer {
+  background-size: 200% auto;
+  animation: text-shimmer 3s linear infinite;
 }

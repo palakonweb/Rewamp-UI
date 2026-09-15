@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `glassmorphic translucent button utilizing backdrop-filter blur over colored background`;
+const promptContent = `"Glass Button": real translucent glass pill — heavy backdrop blur actually refracts the scene behind it, with a bright top specular highlight, a crisp light-catching rim border, and a soft drop shadow.`;
 
 export default function GlassButtonShowcase() {
     const [copied, setCopied] = useState(false);
@@ -15,26 +15,20 @@ export default function GlassButtonShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#e8e9eb] shadow-xl flex items-center justify-center p-8 group">
-                
-                {/* 🌀 Colorful animated underlying blobs to showcase glassmorphism */}
-                <motion.div 
-                    animate={{ rotate: 360, scale: [1, 1.2, 1] }} 
-                    transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-                    className="absolute w-[300px] h-[300px] bg-gradient-to-tr from-pink-400 to-indigo-400 rounded-full blur-[40px] opacity-40 mix-blend-multiply" 
-                />
-                
-                {/* 🎯 THE BUTTON */}
-                <motion.button 
-                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.45)' }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative z-10 bg-white/30 backdrop-blur-xl px-10 py-4 text-[#2a2a2a] text-[18px] font-medium tracking-wide shadow-[0_8px_32px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.7)] border border-white/40 transition-colors"
-                    style={{ borderRadius: '100px' }} // Highly rounded pill
+            <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8">
+                <button
+                    className="relative px-10 py-4 min-w-[220px] flex items-center justify-center rounded-full select-none overflow-hidden"
+                    style={{
+                        background: 'rgba(255,255,255,0.35)',
+                        backdropFilter: 'blur(16px) saturate(160%)',
+                        WebkitBackdropFilter: 'blur(16px) saturate(160%)',
+                        border: '1px solid rgba(255,255,255,0.7)',
+                        boxShadow: '0 12px 28px -16px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8)',
+                    }}
                 >
-                    Book now
-                </motion.button>
-                
-                <span className="absolute bottom-6 text-black/40 text-[13px] font-semibold tracking-widest uppercase z-20">Glass UI</span>
+                    <div className="absolute inset-x-2 top-1 h-2/5 rounded-full pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.6), transparent)' }} />
+                    <span className="relative z-10 text-[16px] font-semibold text-[#3a1414]">Glass Button</span>
+                </button>
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

@@ -8,7 +8,7 @@ const Footer = () => {
             {/* Massive Watermark Text Background */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex justify-center pointer-events-none select-none overflow-hidden z-0 opacity-[0.03]">
                 <h1 className="text-[15vw] font-bold text-[var(--color-accent-red)] tracking-tighter whitespace-nowrap leading-none mix-blend-plus-lighter dark:mix-blend-normal">
-                    CONJURE
+                    PURRFORM
                 </h1>
             </div>
 
@@ -21,8 +21,8 @@ const Footer = () => {
                     <div className="col-span-1 md:col-span-4 flex flex-col gap-6">
                         <div className="flex items-center gap-2">
                             {/* Actual Logo Image */}
-                            <img src="/logo.png" alt="Conjure UI Logo" className="w-8 h-8 object-contain" />
-                            <span className="text-black dark:text-white font-bold text-xl tracking-wide">Conjure UI</span>
+                            <img src="/purrform-logo.png" alt="Purrform Logo" className="w-8 h-8 object-contain" />
+                            <span className="text-black dark:text-white font-bold text-xl tracking-wide">Purrform</span>
                         </div>
                         <p className="text-black/60 dark:text-white/60 text-sm leading-relaxed max-w-[280px]">
                             Instant UI generation for modern developers.

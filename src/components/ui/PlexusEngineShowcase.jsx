@@ -138,7 +138,7 @@ export default function PlexusEngineShowcase() {
                 {/* 📝 DUMMY CONTENT */}
                 <div className="relative z-20 flex flex-col items-center text-center max-w-lg pointer-events-none">
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="px-3 py-1 mb-6 rounded-full border border-white/10 bg-white/5 text-white/80 text-[11px] font-medium tracking-widest uppercase">
-                        Conjure UI
+                        Purrform
                     </motion.div>
                     <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.1} className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-4 drop-shadow-sm">
                         Plexus Node
