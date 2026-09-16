@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
@@ -117,6 +118,7 @@ export default function AsciiMatrixHoverShowcase() {
             </div>
         </div>
 
+        <BackgroundHeroOverlay title="ASCII matrix hover to enhance your UI" />
       </div>
 
       <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

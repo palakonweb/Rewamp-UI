@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { Copy, Check } from 'lucide-react';
 
 const promptContent = `Elastic Line Grid Background. A highly interactive canvas background where a geometric grid of lines physically stretches, bends, and snaps back with elastic spring physics as the cursor drags through them.`;

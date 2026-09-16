@@ -28,31 +28,14 @@ export default function SplashCursorShowcase() {
                     />
                 </div>
 
-                {/* Centered Cursor Indicator */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex flex-col items-center justify-center">
-                    {/* Radiant lavender halo */}
-                    <div className="absolute w-32 h-32 rounded-full bg-violet-500/20 blur-2xl animate-pulse" />
+                {/* Centered Hint Text */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex flex-col items-center justify-center text-center select-none">
+                    {/* Ambient lavender glow */}
+                    <div className="absolute w-72 h-28 rounded-full bg-violet-500/15 blur-3xl pointer-events-none" />
                     
-                    {/* Sleek SVG Mouse Cursor in Lavender */}
-                    <div className="relative flex flex-col items-center">
-                        <svg 
-                            className="w-8 h-8 drop-shadow-[0_4px_14px_rgba(196,181,253,0.7)]" 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path 
-                                d="M5.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L5.5 3.5Z" 
-                                fill="#8B5CF6" 
-                                stroke="#DDD6FE" 
-                                strokeWidth="1.5" 
-                                strokeLinejoin="round"
-                            />
-                        </svg>
-                        <span className="mt-2 px-2.5 py-0.5 rounded-full bg-violet-950/80 border border-violet-400/30 text-[10px] font-mono font-medium text-violet-200 tracking-wider backdrop-blur-sm shadow-sm whitespace-nowrap">
-                            (center)
-                        </span>
-                    </div>
+                    <p className="font-sans text-xl sm:text-2xl font-light tracking-wide text-white/85 drop-shadow-[0_2px_16px_rgba(196,181,253,0.45)]">
+                        Hover to see the magic
+                    </p>
                 </div>
                 
                 <span className="absolute bottom-6 right-6 text-violet-300/40 text-[12px] font-semibold tracking-widest uppercase z-10 pointer-events-none">Lavender Splash Cursor</span>

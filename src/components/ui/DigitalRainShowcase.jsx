@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 

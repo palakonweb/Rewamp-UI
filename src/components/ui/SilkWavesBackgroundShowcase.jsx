@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 import SilkWaves from './backgrounds/SilkWaves';
@@ -26,6 +27,7 @@ export default function SilkWavesBackgroundShowcase() {
                         intensity={1.0}
                     />
                 </div>
+                <BackgroundHeroOverlay title="Velvet silk ribbons to enhance your UI" />
             </div>
 
             {/* PROMPT CARD */}

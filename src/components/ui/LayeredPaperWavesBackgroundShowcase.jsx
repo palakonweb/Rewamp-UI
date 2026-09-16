@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 import LayeredPaperWaves from './backgrounds/LayeredPaperWaves';
@@ -26,6 +27,7 @@ export default function LayeredPaperWavesBackgroundShowcase() {
                         amplitude={1.0}
                     />
                 </div>
+                <BackgroundHeroOverlay title="Layered paper waves to enhance your UI" />
             </div>
 
             {/* PROMPT CARD */}

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
@@ -70,15 +71,7 @@ export default function SpotlightGridShowcase() {
             />
         </motion.div>
 
-        {/* Content */}
-        <div className="relative z-20 flex flex-col items-center pointer-events-none">
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-white mb-4 drop-shadow-md">
-                Spotlight Mesh
-            </h2>
-            <p className="text-white/50 tracking-wide text-sm max-w-sm text-center">
-                Move your cursor to reveal the hidden architecture underneath the void.
-            </p>
-        </div>
+        <BackgroundHeroOverlay title="Interactive spotlight mesh to enhance your UI" />
 
       </div>
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
@@ -51,18 +52,7 @@ export default function AmbientGlowOrbsShowcase() {
                     />
                 </div>
 
-                {/* 📝 DUMMY CONTENT */}
-                <div className="relative z-20 flex flex-col items-center text-center max-w-lg pointer-events-none">
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="px-3 py-1 mb-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-xl text-white/90 text-[11px] font-semibold tracking-widest uppercase shadow-2xl">
-                        Purrform
-                    </motion.div>
-                    <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.1} className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-4 drop-shadow-lg">
-                        Ambient Orbs
-                    </motion.h1>
-                    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.2} className="text-white/70 text-base md:text-lg font-light leading-relaxed mb-8 max-w-md">
-                        Sublime drifting gradients created using heavy CSS spatial blur filters for maximum elegance.
-                    </motion.p>
-                </div>
+                <BackgroundHeroOverlay title="Ambient glowing orbs to enhance your UI" />
             </div>
 
             {/* 📋 PROMPT CARD */}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
@@ -134,35 +135,7 @@ export default function SoftAuroraShowcase() {
                 {/* 🌌 MOTION BACKGROUND */}
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
 
-                {/* 📝 DUMMY CONTENT */}
-                <div className="relative z-20 flex flex-col items-center text-center max-w-lg pointer-events-none">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="px-3 py-1 mb-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white/70 text-[11px] font-medium tracking-widest uppercase shadow-xl"
-                    >
-                        Purrform
-                    </motion.div>
-                    
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-4 drop-shadow-sm"
-                    >
-                        Soft Aurora
-                    </motion.h1>
-                    
-                    <motion.p 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-white/60 text-base md:text-lg font-light leading-relaxed mb-8 max-w-md"
-                    >
-                        Sweeping gradients powered by a performant fragment shader.
-                    </motion.p>
-                </div>
+                <BackgroundHeroOverlay title="Soft ethereal aurora to enhance your UI" />
             </div>
 
             {/* 📋 PROMPT CARD */}

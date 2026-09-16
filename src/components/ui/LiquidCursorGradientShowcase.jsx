@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
@@ -80,15 +81,7 @@ export default function LiquidCursorGradientShowcase() {
         {/* Subtle Noise Texture */}
         <div className="absolute inset-0 z-10 opacity-20 pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
 
-        {/* Content */}
-        <div className="relative z-20 flex flex-col items-center justify-center h-full min-h-[500px] pointer-events-none">
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-6 drop-shadow-lg text-center">
-                LIQUID <br/> GRADIENT
-            </h2>
-            <div className="px-6 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white/80 font-medium tracking-widest text-xs uppercase shadow-xl">
-                Cursor Reactive
-            </div>
-        </div>
+        <BackgroundHeroOverlay title="Liquid cursor gradients to enhance your UI" />
 
       </div>
 

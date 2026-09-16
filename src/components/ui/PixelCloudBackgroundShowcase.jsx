@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 import PixelCloud from './backgrounds/PixelCloud';
@@ -29,6 +30,7 @@ export default function PixelCloudBackgroundShowcase() {
                         pixelSize={6}
                     />
                 </div>
+                <BackgroundHeroOverlay title="Drifting pixel clouds to enhance your UI" />
             </div>
 
             {/* PROMPT CARD */}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
@@ -115,18 +116,7 @@ export default function HyperspeedWarpShowcase() {
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-black shadow-2xl flex items-center justify-center p-8 group">
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full mix-blend-screen" />
                 
-                {/* 📝 DUMMY CONTENT */}
-                <div className="relative z-20 flex flex-col items-center text-center max-w-lg pointer-events-none">
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="px-3 py-1 mb-6 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] font-medium tracking-widest uppercase">
-                        Purrform
-                    </motion.div>
-                    <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.1} className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-4 drop-shadow-sm">
-                        Hyperspace
-                    </motion.h1>
-                    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.2} className="text-white/60 text-base md:text-lg font-light leading-relaxed mb-8 max-w-md">
-                        Cinematic 3D forward projection rendering infinite trailing star rays.
-                    </motion.p>
-                </div>
+                <BackgroundHeroOverlay title="Hyperspeed warp tunnel to enhance your UI" />
             </div>
 
             {/* 📋 PROMPT CARD */}

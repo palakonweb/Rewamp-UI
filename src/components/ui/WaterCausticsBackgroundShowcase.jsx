@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 import WaterCaustics from './backgrounds/WaterCaustics';
@@ -28,6 +29,7 @@ export default function WaterCausticsBackgroundShowcase() {
                         exposure={1.05}
                     />
                 </div>
+                <BackgroundHeroOverlay title="Deep water caustics to enhance your UI" />
             </div>
 
             {/* PROMPT CARD */}
