@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plane, 
@@ -14,7 +14,76 @@ import {
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { categories, findComponentBySlug } from '../docsRegistry';
+import { getPromptForSlug } from '../componentPrompts';
 import ThemeToggle from '../ui/ThemeToggle';
+import HalftonePixelBackground from '../ui/HalftonePixelBackground';
+
+// Shimmering pixel halftone skeleton screen matching Recording 2026-09-16 211818.mp4
+function ComponentSkeleton({ theme = 'dark' }) {
+  const isDark = theme === 'dark';
+  return (
+    <div className="absolute inset-0 w-full h-full flex items-center justify-center p-6 select-none overflow-hidden">
+      {/* Dynamic Pixel Halftone Metaball Cloud Background covering the entire main canvas */}
+      <HalftonePixelBackground theme={theme} className="z-0" />
+
+      {/* Floating Center Skeleton Card */}
+      <div className={`relative z-10 w-full max-w-lg rounded-3xl border p-7 flex flex-col gap-5 shadow-2xl backdrop-blur-xl transition-colors ${
+        isDark 
+          ? 'bg-[#17151C]/75 border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)]' 
+          : 'bg-white/75 border-black/10 shadow-[0_25px_50px_-12px_rgba(156,142,184,0.25)]'
+      }`}>
+        {/* Top Header Placeholder */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center border ${
+              isDark ? 'bg-[#23202B]/90 border-white/5' : 'bg-neutral-100/90 border-black/5'
+            }`}>
+              <img src="/logo.svg" alt="Loading" className="w-5 h-5 opacity-60 animate-pulse" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <div className={`w-32 h-3.5 rounded-full animate-pulse ${isDark ? 'bg-[#D4CBE5]/20' : 'bg-[#9C8EB8]/30'}`} />
+              <div className={`w-20 h-2 rounded-full animate-pulse ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+            </div>
+          </div>
+          <div className={`w-16 h-6 rounded-full animate-pulse ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+        </div>
+
+        {/* Center Stage Preview Area */}
+        <div className={`w-full h-48 rounded-2xl border flex flex-col items-center justify-center gap-3.5 p-6 backdrop-blur-sm ${
+          isDark 
+            ? 'bg-[#121016]/60 border-white/5' 
+            : 'bg-neutral-50/60 border-black/5'
+        }`}>
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-xs ${
+            isDark ? 'bg-[#D4CBE5]/15 text-[#D4CBE5]' : 'bg-[#D4CBE5]/30 text-[#171717]'
+          }`}>
+            <Sparkles className="w-6 h-6 animate-spin" style={{ animationDuration: '3s' }} />
+          </div>
+          <div className={`w-44 h-3 rounded-full animate-pulse ${isDark ? 'bg-[#D4CBE5]/25' : 'bg-[#9C8EB8]/35'}`} />
+          <div className={`w-28 h-2 rounded-full animate-pulse ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+        </div>
+
+        {/* Bottom Control Bars */}
+        <div className="flex items-center justify-between pt-1">
+          <div className="flex items-center gap-2">
+            <div className={`w-8 h-8 rounded-xl ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+            <div className={`w-8 h-8 rounded-xl ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+          </div>
+          <div className={`w-28 h-8 rounded-xl shadow-xs ${
+            isDark ? 'bg-[#D4CBE5]/25' : 'bg-[#D4CBE5]/40'
+          }`} />
+        </div>
+      </div>
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 dark:bg-white/10 backdrop-blur-md border border-white/10">
+        <span className="w-2 h-2 rounded-full bg-[#D4CBE5] animate-ping" />
+        <span className="text-[11px] font-mono tracking-wider uppercase text-neutral-600 dark:text-neutral-300 font-semibold">
+          Loading component...
+        </span>
+      </div>
+    </div>
+  );
+}
 
 // Clean SVG Flower Icon for the Sidebar Rail
 function FlowerIcon({ className = "w-4 h-4" }) {
@@ -165,10 +234,12 @@ export default function RewampShowcase() {
   const [activeSlug, setActiveSlug] = useState(slug || 'matte-folder-card');
   const [folderColor, setFolderColor] = useState('black');
   const [theme, setTheme] = useState(() => localStorage.getItem('rewamp-theme') || 'light');
+  const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [copiedInstall, setCopiedInstall] = useState(false);
   const [codeDrawerOpen, setCodeDrawerOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
@@ -182,9 +253,22 @@ export default function RewampShowcase() {
     }
   }, [slug]);
 
+  // Trigger quick loading skeleton transition on slug changes
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 450);
+    return () => clearTimeout(timer);
+  }, [activeSlug]);
+
   const toggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
+
+  const totalComponentCount = useMemo(() => {
+    return categories.reduce((sum, cat) => sum + cat.components.length, 0);
+  }, []);
 
   // Build the 74-component tree navigation items
   const navItems = useMemo(() => {
@@ -292,6 +376,13 @@ export default function RewampShowcase() {
     navigate(`/components/${compNode.id}`);
   };
 
+  const handleCopyPrompt = () => {
+    const promptText = getPromptForSlug(activeSlug, currentFound?.entry?.title);
+    navigator.clipboard.writeText(promptText);
+    setCopiedPrompt(true);
+    setTimeout(() => setCopiedPrompt(false), 2000);
+  };
+
   const handleCopyInstall = () => {
     navigator.clipboard.writeText(`npx rewampui add ${activeSlug}`);
     setCopiedInstall(true);
@@ -324,21 +415,11 @@ export default function RewampShowcase() {
             className="h-full shrink-0 flex flex-col justify-between py-3 pl-3 pr-2 overflow-hidden z-20"
           >
             <div className="flex flex-col h-full overflow-hidden">
-              {/* Top Row: RewampUI Logo on Left & Sidebar Toggle */}
-              <div className="flex items-center justify-between pb-3">
-                <div className="flex items-center gap-2.5">
-                  <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
-                  <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
-                    RewampUI
-                  </span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
-                    74
-                  </span>
-                </div>
-
+              {/* Top Row: Sidebar Toggle on Left & RewampUI Brand */}
+              <div className="flex items-center gap-2.5 pb-3">
                 <button
                   onClick={() => setSidebarCollapsed(true)}
-                  className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer"
+                  className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer shrink-0"
                   title="Collapse sidebar"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -346,6 +427,16 @@ export default function RewampShowcase() {
                     <path d="M9 3v18" />
                   </svg>
                 </button>
+
+                <div className="flex items-center gap-2">
+                  <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
+                  <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
+                    RewampUI
+                  </span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
+                    {totalComponentCount}
+                  </span>
+                </div>
               </div>
 
               {/* Instant Search Bar */}
@@ -355,7 +446,7 @@ export default function RewampShowcase() {
                   type="text"
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  placeholder="Search 74 components..."
+                  placeholder={`Search ${totalComponentCount} components...`}
                   className="w-full bg-[var(--elevated)] border border-[var(--border)] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-neutral-400 outline-none focus:border-[var(--brand-strong)] transition-colors"
                 />
                 {query && (
@@ -532,22 +623,24 @@ export default function RewampShowcase() {
       >
         {/* Top-Right Floating Action Bar */}
         <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
-          {/* Install Button */}
-          <div className="flex items-center rounded-xl bg-white dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800 shadow-2xs p-1">
-            <button
-              onClick={handleCopyInstall}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
-            >
-              {copiedInstall ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Copied</span>
-                </>
-              ) : (
-                <span>Install</span>
-              )}
-            </button>
-          </div>
+          {/* Copy Prompt Button in Brand Asset Lilac */}
+          <button
+            onClick={handleCopyPrompt}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] shadow-xs transition-all cursor-pointer hover:shadow-sm active:scale-95"
+            title="Copy exact natural-language component prompt"
+          >
+            {copiedPrompt ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-[#171717]" />
+                <span>Copied</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-[#171717]" />
+                <span>Copy Prompt</span>
+              </>
+            )}
+          </button>
 
           {/* Icon Dock: Fullscreen, Code, Theme */}
           <div className="flex items-center gap-0.5 rounded-xl bg-white dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800 shadow-2xs p-1">
@@ -590,19 +683,25 @@ export default function RewampShowcase() {
 
         {/* ── Centered Showcase Stage (Canvas Background Only — No Component Card Box) ── */}
         <div className="w-full h-full flex items-center justify-center p-6 sm:p-12 overflow-hidden">
-          <motion.div
-            key={activeSlug}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-            className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.max-w-4xl>div:last-child]:hidden [&_.max-w-5xl>div:last-child]:hidden [&_.max-w-3xl>div:last-child]:hidden [&_.shadow-sm:has(code)]:hidden"
-          >
-            {isFolder ? (
-              <CleanFolderComponent color={folderColor} />
-            ) : (
-              <currentFound.entry.Component />
-            )}
-          </motion.div>
+          {isLoading ? (
+            <ComponentSkeleton theme={theme} />
+          ) : (
+            <Suspense fallback={<ComponentSkeleton theme={theme} />}>
+              <motion.div
+                key={activeSlug}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 26 }}
+                className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.max-w-4xl>div:last-child]:hidden [&_.max-w-5xl>div:last-child]:hidden [&_.max-w-3xl>div:last-child]:hidden [&_.shadow-sm:has(code)]:hidden"
+              >
+                {isFolder ? (
+                  <CleanFolderComponent color={folderColor} />
+                ) : (
+                  <currentFound.entry.Component />
+                )}
+              </motion.div>
+            </Suspense>
+          )}
         </div>
 
         {/* Bottom Floating Controls Pill (When Folder is selected) */}
@@ -691,6 +790,26 @@ export default function RewampShowcase() {
                 </div>
 
                 <div className="pt-4 space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[11px] font-mono uppercase text-neutral-400">
+                        Prompt
+                      </span>
+                      <button
+                        onClick={handleCopyPrompt}
+                        className="text-[11px] font-mono text-[#9C8EB8] dark:text-[#D4CBE5] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        {copiedPrompt ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                        <span>{copiedPrompt ? 'Copied' : 'Copy prompt'}</span>
+                      </button>
+                    </div>
+                    <div className={`p-3 rounded-xl font-mono text-xs leading-relaxed max-h-40 overflow-y-auto ${
+                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                    }`}>
+                      <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
+                    </div>
+                  </div>
+
                   <div>
                     <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
                       Install

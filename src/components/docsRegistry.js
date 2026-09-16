@@ -70,7 +70,6 @@ import GlassOrbToggleShowcase from './ui/GlassOrbToggleShowcase';
 
 import SplashCursorShowcase from './ui/SplashCursorShowcase';
 import PillTrailCursorShowcase from './ui/PillTrailCursorShowcase';
-import AppleNavbarShowcase from './ui/AppleNavbarShowcase';
 import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
 import PixelDotNavbarShowcase from './ui/PixelDotNavbarShowcase';
 import DarkModeMobileNavbarShowcase from './ui/DarkModeMobileNavbarShowcase';
@@ -106,7 +105,6 @@ import { contributionActivityPrompt, contributionActivityCode } from './ui/contr
 
 // Reference implementation: full end-to-end migration (preview + prompt + code)
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
-import { appleNavbarCode, appleNavbarPrompt } from './ui/appleNavbarSource';
 import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
 import { pixelSnowPrompt } from './ui/pixelSnowSource';
 import waterCausticsSource from './ui/backgrounds/WaterCaustics.jsx?raw';
@@ -328,12 +326,6 @@ export const readyDetails = {
         description: 'A slide-to-confirm button — drag the handle across the track to complete the order.',
         code: slideToConfirmSource,
     },
-    'apple-navbar': {
-        description: 'Apple-style macOS floating glassmorphism capsule navbar with magnetic Framer Motion hover states, responsive mobile modal, and download button.',
-        prompt: appleNavbarPrompt,
-        code: appleNavbarCode,
-        techStack: 'TypeScript · Framer Motion · Tailwind CSS',
-    },
     'pixel-snow-background': {
         description: 'A ray-marched, pixelated snowfall background rendered with a custom three.js shader — chunky retro flakes, wind drift, and distance fade.',
         prompt: pixelSnowPrompt,
@@ -369,12 +361,6 @@ export const readyDetails = {
         prompt: layeredPaperWavesPrompt,
         code: layeredPaperWavesCode,
         techStack: 'React · three.js (WebGL) · GLSL',
-    },
-    'apple-navbar': {
-        description: 'An authentic MacBook Dynamic Notch Navbar that rests as a compact camera notch at the top bezel and fluidly expands on hover into a sleek macOS NotchNook navbar with live widgets, calendar, music controls, and quick action pills.',
-        prompt: appleNavbarPrompt,
-        code: appleNavbarCode,
-        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
     },
     'pill-expand-navbar': {
         description: 'A compact black pill bottom navbar where the active or hovered tab smoothly, slowly expands to a fixed width to reveal its label, keeping the overall navbar width constant while the rest stay collapsed to icon-only.',

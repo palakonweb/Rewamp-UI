@@ -439,35 +439,7 @@ export default function PixelSnowBackgroundShowcase() {
             </div>
 
             {/* PROMPT CARD */}
-            <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 shadow-sm overflow-hidden">
-                <div className="flex items-center justify-between px-5 py-3 border-b border-black/5 dark:border-white/10">
-                    <p className="text-[11px] text-black/40 dark:text-white/40 uppercase tracking-widest font-semibold">Exact Prompt</p>
-                    <motion.button
-                        onClick={handleCopy}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-transparent dark:border-white/5 transition-all"
-                        aria-label="Copy prompt text"
-                    >
-                        {copied ? (
-                            <>
-                                <Check size={14} className="text-emerald-500" />
-                                <span className="text-[12px] font-medium text-emerald-500">Copied</span>
-                            </>
-                        ) : (
-                            <>
-                                <Copy size={14} className="text-black/60 dark:text-white/60" />
-                                <span className="text-[12px] font-medium text-black/70 dark:text-white/70">Copy</span>
-                            </>
-                        )}
-                    </motion.button>
-                </div>
-                <p className="text-[13px] leading-relaxed text-black/80 dark:text-white/80 font-mono p-5 whitespace-pre-wrap max-h-[220px] overflow-y-auto">
-                    {promptContent}
-                </p>
-            </div>
-
-            {/* SOURCE CODE — exact react-bits implementation */}
+{/* SOURCE CODE — exact react-bits implementation */}
             <CopyBlock label="PixelSnow.jsx" code={jsxSource} />
             <CopyBlock label="PixelSnow.css" code={cssSource} />
 
