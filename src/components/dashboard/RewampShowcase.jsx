@@ -16,74 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { categories, findComponentBySlug } from '../docsRegistry';
 import { getPromptForSlug } from '../componentPrompts';
 import ThemeToggle from '../ui/ThemeToggle';
-import HalftonePixelBackground from '../ui/HalftonePixelBackground';
-
-// Shimmering pixel halftone skeleton screen matching Recording 2026-09-16 211818.mp4
-function ComponentSkeleton({ theme = 'dark' }) {
-  const isDark = theme === 'dark';
-  return (
-    <div className="absolute inset-0 w-full h-full flex items-center justify-center p-6 select-none overflow-hidden">
-      {/* Dynamic Pixel Halftone Metaball Cloud Background covering the entire main canvas */}
-      <HalftonePixelBackground theme={theme} className="z-0" />
-
-      {/* Floating Center Skeleton Card */}
-      <div className={`relative z-10 w-full max-w-lg rounded-3xl border p-7 flex flex-col gap-5 shadow-2xl backdrop-blur-xl transition-colors ${
-        isDark 
-          ? 'bg-[#17151C]/75 border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)]' 
-          : 'bg-white/75 border-black/10 shadow-[0_25px_50px_-12px_rgba(156,142,184,0.25)]'
-      }`}>
-        {/* Top Header Placeholder */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center border ${
-              isDark ? 'bg-[#23202B]/90 border-white/5' : 'bg-neutral-100/90 border-black/5'
-            }`}>
-              <img src="/logo.svg" alt="Loading" className="w-5 h-5 opacity-60 animate-pulse" />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <div className={`w-32 h-3.5 rounded-full animate-pulse ${isDark ? 'bg-[#D4CBE5]/20' : 'bg-[#9C8EB8]/30'}`} />
-              <div className={`w-20 h-2 rounded-full animate-pulse ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-            </div>
-          </div>
-          <div className={`w-16 h-6 rounded-full animate-pulse ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-        </div>
-
-        {/* Center Stage Preview Area */}
-        <div className={`w-full h-48 rounded-2xl border flex flex-col items-center justify-center gap-3.5 p-6 backdrop-blur-sm ${
-          isDark 
-            ? 'bg-[#121016]/60 border-white/5' 
-            : 'bg-neutral-50/60 border-black/5'
-        }`}>
-          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-xs ${
-            isDark ? 'bg-[#D4CBE5]/15 text-[#D4CBE5]' : 'bg-[#D4CBE5]/30 text-[#171717]'
-          }`}>
-            <Sparkles className="w-6 h-6 animate-spin" style={{ animationDuration: '3s' }} />
-          </div>
-          <div className={`w-44 h-3 rounded-full animate-pulse ${isDark ? 'bg-[#D4CBE5]/25' : 'bg-[#9C8EB8]/35'}`} />
-          <div className={`w-28 h-2 rounded-full animate-pulse ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-        </div>
-
-        {/* Bottom Control Bars */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-xl ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-            <div className={`w-8 h-8 rounded-xl ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-          </div>
-          <div className={`w-28 h-8 rounded-xl shadow-xs ${
-            isDark ? 'bg-[#D4CBE5]/25' : 'bg-[#D4CBE5]/40'
-          }`} />
-        </div>
-      </div>
-
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 dark:bg-white/10 backdrop-blur-md border border-white/10">
-        <span className="w-2 h-2 rounded-full bg-[#D4CBE5] animate-ping" />
-        <span className="text-[11px] font-mono tracking-wider uppercase text-neutral-600 dark:text-neutral-300 font-semibold">
-          Loading component...
-        </span>
-      </div>
-    </div>
-  );
-}
+import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 
 // Clean SVG Flower Icon for the Sidebar Rail
 function FlowerIcon({ className = "w-4 h-4" }) {
@@ -244,6 +177,7 @@ export default function RewampShowcase() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('rewamp-theme', theme);
   }, [theme]);
 
@@ -682,26 +616,36 @@ export default function RewampShowcase() {
         </div>
 
         {/* ── Centered Showcase Stage (Canvas Background Only — No Component Card Box) ── */}
-        <div className="w-full h-full flex items-center justify-center p-6 sm:p-12 overflow-hidden">
-          {isLoading ? (
-            <ComponentSkeleton theme={theme} />
-          ) : (
-            <Suspense fallback={<ComponentSkeleton theme={theme} />}>
+        <div className="w-full h-full flex items-center justify-center p-6 sm:p-12 overflow-hidden relative">
+          {/* Main Component Canvas Stage (Mounted immediately for instantaneous fast loading) */}
+          <motion.div
+            key={activeSlug}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 350, damping: 26 }}
+            className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.max-w-4xl>div:last-child]:hidden [&_.max-w-5xl>div:last-child]:hidden [&_.max-w-3xl>div:last-child]:hidden [&_.shadow-sm:has(code)]:hidden"
+          >
+            {isFolder ? (
+              <CleanFolderComponent color={folderColor} />
+            ) : (
+              <currentFound.entry.Component />
+            )}
+          </motion.div>
+
+          {/* Sweeping Chromatic Shimmer Skeleton (Matching Recording 2026-09-16 213029.mp4) */}
+          <AnimatePresence>
+            {isLoading && (
               <motion.div
-                key={activeSlug}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-                className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.max-w-4xl>div:last-child]:hidden [&_.max-w-5xl>div:last-child]:hidden [&_.max-w-3xl>div:last-child]:hidden [&_.shadow-sm:has(code)]:hidden"
+                key="shimmer-canvas"
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.24, ease: 'easeOut' }}
+                className="absolute inset-0 z-20 pointer-events-none"
               >
-                {isFolder ? (
-                  <CleanFolderComponent color={folderColor} />
-                ) : (
-                  <currentFound.entry.Component />
-                )}
+                <CanvasShimmerSkeleton theme={theme} />
               </motion.div>
-            </Suspense>
-          )}
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Bottom Floating Controls Pill (When Folder is selected) */}

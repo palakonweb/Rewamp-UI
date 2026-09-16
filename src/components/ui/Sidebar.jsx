@@ -327,7 +327,7 @@ export default function Sidebar({ onWindowAction }) {
         {/* Top Section */}
         <div>
           {/* Window Chrome Controls */}
-          <div className="flex items-center gap-1.5 px-4 pt-4 pb-3">
+          <div className="flex items-center gap-1.5 px-4 pt-4 pb-2.5">
             {[
               { color: '#FB5D57', label: 'close' },
               { color: '#FDBC40', label: 'minimize' },
@@ -342,6 +342,27 @@ export default function Sidebar({ onWindowAction }) {
                 aria-label={dot.label}
               />
             ))}
+          </div>
+
+          {/* Brand Flower Nav Mark */}
+          <div className="flex items-center justify-center pb-2.5 border-b border-neutral-100 dark:border-neutral-800/80">
+            <div className="w-9 h-9 rounded-xl bg-neutral-100/80 dark:bg-white/5 flex items-center justify-center hover:bg-[#D4CBE5]/25 dark:hover:bg-[#D4CBE5]/20 transition-all cursor-pointer shadow-xs">
+              <svg 
+                viewBox="0 0 24 24" 
+                className="w-4 h-4 drop-shadow-[0_2px_6px_rgba(212,203,229,0.7)]" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="5.8" r="3.6" fill="#D4CBE5" stroke="#C1B4D8" strokeWidth="0.8" />
+                <circle cx="17.4" cy="8.9" r="3.6" fill="#D4CBE5" stroke="#C1B4D8" strokeWidth="0.8" />
+                <circle cx="17.4" cy="15.1" r="3.6" fill="#D4CBE5" stroke="#C1B4D8" strokeWidth="0.8" />
+                <circle cx="12" cy="18.2" r="3.6" fill="#D4CBE5" stroke="#C1B4D8" strokeWidth="0.8" />
+                <circle cx="6.6" cy="15.1" r="3.6" fill="#D4CBE5" stroke="#C1B4D8" strokeWidth="0.8" />
+                <circle cx="6.6" cy="8.9" r="3.6" fill="#D4CBE5" stroke="#C1B4D8" strokeWidth="0.8" />
+                <circle cx="12" cy="12" r="3.4" fill="#262626" stroke="#FAFAFA" strokeWidth="0.8" />
+                <circle cx="12" cy="12" r="1.3" fill="#D4CBE5" />
+              </svg>
+            </div>
           </div>
 
           {/* Group A */}

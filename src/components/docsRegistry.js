@@ -37,6 +37,8 @@ import LayeredPaperWavesBackgroundShowcase from './ui/LayeredPaperWavesBackgroun
 import { gradientWavePrompt, gradientWaveCode } from './ui/gradientWaveSource';
 import { silkWavesPrompt, silkWavesCode } from './ui/silkWavesSource';
 import { layeredPaperWavesPrompt, layeredPaperWavesCode } from './ui/layeredPaperWavesSource';
+import HalftonePixelBackgroundShowcase from './ui/HalftonePixelBackgroundShowcase';
+import FlowerSidebarShowcase from './ui/FlowerSidebarShowcase';
 import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
 import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
 import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
@@ -180,6 +182,7 @@ export const categories = [
             DigitalRainShowcase, PixelSnowBackgroundShowcase, WaterCausticsBackgroundShowcase,
             GradientWaveBackgroundShowcase, PixelCloudBackgroundShowcase,
             SilkWavesBackgroundShowcase, LayeredPaperWavesBackgroundShowcase,
+            HalftonePixelBackgroundShowcase,
         ),
     },
     {
@@ -262,6 +265,7 @@ export const categories = [
             KineticLensSidebarShowcase,
             FlightpathTOCShowcase,
             SidebarShowcase,
+            FlowerSidebarShowcase,
         ),
     },
     {
