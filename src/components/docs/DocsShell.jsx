@@ -3,11 +3,22 @@ import { Menu } from 'lucide-react';
 import Sidebar from './Sidebar';
 import RightRail, { JumpToDropdown } from './RightRail';
 import ComponentDetail from './ComponentDetail';
-import { categories, readyDetails, findComponentBySlug } from '../docsRegistry';
+import { categories, findComponentBySlug } from '../docsRegistry';
 
+// perf: readyDetails (~500KB of per-component prompt/code text) is loaded
+// on demand instead of at module top-level — see docsRegistryDetails.js.
 export default function DocsShell({ slug, onNavigate }) {
     const [query, setQuery] = React.useState('');
     const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
+    const [readyDetails, setReadyDetails] = React.useState(null);
+
+    React.useEffect(() => {
+        let cancelled = false;
+        import('../docsRegistryDetails').then((mod) => {
+            if (!cancelled) setReadyDetails(mod.readyDetails);
+        });
+        return () => { cancelled = true; };
+    }, []);
 
     const found = slug ? findComponentBySlug(slug) : null;
     const fallback = findComponentBySlug('slide-to-confirm-button') || { category: categories[1], entry: categories[1].components[0] };
@@ -50,7 +61,7 @@ export default function DocsShell({ slug, onNavigate }) {
                 <div className="flex-1 px-6 sm:px-10 md:px-16 pt-10 sm:pt-14 pb-12 flex flex-col items-center">
                     <div className="w-full max-w-[760px]">
                         <JumpToDropdown category={category} activeSlug={entry.slug} onNavigate={handleNavigate} />
-                        <ComponentDetail category={category} entry={entry} detail={readyDetails[entry.slug]} />
+                        <ComponentDetail category={category} entry={entry} detail={readyDetails?.[entry.slug]} />
                     </div>
                 </div>
             </main>

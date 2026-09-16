@@ -1,10 +1,19 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Preloader } from './components/ui/Preloader'
-import { LandingPage } from './pages/LandingPage'
-import { ComponentsPage } from './pages/ComponentsPage'
-import { DocumentationPage } from './pages/DocumentationPage'
+
+// perf: route-level code splitting. These three pages used to be imported
+// eagerly at the top of App.jsx, which meant visiting any one route (e.g.
+// /components) still forced the browser to download and parse every other
+// route's bundle too — including the landing page's ~8 heavy marketing
+// sections (Hero, InfiniteBelt, FeaturesBento, LiveProductDemo,
+// InfiniteSpiralGallery, DomeGalleryCTA, PurrformReveal, SplashCursor) and
+// the whole documentation page, before the requested route could render.
+// Each page now loads only when its route is actually visited.
+const LandingPage = lazy(() => import('./pages/LandingPage').then((m) => ({ default: m.LandingPage })))
+const ComponentsPage = lazy(() => import('./pages/ComponentsPage').then((m) => ({ default: m.ComponentsPage })))
+const DocumentationPage = lazy(() => import('./pages/DocumentationPage').then((m) => ({ default: m.DocumentationPage })))
 
 // SVG noise filter for grain overlay
 function GrainOverlay() {
@@ -30,12 +39,14 @@ function App() {
   return (
     <>
       <Preloader />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/components" element={<ComponentsPage />} />
-        <Route path="/components/:slug" element={<ComponentsPage />} />
-        <Route path="/documentation" element={<DocumentationPage />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/components" element={<ComponentsPage />} />
+          <Route path="/components/:slug" element={<ComponentsPage />} />
+          <Route path="/documentation" element={<DocumentationPage />} />
+        </Routes>
+      </Suspense>
     </>
   )
 }

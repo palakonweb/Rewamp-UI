@@ -25,46 +25,20 @@ Build a single React component called ContributionActivity using Tailwind + fram
 export const contributionActivityCode = `import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, ChevronDown, X, Sparkles, Flame } from 'lucide-react';
-
-function generateContributions(totalDays = 371) {
-  const data = [];
-  const now = new Date(2026, 8, 15);
-  const startDate = new Date(now);
-  startDate.setDate(now.getDate() - totalDays);
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  for (let i = 0; i < totalDays; i++) {
-    const d = new Date(startDate);
-    d.setDate(startDate.getDate() + i);
-    const rand = Math.random();
-    let count = 0, level = 0;
-    if (rand > 0.88) { count = Math.floor(Math.random()*8)+9; level = 4; }
-    else if (rand > 0.72) { count = Math.floor(Math.random()*5)+5; level = 3; }
-    else if (rand > 0.52) { count = Math.floor(Math.random()*3)+2; level = 2; }
-    else if (rand > 0.32) { count = 1; level = 1; }
-    data.push({ date: \`\${months[d.getMonth()]} \${d.getDate()}, \${d.getFullYear()}\`, rawDate: d, count, level });
-  }
-  return data;
-}
+// Pre-generated once by scripts/generate-data.js — zero runtime cost on mount.
+import contributions from '../../data/contributions.json';
+import MEMBERS from '../../data/activity.json';
 
 const LILAC = ['#F1EEF7','#DCD0F0','#B79CE8','#8F63D9','#6D28C7'];
-const MEMBERS = [
-  { id:1, name:'Elena Rostova', role:'Design Lead', color:'from-fuchsia-500 to-violet-600', initials:'ER' },
-  { id:2, name:'Marcus Vance', role:'Frontend Core', color:'from-violet-500 to-indigo-600', initials:'MV' },
-  { id:3, name:'Sora Tanaka', role:'Creative Dev', color:'from-purple-500 to-pink-600', initials:'ST' },
-  { id:4, name:'Liam Chen', role:'Motion Engineer', color:'from-indigo-500 to-purple-600', initials:'LC' },
-  { id:5, name:'Amara Diallo', role:'UI Architect', color:'from-violet-600 to-fuchsia-600', initials:'AD' },
-  { id:6, name:'Oliver Quinn', role:'Shader Specialist', color:'from-pink-500 to-rose-600', initials:'OQ' },
-];
 
 export default function ContributionActivity({ className = '' }) {
   const [expanded, setExpanded] = useState(false);
   const [hoveredCell, setHoveredCell] = useState(null);
-  const contributions = useMemo(() => generateContributions(371), []);
   const weeks = useMemo(() => { const c=[]; for(let i=0;i<contributions.length;i+=7) c.push(contributions.slice(i,i+7)); return c; }, [contributions]);
   const total = useMemo(() => contributions.reduce((a,c)=>a+c.count,0), [contributions]);
   const monthLabels = useMemo(() => {
     const labels=[]; let last=-1;
-    weeks.forEach((w,i)=>{ const d=w[0]?.rawDate; if(d){ const m=d.getMonth(); if(m!==last&&i>0&&i<weeks.length-2){ labels.push({colIdx:i,name:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]}); last=m; } } });
+    weeks.forEach((w,i)=>{ const ds=w[0]?.date; if(ds){ const m=new Date(ds).getMonth(); if(m!==last&&i>0&&i<weeks.length-2){ labels.push({colIdx:i,name:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]}); last=m; } } });
     return labels;
   }, [weeks]);
 
@@ -164,7 +138,7 @@ export default function ContributionActivity({ className = '' }) {
         <div className="mt-5 pt-4 border-t border-white/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-neutral-500">
           <div>
             {hoveredCell
-              ? <span className="text-violet-700 font-semibold">{hoveredCell.count===0?'No contributions':\`\${hoveredCell.count} contribution\${hoveredCell.count===1?'':'s'}\`} on {hoveredCell.date}</span>
+              ? <span className="text-violet-700 font-semibold">{hoveredCell.count===0?'No contributions':\`\${hoveredCell.count} contribution\${hoveredCell.count===1?'':'s'}\`} on {hoveredCell.label}</span>
               : <span><strong className="text-neutral-900 font-bold">{total.toLocaleString()}</strong> contributions in the last year</span>}
           </div>
           <div className="flex items-center gap-1.5 text-[11px] font-medium">

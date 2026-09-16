@@ -13,7 +13,9 @@ export class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.warn('[RewampUI ErrorBoundary caught component load failure]:', error, errorInfo);
+    // console.error (not .warn) so failures show up under the default
+    // devtools console filter instead of being easy to miss.
+    console.error('[RewampUI ErrorBoundary caught component load failure]:', error, errorInfo);
   }
 
   handleRetry = () => {

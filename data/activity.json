@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Elena Rostova",
+    "role": "Design Lead",
+    "color": "from-fuchsia-500 to-violet-600",
+    "initials": "ER"
+  },
+  {
+    "id": 2,
+    "name": "Marcus Vance",
+    "role": "Frontend Core",
+    "color": "from-violet-500 to-indigo-600",
+    "initials": "MV"
+  },
+  {
+    "id": 3,
+    "name": "Sora Tanaka",
+    "role": "Creative Dev",
+    "color": "from-purple-500 to-pink-600",
+    "initials": "ST"
+  },
+  {
+    "id": 4,
+    "name": "Liam Chen",
+    "role": "Motion Engineer",
+    "color": "from-indigo-500 to-purple-600",
+    "initials": "LC"
+  },
+  {
+    "id": 5,
+    "name": "Amara Diallo",
+    "role": "UI Architect",
+    "color": "from-violet-600 to-fuchsia-600",
+    "initials": "AD"
+  },
+  {
+    "id": 6,
+    "name": "Oliver Quinn",
+    "role": "Shader Specialist",
+    "color": "from-pink-500 to-rose-600",
+    "initials": "OQ"
+  }
+]

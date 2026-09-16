@@ -1,63 +1,11 @@
-// perf: memoized dataset generation, isolated hover re-renders, wrapped in React.memo
+// perf: dataset is a pre-generated static JSON import (see scripts/generate-data.js),
+// so there's zero data-generation work at mount — only isolated hover re-renders,
+// wrapped in React.memo.
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, ChevronDown, X, Sparkles, Flame } from 'lucide-react';
-
-/**
- * Deterministic pseudo-random helper for 365/371 days of contribution data.
- * Produces organic streaks without recalculating or shifting on renders.
- */
-function pseudoRandom(seed) {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-}
-
-function generateContributions(totalDays = 371) {
-  const data = [];
-  const now = new Date(2026, 8, 15); // Sept 15, 2026
-  const startDate = new Date(now);
-  startDate.setDate(now.getDate() - totalDays);
-
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  for (let i = 0; i < totalDays; i++) {
-    const d = new Date(startDate);
-    d.setDate(startDate.getDate() + i);
-
-    // Weighted pseudo-random contribution count based on index
-    const rand = pseudoRandom(i * 13 + 7);
-    let count = 0;
-    let level = 0;
-
-    if (rand > 0.88) {
-      count = Math.floor(pseudoRandom(i * 17) * 8) + 9; // 9-16
-      level = 4;
-    } else if (rand > 0.72) {
-      count = Math.floor(pseudoRandom(i * 19) * 5) + 5; // 5-8
-      level = 3;
-    } else if (rand > 0.52) {
-      count = Math.floor(pseudoRandom(i * 23) * 3) + 2; // 2-4
-      level = 2;
-    } else if (rand > 0.32) {
-      count = 1;
-      level = 1;
-    } else {
-      count = 0;
-      level = 0;
-    }
-
-    const dateStr = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-
-    data.push({
-      date: dateStr,
-      rawDate: d,
-      count,
-      level,
-    });
-  }
-
-  return data;
-}
+import contributionsData from '../../../data/contributions.json';
+import activeMembers from '../../../data/activity.json';
 
 // 5-step lilac/violet scale
 const LILAC_LEVELS = [
@@ -66,16 +14,6 @@ const LILAC_LEVELS = [
   '#B79CE8', // 2: medium lilac
   '#8F63D9', // 3: vibrant violet
   '#6D28C7', // 4: deep royal violet
-];
-
-// Mock avatars for the activity panel
-const ACTIVE_MEMBERS = [
-  { id: 1, name: 'Elena Rostova', role: 'Design Lead', color: 'from-fuchsia-500 to-violet-600', initials: 'ER' },
-  { id: 2, name: 'Marcus Vance', role: 'Frontend Core', color: 'from-violet-500 to-indigo-600', initials: 'MV' },
-  { id: 3, name: 'Sora Tanaka', role: 'Creative Dev', color: 'from-purple-500 to-pink-600', initials: 'ST' },
-  { id: 4, name: 'Liam Chen', role: 'Motion Engineer', color: 'from-indigo-500 to-purple-600', initials: 'LC' },
-  { id: 5, name: 'Amara Diallo', role: 'UI Architect', color: 'from-violet-600 to-fuchsia-600', initials: 'AD' },
-  { id: 6, name: 'Oliver Quinn', role: 'Shader Specialist', color: 'from-pink-500 to-rose-600', initials: 'OQ' },
 ];
 
 /**
@@ -128,7 +66,8 @@ export const ContributionActivity = memo(function ContributionActivity({ classNa
   const [expanded, setExpanded] = useState(false);
   const [hoveredCell, setHoveredCell] = useState(null);
 
-  const contributions = useMemo(() => generateContributions(371), []); // ~53 weeks
+  // Static import — zero generation cost at mount, see scripts/generate-data.js
+  const contributions = contributionsData; // ~53 weeks (371 entries)
 
   // Group into columns of 7 days (weeks)
   const weeks = useMemo(() => {
@@ -149,9 +88,9 @@ export const ContributionActivity = memo(function ContributionActivity({ classNa
     let lastMonth = -1;
 
     weeks.forEach((week, colIdx) => {
-      const firstDay = week[0]?.rawDate;
-      if (firstDay) {
-        const month = firstDay.getMonth();
+      const firstDayStr = week[0]?.date;
+      if (firstDayStr) {
+        const month = new Date(firstDayStr).getMonth();
         if (month !== lastMonth && colIdx > 0 && colIdx < weeks.length - 2) {
           const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
           labels.push({ colIdx, name: monthNames[month] });
@@ -232,7 +171,7 @@ export const ContributionActivity = memo(function ContributionActivity({ classNa
 
                 {/* Overlapping avatars */}
                 <div className="flex items-center -space-x-2.5">
-                  {ACTIVE_MEMBERS.slice(0, 3).map((m) => (
+                  {activeMembers.slice(0, 3).map((m) => (
                     <div
                       key={m.id}
                       className={`w-7 h-7 rounded-full bg-gradient-to-br ${m.color} text-white font-bold text-[10px] flex items-center justify-center ring-2 ring-white shadow-sm`}
@@ -287,7 +226,7 @@ export const ContributionActivity = memo(function ContributionActivity({ classNa
                   }}
                   className="grid grid-cols-2 gap-3 py-4 max-h-[290px] overflow-y-auto pr-1"
                 >
-                  {ACTIVE_MEMBERS.map((member) => (
+                  {activeMembers.map((member) => (
                     <motion.div
                       key={member.id}
                       variants={{
@@ -389,7 +328,7 @@ export const ContributionActivity = memo(function ContributionActivity({ classNa
                 {hoveredCell.count === 0
                   ? 'No contributions'
                   : `${hoveredCell.count} contribution${hoveredCell.count === 1 ? '' : 's'}`}{' '}
-                on {hoveredCell.date}
+                on {hoveredCell.label}
               </span>
             ) : (
               <span className="text-neutral-700">

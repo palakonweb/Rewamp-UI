@@ -643,12 +643,20 @@ export default function RewampShowcase() {
         {/* ── Centered Showcase Stage (Canvas Background Only — No Component Card Box) ── */}
         <div className="w-full h-full flex items-center justify-center p-6 sm:p-12 overflow-hidden relative">
           {/* Main Component Canvas Stage (Mounted immediately for instantaneous fast loading) */}
+          {/* bugfix: this used to also hide `.max-w-4xl/5xl/3xl > div:last-child` to strip a
+              trailing decorative element from a couple of showcases. That rule matched a plain
+              DOM position, not a specific element, so any component whose real content
+              happened to render as the last div inside one of those wrappers (e.g.
+              ContributionActivity's glass frame, or AsciiMatrixHoverShowcase's single content
+              div) had its entire visible output hidden — reproducing exactly "skeleton renders,
+              then the card goes blank" once Suspense resolved. Removed; only the narrowly-scoped
+              decorative-glow and inline-code-snippet hides remain. */}
           <motion.div
             key={activeSlug}
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-            className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.max-w-4xl>div:last-child]:hidden [&_.max-w-5xl>div:last-child]:hidden [&_.max-w-3xl>div:last-child]:hidden [&_.shadow-sm:has(code)]:hidden"
+            className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
           >
             <ErrorBoundary key={activeSlug}>
               <Suspense fallback={getComponentSkeleton(activeSlug)}>
