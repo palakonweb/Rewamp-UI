@@ -1,57 +1,88 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 /**
+ * Purrform UI Library Sidebar Categories:
+ */
+export const LIBRARY_SIDEBAR_ITEMS = [
+  { id: 'animated-backgrounds', label: 'Animated Backgrounds', count: 22, slug: 'bgs' },
+  { id: 'buttons', label: 'Buttons', count: 8, slug: 'buttons' },
+  { id: 'text-animations', label: 'Text Animations', count: 16, slug: 'text' },
+  { id: 'toggles', label: 'Toggles', count: 3, slug: 'toggles' },
+  { id: 'cursors', label: 'Cursors', count: 2, slug: 'cursors' },
+  { id: 'navbars', label: 'Navbars', count: 5, slug: 'navbars' },
+  { id: 'search-bars', label: 'Search Bars', count: 2, slug: 'search-bars' },
+  { id: 'sidebars', label: 'Sidebars', count: 3, slug: 'sidebars' },
+  { id: 'cards', label: 'Cards', count: 9, slug: 'cards' },
+  { id: 'ui-for-ai', label: 'UI for AI', count: 5, slug: 'ai-ui' },
+];
+
+/**
+ * Key Library Components dataset:
+ */
+export const LIBRARY_COMPONENT_ITEMS = [
+  { id: 'kinetic-lens-sidebar', label: 'Kinetic Lens Sidebar', category: 'Sidebars' },
+  { id: 'flightpath-toc', label: 'Flightpath TOC', category: 'Sidebars' },
+  { id: 'morph-search-capsule', label: 'Morph Search Capsule', category: 'Search Bars' },
+  { id: 'diagonal-card-stack', label: 'Diagonal Card Stack', category: 'Cards' },
+  { id: 'perspective-flip-deck', label: 'Perspective Flip Deck', category: 'Cards' },
+  { id: 'orbital-card-arch', label: 'Orbital Card Arch', category: 'Cards' },
+  { id: 'editorial-3d-orbit', label: 'Editorial 3D Orbit', category: 'Cards' },
+  { id: 'fluid-wave-navbar', label: 'Fluid Wave Navbar', category: 'Navbars' },
+  { id: 'apple-navbar', label: 'Apple Navbar', category: 'Navbars' },
+  { id: 'shimmer-button', label: 'Shimmer Button', category: 'Buttons' },
+  { id: 'slide-to-confirm', label: 'Slide to Confirm', category: 'Buttons' },
+  { id: 'layered-paper-waves', label: 'Layered Paper Waves', category: 'Animated Backgrounds' },
+  { id: 'silk-waves', label: 'Silk Waves', category: 'Animated Backgrounds' },
+  { id: 'particle-morph-orb', label: 'Particle Morph Orb', category: 'UI for AI' },
+];
+
+/**
+ * Default to the Purrform Library Sidebar categories
+ */
+export const DEFAULT_LENS_ITEMS = LIBRARY_SIDEBAR_ITEMS;
+
+/**
  * KineticLensSidebar
- * Exact recreation of Recording 2026-09-15 155640.mp4:
- * Vertical kinetic lens rolodex sidebar where menu items smoothly wheel
- * through an optical center focal line.
- * Features:
- * - Active center item expands with an animated horizontal dash "— "
- * - Smooth cylindrical/lens magnification: center item is sharp, bold, and high-opacity;
- *   peripheral items scale down, blur, and fade into dark vignette.
- * - Wheel scroll, touch drag, and click-to-center physics.
- * - Populated with real Purrform UI categories and components.
+ * Exact recreation of Recording 2026-09-15 155640.mp4 with Purrform UI library sidebar:
+ * - Pure pitch black canvas (#000000)
+ * - Sharp vector typography with deep indigo/navy peripheral items (#282D52)
+ * - Bright white center focal item (#FFFFFF) with dynamic "— " dash prefix
+ * - Highly scroll-reactive with non-passive mouse wheel scrubbing, velocity inertia,
+ *   touch/pointer drag, click-to-focus, and external scroll bindings.
  */
 export function KineticLensSidebar({
   items = null,
-  initialIndex = 3,
+  initialIndex = 7, // Default "Sidebars"
   onSelect = null,
-  autoCycle = true,
-  cycleInterval = 2600,
+  autoCycle = false,
+  cycleInterval = 2800,
+  scrollProgress = null,
   className = '',
 }) {
-  const defaultItems = useMemo(
-    () => [
-      { id: 'cards', label: 'Cards' },
-      { id: 'diagonal-stack', label: 'Diagonal Stack' },
-      { id: 'perspective-flip', label: 'Perspective Flip' },
-      { id: 'orbital-arch', label: 'Orbital Card Arch' },
-      { id: 'editorial-orbit', label: 'Editorial 3D Orbit' },
-      { id: 'flightpath-toc', label: 'Flightpath TOC' },
-      { id: 'sidebars', label: 'Sidebars' },
-      { id: 'navbars', label: 'Navbars' },
-      { id: 'buttons', label: 'Buttons' },
-      { id: 'toggles', label: 'Toggles' },
-      { id: 'text-animations', label: 'Text Animations' },
-      { id: 'backgrounds', label: 'Animated Backgrounds' },
-    ],
-    []
-  );
-
-  const menuItems = items || defaultItems;
+  const menuItems = items || DEFAULT_LENS_ITEMS;
   const numItems = menuItems.length;
 
-  const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const containerRef = useRef(null);
+  const snapTimeoutRef = useRef(null);
+  const userInteractedRef = useRef(false);
+
+  const [activeIndex, setActiveIndex] = useState(
+    Math.min(initialIndex, Math.max(0, numItems - 1))
+  );
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Motion value for smooth index tracking
-  const targetIndex = useMotionValue(initialIndex);
+  // Motion value representing the continuous target position
+  const targetIndex = useMotionValue(
+    Math.min(initialIndex, Math.max(0, numItems - 1))
+  );
+
+  // Physics spring for buttery smooth interpolation matching trackpad / iOS inertia
   const smoothIndex = useSpring(targetIndex, {
-    stiffness: 280,
-    damping: 30,
-    mass: 0.8,
+    stiffness: 260,
+    damping: 28,
+    mass: 0.7,
   });
 
   const [displayIndex, setDisplayIndex] = useState(initialIndex);
@@ -60,23 +91,42 @@ export function KineticLensSidebar({
     return smoothIndex.on('change', (latest) => {
       setDisplayIndex(latest);
       const rounded = Math.round(latest);
-      if (rounded !== activeIndex && rounded >= 0 && rounded < numItems) {
+      if (rounded >= 0 && rounded < numItems && rounded !== activeIndex) {
         setActiveIndex(rounded);
       }
     });
   }, [smoothIndex, activeIndex, numItems]);
 
-  // Sync state
-  const scrollTo = (idx) => {
-    const clamped = Math.max(0, Math.min(numItems - 1, idx));
-    targetIndex.set(clamped);
-    setActiveIndex(clamped);
-    onSelect?.(menuItems[clamped]);
-  };
+  // Handle external scroll progress if supplied (e.g. from page scroll or feed container)
+  useEffect(() => {
+    if (scrollProgress === null || scrollProgress === undefined) return;
 
-  // Auto-cycling matching the recording
+    if (typeof scrollProgress === 'number') {
+      const clamped = Math.max(0, Math.min(numItems - 1, scrollProgress * (numItems - 1)));
+      targetIndex.set(clamped);
+    } else if (scrollProgress && typeof scrollProgress.get === 'function') {
+      return scrollProgress.on('change', (latest) => {
+        const clamped = Math.max(0, Math.min(numItems - 1, Number(latest) * (numItems - 1)));
+        targetIndex.set(clamped);
+      });
+    }
+  }, [scrollProgress, numItems, targetIndex]);
+
+  // Smooth scroll to a specific index
+  const scrollTo = useCallback(
+    (idx) => {
+      const clamped = Math.max(0, Math.min(numItems - 1, idx));
+      targetIndex.set(clamped);
+      setActiveIndex(clamped);
+      onSelect?.(menuItems[clamped]);
+    },
+    [numItems, targetIndex, onSelect, menuItems]
+  );
+
+  // Auto-cycle when idle
   useEffect(() => {
     if (!autoCycle || isHovered || isDragging) return;
+
     const timer = setInterval(() => {
       setActiveIndex((prev) => {
         const next = (prev + 1) % numItems;
@@ -89,143 +139,187 @@ export function KineticLensSidebar({
     return () => clearInterval(timer);
   }, [autoCycle, isHovered, isDragging, numItems, cycleInterval, targetIndex, onSelect, menuItems]);
 
-  // Wheel scrubbing
-  const handleWheel = (e) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? 1 : -1;
-    scrollTo(activeIndex + delta);
-  };
+  // Native non-passive wheel listener for immediate, buttery smooth scroll reactivity
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  // Drag physics
-  const dragStartRef = useRef({ y: 0, initial: 0 });
+    const handleNativeWheel = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      userInteractedRef.current = true;
+
+      // Fractional delta accumulation
+      const delta = e.deltaY * 0.0032;
+      const current = targetIndex.get();
+      const next = Math.max(0, Math.min(numItems - 1, current + delta));
+      targetIndex.set(next);
+
+      // Debounced gentle snap to nearest item after wheel ceases
+      if (snapTimeoutRef.current) {
+        clearTimeout(snapTimeoutRef.current);
+      }
+      snapTimeoutRef.current = setTimeout(() => {
+        const nearest = Math.round(targetIndex.get());
+        targetIndex.set(nearest);
+        setActiveIndex(nearest);
+        onSelect?.(menuItems[nearest]);
+      }, 160);
+    };
+
+    el.addEventListener('wheel', handleNativeWheel, { passive: false });
+    return () => {
+      el.removeEventListener('wheel', handleNativeWheel);
+      if (snapTimeoutRef.current) {
+        clearTimeout(snapTimeoutRef.current);
+      }
+    };
+  }, [numItems, targetIndex, onSelect, menuItems]);
+
+  // Pointer & Touch Drag Physics
+  const dragStartRef = useRef({ y: 0, initial: 0, lastY: 0, lastTime: 0, velocity: 0 });
 
   const handlePointerDown = (e) => {
     setIsDragging(true);
+    userInteractedRef.current = true;
     dragStartRef.current = {
       y: e.clientY,
       initial: targetIndex.get(),
+      lastY: e.clientY,
+      lastTime: performance.now(),
+      velocity: 0,
     };
-    e.currentTarget.setPointerCapture?.(e.pointerId);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (_) {}
   };
 
   const handlePointerMove = (e) => {
     if (!isDragging) return;
-    const dy = e.clientY - dragStartRef.current.y;
-    // Every 45px of drag moves 1 index
-    const delta = -dy / 48;
-    const next = Math.max(0, Math.min(numItems - 1, dragStartRef.current.initial + delta));
+    const now = performance.now();
+    const dt = Math.max(1, now - dragStartRef.current.lastTime);
+    const dySinceLast = e.clientY - dragStartRef.current.lastY;
+    dragStartRef.current.velocity = -dySinceLast / dt;
+    dragStartRef.current.lastY = e.clientY;
+    dragStartRef.current.lastTime = now;
+
+    const totalDy = e.clientY - dragStartRef.current.y;
+    // 58px per row
+    const deltaIndex = -totalDy / 58;
+    const next = Math.max(0, Math.min(numItems - 1, dragStartRef.current.initial + deltaIndex));
     targetIndex.set(next);
   };
 
   const handlePointerUp = (e) => {
-    if (isDragging) {
-      setIsDragging(false);
-      try {
-        e.currentTarget.releasePointerCapture?.(e.pointerId);
-      } catch (err) {}
-      // Snap to nearest integer index
-      const nearest = Math.round(targetIndex.get());
-      scrollTo(nearest);
-    }
+    if (!isDragging) return;
+    setIsDragging(false);
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (_) {}
+
+    // Fling momentum snap
+    const current = targetIndex.get();
+    const fling = dragStartRef.current.velocity * 120;
+    const projected = Math.max(0, Math.min(numItems - 1, current + fling / 58));
+    const nearest = Math.round(projected);
+
+    targetIndex.set(nearest);
+    setActiveIndex(nearest);
+    onSelect?.(menuItems[nearest]);
   };
 
-  // Layout parameters
-  const itemRowHeight = 54; // Spacing between items
-  const centerY = 260; // Center focal plane in container
+  // Dimensions
+  const rowHeight = 58;
+  const centerY = 270; // 540px container height / 2
 
   return (
     <div
+      ref={containerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
         setIsDragging(false);
       }}
-      onWheel={handleWheel}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full max-w-[340px] h-[520px] rounded-3xl bg-[#090A0C] border border-white/10 overflow-hidden select-none cursor-grab active:cursor-grabbing p-6 flex flex-col justify-between shadow-2xl ${className}`}
+      className={`relative w-full max-w-[420px] sm:max-w-[460px] h-[540px] bg-black overflow-hidden select-none cursor-grab active:cursor-grabbing px-6 sm:px-8 flex flex-col justify-center ${className}`}
       style={{
-        boxShadow: '0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+        touchAction: 'none',
       }}
     >
-      {/* Top & Bottom Vignette Mask to produce infinite cylindrical lens falloff */}
+      {/* Top & Bottom Vignette Mask to blend peripheral items into pitch black */}
       <div
         className="absolute inset-0 pointer-events-none z-20"
         style={{
           background:
-            'linear-gradient(to bottom, #090A0C 0%, rgba(9, 10, 12, 0.7) 18%, transparent 35%, transparent 65%, rgba(9, 10, 12, 0.7) 82%, #090A0C 100%)',
+            'linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.95) 12%, transparent 32%, transparent 68%, rgba(0, 0, 0, 0.95) 88%, #000000 100%)',
         }}
       />
 
-      {/* Subtle center focal rail glow */}
-      <div
-        className="absolute left-6 right-6 pointer-events-none z-0"
-        style={{
-          top: centerY - 26,
-          height: 52,
-          background: 'radial-gradient(ellipse at 20% 50%, rgba(236, 94, 39, 0.14) 0%, transparent 70%)',
-        }}
-      />
-
-      {/* Items Container */}
+      {/* Items List */}
       <div className="relative w-full h-full z-10">
         {menuItems.map((item, idx) => {
-          // Distance from active center index
           const offset = idx - displayIndex;
           const absOffset = Math.abs(offset);
 
-          // Position calculation along vertical axis
-          const y = centerY + offset * itemRowHeight;
+          // Discard items that are far off viewport to optimize rendering
+          if (absOffset > 5.2) return null;
 
-          // Cylindrical lens physics:
-          // Center item (absOffset ~ 0): scale 1.05, opacity 1.0, blur 0px
-          // absOffset 1: scale 0.90, opacity 0.45, blur 0.5px
-          // absOffset >= 2: scale 0.80, opacity 0.18, blur 1.8px
-          const scale = Math.max(0.72, 1.08 - absOffset * 0.14);
-          const opacity = Math.max(0.08, 1 - Math.pow(absOffset / 2.8, 1.6));
-          const blurAmount = Math.min(4, absOffset * 0.85);
+          const y = centerY + offset * rowHeight;
 
-          const isFocal = Math.abs(offset) < 0.4;
+          // Focal interpolation:
+          // Center item (absOffset < 0.45): white #ffffff, font-semibold, larger scale, active dash
+          // Peripheral items: crisp deep indigo #282D52, scale ~0.80-0.86, fading smoothly towards edges
+          const isFocal = absOffset < 0.45;
+          const focalFactor = Math.max(0, 1 - absOffset * 2.2); // 1 at center, 0 at >=0.45
+
+          // Color interpolation
+          const distanceFade = Math.max(0, 1 - Math.pow(absOffset / 4.4, 1.8));
+          const textColor = isFocal
+            ? '#FFFFFF'
+            : `rgba(45, 52, 92, ${Math.min(1, distanceFade * 0.95).toFixed(3)})`;
+
+          // Typography scale
+          const scale = 0.82 + focalFactor * 0.18; // 0.82 -> 1.0
 
           return (
             <motion.div
               key={item.id}
               onClick={() => scrollTo(idx)}
-              className="absolute left-2 right-2 flex items-center cursor-pointer pointer-events-auto transition-colors"
+              className="absolute left-0 right-0 flex items-center cursor-pointer pointer-events-auto"
               style={{
                 top: y - 24,
                 height: 48,
                 transformOrigin: 'left center',
                 scale,
-                opacity,
-                filter: `blur(${blurAmount}px)`,
+                color: textColor,
               }}
             >
-              {/* Animated Dash "— " for focal item matching Recording 155640 */}
-              <div className="flex items-center gap-3">
-                <motion.div
-                  initial={false}
-                  animate={{
-                    width: isFocal ? 22 : 0,
-                    opacity: isFocal ? 1 : 0,
-                    marginRight: isFocal ? 4 : 0,
+              <div className="flex items-center min-w-0">
+                {/* Dynamic Dash "— " in front of focal item matching Recording 2026-09-15 155640.mp4 */}
+                <div
+                  className="overflow-hidden flex items-center transition-all duration-150 ease-out"
+                  style={{
+                    width: `${(focalFactor * 32).toFixed(1)}px`,
+                    opacity: focalFactor,
+                    marginRight: `${(focalFactor * 14).toFixed(1)}px`,
                   }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 450,
-                    damping: 32,
-                  }}
-                  className="h-[2px] bg-white rounded-full flex-shrink-0"
-                />
+                >
+                  <div className="w-[28px] h-[2.5px] bg-white rounded-full flex-shrink-0" />
+                </div>
 
+                {/* Library Sidebar Item Name */}
                 <span
-                  className={`tracking-tight font-heading transition-all select-none ${
+                  className={`tracking-[-0.03em] font-sans antialiased select-none whitespace-nowrap transition-colors duration-150 ${
                     isFocal
-                      ? 'text-2xl sm:text-[26px] font-bold text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.4)]'
-                      : 'text-lg sm:text-xl font-medium text-neutral-400 hover:text-neutral-200'
+                      ? 'text-[28px] sm:text-[34px] font-semibold text-white'
+                      : 'text-[22px] sm:text-[26px] font-medium'
                   }`}
+                  style={{
+                    color: textColor,
+                  }}
                 >
                   {item.label}
                 </span>
