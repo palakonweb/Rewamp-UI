@@ -51,17 +51,15 @@ import RainbowButtonShowcase from './ui/RainbowButtonShowcase';
 import GlossButtonShowcase from './ui/GlossButtonShowcase';
 import ChromeBorderButtonShowcase from './ui/ChromeBorderButtonShowcase';
 import BookACallButtonShowcase from './ui/BookACallButton';
+import ShimmerButtonShowcase from './ui/ShimmerButtonShowcase';
 
 import AuroraTextShowcase from './ui/AuroraTextShowcase';
 import CharacterScrambleTextShowcase from './ui/CharacterScrambleTextShowcase';
-import CountUpTextShowcase from './ui/CountUpTextShowcase';
 import Flip3DTextShowcase from './ui/Flip3DTextShowcase';
 import GradientRevealTextShowcase from './ui/GradientRevealTextShowcase';
-import LiquidTextMorphShowcase from './ui/LiquidTextMorphShowcase';
 import OdometerTextShowcase from './ui/OdometerTextShowcase';
 import SplitTextRevealShowcase from './ui/SplitTextRevealShowcase';
 import SpotlightTextShowcase from './ui/SpotlightTextShowcase';
-import TextRingCursorShowcase from './ui/TextRingCursorShowcase';
 import TypewriterTextShowcase from './ui/TypewriterTextShowcase';
 import VelocityMarqueeTextShowcase from './ui/VelocityMarqueeTextShowcase';
 import WordByWordTextShowcase from './ui/WordByWordTextShowcase';
@@ -195,7 +193,7 @@ export const categories = [
         components: entries(
             GooglyEyesButtonShowcase, GlossButtonShowcase, NeumorphicDownloadButtonShowcase,
             AddToCartGlowButtonShowcase, RainbowButtonShowcase, SlideToConfirmButtonShowcase,
-            ChromeBorderButtonShowcase, BookACallButtonShowcase,
+            ChromeBorderButtonShowcase, BookACallButtonShowcase, ShimmerButtonShowcase,
         ),
     },
     {
@@ -209,9 +207,8 @@ export const categories = [
             RainbowTypewriterBadgeShowcase,
             SplitTextRevealShowcase, WordByWordTextShowcase, CharacterScrambleTextShowcase,
             GradientRevealTextShowcase, AuroraTextShowcase, SpotlightTextShowcase,
-            LiquidTextMorphShowcase, Flip3DTextShowcase, TypewriterTextShowcase,
-            OdometerTextShowcase, CountUpTextShowcase, VelocityMarqueeTextShowcase,
-            TextRingCursorShowcase,
+            Flip3DTextShowcase, TypewriterTextShowcase,
+            OdometerTextShowcase, VelocityMarqueeTextShowcase,
         ),
     },
     {
@@ -242,7 +239,7 @@ export const categories = [
         size: 'lg',
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
         components: entries(
-            AppleNavbarShowcase, PillExpandNavbarShowcase, PixelDotNavbarShowcase, DarkModeMobileNavbarShowcase,
+            PillExpandNavbarShowcase, PixelDotNavbarShowcase, DarkModeMobileNavbarShowcase,
             FluidWaveNavbarShowcase,
         ),
     },

@@ -29,33 +29,33 @@ export interface PillTrailCursorProps {
 // ─── Defaults (Strictly matching reference video Recording 2026-09-13 170458.mp4) ─
 
 const DEFAULT_WORDS = [
-  'biotech',
-  'health',
-  'science',
-  'innovation',
-  'research',
-  'dna',
-  'cells',
-  'genetics',
-  'biology',
+  'rewamp',
+  'ui',
+  'components',
+  'design',
+  'motion',
+  'tactile',
+  'spring',
+  'fluid',
+  'craft',
   'future',
 ];
 
-// Exact palette from reference video
+// RewampUI Lilac & Neutral brand palette
 const DEFAULT_COLORS = [
-  '#2563EB', // royal blue    → white text
-  '#A824A4', // deep magenta  → white text
-  '#D6F52A', // neon lime     → dark text
-  '#C8B6FF', // soft lavender → dark text
-  '#3B52E2', // indigo blue   → white text
-  '#F5D230', // warm gold     → dark text
-  '#B80075', // magenta pink  → white text
-  '#06B6D4', // cyan          → white text
-  '#4C1D95', // deep violet   → white text
+  '#D4CBE5', // brand lilac primary → dark text
+  '#171717', // neutral-900         → white text
+  '#E4DDF0', // lilac-400           → dark text
+  '#404040', // neutral-700         → white text
+  '#C1B4D8', // lilac-600           → dark text
+  '#262626', // neutral-800         → white text
+  '#EEEAF7', // lilac-300           → dark text
+  '#9C8EB8', // deep lilac          → white text
+  '#525252', // neutral-600         → white text
 ];
 
 // Light pills requiring dark typography
-const LIGHT_COLORS = new Set(['#D6F52A', '#C8B6FF', '#F5D230', '#CCFF00', '#FACC15', '#DDD6FE']);
+const LIGHT_COLORS = new Set(['#D4CBE5', '#E4DDF0', '#EEEAF7', '#C1B4D8', '#F6F4FB', '#FFFFFF']);
 
 interface NodePos {
   x: number;

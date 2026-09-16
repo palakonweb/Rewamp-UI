@@ -44,32 +44,6 @@ export default function WalletCardRevealShowcase() {
             </div>
 
             {/* ── Prompt block ── */}
-            <div className="w-full rounded-2xl bg-white border border-black/5 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
-                <div className="flex-1 min-w-0">
-                    <p className="text-[11px] text-black/40 uppercase tracking-widest font-semibold mb-2">
-                        Prompt Setup
-                    </p>
-                    <code className="text-[13px] text-black/80 font-mono block overflow-hidden text-ellipsis w-full line-clamp-3">
-                        {walletCardRevealPrompt}
-                    </code>
-                </div>
-                <button
-                    onClick={handleCopy}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black/5 hover:bg-black/10 transition-all shrink-0 cursor-pointer"
-                >
-                    {copied ? (
-                        <>
-                            <Check size={16} className="text-emerald-600" />
-                            <span className="text-[13px] font-medium text-emerald-600">Copied</span>
-                        </>
-                    ) : (
-                        <>
-                            <Copy size={16} className="text-black/60" />
-                            <span className="text-[13px] font-medium text-black/70">Copy prompt</span>
-                        </>
-                    )}
-                </button>
-            </div>
-        </div>
+</div>
     );
 }
