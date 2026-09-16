@@ -1,77 +1,85 @@
 import React, { useState } from 'react';
-import KineticReelText from './KineticReelText';
+import { Play, Pause, Sun, Moon } from 'lucide-react';
+import { KineticReelText, DEFAULT_REEL_ITEMS } from './KineticReelText';
 
 export default function KineticReelTextShowcase() {
   const [theme, setTheme] = useState('dark');
-  const [prefix, setPrefix] = useState('we do');
+  const [prefix, setPrefix] = useState('we make');
+  const [autoPlay, setAutoPlay] = useState(true);
+  const [activeItem, setActiveItem] = useState(DEFAULT_REEL_ITEMS[0]);
 
   const isDark = theme === 'dark';
 
   return (
-    <div
-      className={`w-full min-h-[480px] rounded-2xl p-6 sm:p-12 flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500 ${
-        isDark ? 'bg-black text-white' : 'bg-[#FFFDF2] text-[#1F1F1F] border border-[#D9D9D6]'
-      }`}
-    >
-      {/* Subtle background glow */}
+    <div className="w-full flex flex-col items-center gap-4">
+      {/* Top Toolbar */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: isDark
-            ? 'radial-gradient(circle at 50% 50%, rgba(35, 35, 35, 0.6) 0%, #000000 75%)'
-            : 'radial-gradient(circle at 50% 50%, rgba(236, 94, 39, 0.05) 0%, transparent 70%)',
-        }}
-      />
-
-      {/* Main Kinetic Reel */}
-      <div className="relative z-10 py-16 flex items-center justify-center">
-        <KineticReelText
-          prefix={prefix}
-          theme={theme}
-          items={[
-            'Websites',
-            'Brand identity',
-            'SEO optimization',
-            'Digital marketing',
-            'Lead generation',
-            'Influencer marketing',
-          ]}
-        />
-      </div>
-
-      {/* Interactive Controls Bar */}
-      <div
-        className={`relative z-10 mt-6 flex flex-wrap items-center justify-center gap-3 rounded-full px-5 py-2.5 backdrop-blur-md text-xs transition-colors ${
+        className={`w-full flex flex-wrap items-center justify-between gap-3 px-4 py-3 rounded-2xl border backdrop-blur-md transition-colors duration-300 ${
           isDark
-            ? 'bg-neutral-900/90 border border-white/10 text-neutral-400'
-            : 'bg-[#FAF6ED] border border-[#D9D9D6] text-[#6B6B6B] shadow-sm'
+            ? 'bg-neutral-950/85 border-neutral-800 text-neutral-300'
+            : 'bg-[#FAF6ED]/95 border-[#D9D9D6] text-[#1F1F1F] shadow-sm'
         }`}
       >
-        <button
-          onClick={() => setTheme(isDark ? 'light' : 'dark')}
-          className={`px-3 py-1 rounded-full font-medium transition-all ${
-            isDark
-              ? 'bg-white/10 hover:bg-white/20 text-white'
-              : 'bg-[#F1E6D7] hover:bg-[#ebdccb] text-[#1F1F1F]'
-          }`}
-        >
-          {isDark ? '☀️ Light Mode' : '🌙 Dark Mode'}
-        </button>
+        {/* Left Controls */}
+        <div className="flex items-center gap-2">
+          {/* Play/Pause */}
+          <button
+            onClick={() => setAutoPlay(!autoPlay)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+              isDark
+                ? 'bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-200'
+                : 'bg-white hover:bg-[#F1E6D7] border border-[#D9D9D6] text-[#1F1F1F]'
+            }`}
+          >
+            {autoPlay ? (
+              <>
+                <Pause className="w-3.5 h-3.5 text-[#EC5E27]" />
+                <span>Pause</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3.5 h-3.5 text-[#EC5E27]" />
+                <span>Auto-Roll</span>
+              </>
+            )}
+          </button>
 
-        <div className={`h-3 w-px ${isDark ? 'bg-white/10' : 'bg-neutral-300'}`} />
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+              isDark
+                ? 'bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-200'
+                : 'bg-white hover:bg-[#F1E6D7] border border-[#D9D9D6] text-[#1F1F1F]'
+            }`}
+          >
+            {isDark ? (
+              <>
+                <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="w-3.5 h-3.5 text-stone-600" />
+                <span>Dark</span>
+              </>
+            )}
+          </button>
+        </div>
 
-        <div className="flex items-center gap-1.5">
-          <span>Prefix:</span>
-          {['we do', 'we build', 'we craft', 'Purrform'].map((p) => (
+        {/* Center: Prefix Selector */}
+        <div className="flex items-center gap-1 text-xs">
+          <span className="text-[11px] font-mono opacity-60 mr-1 hidden sm:inline">Prefix:</span>
+          {['we make', 'we craft', 'we build', 'Purrform'].map((p) => (
             <button
               key={p}
               onClick={() => setPrefix(p)}
-              className={`px-2.5 py-0.5 rounded transition-all ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 prefix === p
-                  ? 'bg-orange-500 text-white font-semibold'
+                  ? 'bg-[#EC5E27] text-white shadow-xs'
                   : isDark
-                  ? 'bg-white/5 hover:bg-white/10 text-neutral-300'
-                  : 'bg-white hover:bg-neutral-100 text-[#1F1F1F] border border-[#D9D9D6]'
+                  ? 'bg-neutral-900/60 hover:bg-neutral-800 text-neutral-400'
+                  : 'bg-white/80 hover:bg-white text-neutral-600 border border-neutral-200'
               }`}
             >
               {p}
@@ -79,12 +87,54 @@ export default function KineticReelTextShowcase() {
           ))}
         </div>
 
-        <div className={`h-3 w-px ${isDark ? 'bg-white/10' : 'bg-neutral-300'}`} />
+        {/* Right: Active Indicator */}
+        <div className="flex items-center gap-2 text-xs font-mono">
+          <span className="w-2 h-2 rounded-full bg-[#EC5E27] animate-pulse" />
+          <span className="font-sans font-medium">{activeItem}</span>
+        </div>
+      </div>
 
-        <span className="text-[11px] opacity-70">Hover to pause · Click slot to roll</span>
+      {/* Main Stage: Centered Reel */}
+      <div
+        className={`w-full min-h-[500px] md:min-h-[540px] rounded-3xl flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500 shadow-2xl ${
+          isDark
+            ? 'bg-black text-white border border-neutral-800/80'
+            : 'bg-[#FFFDF2] text-[#1F1F1F] border border-[#D9D9D6]'
+        }`}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: isDark
+              ? 'radial-gradient(ellipse at 50% 50%, rgba(25, 28, 45, 0.45) 0%, #000000 75%)'
+              : 'radial-gradient(ellipse at 50% 50%, rgba(236, 94, 39, 0.06) 0%, transparent 70%)',
+          }}
+        />
+
+        {/* Kinetic Reel Text Component with centered layout */}
+        <div className="relative z-10 w-full px-6 sm:px-12 py-16 flex items-center justify-center">
+          <KineticReelText
+            prefix={prefix}
+            items={DEFAULT_REEL_ITEMS}
+            theme={theme}
+            autoPlay={autoPlay}
+            interval={2000}
+            onSelect={(item) => setActiveItem(item)}
+          />
+        </div>
+
+        {/* Bottom interaction hint */}
+        <div
+          className={`absolute bottom-5 z-20 flex items-center gap-2 text-xs font-mono transition-opacity ${
+            isDark ? 'text-neutral-500' : 'text-neutral-400'
+          }`}
+        >
+          <span>Centered · Scroll mouse wheel over reel · Click to roll · Drag vertically</span>
+        </div>
       </div>
     </div>
   );
 }
 
+KineticReelTextShowcase.customTitle = 'Kinetic Reel Text';
 KineticReelTextShowcase.customSlug = 'kinetic-reel-text';

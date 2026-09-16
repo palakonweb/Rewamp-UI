@@ -2,62 +2,46 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 /**
- * Purrform UI Library Sidebar Categories:
+ * Purrform UI Library Items (Buttons, Sidebars, Shaders, Loaders, Orbs, etc.):
  */
-export const LIBRARY_SIDEBAR_ITEMS = [
-  { id: 'animated-backgrounds', label: 'Animated Backgrounds', count: 22, slug: 'bgs' },
-  { id: 'buttons', label: 'Buttons', count: 8, slug: 'buttons' },
-  { id: 'text-animations', label: 'Text Animations', count: 16, slug: 'text' },
-  { id: 'toggles', label: 'Toggles', count: 3, slug: 'toggles' },
-  { id: 'cursors', label: 'Cursors', count: 2, slug: 'cursors' },
-  { id: 'navbars', label: 'Navbars', count: 5, slug: 'navbars' },
-  { id: 'search-bars', label: 'Search Bars', count: 2, slug: 'search-bars' },
-  { id: 'sidebars', label: 'Sidebars', count: 3, slug: 'sidebars' },
-  { id: 'cards', label: 'Cards', count: 9, slug: 'cards' },
-  { id: 'ui-for-ai', label: 'UI for AI', count: 5, slug: 'ai-ui' },
+export const LIBRARY_LENS_ITEMS = [
+  { id: 'buttons', label: 'Buttons' },
+  { id: 'sidebars', label: 'Sidebars' },
+  { id: 'shaders', label: 'Shaders' },
+  { id: 'loaders', label: 'Loaders' },
+  { id: 'orbs', label: 'Orbs' },
+  { id: 'cards', label: 'Cards' },
+  { id: 'navbars', label: 'Navbars' },
+  { id: 'toggles', label: 'Toggles' },
+  { id: 'cursors', label: 'Cursors' },
+  { id: 'text-animations', label: 'Text Animations' },
+  { id: 'search-bars', label: 'Search Bars' },
+  { id: 'backgrounds', label: 'Backgrounds' },
 ];
 
-/**
- * Key Library Components dataset:
- */
-export const LIBRARY_COMPONENT_ITEMS = [
-  { id: 'kinetic-lens-sidebar', label: 'Kinetic Lens Sidebar', category: 'Sidebars' },
-  { id: 'flightpath-toc', label: 'Flightpath TOC', category: 'Sidebars' },
-  { id: 'morph-search-capsule', label: 'Morph Search Capsule', category: 'Search Bars' },
-  { id: 'diagonal-card-stack', label: 'Diagonal Card Stack', category: 'Cards' },
-  { id: 'perspective-flip-deck', label: 'Perspective Flip Deck', category: 'Cards' },
-  { id: 'orbital-card-arch', label: 'Orbital Card Arch', category: 'Cards' },
-  { id: 'editorial-3d-orbit', label: 'Editorial 3D Orbit', category: 'Cards' },
-  { id: 'fluid-wave-navbar', label: 'Fluid Wave Navbar', category: 'Navbars' },
-  { id: 'apple-navbar', label: 'Apple Navbar', category: 'Navbars' },
-  { id: 'shimmer-button', label: 'Shimmer Button', category: 'Buttons' },
-  { id: 'slide-to-confirm', label: 'Slide to Confirm', category: 'Buttons' },
-  { id: 'layered-paper-waves', label: 'Layered Paper Waves', category: 'Animated Backgrounds' },
-  { id: 'silk-waves', label: 'Silk Waves', category: 'Animated Backgrounds' },
-  { id: 'particle-morph-orb', label: 'Particle Morph Orb', category: 'UI for AI' },
-];
-
-/**
- * Default to the Purrform Library Sidebar categories
- */
-export const DEFAULT_LENS_ITEMS = LIBRARY_SIDEBAR_ITEMS;
+export const DEFAULT_LENS_ITEMS = LIBRARY_LENS_ITEMS;
 
 /**
  * KineticLensSidebar
- * Exact recreation of Recording 2026-09-15 155640.mp4 with Purrform UI library sidebar:
+ * Automated kinetic lens rolodex sidebar with centered text and library items:
+ * - Text: Buttons, Sidebars, Shaders, Loaders, Orbs, Cards, Navbars, etc.
+ * - Text centered horizontally with symmetrical focal dashes "— Item —"
+ * - Automated continuous text scrolling by default
+ * - Compact typography (focal: ~19-21px, peripheral: ~14-16px) with tight row height (44px)
  * - Pure pitch black canvas (#000000)
- * - Sharp vector typography with deep indigo/navy peripheral items (#282D52)
- * - Bright white center focal item (#FFFFFF) with dynamic "— " dash prefix
+ * - Crisp deep indigo/navy peripheral items (#282D52)
+ * - Bright white center focal item (#FFFFFF)
  * - Highly scroll-reactive with non-passive mouse wheel scrubbing, velocity inertia,
- *   touch/pointer drag, click-to-focus, and external scroll bindings.
+ *   touch/pointer drag, click-to-focus.
  */
 export function KineticLensSidebar({
   items = null,
-  initialIndex = 7, // Default "Sidebars"
+  initialIndex = 0, // Default "Buttons"
   onSelect = null,
-  autoCycle = false,
-  cycleInterval = 2800,
+  autoCycle = true, // Automated text scroll ON by default
+  cycleInterval = 2000,
   scrollProgress = null,
+  align = 'center', // 'center' or 'left'
   className = '',
 }) {
   const menuItems = items || DEFAULT_LENS_ITEMS;
@@ -65,24 +49,24 @@ export function KineticLensSidebar({
 
   const containerRef = useRef(null);
   const snapTimeoutRef = useRef(null);
-  const userInteractedRef = useRef(false);
+  const autoResumeTimeoutRef = useRef(null);
 
   const [activeIndex, setActiveIndex] = useState(
     Math.min(initialIndex, Math.max(0, numItems - 1))
   );
-  const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
 
   // Motion value representing the continuous target position
   const targetIndex = useMotionValue(
     Math.min(initialIndex, Math.max(0, numItems - 1))
   );
 
-  // Physics spring for buttery smooth interpolation matching trackpad / iOS inertia
+  // Physics spring for buttery smooth interpolation
   const smoothIndex = useSpring(targetIndex, {
-    stiffness: 260,
-    damping: 28,
-    mass: 0.7,
+    stiffness: 240,
+    damping: 26,
+    mass: 0.75,
   });
 
   const [displayIndex, setDisplayIndex] = useState(initialIndex);
@@ -97,7 +81,7 @@ export function KineticLensSidebar({
     });
   }, [smoothIndex, activeIndex, numItems]);
 
-  // Handle external scroll progress if supplied (e.g. from page scroll or feed container)
+  // Handle external scroll progress if supplied
   useEffect(() => {
     if (scrollProgress === null || scrollProgress === undefined) return;
 
@@ -123,21 +107,29 @@ export function KineticLensSidebar({
     [numItems, targetIndex, onSelect, menuItems]
   );
 
-  // Auto-cycle when idle
+  // Automated text scrolling: loops continuously through items
   useEffect(() => {
-    if (!autoCycle || isHovered || isDragging) return;
+    if (!autoCycle || isDragging || isUserInteracting) return;
 
     const timer = setInterval(() => {
-      setActiveIndex((prev) => {
-        const next = (prev + 1) % numItems;
-        targetIndex.set(next);
-        onSelect?.(menuItems[next]);
-        return next;
-      });
+      const current = targetIndex.get();
+      const next = (Math.round(current) + 1) % numItems;
+      targetIndex.set(next);
+      setActiveIndex(next);
+      onSelect?.(menuItems[next]);
     }, cycleInterval);
 
     return () => clearInterval(timer);
-  }, [autoCycle, isHovered, isDragging, numItems, cycleInterval, targetIndex, onSelect, menuItems]);
+  }, [autoCycle, isDragging, isUserInteracting, numItems, cycleInterval, targetIndex, onSelect, menuItems]);
+
+  // Temporarily pause auto-scroll during user wheel/drag and auto-resume after 1.8s
+  const markUserInteraction = useCallback(() => {
+    setIsUserInteracting(true);
+    if (autoResumeTimeoutRef.current) clearTimeout(autoResumeTimeoutRef.current);
+    autoResumeTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 1800);
+  }, []);
 
   // Native non-passive wheel listener for immediate, buttery smooth scroll reactivity
   useEffect(() => {
@@ -147,15 +139,13 @@ export function KineticLensSidebar({
     const handleNativeWheel = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      userInteractedRef.current = true;
+      markUserInteraction();
 
-      // Fractional delta accumulation
-      const delta = e.deltaY * 0.0032;
+      const delta = e.deltaY * 0.0035;
       const current = targetIndex.get();
       const next = Math.max(0, Math.min(numItems - 1, current + delta));
       targetIndex.set(next);
 
-      // Debounced gentle snap to nearest item after wheel ceases
       if (snapTimeoutRef.current) {
         clearTimeout(snapTimeoutRef.current);
       }
@@ -170,18 +160,17 @@ export function KineticLensSidebar({
     el.addEventListener('wheel', handleNativeWheel, { passive: false });
     return () => {
       el.removeEventListener('wheel', handleNativeWheel);
-      if (snapTimeoutRef.current) {
-        clearTimeout(snapTimeoutRef.current);
-      }
+      if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+      if (autoResumeTimeoutRef.current) clearTimeout(autoResumeTimeoutRef.current);
     };
-  }, [numItems, targetIndex, onSelect, menuItems]);
+  }, [numItems, targetIndex, onSelect, menuItems, markUserInteraction]);
 
   // Pointer & Touch Drag Physics
   const dragStartRef = useRef({ y: 0, initial: 0, lastY: 0, lastTime: 0, velocity: 0 });
 
   const handlePointerDown = (e) => {
     setIsDragging(true);
-    userInteractedRef.current = true;
+    markUserInteraction();
     dragStartRef.current = {
       y: e.clientY,
       initial: targetIndex.get(),
@@ -204,8 +193,7 @@ export function KineticLensSidebar({
     dragStartRef.current.lastTime = now;
 
     const totalDy = e.clientY - dragStartRef.current.y;
-    // 58px per row
-    const deltaIndex = -totalDy / 58;
+    const deltaIndex = -totalDy / 44;
     const next = Math.max(0, Math.min(numItems - 1, dragStartRef.current.initial + deltaIndex));
     targetIndex.set(next);
   };
@@ -217,34 +205,29 @@ export function KineticLensSidebar({
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch (_) {}
 
-    // Fling momentum snap
     const current = targetIndex.get();
-    const fling = dragStartRef.current.velocity * 120;
-    const projected = Math.max(0, Math.min(numItems - 1, current + fling / 58));
+    const fling = dragStartRef.current.velocity * 100;
+    const projected = Math.max(0, Math.min(numItems - 1, current + fling / 44));
     const nearest = Math.round(projected);
 
     targetIndex.set(nearest);
     setActiveIndex(nearest);
     onSelect?.(menuItems[nearest]);
+    markUserInteraction();
   };
 
-  // Dimensions
-  const rowHeight = 58;
-  const centerY = 270; // 540px container height / 2
+  const rowHeight = 44;
+  const centerY = 240;
+  const isCentered = align === 'center';
 
   return (
     <div
       ref={containerRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setIsDragging(false);
-      }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full max-w-[420px] sm:max-w-[460px] h-[540px] bg-black overflow-hidden select-none cursor-grab active:cursor-grabbing px-6 sm:px-8 flex flex-col justify-center ${className}`}
+      className={`relative w-full max-w-[340px] sm:max-w-[380px] h-[480px] bg-black overflow-hidden select-none cursor-grab active:cursor-grabbing px-6 sm:px-8 flex flex-col justify-center ${className}`}
       style={{
         touchAction: 'none',
       }}
@@ -254,7 +237,7 @@ export function KineticLensSidebar({
         className="absolute inset-0 pointer-events-none z-20"
         style={{
           background:
-            'linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.95) 12%, transparent 32%, transparent 68%, rgba(0, 0, 0, 0.95) 88%, #000000 100%)',
+            'linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.95) 12%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.95) 88%, #000000 100%)',
         }}
       />
 
@@ -264,58 +247,55 @@ export function KineticLensSidebar({
           const offset = idx - displayIndex;
           const absOffset = Math.abs(offset);
 
-          // Discard items that are far off viewport to optimize rendering
-          if (absOffset > 5.2) return null;
+          if (absOffset > 5.8) return null;
 
           const y = centerY + offset * rowHeight;
-
-          // Focal interpolation:
-          // Center item (absOffset < 0.45): white #ffffff, font-semibold, larger scale, active dash
-          // Peripheral items: crisp deep indigo #282D52, scale ~0.80-0.86, fading smoothly towards edges
           const isFocal = absOffset < 0.45;
-          const focalFactor = Math.max(0, 1 - absOffset * 2.2); // 1 at center, 0 at >=0.45
+          const focalFactor = Math.max(0, 1 - absOffset * 2.2);
 
-          // Color interpolation
-          const distanceFade = Math.max(0, 1 - Math.pow(absOffset / 4.4, 1.8));
+          const distanceFade = Math.max(0, 1 - Math.pow(absOffset / 5.0, 1.8));
           const textColor = isFocal
             ? '#FFFFFF'
             : `rgba(45, 52, 92, ${Math.min(1, distanceFade * 0.95).toFixed(3)})`;
 
-          // Typography scale
-          const scale = 0.82 + focalFactor * 0.18; // 0.82 -> 1.0
+          const scale = 0.86 + focalFactor * 0.14;
 
           return (
             <motion.div
               key={item.id}
-              onClick={() => scrollTo(idx)}
-              className="absolute left-0 right-0 flex items-center cursor-pointer pointer-events-auto"
+              onClick={() => {
+                scrollTo(idx);
+                markUserInteraction();
+              }}
+              className={`absolute left-0 right-0 flex items-center cursor-pointer pointer-events-auto ${
+                isCentered ? 'justify-center text-center' : 'justify-start text-left'
+              }`}
               style={{
-                top: y - 24,
-                height: 48,
-                transformOrigin: 'left center',
+                top: y - 18,
+                height: 36,
+                transformOrigin: isCentered ? 'center center' : 'left center',
                 scale,
                 color: textColor,
               }}
             >
-              <div className="flex items-center min-w-0">
-                {/* Dynamic Dash "— " in front of focal item matching Recording 2026-09-15 155640.mp4 */}
+              <div className="flex items-center justify-center gap-2.5">
+                {/* Left Dash */}
                 <div
-                  className="overflow-hidden flex items-center transition-all duration-150 ease-out"
+                  className="overflow-hidden flex items-center justify-end transition-all duration-150 ease-out"
                   style={{
-                    width: `${(focalFactor * 32).toFixed(1)}px`,
+                    width: `${(focalFactor * 22).toFixed(1)}px`,
                     opacity: focalFactor,
-                    marginRight: `${(focalFactor * 14).toFixed(1)}px`,
                   }}
                 >
-                  <div className="w-[28px] h-[2.5px] bg-white rounded-full flex-shrink-0" />
+                  <div className="w-[18px] h-[2px] bg-white rounded-full flex-shrink-0" />
                 </div>
 
-                {/* Library Sidebar Item Name */}
+                {/* Centered Item Label */}
                 <span
-                  className={`tracking-[-0.03em] font-sans antialiased select-none whitespace-nowrap transition-colors duration-150 ${
+                  className={`tracking-[-0.02em] font-sans antialiased select-none whitespace-nowrap transition-colors duration-150 ${
                     isFocal
-                      ? 'text-[28px] sm:text-[34px] font-semibold text-white'
-                      : 'text-[22px] sm:text-[26px] font-medium'
+                      ? 'text-[18px] sm:text-[21px] font-semibold text-white'
+                      : 'text-[14px] sm:text-[16px] font-medium'
                   }`}
                   style={{
                     color: textColor,
@@ -323,6 +303,19 @@ export function KineticLensSidebar({
                 >
                   {item.label}
                 </span>
+
+                {/* Right Dash (when centered, creates clean balanced focal framing) */}
+                {isCentered && (
+                  <div
+                    className="overflow-hidden flex items-center justify-start transition-all duration-150 ease-out"
+                    style={{
+                      width: `${(focalFactor * 22).toFixed(1)}px`,
+                      opacity: focalFactor,
+                    }}
+                  >
+                    <div className="w-[18px] h-[2px] bg-white rounded-full flex-shrink-0" />
+                  </div>
+                )}
               </div>
             </motion.div>
           );

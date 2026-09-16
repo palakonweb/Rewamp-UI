@@ -1,144 +1,186 @@
-export const kineticReelTextPrompt = `Create an ultra-clean, modern 3D kinetic rolling cylinder / slot reel text animation in React with Tailwind CSS and Framer Motion.
-- Static bold prefix text on the left (e.g. "we do").
-- On the right, a vertical reel of service titles ("Websites", "Brand identity", "SEO optimization", "Digital marketing", "Lead generation", "Influencer marketing").
-- The active item is front-and-center, bright and sharp.
-- The previous item is stacked above, slightly tilted away with 3D perspective (rotateX: 32deg), reduced opacity (0.35), and subtle blur.
-- The next item is stacked below, angled back with rotateX: -32deg and reduced opacity.
-- As the reel advances, items roll vertically in 3D with snappy cubic-bezier inertia and motion blur falloff.
-- Smooth looping, hover-to-pause, and click to immediately spin to the next item.
-- Supports both sleek dark mode and Purrform warm light mode.`;
+export const kineticReelTextPrompt = `Create an exact recreation of the kinetic rolling slot reel text animation from Recording 2026-09-15 155737.mp4 in React, Framer Motion, and Tailwind CSS.
 
-export const kineticReelTextCode = `import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+Requirements:
+- Pure pitch black backdrop (#000000).
+- Static lowercase bold prefix "we do" on the left with letter-spacing -0.03em.
+- On the right, a 3D cylindrical tumbling reel cycling through services:
+  "Websites", "Brand identity", "SEO optimization", "Digital marketing", "Lead generation", "Influencer marketing".
+- Active item is in the center row: crisp, sharp, full opacity pure white (#FFFFFF), matching the baseline and height of the prefix.
+- Adjacent items above and below are visible on the cylinder curve with 3D perspective tilt (rotateX) and subtle opacity falloff (~0.35).
+- Continuous drum index tracking with spring physics: all visible items move synchronously as a single tumbler drum.
+- Interactive mouse wheel scrubbing, pointer drag, click-to-roll, and auto-tumble timer.`;
 
-export default function KineticReelText({
+export const kineticReelTextCode = `import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useSpring, useMotionValue } from 'framer-motion';
+
+export const DEFAULT_REEL_ITEMS = [
+  'Websites',
+  'Brand identity',
+  'SEO optimization',
+  'Digital marketing',
+  'Lead generation',
+  'Influencer marketing',
+];
+
+export function KineticReelText({
   prefix = 'we do',
-  items = [
-    'Websites',
-    'Brand identity',
-    'SEO optimization',
-    'Digital marketing',
-    'Lead generation',
-    'Influencer marketing',
-  ],
+  items = DEFAULT_REEL_ITEMS,
   interval = 2200,
   className = '',
-  itemHeight = 64,
   theme = 'dark',
+  autoPlay = true,
+  onSelect = null,
 }) {
-  const prefersReducedMotion = useReducedMotion();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const numItems = items.length;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef(null);
   const timerRef = useRef(null);
+  const snapTimeoutRef = useRef(null);
+
+  const drumIndex = useMotionValue(0);
+  const smoothDrum = useSpring(drumIndex, {
+    stiffness: 240,
+    damping: 26,
+    mass: 0.75,
+  });
+
+  const [displayPos, setDisplayPos] = useState(0);
 
   useEffect(() => {
-    if (isPaused || prefersReducedMotion) return;
-    timerRef.current = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % items.length);
-    }, interval);
+    return smoothDrum.on('change', (latest) => {
+      setDisplayPos(latest);
+      const normalized = ((Math.round(latest) % numItems) + numItems) % numItems;
+      if (normalized !== activeIndex) {
+        setActiveIndex(normalized);
+        onSelect?.(items[normalized]);
+      }
+    });
+  }, [smoothDrum, activeIndex, numItems, items, onSelect]);
+
+  const advance = useCallback(
+    (direction = 1) => {
+      const current = drumIndex.get();
+      drumIndex.set(Math.round(current) + direction);
+    },
+    [drumIndex]
+  );
+
+  useEffect(() => {
+    if (!autoPlay || isHovered) return;
+    timerRef.current = setInterval(() => advance(1), interval);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [items.length, interval, isPaused, prefersReducedMotion]);
+  }, [autoPlay, isHovered, interval, advance]);
 
-  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % items.length);
+  // Non-passive wheel scrubbing
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const delta = e.deltaY * 0.0035;
+      drumIndex.set(drumIndex.get() + delta);
+
+      if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+      snapTimeoutRef.current = setTimeout(() => {
+        drumIndex.set(Math.round(drumIndex.get()));
+      }, 160);
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      el.removeEventListener('wheel', handleWheel);
+      if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
+    };
+  }, [drumIndex]);
+
   const isDark = theme === 'dark';
+  const rowHeight = 56;
+  const viewportHeight = 180;
+  const baseCenter = Math.floor(displayPos);
+  const visibleSlots = [-2, -1, 0, 1, 2];
 
   return (
     <div
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      className={\`relative inline-flex items-center justify-center select-none font-sans \${className}\`}
-      style={{ perspective: '1000px' }}
+      ref={containerRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => advance(1)}
+      className={\`relative inline-flex items-center select-none cursor-pointer py-4 \${className}\`}
+      style={{ perspective: '900px', touchAction: 'none' }}
     >
-      <div className="flex items-center gap-4 sm:gap-6">
-        {/* Prefix */}
+      <div className="flex items-center gap-3 sm:gap-5">
         <span
-          className={\`text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight \${
+          className={\`text-3xl sm:text-5xl md:text-6xl font-bold tracking-[-0.03em] font-sans antialiased whitespace-nowrap \${
             isDark ? 'text-white' : 'text-[#1F1F1F]'
           }\`}
-          style={{ letterSpacing: '-0.03em' }}
         >
           {prefix}
         </span>
 
-        {/* 3D Vertical Reel Slot */}
         <div
-          onClick={handleNext}
-          title="Click to roll to next"
-          className="relative cursor-pointer overflow-hidden flex items-center"
+          className="relative overflow-hidden flex items-center min-w-[200px] sm:min-w-[340px] md:min-w-[420px]"
           style={{
-            height: \`\${itemHeight * 2.8}px\`,
-            minWidth: '260px',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
+            height: \`\${viewportHeight}px\`,
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%)',
           }}
         >
-          <div className="relative w-full h-full flex flex-col items-start justify-center">
-            <AnimatePresence mode="popLayout" initial={false}>
-              {/* Previous Word */}
-              <motion.div
-                key={\`prev-\${(currentIndex - 1 + items.length) % items.length}\`}
-                initial={{ opacity: 0, y: -itemHeight * 0.8, rotateX: 38, filter: 'blur(4px)' }}
-                animate={{
-                  opacity: isDark ? 0.35 : 0.28,
-                  y: -itemHeight * 0.95,
-                  rotateX: 32,
-                  scale: 0.9,
-                  filter: 'blur(2px)',
-                }}
-                exit={{ opacity: 0, y: -itemHeight * 1.6, rotateX: 55, filter: 'blur(8px)' }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className={\`absolute left-0 text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight pointer-events-none transform-gpu origin-bottom \${
-                  isDark ? 'text-neutral-400' : 'text-neutral-500'
-                }\`}
-              >
-                {items[(currentIndex - 1 + items.length) % items.length]}
-              </motion.div>
+          <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
+            {visibleSlots.map((slotOffset) => {
+              const itemGlobalIndex = baseCenter + slotOffset;
+              const offset = itemGlobalIndex - displayPos;
+              const absOffset = Math.abs(offset);
+              const itemIndex = ((itemGlobalIndex % numItems) + numItems) % numItems;
+              const itemLabel = items[itemIndex];
 
-              {/* Active Word */}
-              <motion.div
-                key={\`active-\${currentIndex}\`}
-                initial={{ opacity: 0, y: itemHeight * 0.85, rotateX: -38, scale: 0.9, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1, filter: 'blur(0px)' }}
-                exit={{
-                  opacity: isDark ? 0.35 : 0.28,
-                  y: -itemHeight * 0.95,
-                  rotateX: 32,
-                  scale: 0.9,
-                  filter: 'blur(2px)',
-                }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className={\`relative text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight transform-gpu origin-center \${
-                  isDark ? 'text-white' : 'text-[#EC5E27]'
-                }\`}
-              >
-                {items[currentIndex]}
-              </motion.div>
+              const y = offset * rowHeight;
+              const rotateX = offset * -32;
+              const scale = Math.max(0.78, 1 - absOffset * 0.12);
+              const opacity =
+                absOffset < 0.45
+                  ? 1 - absOffset * 0.4
+                  : Math.max(0.08, 0.42 - (absOffset - 0.45) * 0.32);
 
-              {/* Next Word */}
-              <motion.div
-                key={\`next-\${(currentIndex + 1) % items.length}\`}
-                initial={{ opacity: 0, y: itemHeight * 1.6, rotateX: -55, filter: 'blur(8px)' }}
-                animate={{
-                  opacity: isDark ? 0.35 : 0.28,
-                  y: itemHeight * 0.95,
-                  rotateX: -32,
-                  scale: 0.9,
-                  filter: 'blur(2px)',
-                }}
-                exit={{ opacity: 0, y: itemHeight * 0.4, filter: 'blur(4px)' }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className={\`absolute left-0 text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight pointer-events-none transform-gpu origin-top \${
-                  isDark ? 'text-neutral-400' : 'text-neutral-500'
-                }\`}
-              >
-                {items[(currentIndex + 1) % items.length]}
-              </motion.div>
-            </AnimatePresence>
+              const isCenter = absOffset < 0.45;
+
+              return (
+                <div
+                  key={\`\${itemGlobalIndex}\`}
+                  className="absolute left-0 right-0 flex items-center pointer-events-none transform-gpu"
+                  style={{
+                    top: \`calc(50% - \${rowHeight / 2}px)\`,
+                    height: \`\${rowHeight}px\`,
+                    transform: \`translateY(\${y}px) translateZ(\${-absOffset * 18}px) rotateX(\${rotateX}deg) scale(\${scale})\`,
+                    transformOrigin: 'left center',
+                    opacity,
+                  }}
+                >
+                  <span
+                    className={\`font-sans tracking-[-0.025em] whitespace-nowrap antialiased leading-none \${
+                      isCenter
+                        ? isDark
+                          ? 'text-3xl sm:text-5xl md:text-6xl font-semibold text-white'
+                          : 'text-3xl sm:text-5xl md:text-6xl font-semibold text-[#1F1F1F]'
+                        : isDark
+                        ? 'text-3xl sm:text-5xl md:text-6xl font-medium text-neutral-400'
+                        : 'text-3xl sm:text-5xl md:text-6xl font-medium text-neutral-500'
+                    }\`}
+                  >
+                    {itemLabel}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
     </div>
   );
-}`;
+}
+
+export default KineticReelText;`;
