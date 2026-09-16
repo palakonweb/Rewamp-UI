@@ -59,7 +59,7 @@ export default function AuroraBackgroundShowcase() {
                     />
                 </div>
 
-                <BackgroundHeroOverlay title="Shimmering aurora borealis to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

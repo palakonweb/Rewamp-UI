@@ -435,7 +435,7 @@ export default function PixelSnowBackgroundShowcase() {
                     />
                 </div>
 
-                <BackgroundHeroOverlay title="Pixelated snowfall to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* PROMPT CARD */}

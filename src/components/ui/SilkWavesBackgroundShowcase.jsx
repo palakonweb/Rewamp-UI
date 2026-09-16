@@ -27,7 +27,7 @@ export default function SilkWavesBackgroundShowcase() {
                         intensity={1.0}
                     />
                 </div>
-                <BackgroundHeroOverlay title="Velvet silk ribbons to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* PROMPT CARD */}

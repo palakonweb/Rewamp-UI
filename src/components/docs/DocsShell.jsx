@@ -43,8 +43,8 @@ export default function DocsShell({ slug, onNavigate }) {
                     >
                         <Menu size={20} strokeWidth={1.75} />
                     </button>
-                    <img src="/purrform-logo.png" alt="Purrform" className="w-6 h-6 object-contain" />
-                    <span className="text-[14px] font-semibold text-charcoal">Purrform</span>
+                    <img src="/logo.svg" alt="RewampUI" className="w-6 h-6 object-contain" />
+                    <span className="text-[14px] font-semibold text-charcoal">RewampUI</span>
                 </header>
 
                 <div className="flex-1 px-6 sm:px-10 md:px-16 pt-10 sm:pt-14 pb-12 flex flex-col items-center">

@@ -135,7 +135,7 @@ export default function SoftAuroraShowcase() {
                 {/* 🌌 MOTION BACKGROUND */}
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
 
-                <BackgroundHeroOverlay title="Soft ethereal aurora to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

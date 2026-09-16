@@ -151,7 +151,7 @@ export default function ShootingStarsShowcase() {
                 {/* 🌌 MOTION BACKGROUND */}
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full bg-gradient-to-b from-[#050510] to-[#020205]" />
 
-                <BackgroundHeroOverlay title="Shooting stars night sky to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

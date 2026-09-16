@@ -99,7 +99,7 @@ export default function ParticleWaveShowcase() {
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#050508] shadow-2xl flex items-center justify-center p-8 group">
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
                 
-                <BackgroundHeroOverlay title="Dynamic particle waves to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

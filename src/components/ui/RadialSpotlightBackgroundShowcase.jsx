@@ -65,7 +65,7 @@ export default function RadialSpotlightBackgroundShowcase() {
                     <div className="absolute inset-0 bg-[#050505] mix-blend-multiply opacity-50"></div>
                 </div>
 
-                <BackgroundHeroOverlay title="Radial spotlight glow to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

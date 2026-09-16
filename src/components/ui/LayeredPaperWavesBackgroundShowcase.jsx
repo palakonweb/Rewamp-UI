@@ -27,7 +27,7 @@ export default function LayeredPaperWavesBackgroundShowcase() {
                         amplitude={1.0}
                     />
                 </div>
-                <BackgroundHeroOverlay title="Layered paper waves to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* PROMPT CARD */}

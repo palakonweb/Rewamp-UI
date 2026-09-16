@@ -42,7 +42,7 @@ export default function AnimatedGridBackgroundShowcase() {
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] bg-[var(--color-accent-red)]/10 blur-[80px] pointer-events-none rounded-t-full mask-image:linear-gradient(to top, white, transparent)" />
                 </div>
 
-                <BackgroundHeroOverlay title="Animated matrix grid to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

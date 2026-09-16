@@ -60,7 +60,7 @@ export default function FloatingBlobsBackgroundShowcase() {
                     />
                 </div>
 
-                <BackgroundHeroOverlay title="Organic floating blobs to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

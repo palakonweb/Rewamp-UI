@@ -71,7 +71,7 @@ export default function SpotlightGridShowcase() {
             />
         </motion.div>
 
-        <BackgroundHeroOverlay title="Interactive spotlight mesh to enhance your UI" />
+        <BackgroundHeroOverlay />
 
       </div>
 

@@ -33,7 +33,7 @@ export default function GradientWaveBackgroundShowcase() {
             exposure={1.2}
           />
         </div>
-        <BackgroundHeroOverlay title="Luminous silk waves to enhance your UI" />
+        <BackgroundHeroOverlay />
       </div>
 
       {/* PROMPT CARD */}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BackgroundHeroOverlay({
-    title = "Retro dithered waves to enhance your UI",
+    title = "Liquid cursor gradients to enhance your UI",
     subtitle = "Creative Components",
     badge = "NEW",
     brandName = "RewampUI",
@@ -40,12 +40,9 @@ export default function BackgroundHeroOverlay({
                         {/* Top Floating Glass Navbar */}
                         <div className="w-full flex justify-center pointer-events-auto">
                             <div className="flex items-center justify-between gap-5 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white shadow-xl max-w-lg w-full">
-                                {/* Brand Logo + Name */}
+                                {/* Brand Logo + Name with official /logo.svg */}
                                 <div className="flex items-center gap-2">
-                                    <svg className="w-4 h-4 text-[#EC5E27] shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                                        {/* Purrform flat cat face mark */}
-                                        <path d="M12 4.5C7.8 4.5 4.5 7.8 4.5 12c0 4.2 3.3 7.5 7.5 7.5s7.5-3.3 7.5-7.5c0-4.2-3.3-7.5-7.5-7.5zm-5 1l3 3.8c-.8.7-1.5 1.7-1.8 2.8L5.5 8.5 7 5.5zm10 0l1.5 3-2.7 3.6c-.3-1.1-1-2.1-1.8-2.8l3-3.8z" />
-                                    </svg>
+                                    <img src="/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
                                     <span className="font-bold text-[13px] tracking-tight text-white">{brandName}</span>
                                 </div>
 
@@ -96,16 +93,25 @@ export default function BackgroundHeroOverlay({
                 )}
             </AnimatePresence>
 
-            {/* Bottom-Right "Demo Content" Toggle */}
+            {/* Bottom-Right "Demo Content" Toggle in RewampUI Lilac Palette */}
             <div
+                role="switch"
+                aria-checked={showDemo}
+                tabIndex={0}
                 onClick={() => setShowDemo(!showDemo)}
-                className="absolute bottom-4 right-4 z-30 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white/75 hover:text-white text-[11px] font-medium shadow-lg select-none cursor-pointer transition"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setShowDemo(!showDemo);
+                    }
+                }}
+                className="absolute bottom-4 right-4 z-30 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white/80 hover:text-white text-[11px] font-medium shadow-lg select-none cursor-pointer transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4DDF0]"
                 title="Toggle hero UI demo overlay"
             >
                 <span>Demo Content</span>
-                <div className={`w-8 h-4 rounded-full transition-colors relative p-0.5 ${showDemo ? 'bg-[#EC5E27]' : 'bg-white/20'}`}>
+                <div className={`w-9 h-5 rounded-full transition-colors relative p-0.5 flex items-center ${showDemo ? 'bg-[#D4CBE5]' : 'bg-white/20'}`}>
                     <motion.div
-                        className="w-3 h-3 rounded-full bg-white shadow-sm"
+                        className={`w-4 h-4 rounded-full shadow-sm transition-colors ${showDemo ? 'bg-[#171717]' : 'bg-white'}`}
                         animate={{ x: showDemo ? 16 : 0 }}
                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />

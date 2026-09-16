@@ -52,7 +52,7 @@ export default function AmbientGlowOrbsShowcase() {
                     />
                 </div>
 
-                <BackgroundHeroOverlay title="Ambient glowing orbs to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

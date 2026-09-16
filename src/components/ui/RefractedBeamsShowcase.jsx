@@ -117,17 +117,7 @@ export default function RefractedBeamsShowcase() {
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#050508] shadow-2xl flex items-center justify-center p-8 group">
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
                 
-                <div className="relative z-20 flex flex-col items-center text-center max-w-lg pointer-events-none">
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="px-3 py-1 mb-6 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] font-medium tracking-widest uppercase">
-                        Purrform
-                    </motion.div>
-                    <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.1} className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-4 drop-shadow-sm">
-                        Refracted Beams
-                    </motion.h1>
-                    <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} delay={0.2} className="text-white/60 text-base md:text-lg font-light leading-relaxed mb-8 max-w-md">
-                        Sharp geometric light rays powered by Canvas 2D composite blending operations.
-                    </motion.p>
-                </div>
+                <BackgroundHeroOverlay />
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

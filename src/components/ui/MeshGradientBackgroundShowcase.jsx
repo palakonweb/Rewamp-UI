@@ -50,7 +50,7 @@ export default function MeshGradientBackgroundShowcase() {
                     />
                 </div>
 
-                <BackgroundHeroOverlay title="Fluid mesh gradient to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}

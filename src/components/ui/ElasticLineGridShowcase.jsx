@@ -167,16 +167,7 @@ export default function ElasticLineGridShowcase() {
             style={{ zIndex: 0 }}
         />
 
-        {/* Content */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tighter text-white mb-2 drop-shadow-lg">
-                ELASTIC MESH
-            </h2>
-            <div className="px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-white/50 text-[11px] uppercase tracking-widest backdrop-blur-md">
-                Drag to disrupt
-            </div>
-        </div>
-
+        <BackgroundHeroOverlay />
       </div>
 
       <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

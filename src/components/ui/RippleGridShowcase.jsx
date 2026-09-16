@@ -120,18 +120,7 @@ export default function RippleGridShowcase() {
             style={{ zIndex: 0 }}
         />
 
-        {/* Content */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
-            <div className="p-8 rounded-3xl bg-black/40 backdrop-blur-md border border-white/10 flex flex-col items-center shadow-2xl">
-                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">
-                    Ripple Matrix
-                </h2>
-                <p className="text-white/50 text-sm font-medium tracking-wide">
-                    Interact with the background
-                </p>
-            </div>
-        </div>
-
+        <BackgroundHeroOverlay />
       </div>
 
       <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

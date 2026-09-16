@@ -96,7 +96,7 @@ export default function HexagonMeshHoverShowcase() {
             </div>
         </div>
 
-        <BackgroundHeroOverlay title="Hexagonal mesh grid to enhance your UI" />
+        <BackgroundHeroOverlay />
       </div>
 
       <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

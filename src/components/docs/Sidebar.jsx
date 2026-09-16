@@ -40,8 +40,8 @@ export default function Sidebar({ categories, activeSlug, onNavigate, query, onQ
             >
                 <div className="flex items-center justify-between gap-2 px-5 pt-6 pb-5 shrink-0">
                     <a href="/components" className="flex items-center gap-2.5 select-none">
-                        <img src="/purrform-logo.png" alt="Purrform" className="w-7 h-7 object-contain shrink-0" />
-                        <span className="text-[15px] font-heading font-bold text-charcoal tracking-wide uppercase">Purrform UI</span>
+                        <img src="/logo.svg" alt="RewampUI" className="w-7 h-7 object-contain shrink-0" />
+                        <span className="text-[15px] font-heading font-bold text-charcoal tracking-wide uppercase">RewampUI</span>
                     </a>
                     <button
                         onClick={onCloseMobile}

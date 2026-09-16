@@ -30,7 +30,7 @@ export default function PixelCloudBackgroundShowcase() {
                         pixelSize={6}
                     />
                 </div>
-                <BackgroundHeroOverlay title="Drifting pixel clouds to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* PROMPT CARD */}

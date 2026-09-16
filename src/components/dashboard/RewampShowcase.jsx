@@ -324,11 +324,21 @@ export default function RewampShowcase() {
             className="h-full shrink-0 flex flex-col justify-between py-3 pl-3 pr-2 overflow-hidden z-20"
           >
             <div className="flex flex-col h-full overflow-hidden">
-              {/* Top Row: Sidebar Toggle & RewampUI Logo */}
+              {/* Top Row: RewampUI Logo on Left & Sidebar Toggle */}
               <div className="flex items-center justify-between pb-3">
+                <div className="flex items-center gap-2.5">
+                  <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
+                  <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
+                    RewampUI
+                  </span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
+                    74
+                  </span>
+                </div>
+
                 <button
                   onClick={() => setSidebarCollapsed(true)}
-                  className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors shadow-2xs cursor-pointer"
+                  className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer"
                   title="Collapse sidebar"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -336,16 +346,6 @@ export default function RewampShowcase() {
                     <path d="M9 3v18" />
                   </svg>
                 </button>
-
-                <div className="flex items-center gap-2">
-                  <img src="/logo.svg" alt="RewampUI" className="w-6 h-6 shrink-0 object-contain" />
-                  <span className="font-bold text-sm tracking-tight text-[var(--text-primary)]">
-                    RewampUI
-                  </span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
-                    74
-                  </span>
-                </div>
               </div>
 
               {/* Instant Search Bar */}

@@ -21,8 +21,8 @@ const Footer = () => {
                     <div className="col-span-1 md:col-span-4 flex flex-col gap-6">
                         <div className="flex items-center gap-2">
                             {/* Actual Logo Image */}
-                            <img src="/purrform-logo.png" alt="Purrform Logo" className="w-8 h-8 object-contain" />
-                            <span className="text-black dark:text-white font-bold text-xl tracking-wide">Purrform</span>
+                            <img src="/logo.svg" alt="RewampUI Logo" className="w-8 h-8 object-contain" />
+                            <span className="text-black dark:text-white font-bold text-xl tracking-wide">RewampUI</span>
                         </div>
                         <p className="text-black/60 dark:text-white/60 text-sm leading-relaxed max-w-[280px]">
                             Instant UI generation for modern developers.

@@ -29,7 +29,7 @@ export default function WaterCausticsBackgroundShowcase() {
                         exposure={1.05}
                     />
                 </div>
-                <BackgroundHeroOverlay title="Deep water caustics to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* PROMPT CARD */}

@@ -116,7 +116,7 @@ export default function HyperspeedWarpShowcase() {
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-black shadow-2xl flex items-center justify-center p-8 group">
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full mix-blend-screen" />
                 
-                <BackgroundHeroOverlay title="Hyperspeed warp tunnel to enhance your UI" />
+                <BackgroundHeroOverlay />
             </div>
 
             {/* 📋 PROMPT CARD */}
