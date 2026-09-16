@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import SplashCursor from './SplashCursor'; // Importing the existing complex WebGL component
 
-const promptContent = `A full-screen WebGL fluid simulation cursor effect that responds to pointer movement with vibrant, dissipating colorful dye splats and realistic fluid dynamics.`;
+const promptContent = `A high-performance WebGL fluid simulation cursor effect rendered in radiant shades of lavender with an interactive centered cursor and responsive dissipation dynamics.`;
 
 export default function SplashCursorShowcase() {
     const [copied, setCopied] = useState(false);
@@ -15,28 +15,47 @@ export default function SplashCursorShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[600px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#0a0a0c] flex items-center justify-center">
+            <div className="relative w-full h-[600px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#0c0915] flex items-center justify-center shadow-2xl">
                 
-                {/* WebGL Fluid Cursor Component */}
+                {/* WebGL Fluid Cursor Component in Lavender */}
                 <div className="absolute inset-0 z-0">
                     <SplashCursor 
-                        COLOR="#00ffcc" 
-                        RAINBOW_MODE={true} 
-                        SPLAT_RADIUS={0.3} 
-                        DENSITY_DISSIPATION={3.5}
+                        COLOR="#C4B5FD" 
+                        RAINBOW_MODE={false} 
+                        SPLAT_RADIUS={0.28} 
+                        DENSITY_DISSIPATION={2.8}
+                        isContained={true}
                     />
                 </div>
 
-                <div className="relative z-10 pointer-events-none text-center flex flex-col items-center justify-center p-8 bg-black/20 backdrop-blur-sm rounded-3xl border border-white/10 shadow-2xl">
-                    <h3 className="text-4xl font-bold text-white tracking-tight mb-3 drop-shadow-lg">
-                        Fluid Dynamics
-                    </h3>
-                    <p className="text-white/80 max-w-sm text-[15px] font-light leading-relaxed drop-shadow-md">
-                        Move your cursor to interact with the high-performance WebGL fluid simulation. 
-                    </p>
+                {/* Centered Cursor Indicator */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex flex-col items-center justify-center">
+                    {/* Radiant lavender halo */}
+                    <div className="absolute w-32 h-32 rounded-full bg-violet-500/20 blur-2xl animate-pulse" />
+                    
+                    {/* Sleek SVG Mouse Cursor in Lavender */}
+                    <div className="relative flex flex-col items-center">
+                        <svg 
+                            className="w-8 h-8 drop-shadow-[0_4px_14px_rgba(196,181,253,0.7)]" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path 
+                                d="M5.5 3.5L11.5 20.5L14.5 13.5L21.5 10.5L5.5 3.5Z" 
+                                fill="#8B5CF6" 
+                                stroke="#DDD6FE" 
+                                strokeWidth="1.5" 
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                        <span className="mt-2 px-2.5 py-0.5 rounded-full bg-violet-950/80 border border-violet-400/30 text-[10px] font-mono font-medium text-violet-200 tracking-wider backdrop-blur-sm shadow-sm whitespace-nowrap">
+                            (center)
+                        </span>
+                    </div>
                 </div>
                 
-                <span className="absolute bottom-6 right-6 text-white/30 text-[13px] font-semibold tracking-widest uppercase z-10 pointer-events-none">Splash Cursor</span>
+                <span className="absolute bottom-6 right-6 text-violet-300/40 text-[12px] font-semibold tracking-widest uppercase z-10 pointer-events-none">Lavender Splash Cursor</span>
             </div>
 
             <div className="w-full rounded-2xl bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">

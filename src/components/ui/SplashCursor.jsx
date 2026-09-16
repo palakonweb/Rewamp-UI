@@ -4,19 +4,22 @@ function SplashCursor({
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
-  DENSITY_DISSIPATION = 3.5,
+  DENSITY_DISSIPATION = 3.0,
   VELOCITY_DISSIPATION = 2,
   PRESSURE = 0.1,
   PRESSURE_ITERATIONS = 20,
   CURL = 3,
-  SPLAT_RADIUS = 0.2,
+  SPLAT_RADIUS = 0.25,
   SPLAT_FORCE = 6000,
   SHADING = true,
   COLOR_UPDATE_SPEED = 10,
-  BACK_COLOR = { r: 0.5, g: 0, b: 0 },
+  BACK_COLOR = { r: 0.05, g: 0.04, b: 0.09 },
   TRANSPARENT = true,
   RAINBOW_MODE = false,
-  COLOR = '#810100'
+  COLOR = '#C4B5FD',
+  isContained = false,
+  className = '',
+  style = {}
 }) {
   const canvasRef = useRef(null);
   const animationFrameId = useRef(null);
@@ -676,12 +679,29 @@ function SplashCursor({
     let lastUpdateTime = Date.now();
     let colorUpdateTimer = 0.0;
 
+    let ambientAngle = 0;
+    let ambientCounter = 0;
+
     function updateFrame() {
       if (!isActive) return;
       const dt = calcDeltaTime();
       if (resizeCanvas()) initFramebuffers();
       updateColors(dt);
       applyInputs();
+
+      // Subtle ambient swirl centered at (0.5, 0.5)
+      ambientCounter++;
+      if (ambientCounter % 18 === 0) {
+        ambientAngle += 0.22;
+        const rad = 0.035;
+        const cx = 0.5 + Math.cos(ambientAngle) * rad;
+        const cy = 0.5 + Math.sin(ambientAngle) * rad;
+        const force = 8.0;
+        const dx = -Math.sin(ambientAngle) * force;
+        const dy = Math.cos(ambientAngle) * force;
+        splat(cx, cy, dx, dy, generateColor());
+      }
+
       step(dt);
       render(null);
       animationFrameId.current = requestAnimationFrame(updateFrame);
@@ -846,8 +866,11 @@ function SplashCursor({
       pointer.id = id;
       pointer.down = true;
       pointer.moved = false;
-      pointer.texcoordX = posX / canvas.width;
-      pointer.texcoordY = 1.0 - posY / canvas.height;
+      const rect = canvas.getBoundingClientRect();
+      const localX = (posX / scaleByPixelRatio(1)) - rect.left;
+      const localY = (posY / scaleByPixelRatio(1)) - rect.top;
+      pointer.texcoordX = Math.max(0, Math.min(1, localX / Math.max(1, rect.width)));
+      pointer.texcoordY = Math.max(0, Math.min(1, 1.0 - localY / Math.max(1, rect.height)));
       pointer.prevTexcoordX = pointer.texcoordX;
       pointer.prevTexcoordY = pointer.texcoordY;
       pointer.deltaX = 0;
@@ -858,8 +881,11 @@ function SplashCursor({
     function updatePointerMoveData(pointer, posX, posY, color) {
       pointer.prevTexcoordX = pointer.texcoordX;
       pointer.prevTexcoordY = pointer.texcoordY;
-      pointer.texcoordX = posX / canvas.width;
-      pointer.texcoordY = 1.0 - posY / canvas.height;
+      const rect = canvas.getBoundingClientRect();
+      const localX = (posX / scaleByPixelRatio(1)) - rect.left;
+      const localY = (posY / scaleByPixelRatio(1)) - rect.top;
+      pointer.texcoordX = Math.max(0, Math.min(1, localX / Math.max(1, rect.width)));
+      pointer.texcoordY = Math.max(0, Math.min(1, 1.0 - localY / Math.max(1, rect.height)));
       pointer.deltaX = correctDeltaX(pointer.texcoordX - pointer.prevTexcoordX);
       pointer.deltaY = correctDeltaY(pointer.texcoordY - pointer.prevTexcoordY);
       pointer.moved = Math.abs(pointer.deltaX) > 0 || Math.abs(pointer.deltaY) > 0;
@@ -888,17 +914,18 @@ function SplashCursor({
       const r = parseInt(val.slice(0, 2), 16) / 255;
       const g = parseInt(val.slice(2, 4), 16) / 255;
       const b = parseInt(val.slice(4, 6), 16) / 255;
-      return { r: r * 0.15, g: g * 0.15, b: b * 0.15 };
+      return { r: r * 0.18, g: g * 0.18, b: b * 0.18 };
     }
 
     function generateColor() {
-      if (!config.RAINBOW_MODE) {
-        return hexToRGB(config.COLOR);
-      }
-      let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-      c.r *= 0.15;
-      c.g *= 0.15;
-      c.b *= 0.15;
+      // Ethereal shades of lavender / lilac / violet (Hue 255° to 290°)
+      const h = 0.71 + Math.random() * 0.10; // 0.71 - 0.81 (Lavender to lilac)
+      const s = 0.35 + Math.random() * 0.45; // Soft pastel to vibrant lavender
+      const v = 0.90 + Math.random() * 0.10; // High brightness luminous glow
+      let c = HSVtoRGB(h, s, v);
+      c.r *= 0.18;
+      c.g *= 0.18;
+      c.b *= 0.18;
       return c;
     }
 
@@ -1036,9 +1063,20 @@ function SplashCursor({
 
     updateFrame();
 
+    // Initial center lavender burst
+    const burstTimer = setTimeout(() => {
+      if (!isActive) return;
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        const speed = 25 + Math.random() * 20;
+        splat(0.5, 0.5, Math.cos(angle) * speed, Math.sin(angle) * speed, generateColor());
+      }
+    }, 150);
+
     // Cleanup function
     return () => {
       isActive = false;
+      clearTimeout(burstTimer);
 
       // Cancel animation frame
       if (animationFrameId.current) {
@@ -1058,22 +1096,25 @@ function SplashCursor({
 
   return (
     <div
+      className={className}
       style={{
-        position: 'fixed',
+        position: isContained ? 'absolute' : 'fixed',
         top: 0,
         left: 0,
-        zIndex: 50,
-        pointerEvents: 'none',
+        zIndex: isContained ? 1 : 50,
+        pointerEvents: isContained ? 'auto' : 'none',
         width: '100%',
-        height: '100%'
+        height: '100%',
+        overflow: 'hidden',
+        ...style
       }}
     >
       <canvas
         ref={canvasRef}
         id="fluid"
         style={{
-          width: '100vw',
-          height: '100vh',
+          width: '100%',
+          height: '100%',
           display: 'block'
         }}
       />

@@ -5,9 +5,9 @@ export default function RainbowTypewriterBadgeShowcase() {
   const [speed, setSpeed] = useState('normal');
 
   const speedConfigs = {
-    slow: { typingSpeed: 160, pauseDelay: 2400 },
-    normal: { typingSpeed: 110, pauseDelay: 1800 },
-    fast: { typingSpeed: 70, pauseDelay: 1200 },
+    slow: { typingSpeed: 150, pauseDelay: 2200 },
+    normal: { typingSpeed: 100, pauseDelay: 1700 },
+    fast: { typingSpeed: 60, pauseDelay: 1100 },
   };
 
   return (
@@ -35,15 +35,15 @@ export default function RainbowTypewriterBadgeShowcase() {
 
         <div className="flex items-center gap-2 text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
           <span className="w-1.5 h-1.5 rounded-full bg-[#EC5E27] animate-pulse" />
-          <span>Typewriter · Rainbow Motion · Blinking Cursor</span>
+          <span>Text Only · Rainbow Cursor · Spotlight Flare</span>
         </div>
       </div>
 
-      {/* Main Showcase Stage */}
+      {/* Main Showcase Stage (Clean dark canvas, no rectangle box around the text) */}
       <div
-        className="w-full h-[400px] md:h-[460px] rounded-2xl border border-neutral-800/80 flex items-center justify-center relative overflow-hidden bg-[#0D0F12]"
+        className="w-full h-[400px] md:h-[460px] rounded-2xl border border-neutral-800/80 flex items-center justify-center relative overflow-hidden bg-black shadow-2xl"
         style={{
-          background: 'radial-gradient(circle at 50% 50%, #16181D 0%, #0D0F12 70%, #08090A 100%)',
+          background: 'radial-gradient(ellipse at 50% 50%, #0d0f14 0%, #000000 80%)',
         }}
       >
         <RainbowTypewriterBadge
@@ -56,5 +56,5 @@ export default function RainbowTypewriterBadgeShowcase() {
   );
 }
 
-RainbowTypewriterBadgeShowcase.customTitle = 'Rainbow Typewriter Badge';
+RainbowTypewriterBadgeShowcase.customTitle = 'Rainbow Typewriter Text';
 RainbowTypewriterBadgeShowcase.customSlug = 'rainbow-typewriter-badge';

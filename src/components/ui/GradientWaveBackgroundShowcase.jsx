@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 import GradientWaveBackground from './backgrounds/GradientWaveBackground';
+import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { gradientWavePrompt } from './gradientWaveSource';
 
 export default function GradientWaveBackgroundShowcase() {
@@ -32,6 +33,7 @@ export default function GradientWaveBackgroundShowcase() {
             exposure={1.2}
           />
         </div>
+        <BackgroundHeroOverlay title="Luminous silk waves to enhance your UI" />
       </div>
 
       {/* PROMPT CARD */}

@@ -100,8 +100,7 @@ import MorphSearchCapsuleShowcase from './ui/MorphSearchCapsuleShowcase';
 import { morphSearchCapsulePrompt, morphSearchCapsuleCode } from './ui/morphSearchCapsuleSource';
 import RainbowTypewriterBadgeShowcase from './ui/RainbowTypewriterBadgeShowcase';
 import { rainbowTypewriterBadgePrompt, rainbowTypewriterBadgeCode } from './ui/rainbowTypewriterBadgeSource';
-import GlowTextChipShowcase from './ui/GlowTextChipShowcase';
-import { glowTextChipPrompt, glowTextChipCode } from './ui/glowTextChipSource';
+
 import KineticReelTextShowcase from './ui/KineticReelTextShowcase';
 import { kineticReelTextPrompt, kineticReelTextCode } from './ui/kineticReelTextSource';
 import ContributionActivityShowcase from './ui/ContributionActivityShowcase';
@@ -206,7 +205,6 @@ export const categories = [
         size: 'sm',
         description: 'Kinetic typography — reveals, scrambles, morphs, and counters.',
         components: entries(
-            GlowTextChipShowcase,
             KineticReelTextShowcase,
             RainbowTypewriterBadgeShowcase,
             SplitTextRevealShowcase, WordByWordTextShowcase, CharacterScrambleTextShowcase,
@@ -507,12 +505,7 @@ export const readyDetails = {
         code: rainbowTypewriterBadgeCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-    'glow-text-chip': {
-        description: 'A dark glass pill chip with large typewriter text, a classic hard-blinking cursor, and an animated rainbow spotlight on the right edge with a flowing chromatic gradient and glowing crisp edge bar.',
-        prompt: glowTextChipPrompt,
-        code: glowTextChipCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
+
     'kinetic-reel-text': {
         description: 'A 3D kinetic slot-reel text animation with a static prefix and a vertical drum of items cycling through with perspective tilt, optical blur falloff, and mechanical spring inertia. Hover to pause, click to advance.',
         prompt: kineticReelTextPrompt,
