@@ -18,9 +18,9 @@ const Navbar = ({ isDarkMode, toggleTheme, onBrowse }) => {
                 {/* Glass Inner Container matching the 3D pop */}
                 <div className="relative w-full flex justify-between items-center px-6 py-3 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[100px] shadow-[inset_0_1px_1px_rgba(255,255,255,1),0_16px_40px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_16px_40px_rgba(0,0,0,0.6)]">
                     {/* Left: Logo */}
-                    <div className="flex items-center gap-3">
-                        <img src="/purrform-logo.png" alt="Purrform Logo" className="w-8 h-8 object-contain" />
-                        <span className="text-black dark:text-white font-medium text-[15px] tracking-tight">Purrform</span>
+                    <div className="flex items-center gap-2.5">
+                        <img src="/logo.svg" alt="RewampUI Logo" className="w-6 h-6 object-contain" />
+                        <span className="text-black dark:text-white font-medium text-[15px] tracking-tight">RewampUI</span>
                     </div>
 
                     {/* Links */}

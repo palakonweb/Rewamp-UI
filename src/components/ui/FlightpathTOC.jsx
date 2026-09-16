@@ -15,7 +15,7 @@ export function FlightpathTOC({
   onSelect = null,
   autoTour = true,
   tourInterval = 2200,
-  headerTitle = 'Purrform UI',
+  headerTitle = 'RewampUI',
   className = '',
 }) {
   // Real Purrform UI categories and components

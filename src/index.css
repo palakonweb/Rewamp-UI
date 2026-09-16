@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -45,23 +50,38 @@
 }
 
 @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Sarpanch:wght@400;500;600;700;800;900&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&display=swap');
-
   :root {
-    --bg: #FFFFFF;
-    --surface: #F5F5F3;
-    --text: #1B1717;
-    --text-2: #555555;
-    --text-3: #999999;
-    --border: rgba(0, 0, 0, 0.08);
-    --border-hi: rgba(0, 0, 0, 0.14);
-    --accent: #810100;
-    --accent-hover: #630000;
-    --glow: rgba(129, 1, 0, 0.18);
+    --lilac-600: #C1B4D8;
+    --lilac-500: #D4CBE5; /* primary */
+    --lilac-400: #E4DDF0;
+    --lilac-300: #EEEAF7;
+    --lilac-200: #F6F4FB;
+    --lilac-100: #FBFAFE;
+
+    --neutral-900: #171717;
+    --neutral-800: #262626;
+    --neutral-700: #404040;
+    --neutral-600: #525252;
+    --neutral-400: #A8A8A8;
+    --neutral-300: #D4D4D4;
+    --neutral-200: #E5E5E5;
+    --neutral-100: #F5F5F5;
+    --neutral-50:  #FAFAFA;
+
+    --bg: var(--neutral-50);
+    --surface: #ffffff;
+    --elevated: var(--neutral-100);
+    --border: var(--neutral-200);
+    --text-primary: var(--neutral-900);
+    --text-secondary: var(--neutral-700);
+    --text-subtle: var(--neutral-600);
+    --brand: var(--lilac-500);
+    --brand-strong: var(--lilac-600);
+    --brand-soft: var(--lilac-300);
+
+    --text: var(--text-primary);
+    --text-2: var(--text-secondary);
+    --text-3: var(--text-subtle);
 
     --font-display: 'Sarpanch', sans-serif;
     --font-heading: 'Quicksand', sans-serif;
@@ -73,6 +93,23 @@
     --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04);
     --shadow-lg: 0 10px 40px rgba(0,0,0,0.08), 0 4px 14px rgba(0,0,0,0.05);
     --shadow-xl: 0 20px 60px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0d0c10;
+    --surface: #17151c;
+    --elevated: #1e1b24;
+    --border: #2b2732;
+    --text-primary: #f5f3fa;
+    --text-secondary: #b8b3c4;
+    --text-subtle: #8a8494;
+    --brand: var(--lilac-400);
+    --brand-strong: var(--lilac-300);
+    --brand-soft: rgba(212, 203, 229, 0.12);
+
+    --text: var(--text-primary);
+    --text-2: var(--text-secondary);
+    --text-3: var(--text-subtle);
   }
 
   * {

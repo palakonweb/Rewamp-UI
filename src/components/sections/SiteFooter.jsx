@@ -81,8 +81,8 @@ export function SiteFooter() {
           {/* Brand */}
           <div className="lg:w-[280px] shrink-0">
             <div className="flex items-center gap-2.5 mb-4">
-              <img src="/purrform-logo.png" alt="Purrform Logo" className="h-12 w-auto" />
-              <span className="font-display font-bold text-xl tracking-wide text-gray-900 uppercase">Purrform</span>
+              <img src="/logo.svg" alt="RewampUI Logo" className="h-10 w-auto object-contain" />
+              <span className="font-display font-bold text-xl tracking-wide text-gray-900 uppercase">RewampUI</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-[240px] mb-6">
               AI-powered component library. Design from a sentence, ship in seconds.

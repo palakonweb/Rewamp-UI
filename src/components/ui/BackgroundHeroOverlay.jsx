@@ -5,7 +5,7 @@ export default function BackgroundHeroOverlay({
     title = "Retro dithered waves to enhance your UI",
     subtitle = "Creative Components",
     badge = "NEW",
-    brandName = "Purrform",
+    brandName = "RewampUI",
     defaultShow = true
 }) {
     const [showDemo, setShowDemo] = useState(defaultShow);

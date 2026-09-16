@@ -45,7 +45,7 @@ function Digit({ value, height = 50, delay = 0 }) {
 }
 
 // Handles parsing strings into odometers (e.g., "$4,250")
-function Odometer({ value, height = 48, className, baseDelay = 0 }) {
+export function Odometer({ value, height = 48, className, baseDelay = 0 }) {
   const strValue = value.toString();
   // For simplicity in this demo, we assume the value maps cleanly to digits.
   // We'll strip non-digits and just animate the digits.
