@@ -44,6 +44,8 @@ import ParticleMorphOrbShowcase from './ui/ParticleMorphOrbShowcase';
 import MarbledFluidOrbShowcase from './ui/MarbledFluidOrbShowcase';
 
 import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
+import ShimmerButtonShowcase from './ui/ShimmerButtonShowcase';
+import { shimmerButtonPrompt, shimmerButtonCode } from './ui/shimmerButtonSource';
 import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
 import AddToCartGlowButtonShowcase from './ui/AddToCartGlowButtonShowcase';
 import NeumorphicDownloadButtonShowcase from './ui/NeumorphicDownloadButtonShowcase';
@@ -194,6 +196,7 @@ export const categories = [
         size: 'sm',
         description: 'Tactile, physically-animated buttons — press states, glows, and material effects.',
         components: entries(
+            ShimmerButtonShowcase,
             GooglyEyesButtonShowcase, GlossButtonShowcase, NeumorphicDownloadButtonShowcase,
             AddToCartGlowButtonShowcase, RainbowButtonShowcase, SlideToConfirmButtonShowcase,
             ChromeBorderButtonShowcase, BookACallButtonShowcase,
@@ -329,6 +332,12 @@ export const categories = [
 // hand-written description, etc. Everything else still previews fine but
 // shows a "migration pending" note instead of a source-code block.
 export const readyDetails = {
+    'shimmer-button': {
+        description: 'A tactile obsidian pill button ("View Designs →") with a smooth diagonal specular light sheen periodically sweeping across its curved surface, accelerating on hover with arrow glide physics.',
+        prompt: shimmerButtonPrompt,
+        code: shimmerButtonCode,
+        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
+    },
     'slide-to-confirm-button': {
         description: 'A slide-to-confirm button — drag the handle across the track to complete the order.',
         code: slideToConfirmSource,
