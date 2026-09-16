@@ -1,7 +1,10 @@
-import React from 'react';
+// perf: code-split suspense boundary with CardSkeleton and isolated ErrorBoundary
+import React, { Suspense } from 'react';
 import { RefreshCw, Copy, Check, SquareStack } from 'lucide-react';
 import FitFrame from './FitFrame';
 import { highlightJs } from './highlightCode';
+import ErrorBoundary from '../ui/ErrorBoundary';
+import { CardSkeleton } from '../ui/Skeleton';
 
 // Unified preview/code card: header has an icon+title on the left, a reset
 // (remount) button and Code/Preview tabs on the right. The code view gets a
@@ -64,7 +67,13 @@ export default function PreviewCard({ title, Component, code, previewRef, preser
                 {tab === 'preview' ? (
                     <div ref={previewRef} className="w-full min-h-[220px] p-4 sm:p-6 flex items-center justify-center overflow-auto">
                         <FitFrame key={resetKey} preserveBg={preserveBg}>
-                            <Component />
+                            <ErrorBoundary>
+                                <Suspense fallback={<CardSkeleton />}>
+                                    <div className="animate-component-fade-in w-full flex items-center justify-center">
+                                        <Component />
+                                    </div>
+                                </Suspense>
+                            </ErrorBoundary>
                         </FitFrame>
                     </div>
                 ) : (

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+// perf: memoized export with React.memo, optimized callback handlers
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Sun, Moon } from 'lucide-react';
 
@@ -36,13 +37,8 @@ const SIZES = {
  * RewampUI ThemeToggle Component
  * A smooth, tactile Light / Dark mode toggle switch with layout-interpolated
  * spring physics, spinning icon crossfades, and brand-token styling.
- *
- * @param {boolean} [props.isDark] - Controlled dark mode state
- * @param {(isDark: boolean) => void} [props.onChange] - Callback when toggle state changes
- * @param {'sm' | 'md' | 'lg'} [props.size='md'] - Visual scale of the toggle
- * @param {string} [props.className] - Additional class names
  */
-export default function ThemeToggle({
+export const ThemeToggle = memo(function ThemeToggle({
   isDark: controlledIsDark,
   onChange,
   size = 'md',
@@ -184,4 +180,7 @@ export default function ThemeToggle({
       </motion.div>
     </motion.button>
   );
-}
+});
+
+export default ThemeToggle;
+

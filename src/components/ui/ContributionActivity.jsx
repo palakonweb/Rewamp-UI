@@ -1,14 +1,20 @@
-import React, { useState, useMemo } from 'react';
+// perf: memoized dataset generation, isolated hover re-renders, wrapped in React.memo
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, ChevronDown, X, Sparkles, Flame } from 'lucide-react';
 
 /**
- * Helper to generate 365 days of contribution data
- * Weighted so level 0 and 1 are common, with organic streaks.
+ * Deterministic pseudo-random helper for 365/371 days of contribution data.
+ * Produces organic streaks without recalculating or shifting on renders.
  */
-function generateContributions(totalDays = 365) {
+function pseudoRandom(seed) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function generateContributions(totalDays = 371) {
   const data = [];
-  const now = new Date(2026, 8, 15); // Sept 15, 2026 (local context date)
+  const now = new Date(2026, 8, 15); // Sept 15, 2026
   const startDate = new Date(now);
   startDate.setDate(now.getDate() - totalDays);
 
@@ -18,19 +24,19 @@ function generateContributions(totalDays = 365) {
     const d = new Date(startDate);
     d.setDate(startDate.getDate() + i);
 
-    // Weighted random contribution count
-    const rand = Math.random();
+    // Weighted pseudo-random contribution count based on index
+    const rand = pseudoRandom(i * 13 + 7);
     let count = 0;
     let level = 0;
 
     if (rand > 0.88) {
-      count = Math.floor(Math.random() * 8) + 9; // 9-16
+      count = Math.floor(pseudoRandom(i * 17) * 8) + 9; // 9-16
       level = 4;
     } else if (rand > 0.72) {
-      count = Math.floor(Math.random() * 5) + 5; // 5-8
+      count = Math.floor(pseudoRandom(i * 19) * 5) + 5; // 5-8
       level = 3;
     } else if (rand > 0.52) {
-      count = Math.floor(Math.random() * 3) + 2; // 2-4
+      count = Math.floor(pseudoRandom(i * 23) * 3) + 2; // 2-4
       level = 2;
     } else if (rand > 0.32) {
       count = 1;
@@ -72,7 +78,53 @@ const ACTIVE_MEMBERS = [
   { id: 6, name: 'Oliver Quinn', role: 'Shader Specialist', color: 'from-pink-500 to-rose-600', initials: 'OQ' },
 ];
 
-export default function ContributionActivity({ className = '' }) {
+/**
+ * Memoized Cell component: eliminates hover cascades across 371 cells.
+ */
+const HeatmapCell = memo(function HeatmapCell({ cell, onHover, onLeave }) {
+  const handleMouseEnter = useCallback(() => onHover(cell), [cell, onHover]);
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.35 }}
+      transition={{ type: 'spring', stiffness: 450, damping: 20 }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={onLeave}
+      className="w-[11px] h-[11px] rounded-[2.5px] cursor-pointer transition-colors relative"
+      style={{
+        backgroundColor: LILAC_LEVELS[cell.level],
+        boxShadow:
+          cell.level > 2
+            ? '0 0 6px rgba(109, 40, 199, 0.35)'
+            : 'inset 0 0 0 0.5px rgba(255,255,255,0.4)',
+      }}
+    />
+  );
+});
+
+/**
+ * Memoized Grid component: keeps 371 DOM cells stable when parent re-renders on hover.
+ */
+const HeatmapGrid = memo(function HeatmapGrid({ weeks, onHover, onLeave }) {
+  return (
+    <div className="flex gap-[3px]">
+      {weeks.map((week, colIdx) => (
+        <div key={colIdx} className="flex flex-col gap-[3px]">
+          {week.map((cell, rowIdx) => (
+            <HeatmapCell
+              key={`${colIdx}-${rowIdx}`}
+              cell={cell}
+              onHover={onHover}
+              onLeave={onLeave}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+});
+
+export const ContributionActivity = memo(function ContributionActivity({ className = '' }) {
   const [expanded, setExpanded] = useState(false);
   const [hoveredCell, setHoveredCell] = useState(null);
 
@@ -110,6 +162,14 @@ export default function ContributionActivity({ className = '' }) {
 
     return labels;
   }, [weeks]);
+
+  const handleHoverCell = useCallback((cell) => {
+    setHoveredCell(cell);
+  }, []);
+
+  const handleLeaveCell = useCallback(() => {
+    setHoveredCell(null);
+  }, []);
 
   return (
     <div
@@ -210,7 +270,7 @@ export default function ContributionActivity({ className = '' }) {
 
                   <button
                     onClick={() => setExpanded(false)}
-                    className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors"
+                    className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -262,7 +322,7 @@ export default function ContributionActivity({ className = '' }) {
                 <div className="pt-2">
                   <button
                     onClick={() => setExpanded(false)}
-                    className="w-full py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-medium text-xs flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg transition-all"
+                    className="w-full py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white font-medium text-xs flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg transition-all cursor-pointer"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-violet-300" />
                     <span>View all contributions</span>
@@ -309,30 +369,12 @@ export default function ContributionActivity({ className = '' }) {
                 <span className="leading-none">Fri</span>
               </div>
 
-              {/* Heatmap 7x53 grid */}
-              <div className="flex gap-[3px]">
-                {weeks.map((week, colIdx) => (
-                  <div key={colIdx} className="flex flex-col gap-[3px]">
-                    {week.map((cell, rowIdx) => (
-                      <motion.div
-                        key={`${colIdx}-${rowIdx}`}
-                        whileHover={{ scale: 1.35 }}
-                        transition={{ type: 'spring', stiffness: 450, damping: 20 }}
-                        onMouseEnter={() => setHoveredCell(cell)}
-                        onMouseLeave={() => setHoveredCell(null)}
-                        className="w-[11px] h-[11px] rounded-[2.5px] cursor-pointer transition-colors relative"
-                        style={{
-                          backgroundColor: LILAC_LEVELS[cell.level],
-                          boxShadow:
-                            cell.level > 2
-                              ? '0 0 6px rgba(109, 40, 199, 0.35)'
-                              : 'inset 0 0 0 0.5px rgba(255,255,255,0.4)',
-                        }}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
+              {/* Heatmap 7x53 grid (Memoized) */}
+              <HeatmapGrid
+                weeks={weeks}
+                onHover={handleHoverCell}
+                onLeave={handleLeaveCell}
+              />
             </div>
           </div>
         </div>
@@ -377,4 +419,6 @@ export default function ContributionActivity({ className = '' }) {
       </div>
     </div>
   );
-}
+});
+
+export default ContributionActivity;

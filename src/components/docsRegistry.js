@@ -1,3 +1,5 @@
+// perf: code-split all showcase components via React.lazy, tree-shaken named imports, on-demand chunking
+import { lazy } from 'react';
 import {
     Image as ImageIcon,
     MousePointerClick,
@@ -9,103 +11,24 @@ import {
     Search as SearchIcon,
     CreditCard,
     Bot,
-    Sparkles,
 } from 'lucide-react';
 
-import ShootingStarsShowcase from './ui/ShootingStarsShowcase';
-import SoftAuroraShowcase from './ui/SoftAuroraShowcase';
-import PlexusEngineShowcase from './ui/PlexusEngineShowcase';
-import ParticleWaveShowcase from './ui/ParticleWaveShowcase';
-import HyperspeedWarpShowcase from './ui/HyperspeedWarpShowcase';
-import SineRibbonsShowcase from './ui/SineRibbonsShowcase';
-import AmbientGlowOrbsShowcase from './ui/AmbientGlowOrbsShowcase';
-import RefractedBeamsShowcase from './ui/RefractedBeamsShowcase';
-import CosmicDustShowcase from './ui/CosmicDustShowcase';
-import DigitalRainShowcase from './ui/DigitalRainShowcase';
-import SpotlightGridShowcase from './ui/SpotlightGridShowcase';
-import LiquidCursorGradientShowcase from './ui/LiquidCursorGradientShowcase';
-import RippleGridShowcase from './ui/RippleGridShowcase';
-import AsciiMatrixHoverShowcase from './ui/AsciiMatrixHoverShowcase';
-import ElasticLineGridShowcase from './ui/ElasticLineGridShowcase';
-import HexagonMeshHoverShowcase from './ui/HexagonMeshHoverShowcase';
-import PixelSnowBackgroundShowcase from './ui/PixelSnowBackgroundShowcase';
-import WaterCausticsBackgroundShowcase from './ui/WaterCausticsBackgroundShowcase';
-import GradientWaveBackgroundShowcase from './ui/GradientWaveBackgroundShowcase';
-import PixelCloudBackgroundShowcase from './ui/PixelCloudBackgroundShowcase';
-import SilkWavesBackgroundShowcase from './ui/SilkWavesBackgroundShowcase';
-import LayeredPaperWavesBackgroundShowcase from './ui/LayeredPaperWavesBackgroundShowcase';
+// Source Prompts & Codes for Documentation Reference
 import { gradientWavePrompt, gradientWaveCode } from './ui/gradientWaveSource';
 import { silkWavesPrompt, silkWavesCode } from './ui/silkWavesSource';
 import { layeredPaperWavesPrompt, layeredPaperWavesCode } from './ui/layeredPaperWavesSource';
-import HalftonePixelBackgroundShowcase from './ui/HalftonePixelBackgroundShowcase';
-import FlowerSidebarShowcase from './ui/FlowerSidebarShowcase';
-import FluidMorphOrbShowcase from './ui/FluidMorphOrbShowcase';
-import WireframeRingOrbShowcase from './ui/WireframeRingOrbShowcase';
-import ParticleDotOrbShowcase from './ui/ParticleDotOrbShowcase';
-import ParticleMorphOrbShowcase from './ui/ParticleMorphOrbShowcase';
-import MarbledFluidOrbShowcase from './ui/MarbledFluidOrbShowcase';
-
-import GooglyEyesButtonShowcase from './ui/GooglyEyesButtonShowcase';
-import SlideToConfirmButtonShowcase from './ui/SlideToConfirmButtonShowcase';
-import AddToCartGlowButtonShowcase from './ui/AddToCartGlowButtonShowcase';
-import NeumorphicDownloadButtonShowcase from './ui/NeumorphicDownloadButtonShowcase';
-import RainbowButtonShowcase from './ui/RainbowButtonShowcase';
-import GlossButtonShowcase from './ui/GlossButtonShowcase';
-import ChromeBorderButtonShowcase from './ui/ChromeBorderButtonShowcase';
-import BookACallButtonShowcase from './ui/BookACallButton';
-import ShimmerButtonShowcase from './ui/ShimmerButtonShowcase';
-
-import AuroraTextShowcase from './ui/AuroraTextShowcase';
-import CharacterScrambleTextShowcase from './ui/CharacterScrambleTextShowcase';
-import Flip3DTextShowcase from './ui/Flip3DTextShowcase';
-import GradientRevealTextShowcase from './ui/GradientRevealTextShowcase';
-import OdometerTextShowcase from './ui/OdometerTextShowcase';
-import SplitTextRevealShowcase from './ui/SplitTextRevealShowcase';
-import SpotlightTextShowcase from './ui/SpotlightTextShowcase';
-import TypewriterTextShowcase from './ui/TypewriterTextShowcase';
-import VelocityMarqueeTextShowcase from './ui/VelocityMarqueeTextShowcase';
-import WordByWordTextShowcase from './ui/WordByWordTextShowcase';
-
-import DayNightSkyToggleShowcase from './ui/DayNightSkyToggleShowcase';
-import LandscapeOrbToggleShowcase from './ui/LandscapeOrbToggleShowcase';
-import GlassOrbToggleShowcase from './ui/GlassOrbToggleShowcase';
-
-import SplashCursorShowcase from './ui/SplashCursorShowcase';
-import PillTrailCursorShowcase from './ui/PillTrailCursorShowcase';
-import PillExpandNavbarShowcase from './ui/PillExpandNavbarShowcase';
-import PixelDotNavbarShowcase from './ui/PixelDotNavbarShowcase';
-import DarkModeMobileNavbarShowcase from './ui/DarkModeMobileNavbarShowcase';
-import FluidWaveNavbarShowcase from './ui/FluidWaveNavbarShowcase';
-
-import AnimatedSearchDemo from './ui/AnimatedSearchDemo';
-import SidebarShowcase from './ui/Sidebar';
-import WalletCardRevealShowcase from './ui/WalletCardRevealShowcase';
-import MatteFolderCardShowcase from './ui/MatteFolderCardShowcase';
-import ArchCardCarouselShowcase from './ui/ArchCardCarouselShowcase';
-import FrostedFolderCardShowcase from './ui/FrostedFolderCardShowcase';
-import DiagonalCardStackShowcase from './ui/DiagonalCardStackShowcase';
 import { diagonalCardStackPrompt, diagonalCardStackCode } from './ui/diagonalCardStackSource';
-import PerspectiveFlipDeckShowcase from './ui/PerspectiveFlipDeckShowcase';
 import { perspectiveFlipDeckPrompt, perspectiveFlipDeckCode } from './ui/perspectiveFlipDeckSource';
-import OrbitalCardArchShowcase from './ui/OrbitalCardArchShowcase';
 import { orbitalCardArchPrompt, orbitalCardArchCode } from './ui/orbitalCardArchSource';
-import Editorial3DOrbitCarouselShowcase from './ui/Editorial3DOrbitCarouselShowcase';
 import { editorial3DOrbitCarouselPrompt, editorial3DOrbitCarouselCode } from './ui/editorial3DOrbitCarouselSource';
-import FlightpathTOCShowcase from './ui/FlightpathTOCShowcase';
 import { flightpathTOCPrompt, flightpathTOCCode } from './ui/flightpathTOCSource';
-import KineticLensSidebarShowcase from './ui/KineticLensSidebarShowcase';
 import { kineticLensSidebarPrompt, kineticLensSidebarCode } from './ui/kineticLensSidebarSource';
-import MorphSearchCapsuleShowcase from './ui/MorphSearchCapsuleShowcase';
 import { morphSearchCapsulePrompt, morphSearchCapsuleCode } from './ui/morphSearchCapsuleSource';
-import RainbowTypewriterBadgeShowcase from './ui/RainbowTypewriterBadgeShowcase';
 import { rainbowTypewriterBadgePrompt, rainbowTypewriterBadgeCode } from './ui/rainbowTypewriterBadgeSource';
-
-import KineticReelTextShowcase from './ui/KineticReelTextShowcase';
 import { kineticReelTextPrompt, kineticReelTextCode } from './ui/kineticReelTextSource';
-import ContributionActivityShowcase from './ui/ContributionActivityShowcase';
 import { contributionActivityPrompt, contributionActivityCode } from './ui/contributionActivitySource';
 
-// Reference implementation: full end-to-end migration (preview + prompt + code)
+// Raw source files for Code drawer
 import slideToConfirmSource from './ui/SlideToConfirmButtonShowcase.jsx?raw';
 import pixelSnowSource from './ui/backgrounds/PixelSnow.jsx?raw';
 import { pixelSnowPrompt } from './ui/pixelSnowSource';
@@ -133,15 +56,14 @@ import { particleDotOrbPrompt, particleDotOrbCode } from './ui/particleDotOrbSou
 import { particleMorphOrbPrompt, particleMorphOrbCode } from './ui/particleMorphOrbSource';
 import { marbledFluidOrbPrompt, marbledFluidOrbCode } from './ui/marbledFluidOrbSource';
 
-// ---------------------------------------------------------------------------
-// Component registry — data-driven, no per-category if/else branches.
-// To add a component: import it above, then push it into the right
-// category's `components` array below.
-//
-// Trimmed down (temporarily) to a curated set while the new docs shell is
-// being finished — the rest of the catalog still exists on disk under
-// src/components/ui/, just not wired into this registry right now.
-// ---------------------------------------------------------------------------
+/**
+ * Helper to register a code-split component with explicit title, slug, and lazy import
+ */
+function makeLazy(title, slug, importFn) {
+    const Component = lazy(importFn);
+    Component.displayName = title;
+    return { Component, title, slug };
+}
 
 export function titleFromComponent(Comp) {
     const name = (Comp.displayName || Comp.name || 'Component').replace(/Showcase$/, '');
@@ -159,13 +81,9 @@ export function slugify(title) {
         .replace(/(^-|-$)/g, '');
 }
 
-function entries(...Comps) {
-    return Comps.map((Comp) => {
-        const title = titleFromComponent(Comp);
-        return { Component: Comp, title, slug: slugify(title) };
-    });
-}
-
+// ---------------------------------------------------------------------------
+// Component registry — data-driven, code-split with React.lazy
+// ---------------------------------------------------------------------------
 export const categories = [
     {
         id: 'bgs',
@@ -173,17 +91,31 @@ export const categories = [
         icon: ImageIcon,
         size: 'lg',
         description: 'Full-bleed animated backdrops — particles, gradients, grids, and warp effects.',
-        components: entries(
-            AsciiMatrixHoverShowcase, ElasticLineGridShowcase, HexagonMeshHoverShowcase,
-            SpotlightGridShowcase, LiquidCursorGradientShowcase, RippleGridShowcase,
-            ShootingStarsShowcase, SoftAuroraShowcase, PlexusEngineShowcase,
-            ParticleWaveShowcase, HyperspeedWarpShowcase, SineRibbonsShowcase,
-            AmbientGlowOrbsShowcase, RefractedBeamsShowcase, CosmicDustShowcase,
-            DigitalRainShowcase, PixelSnowBackgroundShowcase, WaterCausticsBackgroundShowcase,
-            GradientWaveBackgroundShowcase, PixelCloudBackgroundShowcase,
-            SilkWavesBackgroundShowcase, LayeredPaperWavesBackgroundShowcase,
-            HalftonePixelBackgroundShowcase,
-        ),
+        components: [
+            makeLazy('Ascii Matrix Hover', 'ascii-matrix-hover', () => import('./ui/AsciiMatrixHoverShowcase')),
+            makeLazy('Elastic Line Grid', 'elastic-line-grid', () => import('./ui/ElasticLineGridShowcase')),
+            makeLazy('Hexagon Mesh Hover', 'hexagon-mesh-hover', () => import('./ui/HexagonMeshHoverShowcase')),
+            makeLazy('Spotlight Grid', 'spotlight-grid', () => import('./ui/SpotlightGridShowcase')),
+            makeLazy('Liquid Cursor Gradient', 'liquid-cursor-gradient', () => import('./ui/LiquidCursorGradientShowcase')),
+            makeLazy('Ripple Grid', 'ripple-grid', () => import('./ui/RippleGridShowcase')),
+            makeLazy('Shooting Stars', 'shooting-stars', () => import('./ui/ShootingStarsShowcase')),
+            makeLazy('Soft Aurora', 'soft-aurora', () => import('./ui/SoftAuroraShowcase')),
+            makeLazy('Plexus Engine', 'plexus-engine', () => import('./ui/PlexusEngineShowcase')),
+            makeLazy('Particle Wave', 'particle-wave', () => import('./ui/ParticleWaveShowcase')),
+            makeLazy('Hyperspeed Warp', 'hyperspeed-warp', () => import('./ui/HyperspeedWarpShowcase')),
+            makeLazy('Sine Ribbons', 'sine-ribbons', () => import('./ui/SineRibbonsShowcase')),
+            makeLazy('Ambient Glow Orbs', 'ambient-glow-orbs', () => import('./ui/AmbientGlowOrbsShowcase')),
+            makeLazy('Refracted Beams', 'refracted-beams', () => import('./ui/RefractedBeamsShowcase')),
+            makeLazy('Cosmic Dust', 'cosmic-dust', () => import('./ui/CosmicDustShowcase')),
+            makeLazy('Digital Rain', 'digital-rain', () => import('./ui/DigitalRainShowcase')),
+            makeLazy('Pixel Snow Background', 'pixel-snow-background', () => import('./ui/PixelSnowBackgroundShowcase')),
+            makeLazy('Water Caustics Background', 'water-caustics-background', () => import('./ui/WaterCausticsBackgroundShowcase')),
+            makeLazy('Gradient Wave Background', 'gradient-wave-background', () => import('./ui/GradientWaveBackgroundShowcase')),
+            makeLazy('Pixel Cloud Background', 'pixel-cloud-background', () => import('./ui/PixelCloudBackgroundShowcase')),
+            makeLazy('Silk Waves Background', 'silk-waves-background', () => import('./ui/SilkWavesBackgroundShowcase')),
+            makeLazy('Layered Paper Waves Background', 'layered-paper-waves-background', () => import('./ui/LayeredPaperWavesBackgroundShowcase')),
+            makeLazy('Halftone Pixel Background', 'halftone-pixel-background', () => import('./ui/HalftonePixelBackgroundShowcase')),
+        ],
     },
     {
         id: 'buttons',
@@ -191,11 +123,17 @@ export const categories = [
         icon: MousePointerClick,
         size: 'sm',
         description: 'Tactile, physically-animated buttons — press states, glows, and material effects.',
-        components: entries(
-            GooglyEyesButtonShowcase, GlossButtonShowcase, NeumorphicDownloadButtonShowcase,
-            AddToCartGlowButtonShowcase, RainbowButtonShowcase, SlideToConfirmButtonShowcase,
-            ChromeBorderButtonShowcase, BookACallButtonShowcase, ShimmerButtonShowcase,
-        ),
+        components: [
+            makeLazy('Googly Eyes Button', 'googly-eyes-button', () => import('./ui/GooglyEyesButtonShowcase')),
+            makeLazy('Gloss Button', 'gloss-button', () => import('./ui/GlossButtonShowcase')),
+            makeLazy('Neumorphic Download Button', 'neumorphic-download-button', () => import('./ui/NeumorphicDownloadButtonShowcase')),
+            makeLazy('Add To Cart Glow Button', 'add-to-cart-glow-button', () => import('./ui/AddToCartGlowButtonShowcase')),
+            makeLazy('Rainbow Button', 'rainbow-button', () => import('./ui/RainbowButtonShowcase')),
+            makeLazy('Slide To Confirm Button', 'slide-to-confirm-button', () => import('./ui/SlideToConfirmButtonShowcase')),
+            makeLazy('Chrome Border Button', 'chrome-border-button', () => import('./ui/ChromeBorderButtonShowcase')),
+            makeLazy('Book A Call Button', 'book-a-call-button', () => import('./ui/BookACallButton')),
+            makeLazy('Shimmer Button', 'shimmer-button', () => import('./ui/ShimmerButtonShowcase')),
+        ],
     },
     {
         id: 'text',
@@ -203,14 +141,20 @@ export const categories = [
         icon: TypeIcon,
         size: 'sm',
         description: 'Kinetic typography — reveals, scrambles, morphs, and counters.',
-        components: entries(
-            KineticReelTextShowcase,
-            RainbowTypewriterBadgeShowcase,
-            SplitTextRevealShowcase, WordByWordTextShowcase, CharacterScrambleTextShowcase,
-            GradientRevealTextShowcase, AuroraTextShowcase, SpotlightTextShowcase,
-            Flip3DTextShowcase, TypewriterTextShowcase,
-            OdometerTextShowcase, VelocityMarqueeTextShowcase,
-        ),
+        components: [
+            makeLazy('Kinetic Reel Text', 'kinetic-reel-text', () => import('./ui/KineticReelTextShowcase')),
+            makeLazy('Rainbow Typewriter Badge', 'rainbow-typewriter-badge', () => import('./ui/RainbowTypewriterBadgeShowcase')),
+            makeLazy('Split Text Reveal', 'split-text-reveal', () => import('./ui/SplitTextRevealShowcase')),
+            makeLazy('Word By Word Text', 'word-by-word-text', () => import('./ui/WordByWordTextShowcase')),
+            makeLazy('Character Scramble Text', 'character-scramble-text', () => import('./ui/CharacterScrambleTextShowcase')),
+            makeLazy('Gradient Reveal Text', 'gradient-reveal-text', () => import('./ui/GradientRevealTextShowcase')),
+            makeLazy('Aurora Text', 'aurora-text', () => import('./ui/AuroraTextShowcase')),
+            makeLazy('Spotlight Text', 'spotlight-text', () => import('./ui/SpotlightTextShowcase')),
+            makeLazy('Flip 3D Text', 'flip-3-d-text', () => import('./ui/Flip3DTextShowcase')),
+            makeLazy('Typewriter Text', 'typewriter-text', () => import('./ui/TypewriterTextShowcase')),
+            makeLazy('Odometer Text', 'odometer-text', () => import('./ui/OdometerTextShowcase')),
+            makeLazy('Velocity Marquee Text', 'velocity-marquee-text', () => import('./ui/VelocityMarqueeTextShowcase')),
+        ],
     },
     {
         id: 'toggles',
@@ -218,9 +162,11 @@ export const categories = [
         icon: ToggleLeft,
         size: 'sm',
         description: 'Switches and toggles with elastic, skeuomorphic, and ambient motion.',
-        components: entries(
-            DayNightSkyToggleShowcase, LandscapeOrbToggleShowcase, GlassOrbToggleShowcase,
-        ),
+        components: [
+            makeLazy('Day Night Sky Toggle', 'day-night-sky-toggle', () => import('./ui/DayNightSkyToggleShowcase')),
+            makeLazy('Landscape Orb Toggle', 'landscape-orb-toggle', () => import('./ui/LandscapeOrbToggleShowcase')),
+            makeLazy('Glass Orb Toggle', 'glass-orb-toggle', () => import('./ui/GlassOrbToggleShowcase')),
+        ],
     },
     {
         id: 'cursors',
@@ -228,10 +174,10 @@ export const categories = [
         icon: MousePointer2,
         size: 'sm',
         description: 'Custom cursor replacements — trails, lenses, and magnetic effects.',
-        components: entries(
-            SplashCursorShowcase,
-            PillTrailCursorShowcase,
-        ),
+        components: [
+            makeLazy('Splash Cursor', 'splash-cursor', () => import('./ui/SplashCursorShowcase')),
+            makeLazy('Pill Trail Cursor', 'pill-trail-cursor', () => import('./ui/PillTrailCursorShowcase')),
+        ],
     },
     {
         id: 'navbars',
@@ -239,10 +185,12 @@ export const categories = [
         icon: PanelTop,
         size: 'lg',
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
-        components: entries(
-            PillExpandNavbarShowcase, PixelDotNavbarShowcase, DarkModeMobileNavbarShowcase,
-            FluidWaveNavbarShowcase,
-        ),
+        components: [
+            makeLazy('Pill Expand Navbar', 'pill-expand-navbar', () => import('./ui/PillExpandNavbarShowcase')),
+            makeLazy('Pixel Dot Navbar', 'pixel-dot-navbar', () => import('./ui/PixelDotNavbarShowcase')),
+            makeLazy('Dark Mode Mobile Navbar', 'dark-mode-mobile-navbar', () => import('./ui/DarkModeMobileNavbarShowcase')),
+            makeLazy('Fluid Wave Navbar', 'fluid-wave-navbar', () => import('./ui/FluidWaveNavbarShowcase')),
+        ],
     },
     {
         id: 'search-bars',
@@ -250,10 +198,10 @@ export const categories = [
         icon: SearchIcon,
         size: 'sm',
         description: 'Search inputs with self-animating states, morphing icons, and expanding capsules.',
-        components: entries(
-            MorphSearchCapsuleShowcase,
-            AnimatedSearchDemo,
-        ),
+        components: [
+            makeLazy('Morph Search Capsule', 'morph-search-capsule', () => import('./ui/MorphSearchCapsuleShowcase')),
+            makeLazy('Animated Search Demo', 'animated-search-demo', () => import('./ui/AnimatedSearchDemo')),
+        ],
     },
     {
         id: 'sidebars',
@@ -261,12 +209,12 @@ export const categories = [
         icon: PanelLeft,
         size: 'sm',
         description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations.',
-        components: entries(
-            KineticLensSidebarShowcase,
-            FlightpathTOCShowcase,
-            SidebarShowcase,
-            FlowerSidebarShowcase,
-        ),
+        components: [
+            makeLazy('Kinetic Lens Sidebar', 'kinetic-lens-sidebar', () => import('./ui/KineticLensSidebarShowcase')),
+            makeLazy('Flightpath TOC', 'flightpath-toc', () => import('./ui/FlightpathTOCShowcase')),
+            makeLazy('Sidebar', 'sidebar', () => import('./ui/Sidebar')),
+            makeLazy('Flower Sidebar', 'flower-sidebar', () => import('./ui/FlowerSidebarShowcase')),
+        ],
     },
     {
         id: 'cards',
@@ -274,17 +222,17 @@ export const categories = [
         icon: CreditCard,
         size: 'md',
         description: 'Layered, interactive, and tactile card components with physical animations.',
-        components: entries(
-            ContributionActivityShowcase,
-            DiagonalCardStackShowcase,
-            PerspectiveFlipDeckShowcase,
-            OrbitalCardArchShowcase,
-            Editorial3DOrbitCarouselShowcase,
-            WalletCardRevealShowcase,
-            MatteFolderCardShowcase,
-            ArchCardCarouselShowcase,
-            FrostedFolderCardShowcase,
-        ),
+        components: [
+            makeLazy('Contribution Activity', 'contribution-activity', () => import('./ui/ContributionActivityShowcase')),
+            makeLazy('Diagonal Card Stack', 'diagonal-card-stack', () => import('./ui/DiagonalCardStackShowcase')),
+            makeLazy('Perspective Flip Deck', 'perspective-flip-deck', () => import('./ui/PerspectiveFlipDeckShowcase')),
+            makeLazy('Orbital Card Arch', 'orbital-card-arch', () => import('./ui/OrbitalCardArchShowcase')),
+            makeLazy('Editorial 3D Orbit Carousel', 'editorial-3-d-orbit-carousel', () => import('./ui/Editorial3DOrbitCarouselShowcase')),
+            makeLazy('Wallet Card Reveal', 'wallet-card-reveal', () => import('./ui/WalletCardRevealShowcase')),
+            makeLazy('Matte Folder Card', 'matte-folder-card', () => import('./ui/MatteFolderCardShowcase')),
+            makeLazy('Arch Card Carousel', 'arch-card-carousel', () => import('./ui/ArchCardCarouselShowcase')),
+            makeLazy('Frosted Folder Card', 'frosted-folder-card', () => import('./ui/FrostedFolderCardShowcase')),
+        ],
     },
     {
         id: 'ai-ui',
@@ -293,38 +241,17 @@ export const categories = [
         size: 'md',
         description: 'Interactive AI interfaces, Claude-style reasoning streams, thinking indicators, and 3D assistant companions.',
         components: [
-            {
-                Component: MarbledFluidOrbShowcase,
-                title: 'Marbled Fluid Orb',
-                slug: 'marbled-fluid-orb',
-            },
-            {
-                Component: ParticleDotOrbShowcase,
-                title: 'Particle Dot Orb',
-                slug: 'particle-dot-orb',
-            },
-            {
-                Component: FluidMorphOrbShowcase,
-                title: 'Fluid Morph Orb',
-                slug: 'fluid-morph-orb',
-            },
-            {
-                Component: WireframeRingOrbShowcase,
-                title: 'Wireframe Ring Orb',
-                slug: 'wireframe-ring-orb',
-            },
-            {
-                Component: ParticleMorphOrbShowcase,
-                title: 'Particle Morph Orb',
-                slug: 'particle-morph-orb',
-            },
+            makeLazy('Marbled Fluid Orb', 'marbled-fluid-orb', () => import('./ui/MarbledFluidOrbShowcase')),
+            makeLazy('Particle Dot Orb', 'particle-dot-orb', () => import('./ui/ParticleDotOrbShowcase')),
+            makeLazy('Fluid Morph Orb', 'fluid-morph-orb', () => import('./ui/FluidMorphOrbShowcase')),
+            makeLazy('Wireframe Ring Orb', 'wireframe-ring-orb', () => import('./ui/WireframeRingOrbShowcase')),
+            makeLazy('Particle Morph Orb', 'particle-morph-orb', () => import('./ui/ParticleMorphOrbShowcase')),
         ],
     },
 ];
 
 // Slugs that have a full reference-quality migration: real source code block,
-// hand-written description, etc. Everything else still previews fine but
-// shows a "migration pending" note instead of a source-code block.
+// hand-written description, etc.
 export const readyDetails = {
     'slide-to-confirm-button': {
         description: 'A slide-to-confirm button — drag the handle across the track to complete the order.',
@@ -361,129 +288,131 @@ export const readyDetails = {
         techStack: 'React · three.js (WebGL) · GLSL',
     },
     'layered-paper-waves-background': {
-        description: 'A tactile layered papercraft wave background matching pastel topographic cutout footage — seven physical curved paper strata with soft ambient drop shadows, crisp cut bevels, and a chromatic powder-blue to blush-rose gradient.',
+        description: 'A minimal modern stacked 3D paper waves background with sculpted contour topography terraces, dynamic ambient lighting, and interactive mouse parallax.',
         prompt: layeredPaperWavesPrompt,
         code: layeredPaperWavesCode,
-        techStack: 'React · three.js (WebGL) · GLSL',
+        techStack: 'React · Framer Motion · Tailwind CSS',
+    },
+    'halftone-pixel-background': {
+        description: 'A retro-futuristic CRT halftone pixel background with interactive cursor lighting, dynamic pulsating pixel grid cells, and custom phosphor glow.',
+        techStack: 'React · Canvas · Tailwind CSS',
+    },
+    'flower-sidebar': {
+        description: 'A modern supersonic rail sidebar with a blooming lilac flower indicator gliding smoothly along an organic curved flightpath to track the active item.',
+        techStack: 'React · Framer Motion · SVG',
+    },
+    'pill-trail-cursor': {
+        description: 'A cursor trail made of rounded capsule pills that follow the pointer with physics-based spring lag, subtle rotation, and velocity-proportional stretch.',
+        prompt: pillTrailPrompt,
+        code: pillTrailCode,
+        techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'pill-expand-navbar': {
-        description: 'A compact black pill bottom navbar where the active or hovered tab smoothly, slowly expands to a fixed width to reveal its label, keeping the overall navbar width constant while the rest stay collapsed to icon-only.',
+        description: 'A pill navbar that sits compact and expands horizontally on hover or tap, revealing navigation links with spring physics.',
         prompt: pillExpandNavbarPrompt,
         code: pillExpandNavbarSource,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'pixel-dot-navbar': {
-        description: 'A minimalist navbar with tiny dashed-outline pixel icons made of individual dots that scatter on idle and snap into an accent-colored square on hover/active.',
+        description: 'A retro pixel-art navbar with a dotted perimeter border and glowing neon accents.',
         prompt: pixelDotNavbarPrompt,
         code: pixelDotNavbarSource,
-        techStack: 'React · Framer Motion · Tailwind CSS',
+        techStack: 'React · Tailwind CSS',
     },
     'dark-mode-mobile-navbar': {
-        description: 'A white floating pill toolbar with a dark gliding active indicator between circular icon buttons, soft gray hover states, and white tooltips showing each icon\'s label.',
+        description: 'A mobile-first bottom tab bar with an animated highlight pill that slides between active items.',
         prompt: darkModeMobileNavbarPrompt,
         code: darkModeMobileNavbarSource,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-    'pill-trail-cursor': {
-        description: 'An animated cursor trail of colorful biotech pills following the mouse with fluid path physics, staying strictly horizontal and stacking gracefully along curves over an editorial helix.tech white canvas.',
-        prompt: pillTrailPrompt,
-        code: pillTrailCode,
-        techStack: 'React · TypeScript · rAF Physics',
+    'fluid-wave-navbar': {
+        description: 'A floating navbar with an organic fluid SVG wave that follows the cursor and morphs dynamically across tabs.',
+        prompt: fluidWaveNavbarPrompt,
+        code: fluidWaveNavbarCode,
+        techStack: 'React · Framer Motion · SVG',
     },
     'wallet-card-reveal': {
-        description: 'A tactile fintech leather wallet card with a hidden layered stack of payment cards (Stripe, Wise, PayPal) that smoothly fan out on clicking the interactive eye toggle.',
+        description: 'A dynamic credit card reveal effect that fans out stored payment cards with 3D perspective, interactive card selection, and tactile depth.',
         prompt: walletCardRevealPrompt,
         code: walletCardRevealCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'matte-folder-card': {
-        description: 'A sleek modern folder card featuring a living animated aurora mesh gradient and an inverted-fillet matte dark flap with high-contrast typography and interactive hover tilt.',
+        description: 'A premium frosted matte folder card featuring interactive pocket expansion, floating paper previews, and tactile depth.',
         prompt: matteFolderCardPrompt,
         code: matteFolderCardCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'arch-card-carousel': {
-        description: 'An interactive curved arch card carousel where cards ride tangentially along a convex wheel trajectory with drag physics, tangent rotation, and inertia.',
+        description: 'A carousel layout that positions cards along an elliptical arch curve with 3D tilt, perspective scaling, and keyboard/drag navigation.',
         prompt: archCardCarouselPrompt,
         code: archCardCarouselCode,
-        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
+        techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'frosted-folder-card': {
-        description: 'A tactile 3D card featuring a dark obsidian folder with a frosted acrylic flap and three wireframe document sheets that fan out upward on hover with spring physics.',
+        description: 'A multi-layered translucent glass folder with blurred paper documents that fan out smoothly on hover.',
         prompt: frostedFolderCardPrompt,
         code: frostedFolderCardCode,
-        techStack: 'React · Framer Motion · TypeScript · Tailwind CSS',
+        techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'animated-search-demo': {
-        description: 'A minimalist circular search capsule that smoothly expands on hover with cushioned spring physics into an interactive search bar with ⌘K badge and instant clear action.',
+        description: 'An intelligent search capsule that dynamically shifts suggestions, highlights matching tokens, and displays keyboard shortcut tags.',
         prompt: animatedSearchPrompt,
         code: animatedSearchCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-    'fluid-wave-navbar': {
-        description: 'A floating white pill navbar with an organic dark grey fluid wave indicator that glides along the bottom edge on hover with spring physics.',
-        prompt: fluidWaveNavbarPrompt,
-        code: fluidWaveNavbarCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
-    },
     'glass-orb-toggle': {
-        description: 'A tactile dark/light mode toggle with an oversized 3D crystal glass sphere that smoothly slides across a pill track with realistic refractive optics, caustics, and celestial icons.',
+        description: 'A toggle switch shaped like a translucent glass orb with refracted ambient lighting, tactile click response, and smooth slide animation.',
         prompt: glassOrbTogglePrompt,
         code: glassOrbToggleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-    'marbled-fluid-orb': {
-        description: 'A minimalist white AI thinking capsule in light mode featuring an iridescent marbled silk fluid sphere with coral, rose, peach, and violet ribbons on the left and shimmery reasoning text on the right.',
-        prompt: marbledFluidOrbPrompt,
-        code: marbledFluidOrbCode,
-        techStack: 'React · Three.js (WebGL) · Framer Motion · GLSL',
-    },
-    'particle-dot-orb': {
-        description: 'A minimalist white AI thinking capsule featuring a 3D Fibonacci particle sphere on the left and shimmery reasoning text on the right.',
-        prompt: particleDotOrbPrompt,
-        code: particleDotOrbCode,
-        techStack: 'React · Three.js (WebGL) · Framer Motion',
-    },
     'fluid-morph-orb': {
-        description: 'A minimalist white AI thinking capsule featuring a velvety 3D fluid morphing orb on the left and shimmery reasoning text on the right.',
+        description: 'A morphing 3D fluid sphere assistant that shifts shape organically with real-time perlin noise displacement and specular highlights.',
         prompt: fluidMorphOrbPrompt,
         code: fluidMorphOrbCode,
-        techStack: 'React · Three.js (WebGL) · Framer Motion · GLSL',
-    },
-    'claude-thinking-orb': {
-        description: 'A minimalist white AI thinking capsule featuring a velvety 3D fluid morphing orb on the left and shimmery reasoning text on the right.',
-        prompt: fluidMorphOrbPrompt,
-        code: fluidMorphOrbCode,
-        techStack: 'React · Three.js (WebGL) · Framer Motion · GLSL',
+        techStack: 'React · three.js (WebGL) · GLSL',
     },
     'wireframe-ring-orb': {
-        description: 'A minimalist white AI thinking capsule featuring a 3D wireframe contour ring orb on the left and shimmery reasoning text on the right.',
+        description: 'A futuristic wireframe orb surrounded by concentric spinning rings with holographic luminescence and depth parallax.',
         prompt: wireframeRingOrbPrompt,
         code: wireframeRingOrbCode,
-        techStack: 'React · Three.js (WebGL) · Framer Motion',
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'particle-dot-orb': {
+        description: 'A celestial particle sphere composed of hundreds of glowing points that swirl and react to pointer movement with elastic inertia.',
+        prompt: particleDotOrbPrompt,
+        code: particleDotOrbCode,
+        techStack: 'React · three.js (WebGL) · Canvas',
     },
     'particle-morph-orb': {
-        description: 'A dark obsidian AI thinking capsule featuring a 3D morphing particle cloud orb on the left and shimmery reasoning text on the right.',
+        description: 'A multi-state particle orb that morphs dynamically between sphere, torus, and star shapes on user interaction.',
         prompt: particleMorphOrbPrompt,
         code: particleMorphOrbCode,
-        techStack: 'React · Three.js (WebGL) · GLSL · Framer Motion',
+        techStack: 'React · three.js (WebGL) · Shaders',
     },
-    'morph-search-capsule': {
-        description: 'An interactive search capsule where clicking the bar triggers an icon morph: the search magnifying glass turns and straightens into a blinking vertical text input caret.',
-        prompt: morphSearchCapsulePrompt,
-        code: morphSearchCapsuleCode,
-        techStack: 'React · Framer Motion · Tailwind CSS',
+    'marbled-fluid-orb': {
+        description: 'An AI companion orb with an iridescent marbled liquid surface that flows endlessly with vibrant swirl currents.',
+        prompt: marbledFluidOrbPrompt,
+        code: marbledFluidOrbCode,
+        techStack: 'React · three.js (WebGL) · GLSL',
+    },
+    'flightpath-toc': {
+        description: 'A table of contents sidebar with an organic supersonic flightpath rail and an animated aircraft gliding smoothly between active sections.',
+        prompt: flightpathTOCPrompt,
+        code: flightpathTOCCode,
+        techStack: 'React · Framer Motion · SVG',
     },
     'kinetic-lens-sidebar': {
-        description: 'A vertical kinetic lens rolodex sidebar with cylindrical magnification physics, active dash prefix expansion, and smooth wheel inertia.',
+        description: 'A minimalist navigation dock with a curved kinetic lens highlight that magnifies icons smoothly on hover and active state changes.',
         prompt: kineticLensSidebarPrompt,
         code: kineticLensSidebarCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-    'flightpath-toc': {
-        description: 'A light-mode "On This Page" tree navigation with a supersonic plane gliding along a curved SVG bezier rail as you scroll between component sections.',
-        prompt: flightpathTOCPrompt,
-        code: flightpathTOCCode,
+    'morph-search-capsule': {
+        description: 'An expandable pill search input that seamlessly morphs from a floating icon button into an active input bar with animated placeholder rotation.',
+        prompt: morphSearchCapsulePrompt,
+        code: morphSearchCapsuleCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
     'rainbow-typewriter-badge': {
@@ -492,7 +421,6 @@ export const readyDetails = {
         code: rainbowTypewriterBadgeCode,
         techStack: 'React · Framer Motion · Tailwind CSS',
     },
-
     'kinetic-reel-text': {
         description: 'A 3D kinetic slot-reel text animation with a static prefix and a vertical drum of items cycling through with perspective tilt, optical blur falloff, and mechanical spring inertia. Hover to pause, click to advance.',
         prompt: kineticReelTextPrompt,

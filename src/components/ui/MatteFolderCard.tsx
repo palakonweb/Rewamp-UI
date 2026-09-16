@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// perf: memoized export with React.memo, optimized event handlers
+import React, { useState, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowUpRight } from 'lucide-react';
 
@@ -10,7 +11,7 @@ export interface MatteFolderCardProps {
   className?: string;
 }
 
-export default function MatteFolderCard({
+export const MatteFolderCard = memo(function MatteFolderCard({
   title = 'Designs',
   subtitle = 'Web & App Designs',
   tagsCount = '04',
@@ -183,8 +184,10 @@ export default function MatteFolderCard({
             </div>
           </div>
         </div>
-
       </div>
     </motion.div>
   );
-}
+});
+
+export default MatteFolderCard;
+

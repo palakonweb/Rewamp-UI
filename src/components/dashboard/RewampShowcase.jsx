@@ -1,3 +1,4 @@
+// perf: lazy-loaded component streaming with Suspense, zero-CLS per-component skeletons, isolated ErrorBoundary
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -17,12 +18,36 @@ import { categories, findComponentBySlug } from '../docsRegistry';
 import { getPromptForSlug } from '../componentPrompts';
 import ThemeToggle from '../ui/ThemeToggle';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
+import ErrorBoundary from '../ui/ErrorBoundary';
+import { 
+  ContributionActivitySkeleton, 
+  GlowTextChipSkeleton, 
+  FolderCardSkeleton, 
+  CardSkeleton 
+} from '../ui/Skeleton';
+
+/**
+ * Get dedicated zero-CLS skeleton matching the component's reserved dimensions
+ */
+function getComponentSkeleton(slug) {
+  if (slug === 'contribution-activity') {
+    return <ContributionActivitySkeleton />;
+  }
+  if (slug === 'glow-text-chip' || slug?.includes('chip')) {
+    return <GlowTextChipSkeleton />;
+  }
+  if (slug === 'matte-folder-card' || slug === 'frosted-folder-card' || slug === 'foldercomponent' || slug?.includes('folder')) {
+    return <FolderCardSkeleton />;
+  }
+  return <CardSkeleton />;
+}
 
 // Clean SVG Flower Icon for the Sidebar Rail
 function FlowerIcon({ className = "w-4 h-4" }) {
   return (
     <svg 
       viewBox="0 0 24 24" 
+
       className={className} 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
@@ -625,11 +650,17 @@ export default function RewampShowcase() {
             transition={{ type: 'spring', stiffness: 350, damping: 26 }}
             className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.max-w-4xl>div:last-child]:hidden [&_.max-w-5xl>div:last-child]:hidden [&_.max-w-3xl>div:last-child]:hidden [&_.shadow-sm:has(code)]:hidden"
           >
-            {isFolder ? (
-              <CleanFolderComponent color={folderColor} />
-            ) : (
-              <currentFound.entry.Component />
-            )}
+            <ErrorBoundary key={activeSlug}>
+              <Suspense fallback={getComponentSkeleton(activeSlug)}>
+                <div className="animate-component-fade-in flex items-center justify-center w-full h-full">
+                  {isFolder ? (
+                    <CleanFolderComponent color={folderColor} />
+                  ) : (
+                    <currentFound.entry.Component />
+                  )}
+                </div>
+              </Suspense>
+            </ErrorBoundary>
           </motion.div>
 
           {/* Sweeping Chromatic Shimmer Skeleton (Matching Recording 2026-09-16 213029.mp4) */}

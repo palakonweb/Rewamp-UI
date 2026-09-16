@@ -310,3 +310,31 @@
   background-size: 200% auto;
   animation: text-shimmer 3s linear infinite;
 }
+
+/* On-Brand Lilac Shimmer Sweep for Skeletons (Prompt spec: ~1.5s loop, ease-in-out, infinite) */
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer-sweep 1.5s ease-in-out infinite;
+}
+
+/* Fast 200ms smooth fade-in for resolved components */
+@keyframes fadeInComponent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-component-fade-in {
+  animation: fadeInComponent 200ms ease-out forwards;
+}
