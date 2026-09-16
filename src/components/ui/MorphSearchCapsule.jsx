@@ -1,158 +1,224 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * MorphSearchCapsule
- * Exact recreation of Recording 2026-09-15 204056.mp4:
- * Interactive glowing search capsule with an icon that turns/spins on click,
- * morphing from a magnifying glass into a blinking vertical text input cursor.
+ * Faithful recreation of Recording 2026-09-15 204056.mp4:
+ * Sleek grey pill capsule with click ripple physics and an animated search icon
+ * that turns and morphs smoothly from a magnifying glass into a single blinking vertical input caret.
+ * Supports both Light Mode Grey and Dark Mode Grey.
  */
 export function MorphSearchCapsule({
-  placeholder = 'Search components...',
+  placeholder = 'Type anything to search...',
   onSearch = null,
-  color = '#6D28D9', // Deep royal purple from recording
+  mode = 'dark', // 'dark' | 'light'
   className = '',
 }) {
   const [isActive, setIsActive] = useState(false);
   const [query, setQuery] = useState('');
   const [ripples, setRipples] = useState([]);
   const inputRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Close when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        if (!query) {
+          setIsActive(false);
+        }
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [query]);
 
   const handleClick = (e) => {
-    // Add click ripple matching video
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const newRipple = { id: Date.now(), x, y };
 
-    setRipples((prev) => [...prev.slice(-3), newRipple]);
+    setRipples((prev) => [...prev.slice(-2), newRipple]);
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
     }, 600);
 
     if (!isActive) {
       setIsActive(true);
-      setTimeout(() => inputRef.current?.focus(), 150);
     }
+    setTimeout(() => inputRef.current?.focus(), 120);
   };
 
-  const handleBlur = () => {
+  const handleBlur = (e) => {
+    if (containerRef.current?.contains(e.relatedTarget)) return;
     if (!query) {
       setIsActive(false);
     }
   };
 
+  const isDark = mode === 'dark';
+
+  // Theme palettes for Grey modes
+  const theme = {
+    capsule: isDark
+      ? 'bg-[#222226] border-white/12 text-white'
+      : 'bg-[#E5E7EB] border-black/8 text-[#18181B]',
+    shadow: isDark
+      ? '0 14px 32px -6px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.3)'
+      : '0 12px 28px -6px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.05)',
+    innerGlow: isDark
+      ? 'inset 0 1px 1px 0 rgba(255,255,255,0.16), inset 0 -1px 1px 0 rgba(0,0,0,0.4)'
+      : 'inset 0 1px 1.5px 0 rgba(255,255,255,0.9), inset 0 -1px 1px 0 rgba(0,0,0,0.05)',
+    iconColor: isDark ? '#FFFFFF' : '#18181B',
+    rippleColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)',
+    inputColor: isDark ? 'text-white' : 'text-[#18181B]',
+    placeholderColor: isDark ? 'placeholder:text-white/40' : 'placeholder:text-[#18181B]/40',
+    ambientGlow: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
+  };
+
   return (
-    <div className={`relative flex items-center justify-center select-none ${className}`}>
-      {/* Outer Glow */}
+    <div
+      ref={containerRef}
+      className={`relative flex items-center justify-center select-none ${className}`}
+    >
+      {/* Ambient Diffuse Back Glow */}
       <div
-        className="absolute inset-0 rounded-full blur-xl opacity-45 pointer-events-none transition-opacity duration-300"
+        className="absolute inset-0 rounded-full blur-xl pointer-events-none transition-opacity duration-300"
         style={{
-          background: color,
+          background: theme.ambientGlow,
+          opacity: isActive ? 0.8 : 0.4,
         }}
       />
 
-      {/* Capsule Button / Input */}
+      {/* Capsule Body */}
       <motion.div
         onClick={handleClick}
         animate={{
-          scale: isActive ? 1.02 : 1,
+          scale: isActive ? 1.015 : 1,
         }}
-        transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-        className="relative h-13 sm:h-14 w-64 sm:w-72 rounded-full overflow-hidden flex items-center px-5 cursor-pointer z-10"
+        transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+        className={`relative h-[52px] sm:h-[56px] w-[270px] sm:w-[310px] rounded-full overflow-hidden flex items-center pl-5 pr-4 cursor-pointer z-10 border transition-colors duration-200 ${theme.capsule}`}
         style={{
-          background: `linear-gradient(135deg, ${color} 0%, #7C3AED 100%)`,
-          boxShadow: '0 14px 28px -6px rgba(109, 40, 217, 0.45), 0 4px 10px rgba(0, 0, 0, 0.1)',
+          boxShadow: theme.shadow,
         }}
       >
-        {/* Click Ripple Effect from Recording */}
+        {/* Specular Inner Rim Highlight */}
+        <div
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{ boxShadow: theme.innerGlow }}
+        />
+
+        {/* Dynamic Click Ripple from Video Frame 0 */}
         {ripples.map((r) => (
           <motion.span
             key={r.id}
-            initial={{ scale: 0, opacity: 0.6 }}
-            animate={{ scale: 2.5, opacity: 0 }}
+            initial={{ scale: 0, opacity: 0.7 }}
+            animate={{ scale: 2.8, opacity: 0 }}
             transition={{ duration: 0.55, ease: 'easeOut' }}
-            className="absolute rounded-full pointer-events-none bg-white/40"
+            className="absolute rounded-full pointer-events-none"
             style={{
-              left: r.x - 25,
-              top: r.y - 25,
-              width: 50,
-              height: 50,
+              left: r.x - 30,
+              top: r.y - 30,
+              width: 60,
+              height: 60,
+              backgroundColor: theme.rippleColor,
             }}
           />
         ))}
 
-        {/* Morphing Turn-On-Click Icon: Search Glass -> Blinking Cursor */}
-        <div className="relative w-6 h-6 flex items-center justify-center flex-shrink-0 mr-3 text-white">
+        {/* Morphing Icon: Magnifying Glass -> Blinking Text Caret '|' */}
+        <div className="relative w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2.5">
           <svg
             viewBox="0 0 24 24"
-            className="w-5 h-5 overflow-visible"
+            className="w-6 h-6 overflow-visible"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
+            stroke={theme.iconColor}
+            strokeWidth="2.8"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            {/* Morphing Lens Ring: Turns and collapses into center */}
-            <motion.circle
-              cx="10.5"
-              cy="10.5"
-              animate={{
-                r: isActive ? 0 : 6,
-                opacity: isActive ? 0 : 1,
-                rotate: isActive ? 180 : 0,
-                scale: isActive ? 0 : 1,
-              }}
+            {/* Circle lens that turns, squishes horizontally and straightens into a vertical caret */}
+            <motion.g
+              style={{ transformOrigin: '10.5px 10.5px' }}
+              animate={
+                isActive && !query
+                  ? {
+                      scaleX: [1, 0.5, 0.05, 0.05],
+                      scaleY: [1, 0.85, 1.15, 1.15],
+                      rotate: [0, -45, -90, -90],
+                    }
+                  : {
+                      scaleX: 1,
+                      scaleY: 1,
+                      rotate: 0,
+                    }
+              }
               transition={{
-                duration: 0.32,
-                ease: [0.34, 1.3, 0.64, 1],
+                duration: 0.38,
+                times: [0, 0.35, 0.8, 1],
+                ease: [0.16, 1, 0.3, 1],
               }}
-              className="origin-center"
-            />
+            >
+              <motion.circle
+                cx="10.5"
+                cy="10.5"
+                r="6.5"
+                animate={
+                  isActive && !query
+                    ? {
+                        opacity: [1, 1, 1, 0, 1],
+                      }
+                    : { opacity: 1 }
+                }
+                transition={
+                  isActive && !query
+                    ? {
+                        opacity: {
+                          repeat: Infinity,
+                          duration: 0.9,
+                          delay: 0.45,
+                          ease: 'linear',
+                          times: [0, 0.45, 0.5, 0.95, 1],
+                        },
+                      }
+                    : { duration: 0.2 }
+                }
+              />
+            </motion.g>
 
-            {/* Handle that turns into the vertical text cursor line '|' */}
+            {/* Handle that retracts into the lens and fades out */}
             <motion.line
               animate={
-                isActive
+                isActive && !query
                   ? {
-                      x1: 10.5,
-                      y1: 4,
-                      x2: 10.5,
-                      y2: 20,
-                      rotate: 0,
-                      opacity: [1, 0, 1],
+                      x1: 15,
+                      y1: 15,
+                      x2: 15,
+                      y2: 15,
+                      opacity: 0,
                     }
                   : {
                       x1: 15,
                       y1: 15,
                       x2: 20.5,
                       y2: 20.5,
-                      rotate: 0,
                       opacity: 1,
                     }
               }
-              transition={
-                isActive
-                  ? {
-                      opacity: { repeat: Infinity, duration: 0.9, ease: 'linear' },
-                      x1: { duration: 0.35, ease: [0.34, 1.2, 0.64, 1] },
-                      y1: { duration: 0.35, ease: [0.34, 1.2, 0.64, 1] },
-                      x2: { duration: 0.35, ease: [0.34, 1.2, 0.64, 1] },
-                      y2: { duration: 0.35, ease: [0.34, 1.2, 0.64, 1] },
-                    }
-                  : {
-                      duration: 0.3,
-                      ease: 'easeInOut',
-                    }
-              }
+              transition={{
+                duration: 0.2,
+                ease: 'easeInOut',
+              }}
             />
           </svg>
         </div>
 
-        {/* Text Input / Placeholder */}
-        <div className="flex-1 relative flex items-center">
+        {/* Real Interactive Text Input with hidden native caret when !query so there is ONLY ONE cursor */}
+        <div className="flex-1 relative flex items-center h-full">
           <input
             ref={inputRef}
+            data-testid="morph-capsule-input"
             type="text"
             value={query}
             onChange={(e) => {
@@ -161,14 +227,31 @@ export function MorphSearchCapsule({
             }}
             onBlur={handleBlur}
             placeholder={isActive ? placeholder : ''}
-            className="w-full bg-transparent text-white font-medium placeholder:text-white/60 outline-none text-sm tracking-wide"
+            style={{
+              caretColor: query ? (isDark ? '#FFFFFF' : '#18181B') : 'transparent',
+            }}
+            className={`w-full bg-transparent font-medium outline-none text-[15px] tracking-normal cursor-text ${theme.inputColor} ${theme.placeholderColor}`}
           />
-          {!isActive && !query && (
-            <span className="text-white/80 text-sm font-medium tracking-wide pointer-events-none select-none">
-              Search
-            </span>
-          )}
         </div>
+
+        {/* Clear Button when text exists */}
+        {query && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setQuery('');
+              onSearch?.('');
+              inputRef.current?.focus();
+            }}
+            className={`w-5 h-5 rounded-full flex items-center justify-center text-xs opacity-60 hover:opacity-100 transition-opacity ${
+              isDark ? 'bg-white/10 text-white' : 'bg-black/10 text-black'
+            }`}
+          >
+            ×
+          </motion.button>
+        )}
       </motion.div>
     </div>
   );

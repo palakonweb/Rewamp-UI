@@ -22,9 +22,8 @@ export default function MorphSearchCapsuleShowcase() {
               <button
                 key={c.value}
                 onClick={() => setSelectedColor(c.value)}
-                className={`w-5 h-5 rounded-full cursor-pointer transition-transform ${
-                  selectedColor === c.value ? 'scale-125 ring-2 ring-neutral-400 ring-offset-2' : 'hover:scale-110'
-                }`}
+                className={`w-5 h-5 rounded-full cursor-pointer transition-transform ${selectedColor === c.value ? 'scale-125 ring-2 ring-neutral-400 ring-offset-2' : 'hover:scale-110'
+                  }`}
                 style={{ background: c.value }}
                 title={c.name}
               />

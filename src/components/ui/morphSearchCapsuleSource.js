@@ -154,4 +154,5 @@ export function MorphSearchCapsule({
   );
 }
 
-export default MorphSearchCapsule;`;
+export default MorphSearchCapsule;
+`;
