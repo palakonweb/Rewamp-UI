@@ -19,20 +19,16 @@ import { getPromptForSlug } from '../componentPrompts';
 import ThemeToggle from '../ui/ThemeToggle';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
-import { 
-  ContributionActivitySkeleton, 
-  GlowTextChipSkeleton, 
-  FolderCardSkeleton, 
-  CardSkeleton 
+import {
+  GlowTextChipSkeleton,
+  FolderCardSkeleton,
+  CardSkeleton
 } from '../ui/Skeleton';
 
 /**
  * Get dedicated zero-CLS skeleton matching the component's reserved dimensions
  */
 function getComponentSkeleton(slug) {
-  if (slug === 'contribution-activity') {
-    return <ContributionActivitySkeleton />;
-  }
   if (slug === 'glow-text-chip' || slug?.includes('chip')) {
     return <GlowTextChipSkeleton />;
   }

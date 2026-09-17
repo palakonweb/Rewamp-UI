@@ -192,7 +192,6 @@ export const categories = [
         size: 'md',
         description: 'Layered, interactive, and tactile card components with physical animations.',
         components: [
-            makeLazy('Contribution Activity', 'contribution-activity', () => import('./ui/ContributionActivityShowcase')),
             makeLazy('Diagonal Card Stack', 'diagonal-card-stack', () => import('./ui/DiagonalCardStackShowcase')),
             makeLazy('Perspective Flip Deck', 'perspective-flip-deck', () => import('./ui/PerspectiveFlipDeckShowcase')),
             makeLazy('Orbital Card Arch', 'orbital-card-arch', () => import('./ui/OrbitalCardArchShowcase')),

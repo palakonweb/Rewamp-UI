@@ -16,7 +16,7 @@ export default function OrbitingPlanetsNavbarShowcase() {
     };
 
     const icons = [Cloud, Compass, Map, Wind, Droplets];
-    const radius = 90; // Orbit radius
+    const radius = 100; // Orbit radius
 
     // Handle continuous rotation vs snapped translation
     useEffect(() => {
@@ -36,8 +36,8 @@ export default function OrbitingPlanetsNavbarShowcase() {
             <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#F6F4FB] dark:bg-[#100E16] shadow-xl flex items-center justify-center p-8 group">
                 
                 {/* 🎯 THE ORBITAL NAVBAR */}
-                <div 
-                    className="relative flex items-center justify-center w-[400px] h-[250px] z-20"
+                <div
+                    className="relative flex items-center justify-center w-[460px] h-[250px] z-20"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
@@ -72,22 +72,24 @@ export default function OrbitingPlanetsNavbarShowcase() {
                             const orbY = radius * Math.sin(rad);
 
                             // Horizontal Snapped coordinates (spread out to the right of the sun)
-                            const snapX = -80 + (i * 60); // Offset to right side when sun moves left
+                            const snapX = -100 + (i * 80); // Offset to right side when sun moves left, extra breathing room
                             const snapY = 0;
 
                             return (
                                 <motion.button
                                     key={i}
-                                    animate={{ 
+                                    animate={{
                                         x: isHovered ? snapX : orbX,
                                         y: isHovered ? snapY : orbY,
                                         // Counter-rotate the icons so they stay upright while the wrapper spins
-                                        rotate: isHovered ? 0 : -angle 
+                                        rotate: isHovered ? 0 : -angle
                                     }}
-                                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                                    className="absolute w-12 h-12 rounded-full bg-white dark:bg-[#241F2E] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)] border border-black/5 dark:border-white/10 flex items-center justify-center pointer-events-auto hover:scale-110 hover:bg-[#F6F4FB] transition-colors z-20"
+                                    transition={{ type: "spring", stiffness: 420, damping: 30, mass: 0.5 }}
+                                    whileHover={{ scale: 1.14 }}
+                                    className="absolute w-13 h-13 rounded-full bg-white dark:bg-[#241F2E] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)] border border-black/5 dark:border-white/10 flex items-center justify-center pointer-events-auto z-20"
+                                    style={{ width: 52, height: 52 }}
                                 >
-                                    <Icon size={20} className="text-[#9C8EB8] dark:text-[#D4CBE5]/70" />
+                                    <Icon size={22} strokeWidth={2.25} className="text-[#5B4B7A] dark:text-[#E4DDF0]" />
                                 </motion.button>
                             );
                         })}

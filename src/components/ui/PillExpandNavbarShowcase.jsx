@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Home, LayoutGrid, ShoppingBag, Bookmark, User } from 'lucide-react';
+import { Copy, Check, Home, FolderKanban, Mail } from 'lucide-react';
 
-const promptContent = `black pill bottom navbar with 5 icons, active/hovered tab expands into a rounded label pill with icon + text, spring motion`;
+const promptContent = `black pill bottom navbar with 3 icons, active/hovered tab expands into a rounded label pill with icon + text, spring motion`;
 
 const navItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'category', label: 'Category', icon: LayoutGrid },
-    { id: 'cart', label: 'Cart', icon: ShoppingBag },
-    { id: 'save', label: 'Save', icon: Bookmark },
-    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'about', label: 'About', icon: Home },
+    { id: 'projects', label: 'Projects', icon: FolderKanban },
+    { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
 export default function PillExpandNavbarShowcase() {
     const [copied, setCopied] = useState(false);
-    const [active, setActive] = useState('home');
+    const [active, setActive] = useState('about');
     const [hovered, setHovered] = useState(null);
 
     const handleCopy = () => {

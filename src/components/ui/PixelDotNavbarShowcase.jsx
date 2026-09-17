@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `minimalist white navbar where each link is preceded by a tiny pixel-grid icon (info circle, magnifier, briefcase — replicating real Hugeicons glyphs as a 5x5 dot matrix), dots are light gray at idle and snap to dark charcoal with a slight scale pop on hover/active, staggered spring per dot`;
+const promptContent = `minimalist white navbar where each link (About, Projects, Contact) is preceded by a tiny pixel-grid icon (info circle, folder, envelope — replicating real Hugeicons glyphs as a 7x7 dot matrix), dots are light gray at idle and snap to a brand-orange accent with a slight scale pop on hover/active, staggered spring per dot`;
 
 // 7x7 dot-matrix glyphs, hand-mapped to resemble real Hugeicons line icons
 const ICONS = {
@@ -16,23 +16,23 @@ const ICONS = {
         [5, 0], [5, 3], [5, 6],
         [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
     ],
-    Research: [
-        // magnifier: ring + angled handle
-        [0, 0], [0, 1], [0, 2], [0, 3], [0, 4],
-        [1, 0], [1, 4],
-        [2, 0], [2, 4],
-        [3, 0], [3, 4],
-        [4, 0], [4, 1], [4, 2], [4, 3], [4, 4],
-        [5, 4], [5, 5],
-        [6, 5], [6, 6],
-    ],
-    Careers: [
-        // briefcase: handle + latch + body
-        [0, 2], [0, 3], [0, 4],
-        [1, 2], [1, 4],
-        [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6],
+    Projects: [
+        // folder: top tab + body outline
+        [0, 0], [0, 1], [0, 2],
+        [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6],
+        [2, 0], [2, 6],
         [3, 0], [3, 6],
-        [4, 0], [4, 3], [4, 6],
+        [4, 0], [4, 6],
+        [5, 0], [5, 6],
+        [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6],
+    ],
+    Contact: [
+        // envelope: outline + center flap point
+        [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6],
+        [1, 0], [1, 1], [1, 5], [1, 6],
+        [2, 0], [2, 2], [2, 4], [2, 6],
+        [3, 0], [3, 3], [3, 6],
+        [4, 0], [4, 6],
         [5, 0], [5, 6],
         [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6],
     ],
@@ -63,13 +63,13 @@ function PixelIcon({ dots, active }) {
                                     x: 0,
                                     y: 0,
                                     scale: 1.15,
-                                    backgroundColor: '#27272a',
+                                    backgroundColor: '#EC5E27',
                                 }
                                 : {
                                     x: seed * 0.25,
                                     y: -seed * 0.25,
                                     scale: 1,
-                                    backgroundColor: '#a1a1aa',
+                                    backgroundColor: '#d4d4d8',
                                 }
                         }
                         transition={{ type: 'spring', stiffness: 500, damping: 22, mass: 0.5, delay: i * 0.01 }}
@@ -111,7 +111,7 @@ export default function PixelDotNavbarShowcase() {
                                 <PixelIcon dots={ICONS[link]} active={isOn} />
                                 <span
                                     className={`text-[15px] font-medium tracking-tight transition-colors duration-200 ${
-                                        isOn ? 'text-zinc-900' : 'text-zinc-400'
+                                        isOn ? 'text-[#EC5E27]' : 'text-zinc-400'
                                     }`}
                                 >
                                     {link}

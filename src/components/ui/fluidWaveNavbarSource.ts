@@ -1,7 +1,7 @@
 export const fluidWaveNavbarPrompt = `Create an interactive floating pill navbar component with a liquid sliding scoop notch indicator, based on the reference video, using dark grey accents instead of blue:
 - Canvas: An expansive, sophisticated dark grey surface (#222227).
 - Navbar Pill: A pristine white rounded capsule (350px) with generous border radius and ambient drop shadows.
-- Navigation Items: 4 tabs (Home, Favorites, Messages, Files) with clean minimalist icons.
+- Navigation Items: 3 tabs (About, Projects, Contact) with clean minimalist icons.
 - Hover & Motion Dynamics:
   - Works on hover: hovering over any tab smoothly shifts the active state.
   - Active icon springs up (-5px, scale: 1.15) and fills with solid dark grey (#18181B).
@@ -12,7 +12,7 @@ export const fluidWaveNavbarPrompt = `Create an interactive floating pill navbar
 
 export const fluidWaveNavbarCode = `import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Heart, MessageCircle, Folder } from 'lucide-react';
+import { Home, Heart, MessageCircle } from 'lucide-react';
 
 export interface NavItem {
   id: string;
@@ -35,8 +35,8 @@ export default function FluidWaveNavbar({
 
   const items: NavItem[] = [
     {
-      id: 'home',
-      label: 'Home',
+      id: 'about',
+      label: 'About',
       icon: (active) => (
         <Home
           size={24}
@@ -47,8 +47,8 @@ export default function FluidWaveNavbar({
       ),
     },
     {
-      id: 'favorites',
-      label: 'Favorites',
+      id: 'projects',
+      label: 'Projects',
       icon: (active) => (
         <Heart
           size={24}
@@ -59,22 +59,10 @@ export default function FluidWaveNavbar({
       ),
     },
     {
-      id: 'messages',
-      label: 'Messages',
+      id: 'contact',
+      label: 'Contact',
       icon: (active) => (
         <MessageCircle
-          size={24}
-          strokeWidth={active ? 0 : 2.2}
-          fill={active ? 'currentColor' : 'none'}
-          className="transition-all duration-200"
-        />
-      ),
-    },
-    {
-      id: 'files',
-      label: 'Files',
-      icon: (active) => (
-        <Folder
           size={24}
           strokeWidth={active ? 0 : 2.2}
           fill={active ? 'currentColor' : 'none'}
@@ -97,7 +85,7 @@ export default function FluidWaveNavbar({
         {/* ── The Gliding Liquid Notch Scoop at the Bottom ── */}
         <motion.div
           animate={{
-            x: activeIndex * (334 / 4) + (334 / 8) - 37,
+            x: activeIndex * (334 / 3) + (334 / 6) - 37,
           }}
           transition={{
             type: 'spring',

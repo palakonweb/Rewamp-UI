@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Plus, Home, Camera, Settings, User } from 'lucide-react';
+import { Copy, Check, Plus, Home, FolderKanban, Mail } from 'lucide-react';
 
-const promptContent = `circular action floating button that expands into a radial animated layout of icons`;
+const promptContent = `circular action floating button that expands into a radial animated layout of icons (About, Projects, Contact)`;
 
 export default function CircularRadialNavbarShowcase() {
     const [copied, setCopied] = useState(false);
@@ -14,9 +14,13 @@ export default function CircularRadialNavbarShowcase() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const icons = [Home, Camera, Settings, User];
+    const navItems = [
+        { id: 'about', label: 'About', icon: Home },
+        { id: 'projects', label: 'Projects', icon: FolderKanban },
+        { id: 'contact', label: 'Contact', icon: Mail },
+    ];
     const radius = 80; // Distance of icons from center
-    const angleStep = 180 / (icons.length - 1); // 180 degrees spread for a semi-circle
+    const angleStep = 180 / (navItems.length - 1); // 180 degrees spread for a semi-circle
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
@@ -27,14 +31,16 @@ export default function CircularRadialNavbarShowcase() {
                     
                     {/* The Menu Items */}
                     <AnimatePresence>
-                        {isOpen && icons.map((Icon, i) => {
+                        {isOpen && navItems.map((item, i) => {
+                            const Icon = item.icon;
                             const angle = 180 + (i * angleStep); // start at 180 degrees (left) mapping to 360 (right)
                             const x = radius * Math.cos((angle * Math.PI) / 180);
                             const y = radius * Math.sin((angle * Math.PI) / 180);
 
                             return (
                                 <motion.button
-                                    key={i}
+                                    key={item.id}
+                                    aria-label={item.label}
                                     initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
                                     animate={{ x, y, scale: 1, opacity: 1 }}
                                     exit={{ x: 0, y: 0, scale: 0, opacity: 0 }}

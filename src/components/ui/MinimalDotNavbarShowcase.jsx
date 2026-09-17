@@ -14,7 +14,7 @@ export default function MinimalDotNavbarShowcase() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const links = ["Work", "About", "Services", "Contact"];
+    const links = ["About", "Projects", "Contact"];
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">

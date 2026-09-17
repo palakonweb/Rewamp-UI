@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `playful stretchable jelly scoop active state indicator utilizing heavy framer motion spring scale morphing`;
+const promptContent = `playful stretchable jelly scoop active state indicator utilizing heavy framer motion spring scale morphing (About, Projects, Contact)`;
 
 export default function JellyScoopNavbarShowcase() {
     const [copied, setCopied] = useState(false);
@@ -14,14 +14,14 @@ export default function JellyScoopNavbarShowcase() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const navItems = ["Design", "Prototyping", "Handoff", "Feedback"];
+    const navItems = ["About", "Projects", "Contact"];
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
             <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#F6F4FB] dark:bg-[#1A1620] shadow-xl flex items-center justify-center p-8 group">
 
                 {/* 🎯 THE JELLY NAVBAR */}
-                <nav className="relative flex items-center p-3 rounded-3xl bg-white dark:bg-[#2A2433] shadow-[0_10px_30px_rgba(156,142,184,0.15)] border border-[#C1B4D8]/20">
+                <nav className="relative flex items-center p-3 rounded-3xl bg-white dark:bg-[#2A2433] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#C1B4D8]/20">
                     {navItems.map((item, index) => {
                         const isActive = activeIndex === index;
 
@@ -45,7 +45,7 @@ export default function JellyScoopNavbarShowcase() {
                                             damping: 15,
                                             mass: 0.8
                                         }}
-                                        className="absolute inset-0 bg-gradient-to-r from-[#D4CBE5] to-[#C1B4D8] rounded-2xl -z-10 shadow-[0_4px_12px_rgba(193,180,216,0.5)] origin-center"
+                                        className="absolute inset-0 bg-[#D4CBE5] dark:bg-[#4A4056] rounded-2xl -z-10 shadow-[0_1px_3px_rgba(0,0,0,0.06)] origin-center"
                                     />
                                 )}
                                 <span className="relative z-20">{item}</span>

@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Home, User, Palette, MessageCircle, Sun } from 'lucide-react';
+import { Copy, Check, Home, FolderKanban, Mail } from 'lucide-react';
 
-const promptContent = `white floating pill toolbar with 5 circular icon buttons, active icon sits on a dark filled circle with a layoutId spring indicator that glides between icons, hovering any icon shows a soft gray hover circle plus a small white tooltip label popping in above it (Home, Profile, Theme, Chat, Brightness)`;
+const promptContent = `white floating pill toolbar with 3 circular icon buttons, active icon sits on a dark filled circle with a layoutId spring indicator that glides between icons, hovering any icon shows a soft gray hover circle plus a small white tooltip label popping in above it (About, Projects, Contact)`;
 
 const navItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'theme', label: 'Theme', icon: Palette },
-    { id: 'chat', label: 'Chat', icon: MessageCircle },
-    { id: 'brightness', label: 'Brightness', icon: Sun },
+    { id: 'about', label: 'About', icon: Home },
+    { id: 'projects', label: 'Projects', icon: FolderKanban },
+    { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
 export default function DarkModeMobileNavbarShowcase() {
     const [copied, setCopied] = useState(false);
-    const [active, setActive] = useState('home');
+    const [active, setActive] = useState('about');
     const [hovered, setHovered] = useState(null);
 
     const handleCopy = () => {

@@ -5,7 +5,7 @@ import { fluidWaveNavbarPrompt } from './fluidWaveNavbarSource';
 
 export default function FluidWaveNavbarShowcase() {
     const [copied, setCopied] = useState(false);
-    const [activeTabName, setActiveTabName] = useState('Home');
+    const [activeTabName, setActiveTabName] = useState('About');
 
     const handleCopy = () => {
         navigator.clipboard.writeText(fluidWaveNavbarPrompt);
@@ -13,7 +13,7 @@ export default function FluidWaveNavbarShowcase() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const tabNames = ['Home', 'Favorites', 'Messages', 'Files'];
+    const tabNames = ['About', 'Projects', 'Contact'];
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Heart, MessageCircle, Folder } from 'lucide-react';
+import { Home, Heart, MessageCircle } from 'lucide-react';
 
 export interface NavItem {
   id: string;
@@ -23,8 +23,8 @@ export default function FluidWaveNavbar({
 
   const items: NavItem[] = [
     {
-      id: 'home',
-      label: 'Home',
+      id: 'about',
+      label: 'About',
       icon: (active) => (
         <Home
           size={24}
@@ -35,8 +35,8 @@ export default function FluidWaveNavbar({
       ),
     },
     {
-      id: 'favorites',
-      label: 'Favorites',
+      id: 'projects',
+      label: 'Projects',
       icon: (active) => (
         <Heart
           size={24}
@@ -47,22 +47,10 @@ export default function FluidWaveNavbar({
       ),
     },
     {
-      id: 'messages',
-      label: 'Messages',
+      id: 'contact',
+      label: 'Contact',
       icon: (active) => (
         <MessageCircle
-          size={24}
-          strokeWidth={active ? 0 : 2.2}
-          fill={active ? 'currentColor' : 'none'}
-          className="transition-all duration-200"
-        />
-      ),
-    },
-    {
-      id: 'files',
-      label: 'Files',
-      icon: (active) => (
-        <Folder
           size={24}
           strokeWidth={active ? 0 : 2.2}
           fill={active ? 'currentColor' : 'none'}
@@ -78,7 +66,7 @@ export default function FluidWaveNavbar({
   };
 
   const navWidth = 350;
-  const tabWidth = navWidth / 4;
+  const tabWidth = navWidth / 3;
 
   return (
     <div className={`relative flex flex-col items-center select-none ${className}`}>
@@ -88,7 +76,7 @@ export default function FluidWaveNavbar({
         {/* ── The Gliding Liquid Notch Scoop at the Bottom ── */}
         <motion.div
           animate={{
-            x: activeIndex * (334 / 4) + (334 / 8) - 37,
+            x: activeIndex * (334 / 3) + (334 / 6) - 37,
           }}
           transition={{
             type: 'spring',

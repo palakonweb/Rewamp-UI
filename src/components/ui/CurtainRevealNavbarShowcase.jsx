@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 
-const promptContent = `editorial luxury navbar dropping a full height majestic background curtain via framer motion`;
+const promptContent = `editorial luxury navbar (About, Projects, Contact) dropping a full height brand-orange background curtain via framer motion, RewampUI wordmark and logo in SF Pro Semibold`;
 
 export default function CurtainRevealNavbarShowcase() {
     const [copied, setCopied] = useState(false);
@@ -15,9 +15,9 @@ export default function CurtainRevealNavbarShowcase() {
     };
 
     const links = [
-        { id: "collection", label: "Collection", color: "from-[#1a1c29] to-[#2a2d42]" },
-        { id: "campaign", label: "Campaign", color: "from-[#4a2a22] to-[#6d3e33]" },
-        { id: "heritage", label: "Heritage", color: "from-[#1c3028] to-[#264539]" }
+        { id: "about", label: "About", color: "from-[#1F1F1F] to-[#3A3A3A]" },
+        { id: "projects", label: "Projects", color: "from-[#D2471A] to-[#EC5E27]" },
+        { id: "contact", label: "Contact", color: "from-[#7A2D12] to-[#D2471A]" }
     ];
 
     return (
@@ -34,11 +34,11 @@ export default function CurtainRevealNavbarShowcase() {
                             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} // smooth apple-like bezier
                             className={`absolute inset-0 z-10 bg-gradient-to-b ${links.find(l => l.id === activeCurtain)?.color} flex items-center justify-center`}
                         >
-                             <motion.h2 
+                             <motion.h2
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 }}
-                                className="text-white/80 font-serif text-5xl italic font-light tracking-wide mix-blend-overlay"
+                                className="text-white/90 font-heading text-5xl font-semibold tracking-wide mix-blend-overlay"
                              >
                                  {links.find(l => l.id === activeCurtain)?.label}
                              </motion.h2>
@@ -48,18 +48,21 @@ export default function CurtainRevealNavbarShowcase() {
 
                 {/* 🎯 THE NAVBAR HEADER */}
                 <header className="relative z-20 w-full px-8 py-6 flex items-center justify-between border-b border-black/10 dark:border-white/10">
-                    <span className={`font-serif text-2xl tracking-tighter ${activeCurtain ? 'text-white' : 'text-black dark:text-white'} transition-colors duration-500`}>AESTHETICA</span>
-                    
+                    <span className={`flex items-center gap-2 font-heading text-xl font-semibold tracking-tight ${activeCurtain ? 'text-white' : 'text-black dark:text-white'} transition-colors duration-500`}>
+                        <img src="/logo.svg" alt="RewampUI" className="w-6 h-6 object-contain shrink-0" />
+                        RewampUI
+                    </span>
+
                     <nav className="flex gap-8">
                         {links.map((link) => (
                             <button
                                 key={link.id}
                                 onMouseEnter={() => setActiveCurtain(link.id)}
                                 onMouseLeave={() => setActiveCurtain(null)}
-                                className={`text-[12px] font-bold tracking-[0.2em] uppercase flex items-center gap-1 transition-colors duration-500 ${
-                                    activeCurtain 
-                                        ? (activeCurtain === link.id ? 'text-white' : 'text-white/40') 
-                                        : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white'
+                                className={`text-[12px] font-semibold tracking-[0.2em] uppercase flex items-center gap-1 transition-colors duration-500 ${
+                                    activeCurtain
+                                        ? (activeCurtain === link.id ? 'text-white' : 'text-white/40')
+                                        : 'text-black/60 dark:text-white/60 hover:text-[#EC5E27] dark:hover:text-[#EC5E27]'
                                 }`}
                             >
                                 {link.label}

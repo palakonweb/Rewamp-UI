@@ -119,8 +119,8 @@ export default function FlowerSidebarShowcase() {
   }, [nodes, activeIdx]);
 
   return (
-    <div className="w-full max-w-sm mx-auto flex items-center justify-center p-6">
-      <div className="w-[280px] rounded-3xl border border-black/10 dark:border-white/10 bg-white/90 dark:bg-[#141218]/90 backdrop-blur-xl shadow-2xl p-4 flex flex-col justify-between overflow-hidden">
+    <div className="w-full max-w-sm mx-auto flex items-center justify-center p-10">
+      <div className="w-[280px] flex flex-col justify-between overflow-hidden">
         {/* Top Header with Brand Mark */}
         <div>
           <div className="flex items-center gap-2.5 pb-3.5 border-b border-black/5 dark:border-white/5">

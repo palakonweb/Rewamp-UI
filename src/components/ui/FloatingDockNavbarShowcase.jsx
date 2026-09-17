@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Home, Search, Bell, Mail, User, Settings, Command } from 'lucide-react';
+import { Copy, Check, Home, FolderKanban, Mail } from 'lucide-react';
 
-const promptContent = `macOS physics floating dock. True magnification calculations based on cursor distance using Framer Motion springs and useMotionValue.`;
+const promptContent = `macOS physics floating dock with About, Projects, and Contact items. True magnification calculations based on cursor distance using Framer Motion springs and useMotionValue.`;
 
 // Individual Icon Component with its own distance calculations
 function DockIcon({ icon: Icon, label, mouseX }) {
@@ -57,12 +57,9 @@ export default function FloatingDockNavbarShowcase() {
     const mouseX = useMotionValue(Infinity);
 
     const icons = [
-        { icon: Command, label: "Dashboard" },
-        { icon: Search, label: "Search" },
-        { icon: Bell, label: "Notifications" },
-        { icon: Mail, label: "Messages" },
-        { icon: User, label: "Profile" },
-        { icon: Settings, label: "Settings" }
+        { icon: Home, label: "About" },
+        { icon: FolderKanban, label: "Projects" },
+        { icon: Mail, label: "Contact" }
     ];
 
     return (

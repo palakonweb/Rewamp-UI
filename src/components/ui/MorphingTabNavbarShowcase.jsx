@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Home, Search, Compass, MessageCircle, Settings } from 'lucide-react';
+import { Copy, Check, Home, Compass, MessageCircle } from 'lucide-react';
 
 const promptContent = `Fluid Pill Navbar. A highly polished glassmorphic navigation bar where the active tab background smoothly glides and morphs between items using Framer Motion layoutId.`;
 
@@ -8,14 +8,12 @@ export default function MorphingTabNavbarShowcase() {
     const [copied, setCopied] = useState(false);
     const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-    const [activeTab, setActiveTab] = useState("Home");
+    const [activeTab, setActiveTab] = useState("About");
 
     const tabs = [
-        { id: "Home", icon: Home },
-        { id: "Search", icon: Search },
-        { id: "Explore", icon: Compass },
-        { id: "Messages", icon: MessageCircle },
-        { id: "Settings", icon: Settings },
+        { id: "About", icon: Home },
+        { id: "Projects", icon: Compass },
+        { id: "Contact", icon: MessageCircle },
     ];
 
     return (

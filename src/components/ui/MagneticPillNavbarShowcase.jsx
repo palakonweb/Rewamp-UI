@@ -14,7 +14,7 @@ export default function MagneticPillNavbarShowcase() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const navItems = ["Overview", "Integrations", "Activity", "Settings"];
+    const navItems = ["About", "Projects", "Contact"];
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
