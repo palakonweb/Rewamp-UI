@@ -21,8 +21,8 @@ export default function CurtainRevealNavbarShowcase() {
     ];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#eaeaeb] dark:bg-[#0a0a0a] shadow-xl flex flex-col justify-start group">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex flex-col justify-start group">
                 
                 {/* 🎯 THE CURTAIN LAYER */}
                 <AnimatePresence>

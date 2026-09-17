@@ -14,8 +14,8 @@ export default function ChromeBorderButtonShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center p-8">
                 <div
                     className="relative rounded-full p-[1.5px] overflow-hidden shadow-[0_10px_28px_rgba(0,0,0,0.1)]"
                     style={{ background: 'linear-gradient(135deg, #ffffff 0%, #d8d9dc 35%, #f4f4f5 55%, #c9cacd 80%, #ffffff 100%)' }}

@@ -185,21 +185,6 @@ export default function ArchCardCarousel({
           height: `${cardHeight + 165}px`,
         }}
       >
-        {/* ── Giant Bottom Convex Dome Arc (matching video horizon) ── */}
-        <div
-          className="absolute pointer-events-none rounded-full"
-          style={{
-            width: `${radius * 2}px`,
-            height: `${radius * 2}px`,
-            bottom: `-${radius * 2 - (cardHeight + 90)}px`,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F5F3ED 42%, #E7E3D8 100%)',
-            border: '1px solid rgba(0, 0, 0, 0.07)',
-            boxShadow: '0 -20px 50px -15px rgba(0, 0, 0, 0.06), inset 0 2px 4px rgba(255, 255, 255, 0.9)',
-          }}
-        />
-
         {/* ── Cards Rendered Along Circular Arch ── */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {images.map((src, i) => {

@@ -35,8 +35,8 @@ export default function GlassProfileCardShowcase() {
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.06] flex items-center justify-center" style={{ minHeight: 500, background: v.bg }}>
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full flex items-center justify-center">
 
         {/* Blurred aurora blobs */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">

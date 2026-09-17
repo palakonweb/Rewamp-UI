@@ -11,7 +11,7 @@ export default function BookACallButton({ onBook }) {
   const isActive = phase === "active";
 
   return (
-    <div className="w-full flex items-center justify-center py-16 bg-neutral-50">
+    <div className="w-full h-full flex items-center justify-center">
       <motion.button
         type="button"
         onMouseEnter={() => setPhase((p) => (p === "active" ? p : "hover"))}

@@ -42,9 +42,8 @@ export default function CharacterScrambleTextShowcase() {
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-8 sm:p-12 flex flex-col items-center justify-center min-h-[400px]"
-        style={{ background: '#0a0e14' }}>
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
 
         {/* Dot grid */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]"

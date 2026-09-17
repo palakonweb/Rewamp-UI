@@ -42,9 +42,8 @@ export default function TypewriterTextShowcase() {
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-8 sm:p-12 flex flex-col items-center justify-center min-h-[400px]"
-        style={{ background: '#0f1117' }}>
+    <div className="w-full h-full flex flex-col gap-6">
+      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
 
         <div className="text-center max-w-lg">
           <p className="text-[10px] uppercase tracking-[0.3em] mb-6" style={{ color: 'rgba(240,237,232,0.3)' }}>Typewriter</p>

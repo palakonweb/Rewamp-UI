@@ -26,13 +26,8 @@ export default function SplitTextRevealShowcase() {
   const characters = text.split('');
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-8 sm:p-12 flex flex-col items-center justify-center min-h-[400px]"
-        style={{ background: 'linear-gradient(150deg, #120e18 0%, #0a0a0a 100%)' }}>
-
-        {/* Ambient glow */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(184,169,212,0.06) 0%, transparent 50%)' }} />
+    <div className="w-full h-full flex flex-col gap-6">
+      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
 
         <p className="text-[10px] uppercase tracking-[0.3em] mb-8 relative z-10" style={{ color: 'rgba(184,169,212,0.4)' }}>Split Reveal</p>
 

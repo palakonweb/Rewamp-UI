@@ -17,8 +17,8 @@ export default function MorphingTabNavbarShowcase() {
     ];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#09090b] shadow-xl flex items-center justify-center">
+        <div className="w-full h-full flex flex-col gap-6">
+            <div className="relative w-full h-full flex items-center justify-center">
                 
                 {/* 🎯 THE MORPHING NAVBAR */}
                 <nav className="relative flex items-center p-2 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">

@@ -77,16 +77,14 @@ export default function VelocityMarqueeTextShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div 
-                className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#09090b] shadow-xl flex flex-col items-center justify-center cursor-grab active:cursor-grabbing select-none"
+        <div className="w-full h-full flex flex-col gap-6">
+            <div
+                className="relative w-full h-full flex flex-col items-center justify-center cursor-grab active:cursor-grabbing select-none"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
             >
-                <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at center, transparent 0%, #000 100%)' }} />
-                
                 <div className="w-full flex flex-col gap-4 text-white/90">
                     <ParallaxText baseVelocity={-2} isDragging={isDragging} dragDelta={dragDelta}>Creative Velocity</ParallaxText>
                     <ParallaxText baseVelocity={2} isDragging={isDragging} dragDelta={dragDelta}>Limitless Momentum</ParallaxText>

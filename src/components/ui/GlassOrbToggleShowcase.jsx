@@ -14,19 +14,9 @@ export default function GlassOrbToggleShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Interactive Preview Card with Dark Cinematic Canvas ── */}
+        <div className="w-full h-full flex items-center justify-center">
             <div
-                className="relative w-full rounded-[28px] border border-black/10 overflow-hidden shadow-xs flex flex-col items-center justify-center p-8 sm:p-24 transition-colors duration-700"
-                style={{
-                    backgroundColor: mode === 'Light' ? '#14141A' : '#0B0B0E',
-                    backgroundImage: `
-                        radial-gradient(circle at 50% 50%, ${mode === 'Light' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.03)'} 0%, transparent 70%),
-                        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '100% 100%, 28px 28px',
-                    minHeight: '440px',
-                }}
+                className="relative w-full h-full flex flex-col items-center justify-center p-8 sm:p-24 transition-colors duration-700"
             >
                 {/* Status indicator badge */}
                 <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 text-[12px] font-medium font-sans">

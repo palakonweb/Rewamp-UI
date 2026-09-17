@@ -17,8 +17,8 @@ export default function JellyScoopNavbarShowcase() {
     const navItems = ["About", "Projects", "Contact"];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#F6F4FB] dark:bg-[#1A1620] shadow-xl flex items-center justify-center p-8 group">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center p-8 group">
 
                 {/* 🎯 THE JELLY NAVBAR */}
                 <nav className="relative flex items-center p-3 rounded-3xl bg-white dark:bg-[#2A2433] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#C1B4D8]/20">

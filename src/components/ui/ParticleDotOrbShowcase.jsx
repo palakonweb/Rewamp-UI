@@ -34,16 +34,10 @@ export default function ParticleDotOrbShowcase() {
     const currentPhrase = PHRASES[currentIndex];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
+        <div className="w-full h-full flex flex-col gap-6">
             {/* ── Studio Canvas ── */}
             <div
-                className="relative w-full rounded-[28px] border border-black/8 overflow-hidden shadow-sm flex flex-col items-center justify-center p-8 sm:p-14 select-none min-h-[380px]"
-                style={{
-                    backgroundColor: '#F7F6F2',
-                    backgroundImage: `
-                        radial-gradient(circle at 50% 45%, #FFFFFF 0%, #F5F3ED 60%, #EBE8DE 100%)
-                    `,
-                }}
+                className="relative w-full h-full flex flex-col items-center justify-center p-8 sm:p-14 select-none"
             >
                 {/* ── WHITE AI THINKING PILL: Orb on LEFT, Shimmery Text on RIGHT ── */}
                 <motion.div

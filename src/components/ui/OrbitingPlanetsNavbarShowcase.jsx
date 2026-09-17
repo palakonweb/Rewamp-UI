@@ -32,8 +32,8 @@ export default function OrbitingPlanetsNavbarShowcase() {
     }, [isHovered, orbitControls]);
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#F6F4FB] dark:bg-[#100E16] shadow-xl flex items-center justify-center p-8 group">
+        <div className="w-full h-full flex flex-col gap-6">
+            <div className="relative w-full h-full flex items-center justify-center p-8 group">
                 
                 {/* 🎯 THE ORBITAL NAVBAR */}
                 <div

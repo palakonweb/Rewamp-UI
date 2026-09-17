@@ -9,24 +9,13 @@ export default function KineticReelTextShowcase() {
   const isDark = theme === 'dark';
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full h-full flex flex-col items-center justify-center">
       {/* Main Stage: Centered Reel */}
       <div
-        className={`w-full min-h-[280px] md:min-h-[300px] rounded-3xl flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500 shadow-2xl ${
-          isDark
-            ? 'bg-black text-white border border-neutral-800/80'
-            : 'bg-[#FFFDF2] text-[#1F1F1F] border border-[#D9D9D6]'
+        className={`w-full h-full flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500 ${
+          isDark ? 'text-white' : 'text-[#1F1F1F]'
         }`}
       >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: isDark
-              ? 'radial-gradient(ellipse at 50% 50%, rgba(25, 28, 45, 0.45) 0%, #000000 75%)'
-              : 'radial-gradient(ellipse at 50% 50%, rgba(236, 94, 39, 0.06) 0%, transparent 70%)',
-          }}
-        />
-
         {/* Kinetic Reel Text Component with centered layout */}
         <div className="relative z-10 w-full px-6 sm:px-12 py-4 flex items-center justify-center">
           <KineticReelText

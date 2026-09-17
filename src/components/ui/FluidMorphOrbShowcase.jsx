@@ -34,16 +34,9 @@ export default function FluidMorphOrbShowcase() {
     const currentPhrase = PHRASES[currentIndex];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Studio Canvas ── */}
+        <div className="w-full h-full flex items-center justify-center">
             <div
-                className="relative w-full rounded-[28px] border border-black/8 overflow-hidden shadow-sm flex flex-col items-center justify-center p-8 sm:p-14 select-none min-h-[380px]"
-                style={{
-                    backgroundColor: '#F5F7FA',
-                    backgroundImage: `
-                        radial-gradient(circle at 50% 45%, #FFFFFF 0%, #EEF2F7 60%, #E2E8F0 100%)
-                    `,
-                }}
+                className="relative w-full h-full flex flex-col items-center justify-center p-8 sm:p-14 select-none"
             >
                 {/* ── WHITE AI THINKING PILL: Cobalt Fluid Orb on LEFT, Shimmery Text on RIGHT ── */}
                 <motion.div

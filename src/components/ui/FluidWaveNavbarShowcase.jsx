@@ -16,19 +16,9 @@ export default function FluidWaveNavbarShowcase() {
     const tabNames = ['About', 'Projects', 'Contact'];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Interactive Preview Card with Dark Grey Canvas ── */}
+        <div className="w-full h-full flex items-center justify-center">
             <div
-                className="relative w-full rounded-[28px] border border-black/10 overflow-hidden shadow-xs flex flex-col items-center justify-center p-8 sm:p-20"
-                style={{
-                    backgroundColor: '#222227',
-                    backgroundImage: `
-                        radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.05) 0%, transparent 65%),
-                        radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '100% 100%, 24px 24px',
-                    minHeight: '480px',
-                }}
+                className="relative w-full h-full flex flex-col items-center justify-center p-8 sm:p-20"
             >
                 {/* Active Tab Indicator Badge */}
                 <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 text-[12px] font-medium font-sans">

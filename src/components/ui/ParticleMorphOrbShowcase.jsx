@@ -34,16 +34,10 @@ export default function ParticleMorphOrbShowcase() {
     const currentPhrase = PHRASES[currentIndex];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Dark Matte Studio Canvas ── */}
+        <div className="w-full h-full flex flex-col gap-6">
+            {/* ── Studio Canvas ── */}
             <div
-                className="relative w-full rounded-[28px] border border-white/10 overflow-hidden shadow-2xl flex flex-col items-center justify-center p-8 sm:p-14 select-none min-h-[380px]"
-                style={{
-                    backgroundColor: '#09090C',
-                    backgroundImage: `
-                        radial-gradient(circle at 50% 45%, #15151B 0%, #09090C 70%, #050507 100%)
-                    `,
-                }}
+                className="relative w-full h-full flex flex-col items-center justify-center p-8 sm:p-14 select-none"
             >
                 {/* ── DARK AI THINKING PILL: 3D Particle Morph Orb on LEFT, Shimmery Text on RIGHT ── */}
                 <motion.div

@@ -23,8 +23,8 @@ export default function CircularRadialNavbarShowcase() {
     const angleStep = 180 / (navItems.length - 1); // 180 degrees spread for a semi-circle
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#f9fafb] dark:bg-[#0a0a0c] shadow-xl flex items-end justify-center pb-12 group">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-end justify-center pb-12 group">
                 
                 {/* 🎯 THE RADIATING NAVBAR */}
                 <div className="relative flex items-center justify-center">

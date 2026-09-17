@@ -20,9 +20,8 @@ export default function DiagonalCardStackShowcase() {
   ];
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
-      {/* Main Animation Stage */}
-      <div className="w-full relative rounded-2xl overflow-hidden border border-neutral-300/60 dark:border-neutral-800 shadow-xl">
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="w-full relative overflow-hidden">
         <DiagonalCardStack
           cards={cardsData}
           isStacked={isStacked}

@@ -5,14 +5,9 @@ export default function FrostedFolderCardShowcase() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      {/* ── Studio Canvas matching exact reference lighting ── */}
+    <div className="w-full h-full flex items-center justify-center">
       <div
-        className="relative w-full rounded-[28px] border border-black/10 overflow-hidden shadow-xs flex flex-col items-center justify-center p-6 sm:p-14 select-none"
-        style={{
-          minHeight: '560px',
-          background: 'radial-gradient(circle at 50% 45%, #C2C2C2 0%, #B8B8B8 55%, #AEAEAE 100%)',
-        }}
+        className="relative w-full h-full flex flex-col items-center justify-center p-6 sm:p-14 select-none"
       >
         {/* Subtle top indicator */}
         <div className="absolute top-6 left-7 flex items-center gap-2 z-10">

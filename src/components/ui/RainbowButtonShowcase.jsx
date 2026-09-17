@@ -14,8 +14,8 @@ export default function RainbowButtonShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8">
+        <div className="w-full h-full flex flex-col gap-6">
+            <div className="relative w-full h-full flex items-center justify-center p-8">
                 <div
                     className="relative p-[2px] rounded-xl"
                     style={{ background: 'linear-gradient(100deg, #f7c6d9, #cfe3fb, #d8f5da, #fdf1c7, #e6d3f8)' }}

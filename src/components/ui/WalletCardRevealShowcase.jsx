@@ -13,15 +13,10 @@ export default function WalletCardRevealShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Interactive Preview Card (matching reference video Recording 2026-09-13 200641.mp4) ── */}
+        <div className="w-full h-full flex flex-col gap-6">
+            {/* ── Interactive Preview Card ── */}
             <div
-                className="relative w-full rounded-[28px] border border-black/10 overflow-hidden shadow-xs flex flex-col items-center justify-center p-6 sm:p-12"
-                style={{
-                    backgroundColor: '#EEF3EC',
-                    backgroundImage: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.75) 0%, rgba(238,243,236,0.5) 100%)',
-                    minHeight: '620px',
-                }}
+                className="relative w-full h-full flex flex-col items-center justify-center p-6 sm:p-12"
             >
                 {/* Top Left Navigation Back Button matching video */}
                 <div className="absolute top-6 left-6 z-20">

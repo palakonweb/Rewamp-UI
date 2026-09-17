@@ -652,11 +652,11 @@ export default function RewampShowcase() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-            className="canvas-stage flex items-center justify-center max-w-full max-h-full w-full [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+            className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] h-full max-h-[640px] aspect-[16/10] rounded-[24px] overflow-hidden [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
           >
             <ErrorBoundary key={activeSlug}>
               <Suspense fallback={getComponentSkeleton(activeSlug)}>
-                <div className="animate-component-fade-in flex items-center justify-center w-full h-full">
+                <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-6 overflow-hidden">
                   {isFolder ? (
                     <CleanFolderComponent color={folderColor} />
                   ) : (

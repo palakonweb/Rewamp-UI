@@ -53,8 +53,8 @@ export default function SlideToConfirmButtonShowcase() {
     const roadOpacity = phase === 'sliding' ? 1 : phase === 'trailing' ? 0 : 0;
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8">
+        <div className="w-full h-full flex flex-col gap-6">
+            <div className="relative w-full h-full flex items-center justify-center p-8">
                 <button
                     onClick={run}
                     className="relative w-[340px] h-[70px] rounded-full overflow-hidden select-none"

@@ -232,9 +232,9 @@
     border-radius: 6px;
   }
 
-  /* Shared background for showcase preview frames */
+  /* Showcase preview frames now share the canvas background — no per-component box */
   .inner-card-bg {
-    background: #F1F1F1;
+    background: transparent;
   }
 
   /* Liquid metal rotating border */

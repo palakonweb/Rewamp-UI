@@ -6,13 +6,9 @@ export default function FlightpathTOCShowcase() {
   const [autoTour, setAutoTour] = useState(true);
 
   return (
-    <div className="w-full flex flex-col items-center gap-4">
-      {/* Main Stage - Pure Light Mode Canvas with Flightpath TOC centered */}
+    <div className="w-full h-full flex items-center justify-center">
       <div
-        className="w-full h-[480px] md:h-[520px] rounded-2xl border border-[#E8E2D5] shadow-sm flex items-center justify-center relative overflow-hidden"
-        style={{
-          background: 'radial-gradient(ellipse at 50% 40%, #FFFFFF 0%, #FAF6ED 65%, #F0EAE0 100%)',
-        }}
+        className="w-full h-full flex items-center justify-center relative overflow-hidden"
       >
         <FlightpathTOC
           activeId={activeSection}

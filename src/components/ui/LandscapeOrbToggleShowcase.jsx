@@ -121,11 +121,9 @@ export default function LandscapeOrbToggleShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
+        <div className="w-full h-full flex items-center justify-center">
             <motion.div
-                className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 flex flex-col items-center justify-center gap-5"
-                animate={{ backgroundColor: t.page }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="relative w-full h-full flex flex-col items-center justify-center gap-5"
             >
                 <LandscapeOrb theme={theme} onToggle={() => setTheme((v) => (v === 'dark' ? 'light' : 'dark'))} />
                 <span className="text-[11px] font-semibold tracking-[0.25em] uppercase select-none text-black/40">

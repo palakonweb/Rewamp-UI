@@ -92,8 +92,8 @@ export default function ConfettiButtonShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#f9f9f9] dark:bg-[#050505] shadow-xl flex items-center justify-center p-8 group">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center p-8 group">
                 
                 {/* 💥 EXPLOSION CANVAS OVERLAY */}
                 <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none w-full h-full" />

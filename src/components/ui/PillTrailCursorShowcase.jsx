@@ -13,23 +13,18 @@ export default function PillTrailCursorShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            {/* ── Interactive White Canvas Preview (matching reference video Recording 2026-09-13 170458.mp4) ── */}
+        <div className="w-full h-full flex flex-col gap-6">
+            {/* ── Interactive Cursor Preview ── */}
             <PillTrailCursor
                 trailLength={16}
                 baseSpacing={24}
                 maxSpacing={38}
                 pillHeight={26}
                 fontSize={11.5}
-                className="w-full rounded-[24px] border border-black/10 dark:border-white/10 shadow-xs overflow-hidden"
-                style={{ background: '#ffffff' }}
+                className="w-full h-full"
             >
                 <div
-                    className="relative w-full select-none"
-                    style={{
-                        minHeight: '520px',
-                        background: '#ffffff',
-                    }}
+                    className="relative w-full h-full select-none"
                 />
             </PillTrailCursor>
 

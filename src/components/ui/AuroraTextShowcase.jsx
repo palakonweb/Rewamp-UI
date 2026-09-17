@@ -65,10 +65,9 @@ export default function AuroraTextShowcase() {
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-8 sm:p-12 flex flex-col items-center justify-center min-h-[450px]"
-        style={{ background: '#050505' }}>
-        
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
+
         {/* Ambient background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] opacity-20 pointer-events-none blur-[100px]"
              style={{ background: 'linear-gradient(90deg, rgba(147,197,253,1), rgba(196,181,253,1), rgba(167,243,208,1))' }} />

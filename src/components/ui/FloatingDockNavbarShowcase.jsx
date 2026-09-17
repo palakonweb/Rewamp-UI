@@ -63,11 +63,8 @@ export default function FloatingDockNavbarShowcase() {
     ];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#050505] shadow-xl flex items-end justify-center pb-12 group">
-                
-                {/* Background Grid */}
-                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-end justify-center pb-12 group">
 
                 {/* 🎯 THE NAVBAR DOCK */}
                 <motion.div 

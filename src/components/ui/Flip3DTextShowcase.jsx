@@ -22,8 +22,8 @@ export default function Flip3DTextShowcase() {
     const currentWord = WORDS[index];
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#050505] shadow-xl flex items-center justify-center perspective-[1000px]">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center perspective-[1000px]">
                 
                 <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-widest text-white flex gap-1">
                     <AnimatePresence mode="popLayout">

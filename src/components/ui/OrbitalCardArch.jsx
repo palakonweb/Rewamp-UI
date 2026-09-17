@@ -109,18 +109,9 @@ export function OrbitalCardArch({
       onPointerCancel={handlePointerUp}
       className={`relative w-full h-[480px] md:h-[520px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
       style={{
-        background: 'radial-gradient(ellipse at 50% 45%, #FFFFFF 0%, #E8EAED 50%, #C9CDD2 100%)',
         perspective: 1200,
       }}
     >
-      {/* Studio lighting vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.18) 100%)',
-        }}
-      />
-
       {/* 3D Panoramic Cylinder Stage */}
       <div
         className="relative w-0 h-0 flex items-center justify-center pointer-events-none"

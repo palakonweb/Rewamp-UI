@@ -22,8 +22,8 @@ export default function DarkModeMobileNavbarShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 bg-white shadow-xl flex items-center justify-center p-8">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center p-8">
 
                 {/* 🎯 THE NAVBAR */}
                 <nav

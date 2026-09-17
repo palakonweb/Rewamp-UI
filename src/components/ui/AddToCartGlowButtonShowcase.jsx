@@ -21,8 +21,8 @@ export default function AddToCartGlowButtonShowcase() {
     };
 
     return (
-        <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] overflow-hidden border border-black/5 dark:border-white/10 inner-card-bg shadow-xl flex items-center justify-center p-8">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center p-8">
                 <motion.div whileHover={{ y: -2 }} className="relative p-[2px] rounded-2xl overflow-hidden" style={{ boxShadow: '0 14px 28px -14px rgba(0,0,0,0.35)' }}>
                     <motion.div
                         className="absolute inset-[-45%]"
