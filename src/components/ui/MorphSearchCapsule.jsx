@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function MorphSearchCapsule({
   placeholder = 'Type anything to search...',
   onSearch = null,
-  mode = 'dark', // 'dark' | 'light'
+  mode = null, // auto-detects from document theme if null
   className = '',
 }) {
   const [isActive, setIsActive] = useState(false);
@@ -19,6 +19,24 @@ export function MorphSearchCapsule({
   const [ripples, setRipples] = useState([]);
   const inputRef = useRef(null);
   const containerRef = useRef(null);
+
+  const [detectedMode, setDetectedMode] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    if (mode) return;
+    const checkTheme = () => {
+      setDetectedMode(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    return () => observer.disconnect();
+  }, [mode]);
 
   // Close when clicking outside
   useEffect(() => {
@@ -57,7 +75,8 @@ export function MorphSearchCapsule({
     }
   };
 
-  const isDark = mode === 'dark';
+  const activeMode = mode || detectedMode;
+  const isDark = activeMode === 'dark';
 
   // Theme palettes for Grey modes
   const theme = {

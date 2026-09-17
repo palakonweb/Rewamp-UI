@@ -77,21 +77,27 @@ export default function VelocityMarqueeTextShowcase() {
     };
 
     return (
-        <div className="w-full h-full flex flex-col gap-6">
+        <div className="w-full h-full flex flex-col items-center justify-center p-6">
             <div
-                className="relative w-full h-full flex flex-col items-center justify-center cursor-grab active:cursor-grabbing select-none"
+                className="relative w-full flex flex-col items-center justify-center cursor-grab active:cursor-grabbing select-none"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
             >
-                <div className="w-full flex flex-col gap-4 text-white/90">
-                    <ParallaxText baseVelocity={-2} isDragging={isDragging} dragDelta={dragDelta}>Creative Velocity</ParallaxText>
-                    <ParallaxText baseVelocity={2} isDragging={isDragging} dragDelta={dragDelta}>Limitless Momentum</ParallaxText>
+                <div className="w-full flex flex-col gap-4">
+                    <div className="text-neutral-900 dark:text-[#E4DDF0]">
+                        <ParallaxText baseVelocity={-2} isDragging={isDragging} dragDelta={dragDelta}>Creative Velocity</ParallaxText>
+                    </div>
+                    <div className="text-[#7A6B94] dark:text-[#C1B4D8]">
+                        <ParallaxText baseVelocity={2} isDragging={isDragging} dragDelta={dragDelta}>Limitless Momentum</ParallaxText>
+                    </div>
                 </div>
-                
-                <span className="absolute bottom-6 text-white/20 text-[11px] font-semibold tracking-widest uppercase pointer-events-none">Interactive Marquee (Drag)</span>
             </div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click and drag horizontally to accelerate velocity
+            </p>
+        </div>
     );
 }

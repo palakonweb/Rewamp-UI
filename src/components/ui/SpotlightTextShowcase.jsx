@@ -34,11 +34,11 @@ export default function SpotlightTextShowcase() {
                 ref={containerRef}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-white/10 bg-[#000] shadow-xl flex items-center justify-center cursor-crosshair group select-none"
+                className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/10 dark:border-white/10 bg-[#0c0c10] shadow-2xl flex items-center justify-center cursor-crosshair group select-none"
             >
                 
-                {/* Dark Base Text (Barely Visible) */}
-                <h2 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white/[0.03] text-center w-full absolute pointer-events-none">
+                {/* Base Text with subtle readable glow */}
+                <h2 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-white/15 text-center w-full absolute pointer-events-none">
                     EXPLORE
                 </h2>
 
@@ -50,14 +50,16 @@ export default function SpotlightTextShowcase() {
                         maskImage: maskImage
                     }}
                 >
-                    {/* The text has a vibrant background-clip gradient */}
-                    <h2 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-indigo-500 text-center w-full">
+                    {/* The text has a vibrant background-clip gradient in brand lilac */}
+                    <h2 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#9C8EB8] via-[#D4CBE5] to-[#FFFFFF] text-center w-full">
                         EXPLORE
                     </h2>
                 </motion.div>
-                
-                <span className="absolute bottom-6 text-white/20 text-[11px] font-semibold tracking-widest uppercase pointer-events-none">Interactive Spotlight Reveal</span>
             </div>
-</div>
+
+            <p className="text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Hover across to reveal with the spotlight
+            </p>
+        </div>
     );
 }

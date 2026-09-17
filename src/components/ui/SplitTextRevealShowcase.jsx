@@ -26,36 +26,31 @@ export default function SplitTextRevealShowcase() {
   const characters = text.split('');
 
   return (
-    <div className="w-full h-full flex flex-col gap-6">
-      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
-
-        <p className="text-[10px] uppercase tracking-[0.3em] mb-8 relative z-10" style={{ color: 'rgba(184,169,212,0.4)' }}>Split Reveal</p>
-
-        <div key={key} className="flex justify-center relative z-10">
+    <div className="w-full h-full flex flex-col items-center justify-center p-6">
+      <div 
+        onClick={() => setKey(k => k + 1)}
+        className="flex justify-center relative z-10 cursor-pointer select-none group"
+      >
+        <div key={key} className="flex justify-center transition-transform duration-200 group-hover:scale-[1.02]">
           {characters.map((char, i) => (
-            <motion.span key={i} custom={i} variants={charVariants} initial="hidden" animate="visible"
-              className="text-[48px] sm:text-[72px] font-bold tracking-tight leading-none inline-block"
-              style={{ color: '#e8e4ef', display: 'inline-block', whiteSpace: 'pre' }}>
+            <motion.span 
+              key={i} 
+              custom={i} 
+              variants={charVariants} 
+              initial="hidden" 
+              animate="visible"
+              className="text-[52px] sm:text-[80px] font-extrabold tracking-tight leading-none inline-block text-neutral-900 dark:text-[#E4DDF0]"
+              style={{ display: 'inline-block', whiteSpace: 'pre' }}
+            >
               {char === ' ' ? '\u00A0' : char}
             </motion.span>
           ))}
         </div>
-
-        <motion.p key={`sub-${key}`}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="text-[13px] mt-6 relative z-10"
-          style={{ color: 'rgba(232,228,239,0.3)' }}>
-          Each character finds its place.
-        </motion.p>
-
-        <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-          onClick={() => setKey(k => k + 1)}
-          className="mt-8 px-5 py-2 rounded-full text-[11px] font-medium relative z-10"
-          style={{ background: 'rgba(184,169,212,0.1)', color: '#b8a9d4', border: '1px solid rgba(184,169,212,0.2)' }}>
-          Replay
-        </motion.button>
       </div>
-</div>
+
+      <p className="mt-8 text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+        Click to replay animation
+      </p>
+    </div>
   );
 }

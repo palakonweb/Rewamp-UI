@@ -138,6 +138,7 @@ export const categories = [
         components: [
             makeLazy('Splash Cursor', 'splash-cursor', () => import('./ui/SplashCursorShowcase')),
             makeLazy('Pill Trail Cursor', 'pill-trail-cursor', () => import('./ui/PillTrailCursorShowcase')),
+            makeLazy('Halftone Dot Cursor', 'halftone-dot-cursor', () => import('./ui/HalftoneDotCursorShowcase')),
         ],
     },
     {
@@ -197,7 +198,7 @@ export const categories = [
             makeLazy('Editorial 3D Orbit Carousel', 'editorial-3-d-orbit-carousel', () => import('./ui/Editorial3DOrbitCarouselShowcase')),
             makeLazy('Wallet Card Reveal', 'wallet-card-reveal', () => import('./ui/WalletCardRevealShowcase')),
             makeLazy('Arch Card Carousel', 'arch-card-carousel', () => import('./ui/ArchCardCarouselShowcase')),
-            makeLazy('Frosted Folder Card', 'frosted-folder-card', () => import('./ui/FrostedFolderCardShowcase')),
+            makeLazy('Folder Tab Card', 'folder-tab-card', () => import('./ui/FolderTabCardShowcase')),
         ],
     },
     {

@@ -62,9 +62,10 @@ export default function NeumorphicDownloadButtonShowcase() {
             <div className="relative w-full h-full flex items-center justify-center p-8">
                 <button
                     onClick={startDownload}
-                    className="relative flex items-center gap-3 pl-1.5 pr-7 py-1.5 rounded-full select-none"
+                    className="relative flex items-center gap-3 pl-1.5 pr-7 py-1.5 rounded-full select-none border border-black/[0.04] dark:border-white/[0.06] transition-all cursor-pointer"
                     style={{
                         background: '#F1F1F1',
+                        boxShadow: '6px 6px 16px rgba(0,0,0,0.09), -6px -6px 16px rgba(255,255,255,0.95), inset 0 1px 1px rgba(255,255,255,0.8)',
                     }}
                 >
                     <div className="relative shrink-0 flex items-center justify-center" style={{ width: RING_BOX, height: RING_BOX }}>
@@ -81,6 +82,7 @@ export default function NeumorphicDownloadButtonShowcase() {
                                     strokeLinecap="round"
                                     strokeDasharray={CIRC}
                                     strokeDashoffset={offset}
+                                    strokeLinejoin="round"
                                 />
                             </svg>
                         )}
@@ -90,16 +92,17 @@ export default function NeumorphicDownloadButtonShowcase() {
                                 width: DISC,
                                 height: DISC,
                                 background: '#F1F1F1',
+                                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.06), inset -2px -2px 4px rgba(255,255,255,0.8)',
                             }}
                         >
                             <AnimatePresence mode="wait" initial={false}>
                                 {phase !== 'done' ? (
                                     <motion.span key="cloud" initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.7 }} transition={{ duration: 0.2 }}>
-                                        <CloudDownload size={18} strokeWidth={1.7} style={{ color: iconColor }} />
+                                        <CloudDownload size={18} strokeWidth={1.8} style={{ color: iconColor }} />
                                     </motion.span>
                                 ) : (
                                     <motion.span key="done" initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: [0.6, 1.2, 1] }} transition={{ duration: 0.35 }}>
-                                        <Check size={18} strokeWidth={2} className="text-[#e8a33d]" />
+                                        <Check size={18} strokeWidth={2.2} className="text-[#e8a33d]" />
                                     </motion.span>
                                 )}
                             </AnimatePresence>
@@ -113,15 +116,17 @@ export default function NeumorphicDownloadButtonShowcase() {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -6 }}
                             transition={{ duration: 0.2 }}
-                            className="text-[14px] font-medium text-[#5a5f66]"
+                            className="text-[14px] font-semibold text-[#27272a]"
                         >
                             {phase === 'idle' ? 'Download' : phase === 'downloading' ? 'Downloading…' : 'Downloaded'}
                         </motion.span>
                     </AnimatePresence>
                 </button>
-
-                <span className="absolute bottom-6 text-black/40 text-[13px] font-semibold tracking-widest uppercase">Neumorphic Download</span>
             </div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click button to simulate neumorphic download
+            </p>
+        </div>
     );
 }

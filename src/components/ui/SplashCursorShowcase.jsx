@@ -28,18 +28,7 @@ export default function SplashCursorShowcase() {
                     />
                 </div>
 
-                {/* Centered Hint Text */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex flex-col items-center justify-center text-center select-none">
-                    {/* Ambient lavender glow */}
-                    <div className="absolute w-72 h-28 rounded-full bg-violet-500/15 blur-3xl pointer-events-none" />
-                    
-                    <p className="font-sans text-xl sm:text-2xl font-light tracking-wide text-white/85 drop-shadow-[0_2px_16px_rgba(196,181,253,0.45)]">
-                        Hover to see the magic
-                    </p>
-                </div>
-                
-                <span className="absolute bottom-6 right-6 text-violet-300/40 text-[12px] font-semibold tracking-widest uppercase z-10 pointer-events-none">Lavender Splash Cursor</span>
             </div>
-</div>
+        </div>
     );
 }

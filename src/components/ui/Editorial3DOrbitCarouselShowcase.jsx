@@ -6,13 +6,19 @@ export default function Editorial3DOrbitCarouselShowcase() {
   const [speed] = useState(1.0);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="w-full relative overflow-hidden">
-        <Editorial3DOrbitCarousel autoRotate={autoRotate} speed={speed} />
+    <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-6">
+      <div className="w-full max-w-5xl relative overflow-hidden">
+        <Editorial3DOrbitCarousel
+          autoRotate={autoRotate}
+          autoTick={true}
+          speed={speed}
+          tickInterval={1800}
+          pauseOnHover={false}
+        />
       </div>
     </div>
   );
 }
 
 Editorial3DOrbitCarouselShowcase.customTitle = 'Editorial 3D Orbit Carousel';
-Editorial3DOrbitCarouselShowcase.customSlug = 'editorial-3d-orbit-carousel';
+Editorial3DOrbitCarouselShowcase.customSlug = 'editorial-3-d-orbit-carousel';

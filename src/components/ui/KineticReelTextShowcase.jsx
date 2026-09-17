@@ -1,10 +1,25 @@
-﻿import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { KineticReelText, DEFAULT_REEL_ITEMS } from './KineticReelText';
 
 export default function KineticReelTextShowcase() {
-  const [theme] = useState('dark');
+  const [theme, setTheme] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    }
+    return 'light';
+  });
   const [prefix] = useState('we make');
   const [autoPlay] = useState(true);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
   const isDark = theme === 'dark';
 
@@ -27,14 +42,10 @@ export default function KineticReelTextShowcase() {
           />
         </div>
 
-        {/* Bottom interaction hint */}
-        <div
-          className={`absolute bottom-5 z-20 flex items-center gap-2 text-xs font-mono transition-opacity ${
-            isDark ? 'text-neutral-500' : 'text-neutral-400'
-          }`}
-        >
-          <span>Centered Â· Scroll mouse wheel over reel Â· Click to roll Â· Drag vertically</span>
-        </div>
+        {/* Bottom interaction description */}
+        <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+          Scroll or click reel to roll to the next word
+        </p>
       </div>
     </div>
   );

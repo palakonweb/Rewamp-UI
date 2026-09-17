@@ -168,8 +168,8 @@ export function KineticReelText({
                     className={`font-sans tracking-[-0.025em] whitespace-nowrap antialiased leading-none text-center ${
                       isCenter
                         ? isDark
-                          ? 'text-3xl sm:text-5xl md:text-6xl font-semibold text-white'
-                          : 'text-3xl sm:text-5xl md:text-6xl font-semibold text-[#1F1F1F]'
+                          ? 'text-3xl sm:text-5xl md:text-6xl font-semibold text-[#D4CBE5]'
+                          : 'text-3xl sm:text-5xl md:text-6xl font-semibold text-[#6D5896]'
                         : isDark
                         ? 'text-3xl sm:text-5xl md:text-6xl font-medium text-neutral-400'
                         : 'text-3xl sm:text-5xl md:text-6xl font-medium text-neutral-500'

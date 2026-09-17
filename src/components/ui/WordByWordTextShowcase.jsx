@@ -21,29 +21,39 @@ export default function WordByWordTextShowcase() {
   const words = sentence.split(' ');
 
   return (
-    <div className="w-full h-full flex flex-col gap-6">
-      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
-
-        <p className="text-[10px] uppercase tracking-[0.3em] mb-6" style={{ color: 'rgba(240,237,232,0.3)' }}>Word by Word</p>
-
-        <div key={key} className="text-center max-w-xl">
-          <p className="text-[26px] sm:text-[34px] font-bold leading-tight tracking-tight flex flex-wrap justify-center gap-x-[0.35em]">
-            {words.map((word, i) => (
-              <motion.span key={i} custom={i} variants={wordVariants} initial="hidden" animate="visible"
-                style={{ color: '#f0ede8', display: 'inline-block' }}>
-                {word}
-              </motion.span>
-            ))}
+    <div className="w-full h-full flex flex-col items-center justify-center p-6">
+      <div 
+        onClick={() => setKey(k => k + 1)}
+        className="text-center max-w-2xl cursor-pointer select-none group"
+      >
+        <div key={key}>
+          <p className="text-[28px] sm:text-[38px] font-bold leading-tight tracking-tight flex flex-wrap justify-center gap-x-[0.35em] transition-transform duration-200 group-hover:scale-[1.01]">
+            {words.map((word, i) => {
+              const isAccent = i >= words.length - 2;
+              return (
+                <motion.span 
+                  key={i} 
+                  custom={i} 
+                  variants={wordVariants} 
+                  initial="hidden" 
+                  animate="visible"
+                  className={`inline-block ${
+                    isAccent 
+                      ? 'text-[#7A6B94] dark:text-[#D4CBE5]' 
+                      : 'text-neutral-900 dark:text-[#f0ede8]'
+                  }`}
+                >
+                  {word}
+                </motion.span>
+              );
+            })}
           </p>
         </div>
-
-        <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-          onClick={() => setKey(k => k + 1)}
-          className="mt-8 px-5 py-2 rounded-full text-[11px] font-medium"
-          style={{ background: 'rgba(139,126,200,0.1)', color: '#b8a9d4', border: '1px solid rgba(139,126,200,0.2)' }}>
-          Replay
-        </motion.button>
       </div>
-</div>
+
+      <p className="mt-8 text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+        Click to replay animation
+      </p>
+    </div>
   );
 }

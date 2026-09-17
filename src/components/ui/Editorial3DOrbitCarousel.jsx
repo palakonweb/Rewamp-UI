@@ -18,22 +18,24 @@ export function Editorial3DOrbitCarousel({
   autoTick = true,
   autoRotate = true,
   speed = 1.0,
-  tickInterval = 1600,
+  tickInterval = 1800,
   cardWidth = 210,
   cardHeight = 290,
+  pauseOnHover = false,
   className = '',
 }) {
   const containerRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0, initialStep: 0 });
 
   // Effective ticking interval factoring in speed
   const effectiveInterval = Math.round(tickInterval / (speed || 1.0));
   const effectiveAuto = autoTick && autoRotate;
 
-  // Pure surreal art images provided by user
+  // Pure surreal art images
   const defaultItems = [
     { id: '1', image: '/cards/sky-curtain.png' },
     { id: '2', image: '/cards/airplane-sunset.png' },
@@ -46,19 +48,38 @@ export function Editorial3DOrbitCarousel({
   const numCards = cards.length;
 
   // Generous breathing space stride along diagonal path
-  // dx = 195px, dy = 115px gives plenty of airy breathing space
   const stepX = 195;
   const stepY = 115;
 
-  // Clock-arm ticking timer: ticks like a mechanical second hand
+  // Mark entrance animation complete after mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasEntered(true);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Clock-arm ticking timer: ticks sequentially on load and repeats
   useEffect(() => {
     if (!effectiveAuto || isPaused || isDragging) return;
 
-    const intervalId = setInterval(() => {
+    // Start first tick shortly after load so animation immediately begins
+    const initialKickstart = setTimeout(() => {
       setCurrentStep((prev) => prev + 1);
-    }, effectiveInterval);
+    }, 1000);
 
-    return () => clearInterval(intervalId);
+    let intervalId = null;
+    const startInterval = setTimeout(() => {
+      intervalId = setInterval(() => {
+        setCurrentStep((prev) => prev + 1);
+      }, effectiveInterval);
+    }, 1000);
+
+    return () => {
+      clearTimeout(initialKickstart);
+      clearTimeout(startInterval);
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [effectiveAuto, isPaused, isDragging, effectiveInterval]);
 
   // Pointer drag to scrub or tick cards
@@ -76,7 +97,6 @@ export function Editorial3DOrbitCarousel({
     if (!isDragging) return;
     const dx = e.clientX - dragStartRef.current.x;
     const dy = e.clientY - dragStartRef.current.y;
-    // Diagonal distance dragged
     const dist = (dx + dy * 0.6) / -120;
     if (Math.abs(dist) >= 1) {
       const stepDelta = Math.round(dist);
@@ -96,39 +116,41 @@ export function Editorial3DOrbitCarousel({
   return (
     <div
       ref={containerRef}
-      onMouseEnter={() => setIsPaused(true)}
+      onMouseEnter={() => {
+        if (pauseOnHover) setIsPaused(true);
+      }}
       onMouseLeave={() => {
-        setIsPaused(false);
+        if (pauseOnHover) setIsPaused(false);
         setIsDragging(false);
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full h-[600px] md:h-[660px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
+      className={`relative w-full h-[600px] md:h-[660px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[24px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] shadow-xl flex items-center justify-center ${className}`}
       style={{
         perspective: 1400,
       }}
     >
       {/* Top Header Controls: Arrow + SHOWCASE 11 */}
-      <div className="absolute top-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800">
+      <div className="absolute top-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800 dark:text-neutral-200">
         <button
           onClick={() => setCurrentStep((prev) => prev - 1)}
-          className="p-1.5 rounded-full hover:bg-black/5 transition-colors pointer-events-auto cursor-pointer"
+          className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
           title="Previous tick"
         >
-          <ArrowLeft className="w-5 h-5 text-neutral-800" />
+          <ArrowLeft className="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
         </button>
         <div className="flex items-center gap-3">
-          <span className="text-[11px] font-mono tracking-widest uppercase font-semibold text-neutral-500">
+          <span className="text-[11px] font-mono tracking-widest uppercase font-semibold text-neutral-500 dark:text-neutral-400">
             SHOWCASE 11
           </span>
           <button
             onClick={() => setIsPaused(!isPaused)}
-            className="p-1 rounded-md hover:bg-black/5 text-neutral-400 hover:text-neutral-700 transition-colors pointer-events-auto cursor-pointer"
+            className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors pointer-events-auto cursor-pointer"
             title={isPaused ? 'Resume ticking' : 'Pause ticking'}
           >
-            {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+            {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
           </button>
         </div>
       </div>
@@ -193,7 +215,13 @@ export function Editorial3DOrbitCarousel({
           return (
             <motion.div
               key={card.id}
-              initial={false}
+              initial={{
+                x: posX,
+                y: posY + 100,
+                scale: 0.65,
+                opacity: 0,
+                rotateZ: rotZ * 1.3,
+              }}
               animate={{
                 x: posX,
                 y: posY,
@@ -201,13 +229,22 @@ export function Editorial3DOrbitCarousel({
                 opacity,
                 rotateZ: rotZ,
               }}
-              transition={{
-                // Clock-tick snappy mechanical spring: rapid crisp jump, settles with minimal overshoot
-                type: 'spring',
-                stiffness: 380,
-                damping: 32,
-                mass: 0.8,
-              }}
+              transition={
+                !hasEntered
+                  ? {
+                      type: 'spring',
+                      stiffness: 240,
+                      damping: 22,
+                      mass: 0.9,
+                      delay: idx * 0.08,
+                    }
+                  : {
+                      type: 'spring',
+                      stiffness: 380,
+                      damping: 32,
+                      mass: 0.8,
+                    }
+              }
               style={{
                 width: cardWidth,
                 height: cardHeight,
@@ -247,7 +284,7 @@ export function Editorial3DOrbitCarousel({
       </div>
 
       {/* Bottom Editor Bar: JITTER · VIDEO · TEMPLATE */}
-      <div className="absolute bottom-3 left-6 right-6 flex items-center justify-between pointer-events-none z-20 text-[10px] font-mono tracking-wider uppercase text-neutral-500">
+      <div className="absolute bottom-3 left-6 right-6 flex items-center justify-between pointer-events-none z-20 text-[10px] font-mono tracking-wider uppercase text-neutral-500 dark:text-neutral-400">
         <span>JITTER</span>
         <div className="flex items-center gap-1.5 pointer-events-auto">
           {cards.map((_, i) => {
@@ -256,8 +293,10 @@ export function Editorial3DOrbitCarousel({
               <button
                 key={i}
                 onClick={() => setCurrentStep(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                  i === activeIdx ? 'w-4 bg-neutral-800' : 'bg-neutral-300 hover:bg-neutral-400'
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  i === activeIdx
+                    ? 'w-4 bg-neutral-900 dark:bg-white'
+                    : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-500'
                 }`}
                 title={`Card ${i + 1}`}
               />

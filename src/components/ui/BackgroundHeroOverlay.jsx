@@ -6,7 +6,8 @@ export default function BackgroundHeroOverlay({
     subtitle = "Creative Components",
     badge = "NEW",
     brandName = "RewampUI",
-    defaultShow = true
+    defaultShow = true,
+    isLight = false,
 }) {
     const [showDemo, setShowDemo] = useState(defaultShow);
 
@@ -39,21 +40,29 @@ export default function BackgroundHeroOverlay({
                     >
                         {/* Top Floating Glass Navbar */}
                         <div className="w-full flex justify-center pointer-events-auto">
-                            <div className="flex items-center justify-between gap-5 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white shadow-xl max-w-lg w-full">
+                            <div className={`flex items-center justify-between gap-5 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full backdrop-blur-md shadow-xl max-w-lg w-full ${
+                                isLight 
+                                    ? 'bg-white/80 border border-black/10 text-neutral-900' 
+                                    : 'bg-black/40 border border-white/10 text-white'
+                            }`}>
                                 {/* Brand Logo + Name with official /logo.svg */}
                                 <div className="flex items-center gap-2">
                                     <img src="/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
-                                    <span className="font-bold text-[13px] tracking-tight text-white">{brandName}</span>
+                                    <span className={`font-bold text-[13px] tracking-tight ${isLight ? 'text-neutral-900' : 'text-white'}`}>{brandName}</span>
                                 </div>
 
                                 {/* Nav Links */}
-                                <div className="hidden sm:flex items-center gap-5 text-[12px] text-white/70 font-medium">
-                                    <span className="hover:text-white transition-colors cursor-pointer">Features</span>
-                                    <span className="hover:text-white transition-colors cursor-pointer">About</span>
+                                <div className={`hidden sm:flex items-center gap-5 text-[12px] font-medium ${
+                                    isLight ? 'text-neutral-600' : 'text-white/70'
+                                }`}>
+                                    <span className={`transition-colors cursor-pointer ${isLight ? 'hover:text-neutral-900' : 'hover:text-white'}`}>Features</span>
+                                    <span className={`transition-colors cursor-pointer ${isLight ? 'hover:text-neutral-900' : 'hover:text-white'}`}>About</span>
                                 </div>
 
                                 {/* Sign up Action Button */}
-                                <button className="px-3.5 py-1 rounded-full bg-white text-black font-semibold text-[11px] sm:text-[12px] hover:bg-white/90 transition shadow-sm cursor-pointer">
+                                <button className={`px-3.5 py-1 rounded-full font-semibold text-[11px] sm:text-[12px] transition shadow-sm cursor-pointer ${
+                                    isLight ? 'bg-neutral-900 text-white hover:bg-neutral-800' : 'bg-white text-black hover:bg-white/90'
+                                }`}>
                                     Sign up
                                 </button>
                             </div>
@@ -62,26 +71,42 @@ export default function BackgroundHeroOverlay({
                         {/* Center Hero Content */}
                         <div className="flex-1 flex flex-col items-center justify-center text-center my-auto px-4">
                             {/* Pill Badge */}
-                            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 mb-4 shadow-sm">
-                                <span className="px-1.5 py-0.5 rounded-full bg-white text-black font-bold text-[8.5px] tracking-wider uppercase">
+                            <div className={`inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full backdrop-blur-md mb-4 shadow-sm ${
+                                isLight ? 'bg-black/5 border border-black/10' : 'bg-white/10 border border-white/10'
+                            }`}>
+                                <span className={`px-1.5 py-0.5 rounded-full font-bold text-[8.5px] tracking-wider uppercase ${
+                                    isLight ? 'bg-neutral-900 text-white' : 'bg-white text-black'
+                                }`}>
                                     {badge}
                                 </span>
-                                <span className="text-[11px] text-white/80 font-medium tracking-wide">
+                                <span className={`text-[11px] font-medium tracking-wide ${
+                                    isLight ? 'text-neutral-800 font-semibold' : 'text-white/80'
+                                }`}>
                                     {subtitle}
                                 </span>
                             </div>
 
                             {/* Headline */}
-                            <h1 className="font-sans normal-case text-xl sm:text-2xl md:text-[30px] font-bold text-white tracking-tight leading-[1.2] max-w-md drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+                            <h1 className={`font-sans normal-case text-xl sm:text-2xl md:text-[30px] font-bold tracking-tight leading-[1.2] max-w-md ${
+                                isLight 
+                                    ? 'text-neutral-950 drop-shadow-[0_1px_8px_rgba(255,255,255,0.7)]' 
+                                    : 'text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]'
+                            }`}>
                                 {renderTitle()}
                             </h1>
 
                             {/* CTAs */}
                             <div className="flex items-center justify-center gap-2.5 mt-5 pointer-events-auto">
-                                <button className="px-5 py-2 rounded-xl bg-white text-black font-semibold text-[12px] sm:text-[13px] hover:bg-white/90 transition shadow-lg cursor-pointer">
+                                <button className={`px-5 py-2 rounded-xl font-semibold text-[12px] sm:text-[13px] transition shadow-lg cursor-pointer ${
+                                    isLight ? 'bg-neutral-900 text-white hover:bg-neutral-800' : 'bg-white text-black hover:bg-white/90'
+                                }`}>
                                     Get started
                                 </button>
-                                <button className="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-[12px] sm:text-[13px] backdrop-blur-sm border border-white/10 transition shadow-sm cursor-pointer">
+                                <button className={`px-5 py-2 rounded-xl font-medium text-[12px] sm:text-[13px] backdrop-blur-sm transition shadow-sm cursor-pointer ${
+                                    isLight 
+                                        ? 'bg-white/80 hover:bg-white text-neutral-900 border border-black/10' 
+                                        : 'bg-white/10 hover:bg-white/15 text-white border border-white/10'
+                                }`}>
                                     Learn more
                                 </button>
                             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, MessageCircle, UserPlus, Link2, MapPin, Star, Users, FolderOpen } from 'lucide-react';
 
@@ -11,7 +11,7 @@ const promptContent = `glassmorphism profile card — frosted glass with backdro
 
 const VARIANTS = {
   dark:   { label: 'Dark',   bg: '#06060f', b1: '#1e0a5ecc', b2: '#0a2a6ecc', b3: '#1a0e60cc', card: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.10)', shadow: '0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)', tp: '#fff', ts: 'rgba(255,255,255,0.42)', statBg: 'rgba(255,255,255,0.06)', statBorder: 'rgba(255,255,255,0.08)', btn: 'rgba(255,255,255,0.07)', btnB: 'rgba(255,255,255,0.10)', btnT: 'rgba(255,255,255,0.72)', accent: '#a78bfa', avatarRing: 'rgba(255,255,255,0.14)' },
-  light:  { label: 'Light',  bg: '#f0ede8', b1: '#e8d5f5cc', b2: '#d5e5ffcc', b3: '#f5d5e8cc', card: 'rgba(255,255,255,0.58)', border: 'rgba(255,255,255,0.85)', shadow: '0 32px 80px rgba(0,0,0,0.09), inset 0 1px 0 rgba(255,255,255,0.9)', tp: '#0f0f14', ts: 'rgba(15,15,20,0.42)', statBg: 'rgba(255,255,255,0.65)', statBorder: 'rgba(0,0,0,0.06)', btn: 'rgba(0,0,0,0.04)', btnB: 'rgba(0,0,0,0.07)', btnT: 'rgba(0,0,0,0.62)', accent: '#7c3aed', avatarRing: 'rgba(255,255,255,0.9)' },
+  light:  { label: 'Light',  bg: '#f0ede8', b1: '#e8d5f5cc', b2: '#d5e5ffcc', b3: '#f5d5e8cc', card: 'rgba(255,255,255,0.75)', border: 'rgba(255,255,255,0.95)', shadow: '0 24px 60px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9)', tp: '#0f0f14', ts: 'rgba(15,15,20,0.55)', statBg: 'rgba(255,255,255,0.85)', statBorder: 'rgba(0,0,0,0.06)', btn: 'rgba(0,0,0,0.05)', btnB: 'rgba(0,0,0,0.08)', btnT: 'rgba(0,0,0,0.75)', accent: '#7c3aed', avatarRing: 'rgba(255,255,255,0.9)' },
   accent: { label: 'Accent', bg: '#050916', b1: '#0c2a6ecc', b2: '#1a0060cc', b3: '#0a3a8ecc', card: 'rgba(14,30,80,0.45)', border: 'rgba(100,140,255,0.18)', shadow: '0 32px 80px rgba(10,20,60,0.7), inset 0 1px 0 rgba(100,140,255,0.12)', tp: '#e8efff', ts: 'rgba(180,200,255,0.48)', statBg: 'rgba(80,120,255,0.10)', statBorder: 'rgba(80,120,255,0.15)', btn: 'rgba(80,120,255,0.10)', btnB: 'rgba(80,120,255,0.18)', btnT: 'rgba(180,200,255,0.78)', accent: '#60a5fa', avatarRing: 'rgba(100,160,255,0.3)' },
 };
 
@@ -29,7 +29,23 @@ function StatChip({ label, value, icon: Icon, v }) {
 
 export default function GlassProfileCardShowcase() {
   const [copied, setCopied] = useState(false);
-  const [variant] = useState('dark');
+  const [variant, setVariant] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setVariant(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+
   const v = VARIANTS[variant];
 
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
@@ -103,8 +119,8 @@ export default function GlassProfileCardShowcase() {
           </motion.div>
         </AnimatePresence>
 
-        <span className="absolute bottom-4 right-5 text-white/10 text-[11px] font-semibold tracking-widest uppercase">Glass Profile</span>
+        <span className="absolute bottom-4 right-5 text-neutral-500 dark:text-white/20 text-[11px] font-semibold tracking-widest uppercase">Glass Profile</span>
       </div>
-</div>
+    </div>
   );
 }

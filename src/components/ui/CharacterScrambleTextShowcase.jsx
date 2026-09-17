@@ -42,31 +42,25 @@ export default function CharacterScrambleTextShowcase() {
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="relative w-full h-full p-8 sm:p-12 flex flex-col items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center p-6">
+      {/* Dot grid */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 0.5px, transparent 0)', backgroundSize: '16px 16px' }} 
+      />
 
-        {/* Dot grid */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 0.5px, transparent 0)', backgroundSize: '16px 16px' }} />
-
-        <p className="text-[10px] uppercase tracking-[0.3em] mb-6 relative z-10" style={{ color: 'rgba(126,200,164,0.5)' }}>Character Scramble</p>
-
-        <div className="text-center relative z-10">
-          <h2 className="text-[32px] sm:text-[44px] font-bold tracking-tight leading-none font-mono" style={{ color: '#f0ede8' }}>
-            <ScrambleText text="PREMIUM DESIGN" trigger={key} />
-          </h2>
-          <p className="text-[14px] font-mono mt-4" style={{ color: 'rgba(126,200,164,0.4)' }}>
-            <ScrambleText text="Decoded in real-time" trigger={key} />
-          </p>
-        </div>
-
-        <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-          onClick={() => setKey(k => k + 1)}
-          className="mt-8 px-5 py-2 rounded-full text-[11px] font-medium font-mono relative z-10"
-          style={{ background: 'rgba(126,200,164,0.1)', color: '#7ec8a4', border: '1px solid rgba(126,200,164,0.2)' }}>
-          Descramble
-        </motion.button>
+      <div 
+        onClick={() => setKey(k => k + 1)}
+        className="text-center relative z-10 cursor-pointer select-none group"
+      >
+        <h2 className="text-[34px] sm:text-[50px] font-bold tracking-tight leading-none font-mono text-neutral-900 dark:text-[#E4DDF0] transition-transform duration-200 group-hover:scale-[1.01]">
+          <ScrambleText text="PURRFORM DESIGN" trigger={key} />
+        </h2>
       </div>
-</div>
+
+      <p className="mt-8 text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+        Click to descramble
+      </p>
+    </div>
   );
 }

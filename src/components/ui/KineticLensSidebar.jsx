@@ -2,46 +2,40 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 /**
- * Purrform UI Library Items (Buttons, Sidebars, Shaders, Loaders, Orbs, etc.):
+ * RewampUI Sidebar Categories:
  */
-export const LIBRARY_LENS_ITEMS = [
-  { id: 'buttons', label: 'Buttons' },
+export const REWAMP_SIDEBAR_ITEMS = [
+  { id: 'search-bars', label: 'Search Bars' },
   { id: 'sidebars', label: 'Sidebars' },
-  { id: 'shaders', label: 'Shaders' },
-  { id: 'loaders', label: 'Loaders' },
-  { id: 'orbs', label: 'Orbs' },
   { id: 'cards', label: 'Cards' },
-  { id: 'navbars', label: 'Navbars' },
+  { id: 'ui-for-ai', label: 'UI for AI' },
+  { id: 'buttons', label: 'Buttons' },
+  { id: 'text-animations', label: 'Text Animations' },
   { id: 'toggles', label: 'Toggles' },
   { id: 'cursors', label: 'Cursors' },
-  { id: 'text-animations', label: 'Text Animations' },
-  { id: 'search-bars', label: 'Search Bars' },
-  { id: 'backgrounds', label: 'Backgrounds' },
+  { id: 'navbars', label: 'Navbars' },
+  { id: 'animated-backgrounds', label: 'Animated Backgrounds' },
 ];
 
-export const DEFAULT_LENS_ITEMS = LIBRARY_LENS_ITEMS;
+export const DEFAULT_LENS_ITEMS = REWAMP_SIDEBAR_ITEMS;
 
 /**
  * KineticLensSidebar
- * Automated kinetic lens rolodex sidebar with centered text and library items:
- * - Text: Buttons, Sidebars, Shaders, Loaders, Orbs, Cards, Navbars, etc.
- * - Text centered horizontally with symmetrical focal dashes "— Item —"
- * - Automated continuous text scrolling by default
- * - Compact typography (focal: ~19-21px, peripheral: ~14-16px) with tight row height (44px)
- * - Pure pitch black canvas (#000000)
- * - Crisp deep indigo/navy peripheral items (#282D52)
- * - Bright white center focal item (#FFFFFF)
- * - Highly scroll-reactive with non-passive mouse wheel scrubbing, velocity inertia,
- *   touch/pointer drag, click-to-focus.
+ * Exact recreation of Recording 2026-09-15 155640.mp4:
+ * - Left-aligned vertical kinetic lens rolodex list
+ * - Active / focal item features an em-dash prefix "— " and enlarges in bold high-contrast text
+ * - Surrounding items recede into deep indigo/slate with reduced opacity and scale
+ * - Interactive via hover tracking, mouse wheel scrolling with momentum, touch/pointer drag,
+ *   and smooth automated cycling.
  */
 export function KineticLensSidebar({
   items = null,
-  initialIndex = 0, // Default "Buttons"
+  initialIndex = 1, // Default to "Sidebars"
   onSelect = null,
-  autoCycle = true, // Automated text scroll ON by default
-  cycleInterval = 2000,
+  autoCycle = true,
+  cycleInterval = 2200,
   scrollProgress = null,
-  align = 'center', // 'center' or 'left'
+  align = 'left',
   className = '',
 }) {
   const menuItems = items || DEFAULT_LENS_ITEMS;
@@ -56,6 +50,22 @@ export function KineticLensSidebar({
   );
   const [isDragging, setIsDragging] = useState(false);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark');
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
   // Motion value representing the continuous target position
   const targetIndex = useMotionValue(
@@ -64,9 +74,9 @@ export function KineticLensSidebar({
 
   // Physics spring for buttery smooth interpolation
   const smoothIndex = useSpring(targetIndex, {
-    stiffness: 240,
-    damping: 26,
-    mass: 0.75,
+    stiffness: 260,
+    damping: 28,
+    mass: 0.65,
   });
 
   const [displayIndex, setDisplayIndex] = useState(initialIndex);
@@ -107,7 +117,16 @@ export function KineticLensSidebar({
     [numItems, targetIndex, onSelect, menuItems]
   );
 
-  // Automated text scrolling: loops continuously through items
+  // Temporarily pause auto-scroll during user wheel/hover/drag and auto-resume after 2.5s
+  const markUserInteraction = useCallback(() => {
+    setIsUserInteracting(true);
+    if (autoResumeTimeoutRef.current) clearTimeout(autoResumeTimeoutRef.current);
+    autoResumeTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 2500);
+  }, []);
+
+  // Automated text scrolling: smoothly cycles through items when idle
   useEffect(() => {
     if (!autoCycle || isDragging || isUserInteracting) return;
 
@@ -121,15 +140,6 @@ export function KineticLensSidebar({
 
     return () => clearInterval(timer);
   }, [autoCycle, isDragging, isUserInteracting, numItems, cycleInterval, targetIndex, onSelect, menuItems]);
-
-  // Temporarily pause auto-scroll during user wheel/drag and auto-resume after 1.8s
-  const markUserInteraction = useCallback(() => {
-    setIsUserInteracting(true);
-    if (autoResumeTimeoutRef.current) clearTimeout(autoResumeTimeoutRef.current);
-    autoResumeTimeoutRef.current = setTimeout(() => {
-      setIsUserInteracting(false);
-    }, 1800);
-  }, []);
 
   // Native non-passive wheel listener for immediate, buttery smooth scroll reactivity
   useEffect(() => {
@@ -154,7 +164,7 @@ export function KineticLensSidebar({
         targetIndex.set(nearest);
         setActiveIndex(nearest);
         onSelect?.(menuItems[nearest]);
-      }, 160);
+      }, 150);
     };
 
     el.addEventListener('wheel', handleNativeWheel, { passive: false });
@@ -193,7 +203,7 @@ export function KineticLensSidebar({
     dragStartRef.current.lastTime = now;
 
     const totalDy = e.clientY - dragStartRef.current.y;
-    const deltaIndex = -totalDy / 44;
+    const deltaIndex = -totalDy / 52;
     const next = Math.max(0, Math.min(numItems - 1, dragStartRef.current.initial + deltaIndex));
     targetIndex.set(next);
   };
@@ -206,8 +216,8 @@ export function KineticLensSidebar({
     } catch (_) {}
 
     const current = targetIndex.get();
-    const fling = dragStartRef.current.velocity * 100;
-    const projected = Math.max(0, Math.min(numItems - 1, current + fling / 44));
+    const fling = dragStartRef.current.velocity * 120;
+    const projected = Math.max(0, Math.min(numItems - 1, current + fling / 52));
     const nearest = Math.round(projected);
 
     targetIndex.set(nearest);
@@ -216,9 +226,8 @@ export function KineticLensSidebar({
     markUserInteraction();
   };
 
-  const rowHeight = 44;
+  const rowHeight = 54;
   const centerY = 240;
-  const isCentered = align === 'center';
 
   return (
     <div
@@ -227,17 +236,20 @@ export function KineticLensSidebar({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full max-w-[340px] sm:max-w-[380px] h-[480px] bg-black overflow-hidden select-none cursor-grab active:cursor-grabbing px-6 sm:px-8 flex flex-col justify-center ${className}`}
+      className={`relative w-full max-w-[360px] sm:max-w-[420px] h-[480px] overflow-hidden select-none cursor-grab active:cursor-grabbing px-6 sm:px-10 flex flex-col justify-center transition-colors duration-300 ${
+        isDark ? 'bg-black text-white' : 'bg-[#FAFAFC] text-neutral-900'
+      } ${className}`}
       style={{
         touchAction: 'none',
       }}
     >
-      {/* Top & Bottom Vignette Mask to blend peripheral items into pitch black */}
+      {/* Top & Bottom Vignette Mask to softly fade peripheral items into background */}
       <div
         className="absolute inset-0 pointer-events-none z-20"
         style={{
-          background:
-            'linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.95) 12%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.95) 88%, #000000 100%)',
+          background: isDark
+            ? 'linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.96) 12%, transparent 28%, transparent 72%, rgba(0, 0, 0, 0.96) 88%, #000000 100%)'
+            : 'linear-gradient(to bottom, #FAFAFC 0%, rgba(250, 250, 252, 0.96) 12%, transparent 28%, transparent 72%, rgba(250, 250, 252, 0.96) 88%, #FAFAFC 100%)',
         }}
       />
 
@@ -247,18 +259,27 @@ export function KineticLensSidebar({
           const offset = idx - displayIndex;
           const absOffset = Math.abs(offset);
 
-          if (absOffset > 5.8) return null;
+          if (absOffset > 5.5) return null;
 
           const y = centerY + offset * rowHeight;
           const isFocal = absOffset < 0.45;
-          const focalFactor = Math.max(0, 1 - absOffset * 2.2);
+          const focalFactor = Math.max(0, 1 - absOffset * 2.0);
 
-          const distanceFade = Math.max(0, 1 - Math.pow(absOffset / 5.0, 1.8));
-          const textColor = isFocal
-            ? '#FFFFFF'
-            : `rgba(45, 52, 92, ${Math.min(1, distanceFade * 0.95).toFixed(3)})`;
+          // Optical scale and positioning
+          const scale = 0.78 + focalFactor * 0.32; // scales from ~0.78 to ~1.10
+          const distanceFade = Math.max(0, 1 - Math.pow(absOffset / 4.8, 1.7));
 
-          const scale = 0.86 + focalFactor * 0.14;
+          // Color calibration matching video (deep indigo-slate peripheral, bright pure white focal)
+          let textColor;
+          if (isDark) {
+            textColor = isFocal
+              ? '#FFFFFF'
+              : `rgba(45, 52, 92, ${Math.min(1, distanceFade * 0.95).toFixed(3)})`;
+          } else {
+            textColor = isFocal
+              ? '#171717'
+              : `rgba(156, 142, 184, ${Math.min(1, distanceFade * 0.85).toFixed(3)})`;
+          }
 
           return (
             <motion.div
@@ -267,55 +288,54 @@ export function KineticLensSidebar({
                 scrollTo(idx);
                 markUserInteraction();
               }}
-              className={`absolute left-0 right-0 flex items-center cursor-pointer pointer-events-auto ${
-                isCentered ? 'justify-center text-center' : 'justify-start text-left'
-              }`}
+              onPointerEnter={() => {
+                if (!isDragging) {
+                  scrollTo(idx);
+                  markUserInteraction();
+                }
+              }}
+              className="absolute left-0 right-0 flex items-center justify-start text-left cursor-pointer pointer-events-auto"
               style={{
-                top: y - 18,
-                height: 36,
-                transformOrigin: isCentered ? 'center center' : 'left center',
+                top: y - 22,
+                height: 44,
+                transformOrigin: 'left center',
                 scale,
                 color: textColor,
               }}
             >
-              <div className="flex items-center justify-center gap-2.5">
-                {/* Left Dash */}
+              <div className="flex items-center justify-start gap-3 w-full">
+                {/* Em-dash Indicator: strictly on the left side only (matches video) */}
                 <div
-                  className="overflow-hidden flex items-center justify-end transition-all duration-150 ease-out"
+                  className="overflow-hidden flex items-center justify-start transition-all duration-180 ease-out shrink-0"
                   style={{
-                    width: `${(focalFactor * 22).toFixed(1)}px`,
+                    width: `${(focalFactor * 32).toFixed(1)}px`,
                     opacity: focalFactor,
                   }}
                 >
-                  <div className="w-[18px] h-[2px] bg-white rounded-full flex-shrink-0" />
+                  <div 
+                    className={`h-[2.5px] rounded-full flex-shrink-0 transition-colors duration-150 ${
+                      isDark ? 'bg-white' : 'bg-neutral-900'
+                    }`}
+                    style={{
+                      width: '26px',
+                    }}
+                  />
                 </div>
 
-                {/* Centered Item Label */}
+                {/* Text Label */}
                 <span
                   className={`tracking-[-0.02em] font-sans antialiased select-none whitespace-nowrap transition-colors duration-150 ${
                     isFocal
-                      ? 'text-[18px] sm:text-[21px] font-semibold text-white'
-                      : 'text-[14px] sm:text-[16px] font-medium'
+                      ? 'text-[28px] sm:text-[34px] font-bold text-white'
+                      : 'text-[18px] sm:text-[20px] font-medium'
                   }`}
                   style={{
                     color: textColor,
+                    fontWeight: isFocal ? 700 : 500,
                   }}
                 >
                   {item.label}
                 </span>
-
-                {/* Right Dash (when centered, creates clean balanced focal framing) */}
-                {isCentered && (
-                  <div
-                    className="overflow-hidden flex items-center justify-start transition-all duration-150 ease-out"
-                    style={{
-                      width: `${(focalFactor * 22).toFixed(1)}px`,
-                      opacity: focalFactor,
-                    }}
-                  >
-                    <div className="w-[18px] h-[2px] bg-white rounded-full flex-shrink-0" />
-                  </div>
-                )}
               </div>
             </motion.div>
           );

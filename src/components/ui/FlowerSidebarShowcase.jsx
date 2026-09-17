@@ -119,8 +119,8 @@ export default function FlowerSidebarShowcase() {
   }, [nodes, activeIdx]);
 
   return (
-    <div className="w-full max-w-sm mx-auto flex items-center justify-center p-10">
-      <div className="w-[280px] flex flex-col justify-between overflow-hidden">
+    <div className="w-full flex flex-col items-center justify-center p-6 sm:p-10">
+      <div className="w-[280px] sm:w-[300px] flex flex-col justify-between overflow-hidden">
         {/* Top Header with Brand Mark */}
         <div>
           <div className="flex items-center gap-2.5 pb-3.5 border-b border-black/5 dark:border-white/5">
@@ -193,7 +193,7 @@ export default function FlowerSidebarShowcase() {
               <LilacFlowerIcon className="w-4 h-4 drop-shadow-[0_2px_8px_rgba(212,203,229,0.7)]" />
             </motion.div>
 
-            {/* Nav Labels */}
+            {/* Nav Labels with generous spacing from the rail line */}
             <div className="flex flex-col">
               {nodes.map(node => {
                 if (node.isCategory) {
@@ -201,7 +201,7 @@ export default function FlowerSidebarShowcase() {
                     <div
                       key={node.id}
                       style={{ height: itemHeight }}
-                      className="flex items-center pl-7 text-[10px] font-mono font-bold tracking-wider text-neutral-400 uppercase select-none"
+                      className="flex items-center pl-11 text-[10px] font-mono font-bold tracking-wider text-neutral-400 uppercase select-none"
                     >
                       {node.label}
                     </div>
@@ -215,7 +215,7 @@ export default function FlowerSidebarShowcase() {
                     key={node.id}
                     onClick={() => setActiveId(node.id)}
                     style={{ height: itemHeight }}
-                    className={`flex items-center justify-between pl-8 pr-3 rounded-xl text-xs transition-colors text-left cursor-pointer select-none ${
+                    className={`flex items-center justify-between pl-12 pr-3.5 rounded-xl text-xs transition-colors text-left cursor-pointer select-none ${
                       isActive
                         ? 'font-semibold text-neutral-900 dark:text-white bg-[#D4CBE5]/20 dark:bg-[#D4CBE5]/15'
                         : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
@@ -245,6 +245,11 @@ export default function FlowerSidebarShowcase() {
           </span>
         </div>
       </div>
+
+      {/* Single-line interaction description */}
+      <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+        Click items to slide flower along rail
+      </p>
     </div>
   );
 }

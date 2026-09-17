@@ -123,9 +123,11 @@ export default function SlideToConfirmButtonShowcase() {
                         </AnimatePresence>
                     </div>
                 </button>
-
-                <span className="absolute bottom-6 text-black/40 text-[13px] font-semibold tracking-widest uppercase">Click to Slide</span>
             </div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click button to confirm order
+            </p>
+        </div>
     );
 }

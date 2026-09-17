@@ -21,8 +21,8 @@ export default function FluidWaveNavbarShowcase() {
                 className="relative w-full h-full flex flex-col items-center justify-center p-8 sm:p-20"
             >
                 {/* Active Tab Indicator Badge */}
-                <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 text-[12px] font-medium font-sans">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10 text-neutral-800 dark:text-white/80 text-[12px] font-medium font-sans">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span>Active: {activeTabName}</span>
                 </div>
 
@@ -34,12 +34,10 @@ export default function FluidWaveNavbarShowcase() {
                 </div>
 
                 {/* Subtext guide */}
-                <span className="relative z-10 text-[11.5px] font-medium text-white/40 tracking-wider uppercase mt-4 select-none">
+                <span className="relative z-10 text-[11.5px] font-medium text-neutral-500 dark:text-white/40 tracking-wider uppercase mt-4 select-none">
                     Hover over tabs to glide wave indicator · Dark grey accent
                 </span>
             </div>
-
-            {/* ── Prompt block ── */}
-</div>
+        </div>
     );
 }

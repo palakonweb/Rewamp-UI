@@ -66,21 +66,21 @@ void main() {
   float coreC = exp(-distC * distC * 32.0);
   float haloC = exp(-distC * distC * 8.0);
 
-  vec3 colBg = mix(vec3(0.02, 0.02, 0.06), vec3(0.05, 0.04, 0.14), clamp(p.y * 0.8 + 0.5, 0.0, 1.0));
+  vec3 colBg = mix(vec3(0.04, 0.03, 0.07), vec3(0.09, 0.08, 0.13), clamp(p.y * 0.8 + 0.5, 0.0, 1.0));
 
-  vec3 colMagenta = vec3(0.92, 0.12, 0.50);
-  vec3 colRose = vec3(1.0, 0.32, 0.65);
-  vec3 colViolet = vec3(0.48, 0.18, 0.95);
-  vec3 colIndigo = vec3(0.18, 0.08, 0.48);
-  vec3 colLavender = vec3(0.72, 0.76, 1.0);
-  vec3 colPureWhite = vec3(1.9, 1.95, 2.1);
+  // Rewamp Brand Lilac & Lavender Palette
+  vec3 colDeepLilac = vec3(0.48, 0.42, 0.62); // #7A6B94
+  vec3 colAccentLilac = vec3(0.61, 0.56, 0.72); // #9C8EB8
+  vec3 colStrongLilac = vec3(0.76, 0.71, 0.85); // #C1B4D8
+  vec3 colSoftLavender = vec3(0.90, 0.87, 0.95); // #E4DDF0
+  vec3 colPureWhite = vec3(1.8, 1.85, 2.0);
 
   float edgeMask = smoothstep(1.3, 0.2, length(p * vec2(0.85, 1.2)));
 
   vec3 color = colBg;
-  color += mix(colIndigo, colViolet, coreC) * (haloC * 0.75 + coreC * 0.70) * edgeMask;
-  color += mix(colMagenta, colRose, coreB) * (haloB * 0.75 + coreB * 0.75) * edgeMask;
-  color += colLavender * haloA * 0.85 * edgeMask;
+  color += mix(colDeepLilac, colAccentLilac, coreC) * (haloC * 0.75 + coreC * 0.70) * edgeMask;
+  color += mix(colStrongLilac, colSoftLavender, coreB) * (haloB * 0.75 + coreB * 0.75) * edgeMask;
+  color += colSoftLavender * haloA * 0.85 * edgeMask;
   color += colPureWhite * (coreA * 1.8 + pow(coreA, 3.0) * 1.5) * edgeMask;
 
   float vignette = smoothstep(1.2, 0.35, length(uv - 0.5) * 1.2);
