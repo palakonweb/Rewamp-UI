@@ -255,9 +255,9 @@ function DockIcon({ children, label, onClick, theme, accent = false, active = fa
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        whileHover={{ scale: 1.22, y: -7 }}
-        whileTap={{ scale: 0.9 }}
-        transition={{ type: 'spring', stiffness: 420, damping: 20 }}
+        whileHover={{ scale: 1.08, y: -2 }}
+        whileTap={{ scale: 0.94 }}
+        transition={{ type: 'spring', stiffness: 340, damping: 26 }}
         title={label}
         className={`relative flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-colors ${
           accent
@@ -673,7 +673,7 @@ export default function RewampShowcase() {
         {/* Bottom-Center Liquid Glass Dock: Install, Prompt, Code, Theme */}
         <div className="absolute bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none">
           <div
-            className="pointer-events-auto flex items-end gap-1.5 rounded-[26px] px-2.5 py-2 backdrop-blur-2xl border"
+            className="pointer-events-auto flex items-end gap-4 rounded-[26px] px-4 py-2 backdrop-blur-2xl border"
             style={{
               background: theme === 'light'
                 ? 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 100%)'
