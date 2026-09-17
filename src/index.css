@@ -80,10 +80,10 @@
     --text-2: var(--text-secondary);
     --text-3: var(--text-subtle);
 
-    --font-display: 'Sarpanch', sans-serif;
-    --font-heading: 'Quicksand', sans-serif;
+    --font-display: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+    --font-heading: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
     --font-serif: 'Playfair Display', serif;
-    --font-sans: 'Inter', sans-serif;
+    --font-sans: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
     --font-mono: 'Geist Mono', monospace;
 
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.03);
@@ -121,6 +121,7 @@
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
     line-height: 1.7;
@@ -145,7 +146,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 0.06em;
     line-height: 1.15;
     text-transform: uppercase;
