@@ -1,16 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Sparkles, 
-  Home, 
-  Layers, 
-  Compass, 
-  Settings, 
-  Search, 
-  Bell, 
-  Folder, 
-  Check
-} from 'lucide-react';
+import { Search } from 'lucide-react';
 
 // Clean Blooming Lilac Flower Icon
 export function LilacFlowerIcon({ className = "w-4 h-4" }) {
@@ -39,18 +29,18 @@ const NAV_GROUPS = [
   {
     category: 'OVERVIEW',
     items: [
-      { id: 'dashboard', label: 'Dashboard', icon: Home },
-      { id: 'explore', label: 'Explore Components', icon: Compass },
-      { id: 'templates', label: 'Page Templates', icon: Layers },
+      { id: 'dashboard', label: 'Dashboard' },
+      { id: 'explore', label: 'Explore Components' },
+      { id: 'templates', label: 'Page Templates' },
     ]
   },
   {
     category: 'PROJECTS',
     items: [
-      { id: 'design-system', label: 'Design Tokens', icon: Folder },
-      { id: 'animations', label: 'Fluid Motion', icon: Sparkles },
-      { id: 'notifications', label: 'Activity Feed', icon: Bell },
-      { id: 'preferences', label: 'Settings', icon: Settings },
+      { id: 'design-system', label: 'Design Tokens' },
+      { id: 'animations', label: 'Fluid Motion' },
+      { id: 'notifications', label: 'Activity Feed' },
+      { id: 'preferences', label: 'Settings' },
     ]
   }
 ];
@@ -219,7 +209,6 @@ export default function FlowerSidebarShowcase() {
                 }
 
                 const isActive = activeId === node.id;
-                const Icon = node.icon;
 
                 return (
                   <button
@@ -232,10 +221,7 @@ export default function FlowerSidebarShowcase() {
                         : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      {Icon && <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#D4CBE5]' : 'opacity-70'}`} />}
-                      <span>{node.label}</span>
-                    </div>
+                    <span>{node.label}</span>
                     {isActive && (
                       <span className="w-1.5 h-1.5 rounded-full bg-[#D4CBE5]" />
                     )}

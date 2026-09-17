@@ -33,7 +33,7 @@ export default function OrbitingPlanetsNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#fdecd8] dark:bg-[#0c0d14] shadow-xl flex items-center justify-center p-8 group">
+            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#F6F4FB] dark:bg-[#100E16] shadow-xl flex items-center justify-center p-8 group">
                 
                 {/* 🎯 THE ORBITAL NAVBAR */}
                 <div 
@@ -45,15 +45,15 @@ export default function OrbitingPlanetsNavbarShowcase() {
                     <motion.div 
                         animate={{ scale: isHovered ? 0.8 : 1, x: isHovered ? -160 : 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                        className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 shadow-[0_0_40px_rgba(245,158,11,0.5)] flex items-center justify-center z-30"
+                        className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-[#9C8EB8] to-[#D4CBE5] shadow-[0_0_40px_rgba(193,180,216,0.5)] flex items-center justify-center z-30"
                     >
                         <Sun size={28} className="text-white" />
                     </motion.div>
 
                     {/* Orbit Ring (Visual only) */}
-                    <motion.div 
+                    <motion.div
                         animate={{ opacity: isHovered ? 0 : 0.2, scale: isHovered ? 0.5 : 1 }}
-                        className="absolute w-[180px] h-[180px] rounded-full border border-orange-500/50 border-dashed pointer-events-none"
+                        className="absolute w-[180px] h-[180px] rounded-full border border-[#C1B4D8]/50 border-dashed pointer-events-none"
                     />
 
                     {/* The Planets (Nav Items) Wrapper */}
@@ -85,9 +85,9 @@ export default function OrbitingPlanetsNavbarShowcase() {
                                         rotate: isHovered ? 0 : -angle 
                                     }}
                                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                                    className="absolute w-12 h-12 rounded-full bg-white dark:bg-[#1a1b26] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)] border border-black/5 dark:border-white/10 flex items-center justify-center pointer-events-auto hover:scale-110 hover:bg-orange-50 transition-colors z-20"
+                                    className="absolute w-12 h-12 rounded-full bg-white dark:bg-[#241F2E] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)] border border-black/5 dark:border-white/10 flex items-center justify-center pointer-events-auto hover:scale-110 hover:bg-[#F6F4FB] transition-colors z-20"
                                 >
-                                    <Icon size={20} className="text-orange-900/60 dark:text-orange-200/60" />
+                                    <Icon size={20} className="text-[#9C8EB8] dark:text-[#D4CBE5]/70" />
                                 </motion.button>
                             );
                         })}

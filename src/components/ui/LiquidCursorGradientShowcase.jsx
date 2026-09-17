@@ -51,22 +51,25 @@ export default function LiquidCursorGradientShowcase() {
                     scale: [1, 1.2, 0.9, 1.1, 1]
                 }}
                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-violet-600 rounded-full mix-blend-screen opacity-80"
+                className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full mix-blend-screen opacity-80"
+                style={{ backgroundColor: '#9C8EB8' }}
             />
-            <motion.div 
-                animate={{ 
-                    x: [0, -60, 20, 40, 0], 
+            <motion.div
+                animate={{
+                    x: [0, -60, 20, 40, 0],
                     y: [0, 40, -40, 30, 0],
                     scale: [1, 0.8, 1.3, 0.9, 1]
                 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[60%] bg-fuchsia-600 rounded-full mix-blend-screen opacity-80"
+                className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[60%] rounded-full mix-blend-screen opacity-80"
+                style={{ backgroundColor: '#D4CBE5' }}
             />
-            
+
             {/* The Mouse Tracking Orb */}
-            <motion.div 
-                className="absolute w-[400px] h-[400px] bg-cyan-400 rounded-full mix-blend-screen opacity-70"
+            <motion.div
+                className="absolute w-[400px] h-[400px] rounded-full mix-blend-screen opacity-70"
                 style={{
+                    backgroundColor: '#E4DDF0',
                     x: springX,
                     y: springY,
                     translateX: '-50%',

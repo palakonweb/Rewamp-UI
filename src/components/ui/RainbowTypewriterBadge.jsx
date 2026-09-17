@@ -16,7 +16,7 @@ export function RainbowTypewriterBadge({
   deletingSpeed = 55,
   pauseDelay = 1800,
   className = '',
-  fontSize = 'text-4xl sm:text-6xl md:text-7xl',
+  fontSize = 'text-xl sm:text-2xl md:text-3xl',
 }) {
   const [wordIndex, setWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
@@ -51,7 +51,7 @@ export function RainbowTypewriterBadge({
   }, [currentText, isDeleting, wordIndex, words, typingSpeed, deletingSpeed, pauseDelay]);
 
   return (
-    <div className={`relative flex items-center justify-center select-none w-full max-w-2xl px-6 ${className}`}>
+    <div className={`relative flex items-center justify-center select-none w-full max-w-md px-6 ${className}`}>
       {/* Anchor Container: Center-positioned so cursor stays completely fixed */}
       <div className="relative flex items-center">
         {/* Stationary Rainbow Spotlight emitting backward from the fixed cursor */}
@@ -68,13 +68,13 @@ export function RainbowTypewriterBadge({
           }}
           className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none z-0"
           style={{
-            width: '320px',
-            maxWidth: '120vw',
-            height: '150px',
+            width: '160px',
+            maxWidth: '80vw',
+            height: '70px',
             transformOrigin: 'right center',
             background:
-              'radial-gradient(ellipse 260px 80px at 100% 50%, rgba(255, 0, 128, 0.6) 0%, rgba(255, 102, 0, 0.45) 28%, rgba(0, 229, 255, 0.35) 60%, rgba(147, 51, 234, 0.2) 80%, transparent 100%)',
-            filter: 'blur(22px)',
+              'radial-gradient(ellipse 120px 40px at 100% 50%, rgba(255, 0, 128, 0.55) 0%, rgba(255, 102, 0, 0.4) 28%, rgba(0, 229, 255, 0.3) 60%, rgba(147, 51, 234, 0.18) 80%, transparent 100%)',
+            filter: 'blur(12px)',
             mixBlendMode: 'screen',
           }}
         />
@@ -94,7 +94,7 @@ export function RainbowTypewriterBadge({
         </div>
 
         {/* Stationary Rainbow Blinking Cursor: Fixed position, slightly bigger than text */}
-        <div className="relative z-10 flex items-center ml-2.5 flex-shrink-0">
+        <div className="relative z-10 flex items-center ml-1.5 flex-shrink-0">
           <motion.span
             animate={{
               opacity: [1, 0, 1],
@@ -106,12 +106,12 @@ export function RainbowTypewriterBadge({
             }}
             className="inline-block rounded-full"
             style={{
-              width: '6px',
-              height: '1.38em',
+              width: '3px',
+              height: '1.15em',
               background:
                 'linear-gradient(180deg, #FF007A 0%, #FF6600 25%, #FFD000 45%, #00FF88 65%, #00E5FF 85%, #9933FF 100%)',
               boxShadow:
-                '0 0 14px rgba(255, 0, 128, 0.95), 0 0 28px rgba(0, 229, 255, 0.8)',
+                '0 0 8px rgba(255, 0, 128, 0.9), 0 0 16px rgba(0, 229, 255, 0.7)',
             }}
           />
 
@@ -119,18 +119,18 @@ export function RainbowTypewriterBadge({
           <motion.div
             animate={{
               scale: [0.95, 1.3, 0.95],
-              opacity: [0.65, 0.95, 0.65],
+              opacity: [0.6, 0.9, 0.6],
             }}
             transition={{
               duration: 1.6,
               repeat: Infinity,
               ease: 'easeInOut',
             }}
-            className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-6 h-12 rounded-full pointer-events-none"
+            className="absolute -right-1 top-1/2 -translate-y-1/2 w-3.5 h-7 rounded-full pointer-events-none"
             style={{
               background:
-                'radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 0, 128, 0.55) 45%, transparent 70%)',
-              filter: 'blur(3px)',
+                'radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 0, 128, 0.5) 45%, transparent 70%)',
+              filter: 'blur(2px)',
             }}
           />
         </div>

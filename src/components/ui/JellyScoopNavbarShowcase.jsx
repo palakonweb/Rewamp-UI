@@ -18,10 +18,10 @@ export default function JellyScoopNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#f7e8ff] dark:bg-[#1f1025] shadow-xl flex items-center justify-center p-8 group">
-                
+            <div className="relative w-full h-[400px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#F6F4FB] dark:bg-[#1A1620] shadow-xl flex items-center justify-center p-8 group">
+
                 {/* 🎯 THE JELLY NAVBAR */}
-                <nav className="relative flex items-center p-3 rounded-3xl bg-white dark:bg-[#2c1a35] shadow-[0_10px_30px_rgba(150,0,255,0.1)] border border-purple-500/10">
+                <nav className="relative flex items-center p-3 rounded-3xl bg-white dark:bg-[#2A2433] shadow-[0_10px_30px_rgba(156,142,184,0.15)] border border-[#C1B4D8]/20">
                     {navItems.map((item, index) => {
                         const isActive = activeIndex === index;
 
@@ -30,22 +30,22 @@ export default function JellyScoopNavbarShowcase() {
                                 key={item}
                                 onClick={() => setActiveIndex(index)}
                                 className={`relative px-8 py-3 rounded-2xl text-[15px] font-bold transition-colors duration-300 z-10 ${
-                                    isActive 
-                                        ? 'text-white' 
-                                        : 'text-purple-900/40 hover:text-purple-900 dark:text-purple-200/40 dark:hover:text-purple-200'
+                                    isActive
+                                        ? 'text-[#171717]'
+                                        : 'text-[#9C8EB8]/50 hover:text-[#171717] dark:text-[#D4CBE5]/40 dark:hover:text-[#E4DDF0]'
                                 }`}
                             >
                                 {isActive && (
                                     <motion.div
                                         layoutId="jelly-scoop-indicator"
                                         // The jelly effect is achieved utilizing extreme spring elasticity and minimal damping constraints
-                                        transition={{ 
-                                            type: "spring", 
-                                            stiffness: 250, 
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 250,
                                             damping: 15,
                                             mass: 0.8
                                         }}
-                                        className="absolute inset-0 bg-gradient-to-r from-purple-500 to-fuchsia-500 rounded-2xl -z-10 shadow-[0_4px_12px_rgba(168,85,247,0.4)] origin-center"
+                                        className="absolute inset-0 bg-gradient-to-r from-[#D4CBE5] to-[#C1B4D8] rounded-2xl -z-10 shadow-[0_4px_12px_rgba(193,180,216,0.5)] origin-center"
                                     />
                                 )}
                                 <span className="relative z-20">{item}</span>

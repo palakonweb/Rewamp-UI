@@ -3,28 +3,31 @@ import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `futuristic sharp refracted laser light beams intersecting dynamically over a dark canvas`;
+const promptContent = `brand-lilac meteor streaks — bright falling heads trailing a tapered luminous tail across a dark canvas`;
+
+// Brand lilac palette (from index.css --lilac-*) used for the meteor heads/tails.
+const METEOR_COLORS = ['212,203,229', '193,180,216', '228,221,240'];
 
 class Beam {
     constructor(canvas) {
         this.canvas = canvas;
         this.reset();
-        this.x = Math.random() * canvas.width; // randomize start position
+        this.y = Math.random() * canvas.height; // randomize initial position along the flight path
     }
     reset() {
         this.x = (Math.random() - 0.5) * this.canvas.width * 2;
-        this.y = -100;
-        this.length = Math.random() * 400 + 200;
-        this.speed = Math.random() * 8 + 4;
-        this.width = Math.random() * 100 + 20;
-        this.angle = Math.PI / 4 + (Math.random() * 0.1 - 0.05); // 45 deg mostly
-        this.opacity = Math.random() * 0.15 + 0.05;
-        this.color = Math.random() > 0.5 ? '255,255,255' : '154,0,2'; // white or cherry
+        this.y = -120;
+        this.length = Math.random() * 260 + 140;
+        this.speed = Math.random() * 7 + 5;
+        this.headSize = Math.random() * 2 + 1.6;
+        this.angle = Math.PI / 4 + (Math.random() * 0.08 - 0.04); // ~45deg falling
+        this.opacity = Math.random() * 0.5 + 0.4;
+        this.color = METEOR_COLORS[Math.floor(Math.random() * METEOR_COLORS.length)];
     }
     update() {
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
-        
+
         if (this.y - this.length > this.canvas.height || this.x - this.length > this.canvas.width) {
             this.reset();
         }
@@ -34,17 +37,28 @@ class Beam {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
 
-        const gradient = ctx.createLinearGradient(0, -this.width/2, 0, this.width/2);
-        gradient.addColorStop(0, `rgba(${this.color}, 0)`);
-        gradient.addColorStop(0.5, `rgba(${this.color}, ${this.opacity})`);
-        gradient.addColorStop(1, `rgba(${this.color}, 0)`);
+        // Tapered glowing tail: bright at the head (0), fading to nothing at the tail end.
+        const tail = ctx.createLinearGradient(-this.length, 0, 0, 0);
+        tail.addColorStop(0, `rgba(${this.color}, 0)`);
+        tail.addColorStop(0.75, `rgba(${this.color}, ${this.opacity * 0.35})`);
+        tail.addColorStop(1, `rgba(${this.color}, ${this.opacity})`);
 
-        ctx.fillStyle = gradient;
-        ctx.fillRect(-this.length/2, -this.width/2, this.length, this.width);
-        
-        // Solid core
-        ctx.fillStyle = `rgba(${this.color}, ${this.opacity * 2})`;
-        ctx.fillRect(-this.length/2, -1, this.length, 2);
+        ctx.fillStyle = tail;
+        ctx.beginPath();
+        ctx.moveTo(-this.length, -0.5);
+        ctx.lineTo(0, -this.headSize);
+        ctx.lineTo(0, this.headSize);
+        ctx.lineTo(-this.length, 0.5);
+        ctx.closePath();
+        ctx.fill();
+
+        // Bright meteor head with soft glow
+        ctx.shadowColor = `rgba(${this.color}, 0.9)`;
+        ctx.shadowBlur = this.headSize * 6;
+        ctx.fillStyle = `rgba(${this.color}, ${Math.min(1, this.opacity * 1.4)})`;
+        ctx.beginPath();
+        ctx.arc(0, 0, this.headSize, 0, Math.PI * 2);
+        ctx.fill();
 
         ctx.restore();
     }

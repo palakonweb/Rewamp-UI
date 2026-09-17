@@ -28,11 +28,11 @@ const fragmentShaderSource = `
     float wave2 = sin(p.y * 3.0 - t * 1.5 + wave1) * 0.5 + 0.5;
     float wave3 = sin((p.x + p.y) * 2.0 + t + wave2 * 2.0) * 0.5 + 0.5;
     
-    // Soft Aurora Palette (emerald, deep violet, dark background)
+    // Soft Aurora Palette (brand lilac tones, dark background)
     vec3 bg = vec3(0.01, 0.02, 0.04);
-    vec3 auroraMain = vec3(0.05, 0.8, 0.6); // Emerald/Teal
-    vec3 auroraSec = vec3(0.6, 0.1, 0.8); // Purple
-    vec3 auroraAccent = vec3(0.1, 0.3, 0.9); // Blue
+    vec3 auroraMain = vec3(0.894, 0.867, 0.941); // Lilac 400 #E4DDF0
+    vec3 auroraSec = vec3(0.831, 0.796, 0.898); // Lilac 500 #D4CBE5 (primary brand)
+    vec3 auroraAccent = vec3(0.612, 0.557, 0.722); // Lilac 700 #9C8EB8
     
     vec3 currentLayer = mix(auroraMain, auroraSec, wave1);
     currentLayer = mix(currentLayer, auroraAccent, wave2);

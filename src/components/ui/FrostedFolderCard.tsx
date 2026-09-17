@@ -7,6 +7,25 @@ export interface FrostedFolderCardProps {
   hovered?: boolean;
 }
 
+// Photo collage contents — swap these for any images you like.
+const COLLAGE_IMAGES = [
+  { src: '/cards/sky-curtain.png', rotate: -3 },
+  { src: '/cards/rainbow-hill.png', rotate: 4 },
+  { src: '/cards/airplane-sunset.png', rotate: -6 },
+  { src: '/cards/kangaroo-planet.png', rotate: 7 },
+  { src: '/cards/train-window.jpg', rotate: -2 },
+];
+
+// Scattered target position for each photo once the folder springs open —
+// a loose macOS-style burst rather than a tidy grid.
+const OPEN_LAYOUT = [
+  { x: -132, y: -150, rotate: -14, scale: 1.02 },
+  { x: 96, y: -168, rotate: 10, scale: 0.96 },
+  { x: -20, y: -206, rotate: -4, scale: 1.08 },
+  { x: 138, y: -108, rotate: 16, scale: 0.9 },
+  { x: -138, y: -96, rotate: -18, scale: 0.92 },
+];
+
 export default function FrostedFolderCard({
   className = '',
   hovered: controlledHovered,
@@ -65,56 +84,39 @@ export default function FrostedFolderCard({
           </svg>
         </div>
 
-        {/* ── 2. Documents Layer (3 rounded wireframe sheets) ── */}
-        <div className="absolute inset-x-0 bottom-0 top-0 overflow-visible flex items-center justify-center pointer-events-none">
-          {/* Left Document Sheet */}
-          <motion.div
-            animate={{
-              x: isHovered ? -68 : -42,
-              y: isHovered ? -64 : -24,
-              rotate: isHovered ? -13 : 0,
-              scale: isHovered ? 1.02 : 1,
-            }}
-            transition={springConfig}
-            className="absolute bottom-12 w-[126px] sm:w-[146px] h-[165px] sm:h-[190px] rounded-[20px] bg-[#ECECEE] border border-black/[0.04] p-4 flex flex-col gap-2.5 shadow-[0_4px_14px_rgba(0,0,0,0.12)] origin-bottom-center z-10"
-          >
-            {/* Top wireframe placeholder lines */}
-            <div className="h-2 sm:h-2.5 w-3/4 rounded-full bg-[#D4D4D8] mt-1" />
-            <div className="h-2 sm:h-2.5 w-5/6 rounded-full bg-[#D4D4D8]" />
-          </motion.div>
+        {/* ── 2. Photo Collage Layer — bursts open like macOS's folder-open animation ── */}
+        <div className="absolute inset-x-0 bottom-0 top-0 overflow-visible flex items-end justify-center pointer-events-none">
+          {COLLAGE_IMAGES.map((photo, i) => {
+            const open = OPEN_LAYOUT[i];
+            // Closed state: photos peek out from behind the flap, gently stacked/staggered.
+            const closedX = (i - (COLLAGE_IMAGES.length - 1) / 2) * 14;
+            const closedY = -20 - i * 4;
+            const closedRotate = photo.rotate * 0.35;
 
-          {/* Right Document Sheet */}
-          <motion.div
-            animate={{
-              x: isHovered ? 68 : 44,
-              y: isHovered ? -54 : -12,
-              rotate: isHovered ? 13 : 0,
-              scale: isHovered ? 1.02 : 0.98,
-            }}
-            transition={springConfig}
-            className="absolute bottom-12 w-[124px] sm:w-[142px] h-[160px] sm:h-[185px] rounded-[20px] bg-[#E8E8EC] border border-black/[0.04] p-4 flex flex-col gap-2 shadow-[0_4px_12px_rgba(0,0,0,0.10)] origin-bottom-center z-10"
-          >
-            {/* Wireframe Placeholder Lines */}
-            <div className="h-2 sm:h-2.5 w-2/3 rounded-full bg-[#D8D8DC] mt-1" />
-            <div className="h-2 sm:h-2.5 w-1/2 rounded-full bg-[#E0E0E4]" />
-          </motion.div>
-
-          {/* Middle Document Sheet (Tilted ~-5.5°, elevated, overlaps left & right sheets) */}
-          <motion.div
-            animate={{
-              x: isHovered ? 0 : -8,
-              y: isHovered ? -98 : -54,
-              rotate: isHovered ? -2.5 : -5.5,
-              scale: isHovered ? 1.05 : 1,
-            }}
-            transition={springConfig}
-            className="absolute bottom-12 w-[134px] sm:w-[155px] h-[175px] sm:h-[200px] rounded-[22px] bg-[#F5F5F7] border border-black/[0.03] p-4 sm:p-5 flex flex-col gap-2.5 shadow-[0_12px_28px_rgba(0,0,0,0.18)] origin-bottom-center z-20"
-          >
-            {/* 3 top rounded text placeholder lines matching the user's reference image */}
-            <div className="h-2.5 sm:h-3 w-1/2 rounded-full bg-[#D4D4D8] mt-1" />
-            <div className="h-2.5 sm:h-3 w-5/6 rounded-full bg-[#D4D4D8]" />
-            <div className="h-2.5 sm:h-3 w-3/5 rounded-full bg-[#D4D4D8]" />
-          </motion.div>
+            return (
+              <motion.div
+                key={photo.src}
+                animate={
+                  isHovered
+                    ? { x: open.x, y: open.y, rotate: open.rotate, scale: open.scale, opacity: 1 }
+                    : { x: closedX, y: closedY, rotate: closedRotate, scale: 0.9, opacity: 1 }
+                }
+                transition={{
+                  ...springConfig,
+                  delay: isHovered ? i * 0.045 : (COLLAGE_IMAGES.length - i) * 0.02,
+                }}
+                style={{ zIndex: isHovered ? 40 + i : 10 + i }}
+                className="absolute bottom-16 w-[104px] sm:w-[122px] h-[104px] sm:h-[122px] rounded-[16px] bg-white p-1.5 shadow-[0_10px_26px_rgba(0,0,0,0.28)] origin-bottom-center"
+              >
+                <img
+                  src={photo.src}
+                  alt=""
+                  draggable={false}
+                  className="w-full h-full object-cover rounded-[11px] select-none pointer-events-none"
+                />
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* ── 3. Smoked Frosted Glass Front Flap ── */}

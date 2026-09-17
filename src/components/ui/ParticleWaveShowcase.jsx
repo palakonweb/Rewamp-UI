@@ -63,7 +63,7 @@ export default function ParticleWaveShowcase() {
                     const size = Math.max(0.1, perspective * 2);
                     const opacity = Math.max(0, perspective - 0.2); // fade out distant
                     
-                    ctx.fillStyle = `rgba(154, 0, 2, ${opacity})`; // Cherry red
+                    ctx.fillStyle = `rgba(212, 203, 229, ${opacity})`; // Brand lilac #D4CBE5
                     ctx.beginPath();
                     ctx.arc(screenX, screenY, size, 0, Math.PI * 2);
                     ctx.fill();

@@ -101,8 +101,8 @@ export default function AsciiMatrixHoverShowcase() {
             style={{
                 WebkitMaskImage: maskImage,
                 maskImage: maskImage,
-                color: '#34d399', // Emerald Neon Matrix Color
-                textShadow: '0 0 10px rgba(52, 211, 153, 0.8), 0 0 20px rgba(52, 211, 153, 0.4)'
+                color: '#D4CBE5', // Brand lilac
+                textShadow: '0 0 10px rgba(212, 203, 229, 0.85), 0 0 20px rgba(212, 203, 229, 0.45)'
             }}
         >
            {grid.map((char, i) => <span key={`highlight-${i}`}>{char}</span>)}

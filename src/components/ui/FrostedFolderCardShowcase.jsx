@@ -23,7 +23,7 @@ export default function FrostedFolderCardShowcase() {
         </div>
 
         <div className="absolute top-6 right-7 hidden sm:flex items-center gap-2 z-10 text-[11px] font-medium text-black/50">
-          <span>Hover or click folder to fan out documents</span>
+          <span>Hover or click folder to burst the photos into a collage</span>
         </div>
 
         {/* ── Frosted Folder Component ── */}
@@ -37,10 +37,10 @@ export default function FrostedFolderCardShowcase() {
             onClick={() => setIsOpen((prev) => !prev)}
             className="px-3.5 py-1.5 rounded-full text-[12px] font-medium transition-all bg-black/15 hover:bg-black/25 text-black/80 border border-black/10 shadow-xs cursor-pointer active:scale-95"
           >
-            {isOpen ? 'Close Folder' : 'Fan Out Documents'}
+            {isOpen ? 'Close Folder' : 'Open Collage'}
           </button>
           <span className="text-[11px] text-black/45 tracking-wide">
-            Spring damping · Translucent smoked glass · Embossed ridges
+            Spring physics · Staggered burst · macOS-style folder reveal
           </span>
         </div>
       </div>
