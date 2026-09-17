@@ -59,18 +59,7 @@ export function PerspectiveFlipDeck({
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       className={`relative w-full h-[480px] md:h-[530px] overflow-hidden select-none flex items-center justify-center rounded-2xl ${className}`}
-      style={{
-        background: 'radial-gradient(ellipse at 50% 45%, #FFFFFF 0%, #EAECEF 55%, #CFD4DB 100%)',
-      }}
     >
-      {/* Studio lighting vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.16) 100%)',
-        }}
-      />
-
       {/* 3D Isometric Deck Stage */}
       <div
         className="relative flex items-center justify-center cursor-pointer"

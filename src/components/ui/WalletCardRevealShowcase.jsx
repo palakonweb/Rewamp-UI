@@ -30,7 +30,9 @@ export default function WalletCardRevealShowcase() {
                 </div>
 
                 {/* The Interactive Wallet Component */}
-                <WalletCardReveal />
+                <div className="mt-8 sm:mt-12">
+                    <WalletCardReveal />
+                </div>
 
                 {/* Subtext tip */}
                 <span className="text-[11px] font-medium text-black/35 tracking-wider uppercase mt-4 select-none">

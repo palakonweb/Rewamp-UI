@@ -63,7 +63,7 @@ function PixelIcon({ dots, active }) {
                                     x: 0,
                                     y: 0,
                                     scale: 1.15,
-                                    backgroundColor: '#C1B4D8',
+                                    backgroundColor: '#9C8EB8',
                                 }
                                 : {
                                     x: seed * 0.25,
@@ -111,7 +111,7 @@ export default function PixelDotNavbarShowcase() {
                                 <PixelIcon dots={ICONS[link]} active={isOn} />
                                 <span
                                     className={`text-[15px] font-medium tracking-tight transition-colors duration-200 ${
-                                        isOn ? 'text-[#171717]' : 'text-zinc-400'
+                                        isOn ? 'text-[#9C8EB8] dark:text-[#D4CBE5]' : 'text-zinc-400 dark:text-zinc-500'
                                     }`}
                                 >
                                     {link}
@@ -121,7 +121,6 @@ export default function PixelDotNavbarShowcase() {
                     })}
                 </nav>
 
-                <span className="absolute bottom-6 text-black/30 text-[13px] font-semibold tracking-widest uppercase">Pixel Dot</span>
             </div>
 </div>
     );

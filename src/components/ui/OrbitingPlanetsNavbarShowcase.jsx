@@ -45,7 +45,7 @@ export default function OrbitingPlanetsNavbarShowcase() {
                     <motion.div 
                         animate={{ scale: isHovered ? 0.8 : 1, x: isHovered ? -160 : 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                        className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-[#9C8EB8] to-[#D4CBE5] shadow-[0_0_40px_rgba(193,180,216,0.5)] flex items-center justify-center z-30"
+                        className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-[#9C8EB8] to-[#D4CBE5] shadow-[0_0_18px_rgba(193,180,216,0.3)] flex items-center justify-center z-30"
                     >
                         <Sun size={28} className="text-white" />
                     </motion.div>

@@ -107,7 +107,6 @@ export function Editorial3DOrbitCarousel({
       onPointerCancel={handlePointerUp}
       className={`relative w-full h-[600px] md:h-[660px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
       style={{
-        background: 'radial-gradient(ellipse at 50% 45%, #F8F9FA 0%, #E9ECEF 55%, #CED4DA 100%)',
         perspective: 1400,
       }}
     >

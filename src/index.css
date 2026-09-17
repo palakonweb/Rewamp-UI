@@ -2,6 +2,8 @@
    (see comment there) instead of 5 serial render-blocking @import calls. */
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-white: #FFFFFF;
   --color-cherry: #810100;

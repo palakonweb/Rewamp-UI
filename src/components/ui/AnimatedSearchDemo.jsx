@@ -21,7 +21,7 @@ export default function AnimatedSearchDemo() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-20 bg-neutral-50/70 select-none">
+    <div className="w-full h-full flex flex-col items-center justify-center select-none">
       <motion.div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -99,11 +99,6 @@ export default function AnimatedSearchDemo() {
           )}
         </AnimatePresence>
       </motion.div>
-
-      {/* Helpful subtle micro-copy */}
-      <span className="text-[11.5px] font-medium text-black/35 tracking-wider uppercase mt-6 select-none">
-        Hover to expand · Type to search
-      </span>
     </div>
   );
 }

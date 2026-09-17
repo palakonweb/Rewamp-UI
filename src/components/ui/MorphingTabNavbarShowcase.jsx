@@ -21,7 +21,7 @@ export default function MorphingTabNavbarShowcase() {
             <div className="relative w-full h-full flex items-center justify-center">
                 
                 {/* 🎯 THE MORPHING NAVBAR */}
-                <nav className="relative flex items-center p-2 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                <nav className="relative flex items-center p-2 rounded-full bg-black/[0.04] dark:bg-white/[0.05] border border-black/10 dark:border-white/10 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
                     {tabs.map((tab) => {
                         const isActive = activeTab === tab.id;
                         return (
@@ -29,18 +29,18 @@ export default function MorphingTabNavbarShowcase() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`relative flex items-center gap-2 px-6 py-3 rounded-full transition-colors duration-300 ${
-                                    isActive ? 'text-white' : 'text-white/50 hover:text-white/80'
+                                    isActive ? 'text-black dark:text-white' : 'text-black/50 dark:text-white/50 hover:text-black/80 dark:hover:text-white/80'
                                 }`}
                             >
                                 {/* The Sliding Background Bubble */}
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeTabBubble"
-                                        className="absolute inset-0 bg-white/10 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] mix-blend-screen"
+                                        className="absolute inset-0 bg-black/10 dark:bg-white/10 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] dark:mix-blend-screen"
                                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                     />
                                 )}
-                                
+
                                 <span className="relative z-10 flex items-center justify-center">
                                     <tab.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
                                 </span>
@@ -51,8 +51,6 @@ export default function MorphingTabNavbarShowcase() {
                         );
                     })}
                 </nav>
-                
-                <span className="absolute bottom-6 text-white/20 text-[11px] font-semibold tracking-widest uppercase">Fluid Pill Navbar</span>
             </div>
 </div>
     );

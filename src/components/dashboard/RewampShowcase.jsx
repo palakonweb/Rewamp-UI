@@ -1,22 +1,24 @@
 // perf: lazy-loaded component streaming with Suspense, zero-CLS per-component skeletons, isolated ErrorBoundary
 import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Plane, 
-  Copy, 
-  Check, 
-  Code2, 
-  Maximize2, 
-  Minimize2, 
+import {
+  Plane,
+  Copy,
+  Check,
+  Code2,
+  Maximize2,
+  Minimize2,
   X,
   Search,
   RotateCw,
-  Sparkles
+  Sparkles,
+  Download,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { categories, findComponentBySlug } from '../docsRegistry';
 import { getPromptForSlug } from '../componentPrompts';
-import ThemeToggle from '../ui/ThemeToggle';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
 import {
@@ -62,9 +64,26 @@ function FlowerIcon({ className = "w-4 h-4" }) {
   );
 }
 
+// Photos revealed inside the folder — swap these for any images you like.
+const FOLDER_PHOTOS = [
+  '/cards/sky-curtain.png',
+  '/cards/rainbow-hill.png',
+  '/cards/airplane-sunset.png',
+  '/cards/kangaroo-planet.png',
+];
+
+// Target position for each photo once the folder opens — one to each side (top, right, bottom, left).
+const FOLDER_PHOTO_LAYOUT = [
+  { x: 0, y: -190, rotate: -2 },
+  { x: 168, y: -14, rotate: 4 },
+  { x: 0, y: 128, rotate: 3 },
+  { x: -168, y: -14, rotate: -4 },
+];
+
 // Clean Folder Component
 function CleanFolderComponent({ color = 'black' }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const themes = {
     black: {
@@ -96,9 +115,13 @@ function CleanFolderComponent({ color = 'black' }) {
   const current = themes[color] || themes.black;
 
   return (
-    <div 
+    <div
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => !dialogOpen && setIsHovered(false)}
+      onClick={() => {
+        setIsHovered(true);
+        setTimeout(() => setDialogOpen(true), 380);
+      }}
       className="relative w-[340px] sm:w-[390px] h-[260px] sm:h-[290px] flex items-end justify-center cursor-pointer select-none"
       style={{ perspective: '1200px' }}
     >
@@ -110,48 +133,25 @@ function CleanFolderComponent({ color = 'black' }) {
         <div className={`absolute top-0 left-0 w-[42%] h-8 rounded-t-[18px] ${current.back} -translate-y-2`} />
       </motion.div>
 
-      <div className="absolute inset-x-6 top-0 bottom-10 flex items-end justify-center pointer-events-none">
-        <motion.div
-          animate={{
-            rotate: isHovered ? -16 : -7,
-            y: isHovered ? -45 : -16,
-            x: isHovered ? -24 : -10,
-          }}
-          transition={{ type: 'spring', stiffness: 280, damping: 22 }}
-          className="absolute w-[78%] h-[85%] rounded-[20px] bg-[#E8E8E8] shadow-sm border border-black/5 p-4 flex flex-col gap-2.5 origin-bottom-center"
-        >
-          <div className="w-1/3 h-2.5 rounded-full bg-neutral-300" />
-          <div className="w-full h-2.5 rounded-full bg-neutral-300/70" />
-          <div className="w-2/3 h-2.5 rounded-full bg-neutral-300/70" />
-        </motion.div>
-
-        <motion.div
-          animate={{
-            rotate: isHovered ? 16 : 7,
-            y: isHovered ? -45 : -16,
-            x: isHovered ? 24 : 10,
-          }}
-          transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.02 }}
-          className="absolute w-[78%] h-[85%] rounded-[20px] bg-[#F2F2F2] shadow-sm border border-black/5 p-4 flex flex-col gap-2.5 origin-bottom-center"
-        >
-          <div className="w-1/2 h-2.5 rounded-full bg-neutral-300" />
-          <div className="w-5/6 h-2.5 rounded-full bg-neutral-300/70" />
-          <div className="w-3/4 h-2.5 rounded-full bg-neutral-300/70" />
-        </motion.div>
-
-        <motion.div
-          animate={{
-            rotate: 0,
-            y: isHovered ? -60 : -26,
-          }}
-          transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.04 }}
-          className="absolute w-[82%] h-[90%] rounded-[22px] bg-white shadow-md border border-black/5 p-5 flex flex-col gap-3 origin-bottom"
-        >
-          <div className="w-2/5 h-3 rounded-full bg-neutral-400" />
-          <div className="w-full h-2.5 rounded-full bg-neutral-200" />
-          <div className="w-4/5 h-2.5 rounded-full bg-neutral-200" />
-          <div className="w-3/4 h-2.5 rounded-full bg-neutral-200 mt-1" />
-        </motion.div>
+      <div className="absolute inset-x-0 top-0 bottom-10 flex items-end justify-center pointer-events-none">
+        {FOLDER_PHOTOS.map((src, i) => {
+          const target = FOLDER_PHOTO_LAYOUT[i];
+          return (
+            <motion.div
+              key={src}
+              animate={
+                isHovered
+                  ? { x: target.x, y: target.y, rotate: target.rotate, scale: 1, opacity: 1 }
+                  : { x: 0, y: -16 - i * 3, rotate: target.rotate * 0.3, scale: 0.92, opacity: 1 }
+              }
+              transition={{ type: 'spring', stiffness: 260, damping: 24, delay: isHovered ? i * 0.03 : 0 }}
+              style={{ zIndex: isHovered ? 40 + i : 10 + i }}
+              className="absolute w-[104px] sm:w-[118px] h-[104px] sm:h-[118px] rounded-[18px] overflow-hidden bg-neutral-200 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-black/5 origin-bottom-center"
+            >
+              <img src={src} alt="" draggable={false} className="w-full h-full object-cover select-none" />
+            </motion.div>
+          );
+        })}
       </div>
 
       <motion.div
@@ -177,6 +177,100 @@ function CleanFolderComponent({ color = 'black' }) {
           <div className="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-white/15 to-transparent pointer-events-none" />
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {dialogOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-6"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDialogOpen(false);
+              setIsHovered(false);
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+              className="relative w-full max-w-2xl rounded-[28px] bg-[#141218] border border-white/10 shadow-2xl p-6 sm:p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => {
+                  setDialogOpen(false);
+                  setIsHovered(false);
+                }}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {FOLDER_PHOTOS.map((src, i) => (
+                  <div key={src} className="aspect-square rounded-2xl overflow-hidden bg-neutral-800">
+                    <img src={src} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" draggable={false} />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// Single icon in the bottom liquid-glass dock: macOS-style magnify on hover + tooltip
+function DockIcon({ children, label, onClick, theme, accent = false, active = false }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div className="relative flex flex-col items-center">
+      <AnimatePresence>
+        {hovered && (
+          <motion.span
+            initial={{ opacity: 0, y: 4, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className={`absolute -top-9 px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap pointer-events-none ${
+              theme === 'light' ? 'bg-black/85 text-white' : 'bg-white/90 text-black'
+            }`}
+          >
+            {label}
+          </motion.span>
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        type="button"
+        onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setHovered(true)}
+        onBlur={() => setHovered(false)}
+        whileHover={{ scale: 1.22, y: -7 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 20 }}
+        title={label}
+        className={`relative flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-colors ${
+          accent
+            ? 'bg-[#D4CBE5] text-[#171717] shadow-[0_4px_14px_rgba(193,180,216,0.5)]'
+            : active
+            ? (theme === 'light' ? 'bg-black/10 text-black' : 'bg-white/20 text-white')
+            : (theme === 'light'
+                ? 'bg-white/50 text-neutral-700 hover:bg-white/80 hover:text-black'
+                : 'bg-white/10 text-white/75 hover:bg-white/20 hover:text-white')
+        }`}
+      >
+        {children}
+      </motion.button>
     </div>
   );
 }
@@ -576,63 +670,63 @@ export default function RewampShowcase() {
             : 'inset 0 1px 2px rgba(255,255,255,0.04)'
         }}
       >
-        {/* Top-Right Floating Action Bar */}
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
-          {/* Copy Prompt Button in Brand Asset Lilac */}
-          <button
-            onClick={handleCopyPrompt}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] shadow-xs transition-all cursor-pointer hover:shadow-sm active:scale-95"
-            title="Copy exact natural-language component prompt"
+        {/* Bottom-Center Liquid Glass Dock: Install, Prompt, Code, Theme */}
+        <div className="absolute bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none">
+          <div
+            className="pointer-events-auto flex items-end gap-1.5 rounded-[26px] px-2.5 py-2 backdrop-blur-2xl border"
+            style={{
+              background: theme === 'light'
+                ? 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 100%)'
+                : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
+              borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
+              boxShadow: theme === 'light'
+                ? '0 12px 32px rgba(0,0,0,0.10), inset 0 1px 1px rgba(255,255,255,0.8)'
+                : '0 12px 32px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.12)',
+            }}
           >
-            {copiedPrompt ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-[#171717]" />
-                <span>Copied</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-3.5 h-3.5 text-[#171717]" />
-                <span>Copy Prompt</span>
-              </>
-            )}
-          </button>
-
-          {/* Icon Dock: Fullscreen, Code, Theme */}
-          <div className="flex items-center gap-0.5 rounded-xl bg-white dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800 shadow-2xs p-1">
-            <button
-              onClick={() => {
-                if (!document.fullscreenElement) {
-                  document.documentElement.requestFullscreen();
-                } else {
-                  document.exitFullscreen();
-                }
-              }}
-              className="p-1.5 rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
-              title="Fullscreen"
+            <DockIcon
+              label="Install"
+              onClick={handleCopyInstall}
+              theme={theme}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-              </svg>
-            </button>
+              {copiedInstall ? <Check className="w-[18px] h-[18px]" /> : <Download className="w-[18px] h-[18px]" />}
+            </DockIcon>
 
-            <button
+            <DockIcon
+              label={copiedPrompt ? 'Copied' : 'Copy Prompt'}
+              onClick={handleCopyPrompt}
+              theme={theme}
+              accent
+            >
+              {copiedPrompt ? <Check className="w-[18px] h-[18px]" /> : <Sparkles className="w-[18px] h-[18px]" />}
+            </DockIcon>
+
+            <DockIcon
+              label="Code"
               onClick={() => setCodeDrawerOpen(!codeDrawerOpen)}
-              className="p-1.5 rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
-              title="View code"
+              theme={theme}
+              active={codeDrawerOpen}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-            </button>
+              <Code2 className="w-[18px] h-[18px]" />
+            </DockIcon>
 
-            <div className="pl-0.5 pr-0.5 flex items-center">
-              <ThemeToggle
-                isDark={theme === 'dark'}
-                onChange={(nextDark) => setTheme(nextDark ? 'dark' : 'light')}
-                size="sm"
-              />
-            </div>
+            <DockIcon
+              label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              theme={theme}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {theme === 'dark' ? (
+                  <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <Sun className="w-[18px] h-[18px]" />
+                  </motion.span>
+                ) : (
+                  <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <Moon className="w-[18px] h-[18px]" />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </DockIcon>
           </div>
         </div>
 

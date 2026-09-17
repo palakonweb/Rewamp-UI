@@ -47,8 +47,8 @@ export default function CurtainRevealNavbarShowcase() {
                 </AnimatePresence>
 
                 {/* 🎯 THE NAVBAR HEADER */}
-                <header className="relative z-20 w-full px-8 py-6 flex items-center justify-between border-b border-black/10 dark:border-white/10">
-                    <span className={`flex items-center gap-2 font-heading text-xl font-semibold tracking-tight ${activeCurtain ? 'text-white' : 'text-black dark:text-white'} transition-colors duration-500`}>
+                <header className="relative z-20 w-full px-8 py-6 flex items-center justify-between bg-black border-b border-white/10">
+                    <span className="flex items-center gap-2 font-heading text-xl font-semibold tracking-tight text-white transition-colors duration-500">
                         <img src="/logo.svg" alt="RewampUI" className="w-6 h-6 object-contain shrink-0" />
                         RewampUI
                     </span>
@@ -60,9 +60,7 @@ export default function CurtainRevealNavbarShowcase() {
                                 onMouseEnter={() => setActiveCurtain(link.id)}
                                 onMouseLeave={() => setActiveCurtain(null)}
                                 className={`relative text-[12px] font-semibold tracking-[0.2em] uppercase flex items-center gap-1 transition-colors duration-500 ${
-                                    activeCurtain
-                                        ? (activeCurtain === link.id ? 'text-white' : 'text-white/40')
-                                        : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-[#E4DDF0]'
+                                    activeCurtain === link.id ? 'text-white' : 'text-white/50 hover:text-[#E4DDF0]'
                                 }`}
                             >
                                 {link.label}
