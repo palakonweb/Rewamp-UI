@@ -32,12 +32,10 @@ export default function GlassOrbToggleShowcase() {
                 </div>
 
                 {/* Subtext instruction */}
-                <span className="relative z-10 text-[11.5px] font-medium text-white/40 tracking-wider uppercase mt-4 select-none">
+                <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
                     Click track or glass sphere to toggle theme
-                </span>
+                </p>
             </div>
-
-            {/* ── Prompt block ── */}
-</div>
+        </div>
     );
 }

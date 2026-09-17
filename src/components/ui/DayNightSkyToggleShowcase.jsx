@@ -20,7 +20,7 @@ export default function DayNightSkyToggleShowcase() {
     };
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
             <div className="relative w-full h-full flex flex-col items-center justify-center gap-6 p-8">
                 <span className="text-[12px] font-semibold tracking-[0.25em] text-white/70 uppercase select-none">
                     {isDay ? 'Day Mode' : 'Night Mode'}
@@ -126,6 +126,10 @@ export default function DayNightSkyToggleShowcase() {
                     </AnimatePresence>
                 </motion.button>
             </div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click toggle to switch day and night
+            </p>
+        </div>
     );
 }

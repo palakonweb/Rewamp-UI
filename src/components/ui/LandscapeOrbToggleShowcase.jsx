@@ -121,15 +121,19 @@ export default function LandscapeOrbToggleShowcase() {
     };
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
             <motion.div
-                className="relative w-full h-full flex flex-col items-center justify-center gap-5"
+                className="relative flex flex-col items-center justify-center gap-5"
             >
                 <LandscapeOrb theme={theme} onToggle={() => setTheme((v) => (v === 'dark' ? 'light' : 'dark'))} />
                 <span className="text-[11px] font-semibold tracking-[0.25em] uppercase select-none text-black/40">
                     {t.label} Mode
                 </span>
             </motion.div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click orb to toggle day and night
+            </p>
+        </div>
     );
 }

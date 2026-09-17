@@ -78,22 +78,22 @@ export function MorphSearchCapsule({
   const activeMode = mode || detectedMode;
   const isDark = activeMode === 'dark';
 
-  // Theme palettes for Grey modes
+  // Refined theme palettes for both Light and Dark mode
   const theme = {
     capsule: isDark
-      ? 'bg-[#222226] border-white/12 text-white'
-      : 'bg-[#E5E7EB] border-black/8 text-[#18181B]',
+      ? 'bg-[#1E1B24] border-white/12 text-white'
+      : 'bg-white border-black/[0.08] text-[#18181B]',
     shadow: isDark
-      ? '0 14px 32px -6px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.3)'
-      : '0 12px 28px -6px rgba(0,0,0,0.12), 0 4px 10px rgba(0,0,0,0.05)',
+      ? '0 14px 34px -6px rgba(0,0,0,0.65), 0 4px 14px rgba(0,0,0,0.35)'
+      : '0 12px 30px -6px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.04)',
     innerGlow: isDark
-      ? 'inset 0 1px 1px 0 rgba(255,255,255,0.16), inset 0 -1px 1px 0 rgba(0,0,0,0.4)'
-      : 'inset 0 1px 1.5px 0 rgba(255,255,255,0.9), inset 0 -1px 1px 0 rgba(0,0,0,0.05)',
+      ? 'inset 0 1px 1px 0 rgba(255,255,255,0.18), inset 0 -1px 1px 0 rgba(0,0,0,0.4)'
+      : 'inset 0 1px 1.5px 0 rgba(255,255,255,1), inset 0 -1px 1px 0 rgba(0,0,0,0.04)',
     iconColor: isDark ? '#FFFFFF' : '#18181B',
-    rippleColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)',
+    rippleColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.08)',
     inputColor: isDark ? 'text-white' : 'text-[#18181B]',
-    placeholderColor: isDark ? 'placeholder:text-white/40' : 'placeholder:text-[#18181B]/40',
-    ambientGlow: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
+    placeholderColor: isDark ? 'placeholder:text-white/40' : 'placeholder:text-neutral-400',
+    ambientGlow: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
   };
 
   return (

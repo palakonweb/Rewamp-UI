@@ -21,8 +21,8 @@ export default function AddToCartGlowButtonShowcase() {
     };
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
-            <div className="relative w-full h-full flex items-center justify-center p-8">
+        <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
+            <div className="relative flex items-center justify-center">
                 <motion.div whileHover={{ y: -2 }} className="relative p-[2px] rounded-2xl overflow-hidden" style={{ boxShadow: '0 14px 28px -14px rgba(0,0,0,0.35)' }}>
                     <motion.div
                         className="absolute inset-[-45%]"
@@ -39,7 +39,7 @@ export default function AddToCartGlowButtonShowcase() {
                     />
                     <button
                         onClick={handleAdd}
-                        className="relative z-10 flex items-center gap-2 px-9 py-4 rounded-2xl select-none bg-[#2b2b2b]"
+                        className="relative z-10 flex items-center gap-2 px-9 py-4 rounded-2xl select-none bg-[#2b2b2b] cursor-pointer"
                     >
                         <AnimatePresence mode="wait" initial={false}>
                             {!added ? (
@@ -57,6 +57,10 @@ export default function AddToCartGlowButtonShowcase() {
                     </button>
                 </motion.div>
             </div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click button to add item to cart
+            </p>
+        </div>
     );
 }

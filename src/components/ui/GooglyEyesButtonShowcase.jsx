@@ -88,8 +88,8 @@ export default function GooglyEyesButtonShowcase() {
     };
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
-            <div className="relative w-full h-full flex items-center justify-center p-8 group">
+        <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
+            <div className="relative flex items-center justify-center group">
 
                 {/* 🎯 THE BUTTON */}
                 <motion.button
@@ -120,6 +120,10 @@ export default function GooglyEyesButtonShowcase() {
                 </motion.button>
 
             </div>
-</div>
+
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Hover eyes track cursor, click to smirk
+            </p>
+        </div>
     );
 }

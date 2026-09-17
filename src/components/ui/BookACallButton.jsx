@@ -11,7 +11,7 @@ export default function BookACallButton({ onBook }) {
   const isActive = phase === "active";
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
       <motion.button
         type="button"
         onMouseEnter={() => setPhase((p) => (p === "active" ? p : "hover"))}
@@ -112,6 +112,10 @@ export default function BookACallButton({ onBook }) {
           )}
         </AnimatePresence>
       </motion.button>
+
+      <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+        Hover or click to book a call
+      </p>
     </div>
   );
 }
