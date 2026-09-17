@@ -27,7 +27,7 @@ import {
 function makeLazy(title, slug, importFn) {
     const Component = lazy(importFn);
     Component.displayName = title;
-    return { Component, title, slug };
+    return { Component, title, slug, importFn };
 }
 
 export function titleFromComponent(Comp) {

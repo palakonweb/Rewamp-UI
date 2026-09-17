@@ -27,6 +27,55 @@ import {
   CardSkeleton
 } from '../ui/Skeleton';
 
+// Raw source text for every showcase/component file — lazily fetched per-file
+// only when the code drawer actually opens (Vite code-splits each glob entry).
+const RAW_JS_MODULES = import.meta.glob('../ui/**/*.{jsx,tsx,js,ts}', { query: '?raw', import: 'default' });
+const RAW_CSS_MODULES = import.meta.glob('../ui/**/*.css', { query: '?raw', import: 'default' });
+
+// Pulls the literal import() specifier back out of a `() => import('./ui/Foo')`
+// arrow function so we can resolve the matching raw-source glob entry.
+function extractImportPath(importFn) {
+  if (typeof importFn !== 'function') return null;
+  const match = importFn.toString().match(/import\(\s*['"]([^'"]+)['"]\s*\)/);
+  return match ? match[1] : null;
+}
+
+function resolveRawPath(importFn) {
+  const rel = extractImportPath(importFn);
+  if (!rel) return null;
+  const base = rel.replace(/^\.\//, '../').replace(/\.(jsx|tsx|js|ts)$/, '');
+  const candidates = [`${base}.jsx`, `${base}.tsx`, `${base}.js`, `${base}.ts`];
+  return candidates.find((p) => RAW_JS_MODULES[p]) || null;
+}
+
+// Any additional local component file the showcase itself imports (e.g. a
+// Showcase wraps a separate `./ui/RealComponent`), so the code view isn't just
+// the thin showcase wrapper.
+function extractLocalImportPaths(source, currentPath) {
+  const dir = currentPath.slice(0, currentPath.lastIndexOf('/'));
+  const matches = [...source.matchAll(/from\s+['"](\.\/[^'"]+)['"]/g)];
+  const paths = matches
+    .map((m) => m[1])
+    .filter((p) => !p.endsWith('Source') && !p.endsWith('Prompt'))
+    .map((p) => `${dir}/${p.replace(/^\.\//, '')}`);
+  return paths;
+}
+
+function extractDependencies(sources) {
+  const deps = new Set();
+  for (const src of sources) {
+    const matches = [...src.matchAll(/(?:^|\n)\s*import[^'"]*from\s+['"]([^'".][^'"]*)['"]/g)];
+    for (const m of matches) {
+      const pkg = m[1];
+      if (pkg === 'react' || pkg === 'react-dom') continue;
+      // keep scoped/package root only, e.g. "lucide-react/foo" -> "lucide-react"
+      const root = pkg.startsWith('@') ? pkg.split('/').slice(0, 2).join('/') : pkg.split('/')[0];
+      deps.add(root);
+    }
+  }
+  return [...deps];
+}
+
 /**
  * Get dedicated zero-CLS skeleton matching the component's reserved dimensions
  */
@@ -285,6 +334,9 @@ export default function RewampShowcase() {
   const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [copiedInstall, setCopiedInstall] = useState(false);
   const [codeDrawerOpen, setCodeDrawerOpen] = useState(false);
+  const [promptDrawerOpen, setPromptDrawerOpen] = useState(false);
+  const [copiedPromptDrawer, setCopiedPromptDrawer] = useState(false);
+  const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', dependencies: [], loading: false });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -446,6 +498,54 @@ export default function RewampShowcase() {
   }, [activeSlug]);
 
   const isFolder = activeSlug === 'matte-folder-card' || activeSlug === 'frosted-folder-card' || activeSlug === 'foldercomponent';
+
+  // Load real source (+ any CSS + dependency list) only when the code drawer is open
+  useEffect(() => {
+    if (!codeDrawerOpen || isFolder) return;
+    const importFn = currentFound?.entry?.importFn;
+    const mainPath = resolveRawPath(importFn);
+    if (!mainPath) {
+      setSourceInfo({ code: '', css: '', dependencies: [], loading: false });
+      return;
+    }
+
+    let cancelled = false;
+    setSourceInfo((prev) => ({ ...prev, loading: true }));
+
+    (async () => {
+      const mainSource = await RAW_JS_MODULES[mainPath]();
+      const localPaths = extractLocalImportPaths(mainSource, mainPath);
+
+      const localSources = [];
+      for (const rawRel of localPaths) {
+        const candidates = [`${rawRel}.jsx`, `${rawRel}.tsx`, `${rawRel}.js`, `${rawRel}.ts`, rawRel];
+        const match = candidates.find((p) => RAW_JS_MODULES[p]);
+        if (match) localSources.push(await RAW_JS_MODULES[match]());
+      }
+
+      const cssCandidates = [mainPath, ...localPaths].map((p) => p.replace(/\.(jsx|tsx|js|ts)$/, '.css'));
+      let cssText = '';
+      for (const cssPath of cssCandidates) {
+        if (RAW_CSS_MODULES[cssPath]) {
+          cssText += await RAW_CSS_MODULES[cssPath]();
+        }
+      }
+
+      const allSources = [mainSource, ...localSources];
+      const combinedCode = allSources.join('\n\n// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──\n\n');
+
+      if (!cancelled) {
+        setSourceInfo({
+          code: combinedCode,
+          css: cssText,
+          dependencies: extractDependencies(allSources),
+          loading: false,
+        });
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [codeDrawerOpen, activeSlug, isFolder, currentFound]);
 
   return (
     <div 
@@ -693,12 +793,13 @@ export default function RewampShowcase() {
             </DockIcon>
 
             <DockIcon
-              label={copiedPrompt ? 'Copied' : 'Copy Prompt'}
-              onClick={handleCopyPrompt}
+              label="Prompt"
+              onClick={() => setPromptDrawerOpen(true)}
               theme={theme}
               accent
+              active={promptDrawerOpen}
             >
-              {copiedPrompt ? <Check className="w-[18px] h-[18px]" /> : <Sparkles className="w-[18px] h-[18px]" />}
+              <Sparkles className="w-[18px] h-[18px]" />
             </DockIcon>
 
             <DockIcon
@@ -836,85 +937,152 @@ export default function RewampShowcase() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-              className={`absolute right-0 top-0 bottom-0 z-40 w-full max-w-md border-l shadow-2xl p-6 flex flex-col justify-between ${
+              className={`absolute right-0 top-0 bottom-0 z-40 w-full max-w-lg border-l shadow-2xl p-6 flex flex-col overflow-y-auto ${
                 theme === 'light'
                   ? 'bg-white border-neutral-200 text-neutral-900'
                   : 'bg-[#17151C] border-[#2B2732] text-white'
               }`}
             >
-              <div>
-                <div className={`flex items-center justify-between pb-4 border-b ${
-                  theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              <div className={`flex items-center justify-between pb-4 border-b sticky top-0 ${
+                theme === 'light' ? 'border-neutral-200 bg-white' : 'border-[#2B2732] bg-[#17151C]'
+              }`}>
+                <div>
+                  <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                    {currentFound.entry.title}
+                  </h3>
+                  <span className="text-[11px] font-mono text-neutral-400">
+                    RewampUI Component
+                  </span>
+                </div>
+                <button
+                  onClick={() => setCodeDrawerOpen(false)}
+                  className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="pt-4 space-y-4">
+                <div>
+                  <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                    Install
+                  </span>
+                  <div className={`p-3 rounded-xl font-mono text-xs flex items-center justify-between ${
+                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                  }`}>
+                    <code>npx rewampui add {activeSlug}</code>
+                    <button
+                      onClick={handleCopyInstall}
+                      className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                    >
+                      {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+                </div>
+
+                {sourceInfo.dependencies.length > 0 && (
+                  <div>
+                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                      Dependencies
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {sourceInfo.dependencies.map((dep) => (
+                        <code
+                          key={dep}
+                          className={`px-2 py-1 rounded-md text-[11px] font-mono ${
+                            theme === 'light' ? 'bg-neutral-100 text-neutral-700' : 'bg-[#24202C] text-neutral-300'
+                          }`}
+                        >
+                          {dep}
+                        </code>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                    Code
+                  </span>
+                  <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[420px] overflow-y-auto ${
+                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                  }`}>
+                    {sourceInfo.loading ? (
+                      <p className="text-neutral-400">Loading source…</p>
+                    ) : (
+                      <pre className="whitespace-pre">{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                    )}
+                  </div>
+                </div>
+
+                {sourceInfo.css && (
+                  <div>
+                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                      CSS
+                    </span>
+                    <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[240px] overflow-y-auto ${
+                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                    }`}>
+                      <pre className="whitespace-pre">{sourceInfo.css}</pre>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Slide-over Prompt Drawer — kept separate from the Code drawer */}
+        <AnimatePresence>
+          {promptDrawerOpen && (
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+              className={`absolute right-0 top-0 bottom-0 z-40 w-full max-w-md border-l shadow-2xl p-6 flex flex-col ${
+                theme === 'light'
+                  ? 'bg-white border-neutral-200 text-neutral-900'
+                  : 'bg-[#17151C] border-[#2B2732] text-white'
+              }`}
+            >
+              <div className={`flex items-center justify-between pb-4 border-b ${
+                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              }`}>
+                <div>
+                  <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                    {currentFound.entry.title}
+                  </h3>
+                  <span className="text-[11px] font-mono text-neutral-400">
+                    Natural-language prompt
+                  </span>
+                </div>
+                <button
+                  onClick={() => setPromptDrawerOpen(false)}
+                  className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="pt-4 flex-1 flex flex-col">
+                <div className={`flex-1 p-3.5 rounded-xl font-mono text-xs leading-relaxed overflow-y-auto ${
+                  theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
                 }`}>
-                  <div>
-                    <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                      {currentFound.entry.title}
-                    </h3>
-                    <span className="text-[11px] font-mono text-neutral-400">
-                      RewampUI Component
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setCodeDrawerOpen(false)}
-                    className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+                  <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
                 </div>
 
-                <div className="pt-4 space-y-4">
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[11px] font-mono uppercase text-neutral-400">
-                        Prompt
-                      </span>
-                      <button
-                        onClick={handleCopyPrompt}
-                        className="text-[11px] font-mono text-[#9C8EB8] dark:text-[#D4CBE5] hover:underline flex items-center gap-1 cursor-pointer"
-                      >
-                        {copiedPrompt ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                        <span>{copiedPrompt ? 'Copied' : 'Copy prompt'}</span>
-                      </button>
-                    </div>
-                    <div className={`p-3 rounded-xl font-mono text-xs leading-relaxed max-h-40 overflow-y-auto ${
-                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                    }`}>
-                      <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                      Install
-                    </span>
-                    <div className={`p-3 rounded-xl font-mono text-xs flex items-center justify-between ${
-                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                    }`}>
-                      <code>npx rewampui add {activeSlug}</code>
-                      <button
-                        onClick={handleCopyInstall}
-                        className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
-                      >
-                        {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                      Usage
-                    </span>
-                    <div className={`p-3.5 rounded-xl font-mono text-xs leading-relaxed overflow-x-auto ${
-                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                    }`}>
-                      <pre>{`import { ${currentFound.entry.title.replace(/[^a-zA-Z0-9]/g, '')} } from "@/components/ui/${activeSlug}";
-
-export default function Demo() {
-  return <${currentFound.entry.title.replace(/[^a-zA-Z0-9]/g, '')} />;
-}`}</pre>
-                    </div>
-                  </div>
-                </div>
+                <button
+                  onClick={() => {
+                    handleCopyPrompt();
+                    setCopiedPromptDrawer(true);
+                    setTimeout(() => setCopiedPromptDrawer(false), 2000);
+                  }}
+                  className="mt-4 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] transition-colors cursor-pointer"
+                >
+                  {copiedPromptDrawer ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  <span>{copiedPromptDrawer ? 'Copied' : 'Copy prompt'}</span>
+                </button>
               </div>
             </motion.div>
           )}

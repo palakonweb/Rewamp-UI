@@ -65,7 +65,6 @@ export default function NeumorphicDownloadButtonShowcase() {
                     className="relative flex items-center gap-3 pl-1.5 pr-7 py-1.5 rounded-full select-none"
                     style={{
                         background: '#F1F1F1',
-                        boxShadow: '8px 8px 16px rgba(163,168,176,0.55), -8px -8px 16px rgba(255,255,255,0.85)',
                     }}
                 >
                     <div className="relative shrink-0 flex items-center justify-center" style={{ width: RING_BOX, height: RING_BOX }}>
@@ -91,7 +90,6 @@ export default function NeumorphicDownloadButtonShowcase() {
                                 width: DISC,
                                 height: DISC,
                                 background: '#F1F1F1',
-                                boxShadow: '4px 4px 10px rgba(163,168,176,0.6), -4px -4px 10px rgba(255,255,255,0.9)',
                             }}
                         >
                             <AnimatePresence mode="wait" initial={false}>
