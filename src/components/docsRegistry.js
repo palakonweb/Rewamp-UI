@@ -106,7 +106,6 @@ export const categories = [
         description: 'Kinetic typography — reveals, scrambles, morphs, and counters.',
         components: [
             makeLazy('Kinetic Reel Text', 'kinetic-reel-text', () => import('./ui/KineticReelTextShowcase')),
-            makeLazy('Rainbow Typewriter Badge', 'rainbow-typewriter-badge', () => import('./ui/RainbowTypewriterBadgeShowcase')),
             makeLazy('Split Text Reveal', 'split-text-reveal', () => import('./ui/SplitTextRevealShowcase')),
             makeLazy('Word By Word Text', 'word-by-word-text', () => import('./ui/WordByWordTextShowcase')),
             makeLazy('Character Scramble Text', 'character-scramble-text', () => import('./ui/CharacterScrambleTextShowcase')),

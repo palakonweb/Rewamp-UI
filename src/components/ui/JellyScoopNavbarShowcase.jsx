@@ -32,7 +32,7 @@ export default function JellyScoopNavbarShowcase() {
                                 className={`relative px-8 py-3 rounded-2xl text-[15px] font-bold transition-colors duration-300 z-10 ${
                                     isActive
                                         ? 'text-[#171717]'
-                                        : 'text-[#9C8EB8]/50 hover:text-[#171717] dark:text-[#D4CBE5]/40 dark:hover:text-[#E4DDF0]'
+                                        : 'text-[#5B4B7A] hover:text-[#171717] dark:text-[#D4CBE5]/40 dark:hover:text-[#E4DDF0]'
                                 }`}
                             >
                                 {isActive && (

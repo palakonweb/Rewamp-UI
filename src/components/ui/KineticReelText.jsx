@@ -32,7 +32,6 @@ export function KineticReelText({
 }) {
   const numItems = items.length;
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef(null);
   const timerRef = useRef(null);
   const snapTimeoutRef = useRef(null);
@@ -66,12 +65,12 @@ export function KineticReelText({
   );
 
   useEffect(() => {
-    if (!autoPlay || isHovered) return;
+    if (!autoPlay) return;
     timerRef.current = setInterval(() => advance(1), interval);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [autoPlay, isHovered, interval, advance]);
+  }, [autoPlay, interval, advance]);
 
   // Non-passive wheel scrubbing
   useEffect(() => {
@@ -106,10 +105,8 @@ export function KineticReelText({
   return (
     <div
       ref={containerRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={() => advance(1)}
-      className={`relative w-full flex items-center justify-center select-none cursor-pointer py-4 ${className}`}
+      className={`relative w-full flex items-center justify-center select-none cursor-pointer py-2 ${className}`}
       style={{ perspective: '900px', touchAction: 'none' }}
       title="Click or scroll mouse wheel to roll"
     >

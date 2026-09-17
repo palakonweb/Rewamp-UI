@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Play, Pause, RotateCcw } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import ParticleDotOrb from './ParticleDotOrb';
 import { particleDotOrbPrompt } from './particleDotOrbSource';
 
@@ -16,26 +16,19 @@ const PHRASES = [
 export default function ParticleDotOrbShowcase() {
     const [copied, setCopied] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(true);
 
     useEffect(() => {
-        if (!isPlaying) return;
-
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % PHRASES.length);
         }, 2400);
 
         return () => clearInterval(interval);
-    }, [isPlaying]);
+    }, []);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(particleDotOrbPrompt);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-    };
-
-    const handleReset = () => {
-        setCurrentIndex(0);
     };
 
     const currentPhrase = PHRASES[currentIndex];
@@ -52,24 +45,6 @@ export default function ParticleDotOrbShowcase() {
                     `,
                 }}
             >
-                {/* Top Controls */}
-                <div className="absolute top-5 right-6 flex items-center gap-1.5 z-10">
-                    <button
-                        onClick={() => setIsPlaying(!isPlaying)}
-                        title={isPlaying ? 'Pause cycling' : 'Play cycling'}
-                        className="p-1.5 rounded-lg bg-white/80 hover:bg-white text-black/60 hover:text-black transition-all border border-black/8 shadow-xs cursor-pointer"
-                    >
-                        {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-                    </button>
-                    <button
-                        onClick={handleReset}
-                        title="Restart phrase sequence"
-                        className="p-1.5 rounded-lg bg-white/80 hover:bg-white text-black/60 hover:text-black transition-all border border-black/8 shadow-xs cursor-pointer"
-                    >
-                        <RotateCcw size={14} />
-                    </button>
-                </div>
-
                 {/* ── WHITE AI THINKING PILL: Orb on LEFT, Shimmery Text on RIGHT ── */}
                 <motion.div
                     layout

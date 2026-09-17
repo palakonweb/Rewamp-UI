@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Play, Pause, RotateCcw } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import WireframeRingOrb from './WireframeRingOrb';
 import { wireframeRingOrbPrompt } from './wireframeRingOrbSource';
 
@@ -16,27 +16,20 @@ const PHRASES = [
 export default function WireframeRingOrbShowcase() {
     const [copied, setCopied] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [ringCount, setRingCount] = useState(9);
+    const [ringCount] = useState(9);
 
     useEffect(() => {
-        if (!isPlaying) return;
-
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % PHRASES.length);
         }, 2400);
 
         return () => clearInterval(interval);
-    }, [isPlaying]);
+    }, []);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(wireframeRingOrbPrompt);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-    };
-
-    const handleReset = () => {
-        setCurrentIndex(0);
     };
 
     const currentPhrase = PHRASES[currentIndex];
@@ -53,43 +46,6 @@ export default function WireframeRingOrbShowcase() {
                     `,
                 }}
             >
-                {/* Top Controls */}
-                <div className="absolute top-5 left-6 right-6 flex items-center justify-between pointer-events-none z-10">
-                    <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/80 backdrop-blur-md border border-black/8 pointer-events-auto shadow-xs">
-                        <span className="text-[11px] text-black/40 pl-2 pr-1 font-medium">Rings:</span>
-                        {[7, 9, 12].map((count) => (
-                            <button
-                                key={count}
-                                onClick={() => setRingCount(count)}
-                                className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono transition-all cursor-pointer ${
-                                    ringCount === count
-                                        ? 'bg-black/10 text-black font-semibold shadow-xs'
-                                        : 'text-black/50 hover:text-black/80'
-                                }`}
-                            >
-                                {count}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="flex items-center gap-1.5 pointer-events-auto">
-                        <button
-                            onClick={() => setIsPlaying(!isPlaying)}
-                            title={isPlaying ? 'Pause cycling' : 'Play cycling'}
-                            className="p-1.5 rounded-lg bg-white/80 hover:bg-white text-black/60 hover:text-black transition-all border border-black/8 shadow-xs cursor-pointer"
-                        >
-                            {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-                        </button>
-                        <button
-                            onClick={handleReset}
-                            title="Restart phrase sequence"
-                            className="p-1.5 rounded-lg bg-white/80 hover:bg-white text-black/60 hover:text-black transition-all border border-black/8 shadow-xs cursor-pointer"
-                        >
-                            <RotateCcw size={14} />
-                        </button>
-                    </div>
-                </div>
-
                 {/* ── WHITE AI THINKING PILL: Wireframe Ring Orb on LEFT, Shimmery Text on RIGHT ── */}
                 <motion.div
                     layout

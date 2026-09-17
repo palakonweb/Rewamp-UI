@@ -29,7 +29,7 @@ function StatChip({ label, value, icon: Icon, v }) {
 
 export default function GlassProfileCardShowcase() {
   const [copied, setCopied] = useState(false);
-  const [variant, setVariant] = useState('dark');
+  const [variant] = useState('dark');
   const v = VARIANTS[variant];
 
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
@@ -46,17 +46,6 @@ export default function GlassProfileCardShowcase() {
             className="absolute w-[360px] h-[360px] rounded-full" style={{ background: v.b2, filter: 'blur(80px)', bottom: '-10%', right: '-5%' }} />
           <motion.div animate={{ x: [0, 30, -20, 0], y: [0, 20, -30, 0] }} transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
             className="absolute w-[300px] h-[300px] rounded-full" style={{ background: v.b3, filter: 'blur(100px)', top: '30%', right: '20%' }} />
-        </div>
-
-        {/* Variant pills */}
-        <div className="absolute top-4 right-4 z-20 flex gap-1.5">
-          {Object.entries(VARIANTS).map(([k, val]) => (
-            <button key={k} onClick={() => setVariant(k)}
-              className="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all"
-              style={{ background: variant === k ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.05)', border: `1px solid ${variant === k ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.08)'}`, color: variant === k ? '#fff' : 'rgba(255,255,255,0.42)', backdropFilter: 'blur(12px)' }}>
-              {val.label}
-            </button>
-          ))}
         </div>
 
         {/* Glass card */}
