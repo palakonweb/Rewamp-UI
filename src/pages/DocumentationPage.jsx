@@ -58,7 +58,16 @@ export function DocumentationPage() {
         </aside>
 
         {/* Content */}
-        <main className="flex-1 max-w-[800px] p-8 md:p-12 lg:p-16">
+        <main className="flex-1 max-w-[800px] p-4 sm:p-8 md:p-12 lg:p-16">
+          {/* Mobile section quick jump */}
+          <div className="lg:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-4 border-b border-black/[0.06]">
+            <a href="#introduction" className="shrink-0 px-3 py-1.5 text-xs bg-black/5 hover:bg-black/10 rounded-lg text-neutral-800 font-medium">Intro</a>
+            <a href="#installation" className="shrink-0 px-3 py-1.5 text-xs bg-black/5 hover:bg-black/10 rounded-lg text-neutral-800 font-medium">Install</a>
+            <a href="#cli" className="shrink-0 px-3 py-1.5 text-xs bg-black/5 hover:bg-black/10 rounded-lg text-neutral-800 font-medium">CLI</a>
+            <a href="#framer-motion" className="shrink-0 px-3 py-1.5 text-xs bg-black/5 hover:bg-black/10 rounded-lg text-neutral-800 font-medium">Motion</a>
+            <a href="#tailwind" className="shrink-0 px-3 py-1.5 text-xs bg-black/5 hover:bg-black/10 rounded-lg text-neutral-800 font-medium">Tailwind</a>
+            <a href="#glassmorphism" className="shrink-0 px-3 py-1.5 text-xs bg-black/5 hover:bg-black/10 rounded-lg text-neutral-800 font-medium">Glass</a>
+          </div>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

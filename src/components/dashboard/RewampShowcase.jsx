@@ -14,7 +14,10 @@ import {
   Sparkles,
   Download,
   Sun,
-  Moon
+  Moon,
+  Menu,
+  Home,
+  FileText
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { categories, findComponentBySlug } from '../docsRegistry';
@@ -308,7 +311,7 @@ function DockIcon({ children, label, onClick, theme, accent = false, active = fa
         whileTap={{ scale: 0.94 }}
         transition={{ type: 'spring', stiffness: 340, damping: 26 }}
         title={label}
-        className={`relative flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-colors ${
+        className={`relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full cursor-pointer transition-colors ${
           accent
             ? 'bg-[#D4CBE5] text-[#171717] shadow-[0_4px_14px_rgba(193,180,216,0.5)]'
             : active
@@ -337,7 +340,12 @@ export default function RewampShowcase() {
   const [promptDrawerOpen, setPromptDrawerOpen] = useState(false);
   const [copiedPromptDrawer, setCopiedPromptDrawer] = useState(false);
   const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', dependencies: [], loading: false });
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef(null);
@@ -475,6 +483,9 @@ export default function RewampShowcase() {
     if (compNode.isCategory) return;
     setActiveSlug(compNode.id);
     navigate(`/components/${compNode.id}`);
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setSidebarCollapsed(true);
+    }
   };
 
   const handleCopyPrompt = () => {
@@ -549,35 +560,47 @@ export default function RewampShowcase() {
 
   return (
     <div 
-      className={`h-screen w-screen overflow-hidden p-2 sm:p-2.5 flex gap-2.5 font-sans select-none transition-colors duration-250 ${
+      className={`h-[100dvh] w-full overflow-hidden p-1.5 sm:p-2.5 flex gap-2.5 font-sans select-none transition-colors duration-250 ${
         theme === 'light' ? 'bg-[#FAFAFA]' : 'bg-[#0D0C10]'
       }`}
     >
       {/* ── 1. Airplane Flightpath Sidebar (All 74 Components) ── */}
       <AnimatePresence initial={false}>
         {!sidebarCollapsed && (
-          <motion.aside
-            initial={{ width: 0, opacity: 0, x: -20 }}
-            animate={{ width: 280, opacity: 1, x: 0 }}
-            exit={{ width: 0, opacity: 0, x: -20 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="h-full shrink-0 flex flex-col justify-between py-3 pl-3 pr-2 overflow-hidden z-20"
-          >
+          <>
+            {/* Mobile Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setSidebarCollapsed(true)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 md:hidden"
+            />
+            <motion.aside
+              initial={{ width: 0, opacity: 0, x: -20 }}
+              animate={{ width: 280, opacity: 1, x: 0 }}
+              exit={{ width: 0, opacity: 0, x: -20 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              className="fixed md:relative inset-y-0 left-0 z-50 md:z-20 h-full w-[280px] shrink-0 flex flex-col justify-between py-3 pl-3 pr-2 overflow-hidden shadow-2xl md:shadow-none border-r md:border-r-0 border-[var(--border)]"
+              style={{
+                backgroundColor: theme === 'light' ? '#FAFAFA' : '#0D0C10'
+              }}
+            >
             <div className="flex flex-col h-full overflow-hidden">
               {/* Top Row: Sidebar Toggle on Left & RewampUI Brand */}
-              <div className="flex items-center gap-2.5 pb-3">
-                <button
-                  onClick={() => setSidebarCollapsed(true)}
-                  className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer shrink-0"
-                  title="Collapse sidebar"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                    <path d="M9 3v18" />
-                  </svg>
-                </button>
-
+              <div className="flex items-center justify-between gap-2 pb-3">
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setSidebarCollapsed(true)}
+                    className="hidden md:flex w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer shrink-0"
+                    title="Collapse sidebar"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="18" height="18" x="3" y="3" rx="2" />
+                      <path d="M9 3v18" />
+                    </svg>
+                  </button>
                   <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
                   <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
                     RewampUI
@@ -586,6 +609,39 @@ export default function RewampShowcase() {
                     {totalComponentCount}
                   </span>
                 </div>
+
+                {/* Mobile close button */}
+                <button
+                  onClick={() => setSidebarCollapsed(true)}
+                  className="md:hidden w-8 h-8 rounded-xl bg-[var(--elevated)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
+                  title="Close navigation"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Mobile Quick Nav Bar (Home & Docs) */}
+              <div className="flex items-center gap-2 pb-3 md:hidden">
+                <button
+                  onClick={() => {
+                    navigate('/');
+                    setSidebarCollapsed(true);
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+                >
+                  <Home className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Home</span>
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/documentation');
+                    setSidebarCollapsed(true);
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+                >
+                  <FileText className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Docs</span>
+                </button>
               </div>
 
               {/* Instant Search Bar */}
@@ -742,14 +798,58 @@ export default function RewampShowcase() {
               </div>
             </div>
           </motion.aside>
-        )}
+        </>
+      )}
       </AnimatePresence>
 
-      {/* Floating Re-Open Button when sidebar is collapsed */}
+      {/* ── Mobile Burger Nav Bar ── */}
+      <header className="md:hidden absolute top-3 inset-x-3 z-30 flex items-center justify-between pointer-events-none">
+        {/* Brand & Active Component Badge */}
+        <div className="pointer-events-auto flex items-center gap-2 bg-[var(--surface)]/95 backdrop-blur-xl border border-[var(--border)] px-3 py-1.5 rounded-2xl shadow-md">
+          <img src="/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
+          <div className="flex flex-col">
+            <span className="font-bold text-[11px] tracking-tight text-[var(--text-primary)] leading-tight">
+              RewampUI
+            </span>
+            <span className="text-[10px] text-[var(--text-subtle)] truncate max-w-[140px] leading-tight font-medium">
+              {currentFound?.entry?.title || 'Components'}
+            </span>
+          </div>
+        </div>
+
+        {/* Animated 3-Bar Burger Nav Button */}
+        <button
+          type="button"
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="pointer-events-auto w-9 h-9 rounded-2xl bg-[var(--surface)]/95 backdrop-blur-xl border border-[var(--border)] shadow-md flex items-center justify-center text-[var(--text-primary)] hover:bg-[var(--elevated)] active:scale-95 transition-all cursor-pointer shrink-0"
+          aria-label={sidebarCollapsed ? "Open burger menu" : "Close burger menu"}
+          title={sidebarCollapsed ? "Open navigation" : "Close navigation"}
+        >
+          <div className="w-4 h-3 flex flex-col justify-between items-center relative">
+            <motion.span
+              animate={!sidebarCollapsed ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className="w-4 h-0.5 bg-current rounded-full origin-center"
+            />
+            <motion.span
+              animate={!sidebarCollapsed ? { opacity: 0 } : { opacity: 1 }}
+              transition={{ duration: 0.15 }}
+              className="w-4 h-0.5 bg-current rounded-full"
+            />
+            <motion.span
+              animate={!sidebarCollapsed ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className="w-4 h-0.5 bg-current rounded-full origin-center"
+            />
+          </div>
+        </button>
+      </header>
+
+      {/* Floating Re-Open Button when sidebar is collapsed (Desktop only) */}
       {sidebarCollapsed && (
         <button
           onClick={() => setSidebarCollapsed(false)}
-          className="absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors shadow-md cursor-pointer"
+          className="hidden md:flex absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors shadow-md cursor-pointer"
           title="Open sidebar"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -761,7 +861,7 @@ export default function RewampShowcase() {
 
       {/* ── 2. Massive Rounded Elevated Stage (Canvas Only, Zero Component Background Boxes) ── */}
       <div 
-        className={`flex-1 h-full rounded-[32px] sm:rounded-[36px] relative overflow-hidden flex items-center justify-center transition-colors duration-250 ${
+        className={`flex-1 h-full rounded-[22px] sm:rounded-[36px] relative overflow-hidden flex items-center justify-center transition-colors duration-250 ${
           theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
         }`}
         style={{
@@ -771,12 +871,12 @@ export default function RewampShowcase() {
         }}
       >
         {/* Bottom-Center Liquid Glass Dock: Install, Prompt, Code, Theme */}
-        <div className="absolute bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none">
+        <div className="absolute bottom-3 sm:bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none px-2">
           <div
-            className="pointer-events-auto flex items-end gap-4 rounded-[26px] px-4 py-2 backdrop-blur-2xl border"
+            className="pointer-events-auto flex items-end gap-2 sm:gap-4 rounded-[22px] sm:rounded-[26px] px-2.5 sm:px-4 py-1.5 sm:py-2 backdrop-blur-2xl border max-w-[calc(100vw-20px)]"
             style={{
               background: theme === 'light'
-                ? 'linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.28) 100%)'
+                ? 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%)'
                 : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
               borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
               boxShadow: theme === 'light'
@@ -789,7 +889,7 @@ export default function RewampShowcase() {
               onClick={handleCopyInstall}
               theme={theme}
             >
-              {copiedInstall ? <Check className="w-[18px] h-[18px]" /> : <Download className="w-[18px] h-[18px]" />}
+              {copiedInstall ? <Check className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
             </DockIcon>
 
             <DockIcon
@@ -799,7 +899,7 @@ export default function RewampShowcase() {
               accent
               active={promptDrawerOpen}
             >
-              <Sparkles className="w-[18px] h-[18px]" />
+              <Sparkles className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
             </DockIcon>
 
             <DockIcon
@@ -808,7 +908,7 @@ export default function RewampShowcase() {
               theme={theme}
               active={codeDrawerOpen}
             >
-              <Code2 className="w-[18px] h-[18px]" />
+              <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
             </DockIcon>
 
             <DockIcon
@@ -819,11 +919,11 @@ export default function RewampShowcase() {
               <AnimatePresence mode="wait" initial={false}>
                 {theme === 'dark' ? (
                   <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Sun className="w-[18px] h-[18px]" />
+                    <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                   </motion.span>
                 ) : (
-                  <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Moon className="w-[18px] h-[18px]" />
+                  <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -832,26 +932,17 @@ export default function RewampShowcase() {
         </div>
 
         {/* ── Centered Showcase Stage (Canvas Background Only — No Component Card Box) ── */}
-        <div className="w-full h-full flex items-center justify-center p-6 sm:p-12 overflow-hidden relative">
-          {/* Main Component Canvas Stage (Mounted immediately for instantaneous fast loading) */}
-          {/* bugfix: this used to also hide `.max-w-4xl/5xl/3xl > div:last-child` to strip a
-              trailing decorative element from a couple of showcases. That rule matched a plain
-              DOM position, not a specific element, so any component whose real content
-              happened to render as the last div inside one of those wrappers (e.g.
-              ContributionActivity's glass frame, or AsciiMatrixHoverShowcase's single content
-              div) had its entire visible output hidden — reproducing exactly "skeleton renders,
-              then the card goes blank" once Suspense resolved. Removed; only the narrowly-scoped
-              decorative-glow and inline-code-snippet hides remain. */}
+        <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-12 overflow-y-auto overflow-x-hidden relative">
           <motion.div
             key={activeSlug}
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-            className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] h-full max-h-[640px] aspect-[16/10] rounded-[24px] overflow-hidden [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+            className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] min-h-[300px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible sm:overflow-hidden [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
           >
             <ErrorBoundary key={activeSlug}>
               <Suspense fallback={getComponentSkeleton(activeSlug)}>
-                <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-6 overflow-hidden">
+                <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-2 sm:p-6 overflow-visible sm:overflow-hidden">
                   {isFolder ? (
                     <CleanFolderComponent color={folderColor} />
                   ) : (
@@ -862,7 +953,7 @@ export default function RewampShowcase() {
             </ErrorBoundary>
           </motion.div>
 
-          {/* Sweeping Chromatic Shimmer Skeleton (Matching Recording 2026-09-16 213029.mp4) */}
+          {/* Sweeping Chromatic Shimmer Skeleton */}
           <AnimatePresence>
             {isLoading && (
               <motion.div
@@ -883,7 +974,7 @@ export default function RewampShowcase() {
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white dark:bg-neutral-900 shadow-md border border-neutral-200/80 dark:border-neutral-800"
+            className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-md border border-neutral-200/80 dark:border-neutral-800"
           >
             <span className="text-neutral-400 text-xs font-mono pr-0.5 select-none opacity-60">:::</span>
 
@@ -932,159 +1023,179 @@ export default function RewampShowcase() {
         {/* Slide-over Code Drawer */}
         <AnimatePresence>
           {codeDrawerOpen && (
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-              className={`absolute right-0 top-0 bottom-0 z-40 w-full max-w-lg border-l shadow-2xl p-6 flex flex-col overflow-y-auto ${
-                theme === 'light'
-                  ? 'bg-white border-neutral-200 text-neutral-900'
-                  : 'bg-[#17151C] border-[#2B2732] text-white'
-              }`}
-            >
-              <div className={`flex items-center justify-between pb-4 border-b sticky top-0 ${
-                theme === 'light' ? 'border-neutral-200 bg-white' : 'border-[#2B2732] bg-[#17151C]'
-              }`}>
-                <div>
-                  <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                    {currentFound.entry.title}
-                  </h3>
-                  <span className="text-[11px] font-mono text-neutral-400">
-                    RewampUI Component
-                  </span>
-                </div>
-                <button
-                  onClick={() => setCodeDrawerOpen(false)}
-                  className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="pt-4 space-y-4">
-                <div>
-                  <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                    Install
-                  </span>
-                  <div className={`p-3 rounded-xl font-mono text-xs flex items-center justify-between ${
-                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                  }`}>
-                    <code>npx rewampui add {activeSlug}</code>
-                    <button
-                      onClick={handleCopyInstall}
-                      className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
-                    >
-                      {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                    </button>
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setCodeDrawerOpen(false)}
+                className="fixed inset-0 bg-black/50 backdrop-blur-xs z-35 md:hidden"
+              />
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                className={`fixed sm:absolute right-0 top-0 bottom-0 z-40 w-full sm:max-w-lg border-l shadow-2xl p-4 sm:p-6 flex flex-col overflow-y-auto ${
+                  theme === 'light'
+                    ? 'bg-white border-neutral-200 text-neutral-900'
+                    : 'bg-[#17151C] border-[#2B2732] text-white'
+                }`}
+              >
+                <div className={`flex items-center justify-between pb-4 border-b sticky top-0 ${
+                  theme === 'light' ? 'border-neutral-200 bg-white' : 'border-[#2B2732] bg-[#17151C]'
+                }`}>
+                  <div>
+                    <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                      {currentFound.entry.title}
+                    </h3>
+                    <span className="text-[11px] font-mono text-neutral-400">
+                      RewampUI Component
+                    </span>
                   </div>
+                  <button
+                    onClick={() => setCodeDrawerOpen(false)}
+                    className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {sourceInfo.dependencies.length > 0 && (
+                <div className="pt-4 space-y-4">
                   <div>
                     <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                      Dependencies
+                      Install
                     </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {sourceInfo.dependencies.map((dep) => (
-                        <code
-                          key={dep}
-                          className={`px-2 py-1 rounded-md text-[11px] font-mono ${
-                            theme === 'light' ? 'bg-neutral-100 text-neutral-700' : 'bg-[#24202C] text-neutral-300'
-                          }`}
-                        >
-                          {dep}
-                        </code>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div>
-                  <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                    Code
-                  </span>
-                  <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[420px] overflow-y-auto ${
-                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                  }`}>
-                    {sourceInfo.loading ? (
-                      <p className="text-neutral-400">Loading source…</p>
-                    ) : (
-                      <pre className="whitespace-pre">{sourceInfo.code || '// Source unavailable for this component'}</pre>
-                    )}
-                  </div>
-                </div>
-
-                {sourceInfo.css && (
-                  <div>
-                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                      CSS
-                    </span>
-                    <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[240px] overflow-y-auto ${
+                    <div className={`p-3 rounded-xl font-mono text-xs flex items-center justify-between ${
                       theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
                     }`}>
-                      <pre className="whitespace-pre">{sourceInfo.css}</pre>
+                      <code>npx rewampui add {activeSlug}</code>
+                      <button
+                        onClick={handleCopyInstall}
+                        className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                      >
+                        {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      </button>
                     </div>
                   </div>
-                )}
-              </div>
-            </motion.div>
+
+                  {sourceInfo.dependencies.length > 0 && (
+                    <div>
+                      <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                        Dependencies
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {sourceInfo.dependencies.map((dep) => (
+                          <code
+                            key={dep}
+                            className={`px-2 py-1 rounded-md text-[11px] font-mono ${
+                              theme === 'light' ? 'bg-neutral-100 text-neutral-700' : 'bg-[#24202C] text-neutral-300'
+                            }`}
+                          >
+                            {dep}
+                          </code>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                      Code
+                    </span>
+                    <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[420px] overflow-y-auto ${
+                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                    }`}>
+                      {sourceInfo.loading ? (
+                        <p className="text-neutral-400">Loading source…</p>
+                      ) : (
+                        <pre className="whitespace-pre">{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                      )}
+                    </div>
+                  </div>
+
+                  {sourceInfo.css && (
+                    <div>
+                      <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
+                        CSS
+                      </span>
+                      <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[240px] overflow-y-auto ${
+                        theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                      }`}>
+                        <pre className="whitespace-pre">{sourceInfo.css}</pre>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
 
         {/* Slide-over Prompt Drawer — kept separate from the Code drawer */}
         <AnimatePresence>
           {promptDrawerOpen && (
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-              className={`absolute right-0 top-0 bottom-0 z-40 w-full max-w-md border-l shadow-2xl p-6 flex flex-col ${
-                theme === 'light'
-                  ? 'bg-white border-neutral-200 text-neutral-900'
-                  : 'bg-[#17151C] border-[#2B2732] text-white'
-              }`}
-            >
-              <div className={`flex items-center justify-between pb-4 border-b ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-              }`}>
-                <div>
-                  <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                    {currentFound.entry.title}
-                  </h3>
-                  <span className="text-[11px] font-mono text-neutral-400">
-                    Natural-language prompt
-                  </span>
-                </div>
-                <button
-                  onClick={() => setPromptDrawerOpen(false)}
-                  className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="pt-4 flex-1 flex flex-col">
-                <div className={`flex-1 p-3.5 rounded-xl font-mono text-xs leading-relaxed overflow-y-auto ${
-                  theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setPromptDrawerOpen(false)}
+                className="fixed inset-0 bg-black/50 backdrop-blur-xs z-35 md:hidden"
+              />
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                className={`fixed sm:absolute right-0 top-0 bottom-0 z-40 w-full sm:max-w-md border-l shadow-2xl p-4 sm:p-6 flex flex-col ${
+                  theme === 'light'
+                    ? 'bg-white border-neutral-200 text-neutral-900'
+                    : 'bg-[#17151C] border-[#2B2732] text-white'
+                }`}
+              >
+                <div className={`flex items-center justify-between pb-4 border-b ${
+                  theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
                 }`}>
-                  <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
+                  <div>
+                    <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                      {currentFound.entry.title}
+                    </h3>
+                    <span className="text-[11px] font-mono text-neutral-400">
+                      Natural-language prompt
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setPromptDrawerOpen(false)}
+                    className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => {
-                    handleCopyPrompt();
-                    setCopiedPromptDrawer(true);
-                    setTimeout(() => setCopiedPromptDrawer(false), 2000);
-                  }}
-                  className="mt-4 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] transition-colors cursor-pointer"
-                >
-                  {copiedPromptDrawer ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedPromptDrawer ? 'Copied' : 'Copy prompt'}</span>
-                </button>
-              </div>
-            </motion.div>
+                <div className="pt-4 flex-1 flex flex-col">
+                  <div className={`flex-1 p-3.5 rounded-xl font-mono text-xs leading-relaxed overflow-y-auto ${
+                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                  }`}>
+                    <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      handleCopyPrompt();
+                      setCopiedPromptDrawer(true);
+                      setTimeout(() => setCopiedPromptDrawer(false), 2000);
+                    }}
+                    className="mt-4 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] transition-colors cursor-pointer"
+                  >
+                    {copiedPromptDrawer ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                    <span>{copiedPromptDrawer ? 'Copied' : 'Copy prompt'}</span>
+                  </button>
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
