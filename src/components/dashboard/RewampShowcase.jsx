@@ -859,343 +859,361 @@ export default function RewampShowcase() {
         </button>
       )}
 
-      {/* ── 2. Massive Rounded Elevated Stage (Canvas Only, Zero Component Background Boxes) ── */}
-      <div 
-        className={`flex-1 h-full rounded-[22px] sm:rounded-[36px] relative overflow-hidden flex items-center justify-center transition-colors duration-250 ${
-          theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
-        }`}
-        style={{
-          boxShadow: theme === 'light'
-            ? 'inset 0 1px 2px rgba(0,0,0,0.04)'
-            : 'inset 0 1px 2px rgba(255,255,255,0.04)'
-        }}
-      >
-        {/* Bottom-Center Liquid Glass Dock: Install, Prompt, Code, Theme */}
-        <div className="absolute bottom-3 sm:bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none px-2">
-          <div
-            className="pointer-events-auto flex items-end gap-2 sm:gap-4 rounded-[22px] sm:rounded-[26px] px-2.5 sm:px-4 py-1.5 sm:py-2 backdrop-blur-2xl border max-w-[calc(100vw-20px)]"
-            style={{
-              background: theme === 'light'
-                ? 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%)'
-                : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
-              borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
-              boxShadow: theme === 'light'
-                ? '0 12px 32px rgba(0,0,0,0.10), inset 0 1px 1px rgba(255,255,255,0.8)'
-                : '0 12px 32px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.12)',
-            }}
-          >
-            <DockIcon
-              label="Install"
-              onClick={handleCopyInstall}
-              theme={theme}
+      {/* ── 2. Main Content Area — Canvas + Side Panel Split ── */}
+      <div className="flex-1 h-full flex gap-2.5 overflow-hidden">
+        {/* Canvas Stage — shrinks when a panel is open */}
+        <motion.div
+          layout
+          transition={{ type: 'spring', stiffness: 350, damping: 32 }}
+          className={`h-full rounded-[22px] sm:rounded-[36px] relative overflow-hidden flex items-center justify-center transition-colors duration-250 ${
+            theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
+          }`}
+          style={{
+            flex: (codeDrawerOpen || promptDrawerOpen) ? '1 1 50%' : '1 1 100%',
+            minWidth: 0,
+            boxShadow: theme === 'light'
+              ? 'inset 0 1px 2px rgba(0,0,0,0.04)'
+              : 'inset 0 1px 2px rgba(255,255,255,0.04)'
+          }}
+        >
+          {/* Bottom-Center Liquid Glass Dock: Install, Prompt, Code, Theme */}
+          <div className="absolute bottom-3 sm:bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none px-2">
+            <div
+              className="pointer-events-auto flex items-end gap-2 sm:gap-4 rounded-[22px] sm:rounded-[26px] px-2.5 sm:px-4 py-1.5 sm:py-2 backdrop-blur-2xl border max-w-[calc(100vw-20px)]"
+              style={{
+                background: theme === 'light'
+                  ? 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%)'
+                  : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
+                borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
+                boxShadow: theme === 'light'
+                  ? '0 12px 32px rgba(0,0,0,0.10), inset 0 1px 1px rgba(255,255,255,0.8)'
+                  : '0 12px 32px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.12)',
+              }}
             >
-              {copiedInstall ? <Check className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
-            </DockIcon>
-
-            <DockIcon
-              label="Prompt"
-              onClick={() => setPromptDrawerOpen(true)}
-              theme={theme}
-              accent
-              active={promptDrawerOpen}
-            >
-              <Sparkles className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-            </DockIcon>
-
-            <DockIcon
-              label="Code"
-              onClick={() => setCodeDrawerOpen(!codeDrawerOpen)}
-              theme={theme}
-              active={codeDrawerOpen}
-            >
-              <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-            </DockIcon>
-
-            <DockIcon
-              label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              theme={theme}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {theme === 'dark' ? (
-                  <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-                  </motion.span>
-                ) : (
-                  <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </DockIcon>
-          </div>
-        </div>
-
-        {/* ── Centered Showcase Stage (Canvas Background Only — No Component Card Box) ── */}
-        <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-12 overflow-y-auto overflow-x-hidden relative">
-          <motion.div
-            key={activeSlug}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-            className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] min-h-[300px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible sm:overflow-hidden [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
-          >
-            <ErrorBoundary key={activeSlug}>
-              <Suspense fallback={getComponentSkeleton(activeSlug)}>
-                <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-2 sm:p-6 overflow-visible sm:overflow-hidden">
-                  {isFolder ? (
-                    <CleanFolderComponent color={folderColor} />
-                  ) : (
-                    <currentFound.entry.Component />
-                  )}
-                </div>
-              </Suspense>
-            </ErrorBoundary>
-          </motion.div>
-
-          {/* Sweeping Chromatic Shimmer Skeleton */}
-          <AnimatePresence>
-            {isLoading && (
-              <motion.div
-                key="shimmer-canvas"
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.24, ease: 'easeOut' }}
-                className="absolute inset-0 z-20 pointer-events-none"
+              <DockIcon
+                label="Install"
+                onClick={handleCopyInstall}
+                theme={theme}
               >
-                <CanvasShimmerSkeleton theme={theme} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+                {copiedInstall ? <Check className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
+              </DockIcon>
 
-        {/* Bottom Floating Controls Pill (When Folder is selected) */}
-        {isFolder && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-md border border-neutral-200/80 dark:border-neutral-800"
-          >
-            <span className="text-neutral-400 text-xs font-mono pr-0.5 select-none opacity-60">:::</span>
+              <DockIcon
+                label="Prompt"
+                onClick={() => {
+                  setCodeDrawerOpen(false);
+                  setPromptDrawerOpen(prev => !prev);
+                }}
+                theme={theme}
+                accent
+                active={promptDrawerOpen}
+              >
+                <Sparkles className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+              </DockIcon>
 
-            <button
-              onClick={() => setFolderColor('black')}
-              className={`w-6 h-6 rounded-lg bg-[#111113] border transition-transform cursor-pointer ${
-                folderColor === 'black'
-                  ? 'scale-110 border-neutral-900 ring-2 ring-neutral-400'
-                  : 'border-neutral-300 hover:scale-105'
-              }`}
-              title="Black"
-            />
+              <DockIcon
+                label="Code"
+                onClick={() => {
+                  setPromptDrawerOpen(false);
+                  setCodeDrawerOpen(prev => !prev);
+                }}
+                theme={theme}
+                active={codeDrawerOpen}
+              >
+                <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+              </DockIcon>
 
-            <button
-              onClick={() => setFolderColor('white')}
-              className={`w-6 h-6 rounded-lg bg-white border transition-transform cursor-pointer ${
-                folderColor === 'white'
-                  ? 'scale-110 border-neutral-900 ring-2 ring-neutral-400'
-                  : 'border-neutral-300 hover:scale-105'
-              }`}
-              title="White"
-            />
+              <DockIcon
+                label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                theme={theme}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {theme === 'dark' ? (
+                    <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                    </motion.span>
+                  ) : (
+                    <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </DockIcon>
+            </div>
+          </div>
 
-            <button
-              onClick={() => setFolderColor('blue')}
-              className={`w-6 h-6 rounded-lg bg-[#38BDF8] border transition-transform cursor-pointer ${
-                folderColor === 'blue'
-                  ? 'scale-110 border-sky-600 ring-2 ring-sky-300'
-                  : 'border-neutral-300 hover:scale-105'
-              }`}
-              title="Blue (Original)"
-            />
+          {/* ── Centered Showcase Stage ── */}
+          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-12 overflow-y-auto overflow-x-hidden relative">
+            <motion.div
+              key={activeSlug}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 26 }}
+              className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] min-h-[300px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible sm:overflow-hidden [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+            >
+              <ErrorBoundary key={activeSlug}>
+                <Suspense fallback={getComponentSkeleton(activeSlug)}>
+                  <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-2 sm:p-6 overflow-visible sm:overflow-hidden">
+                    {isFolder ? (
+                      <CleanFolderComponent color={folderColor} />
+                    ) : (
+                      <currentFound.entry.Component />
+                    )}
+                  </div>
+                </Suspense>
+              </ErrorBoundary>
+            </motion.div>
 
-            <button
-              onClick={() => setFolderColor('lilac')}
-              className={`w-6 h-6 rounded-lg bg-[#D4CBE5] border transition-transform cursor-pointer ${
-                folderColor === 'lilac'
-                  ? 'scale-110 border-[#9C8EB8] ring-2 ring-[#C1B4D8]'
-                  : 'border-neutral-300 hover:scale-105'
-              }`}
-              title="Lilac (Brand)"
-            />
-          </motion.div>
-        )}
+            {/* Sweeping Chromatic Shimmer Skeleton */}
+            <AnimatePresence>
+              {isLoading && (
+                <motion.div
+                  key="shimmer-canvas"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.24, ease: 'easeOut' }}
+                  className="absolute inset-0 z-20 pointer-events-none"
+                >
+                  <CanvasShimmerSkeleton theme={theme} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-        {/* Slide-over Code Drawer */}
+          {/* Bottom Floating Controls Pill (When Folder is selected) */}
+          {isFolder && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-md border border-neutral-200/80 dark:border-neutral-800"
+            >
+              <span className="text-neutral-400 text-xs font-mono pr-0.5 select-none opacity-60">:::</span>
+
+              <button
+                onClick={() => setFolderColor('black')}
+                className={`w-6 h-6 rounded-lg bg-[#111113] border transition-transform cursor-pointer ${
+                  folderColor === 'black'
+                    ? 'scale-110 border-neutral-900 ring-2 ring-neutral-400'
+                    : 'border-neutral-300 hover:scale-105'
+                }`}
+                title="Black"
+              />
+
+              <button
+                onClick={() => setFolderColor('white')}
+                className={`w-6 h-6 rounded-lg bg-white border transition-transform cursor-pointer ${
+                  folderColor === 'white'
+                    ? 'scale-110 border-neutral-900 ring-2 ring-neutral-400'
+                    : 'border-neutral-300 hover:scale-105'
+                }`}
+                title="White"
+              />
+
+              <button
+                onClick={() => setFolderColor('blue')}
+                className={`w-6 h-6 rounded-lg bg-[#38BDF8] border transition-transform cursor-pointer ${
+                  folderColor === 'blue'
+                    ? 'scale-110 border-sky-600 ring-2 ring-sky-300'
+                    : 'border-neutral-300 hover:scale-105'
+                }`}
+                title="Blue (Original)"
+              />
+
+              <button
+                onClick={() => setFolderColor('lilac')}
+                className={`w-6 h-6 rounded-lg bg-[#D4CBE5] border transition-transform cursor-pointer ${
+                  folderColor === 'lilac'
+                    ? 'scale-110 border-[#9C8EB8] ring-2 ring-[#C1B4D8]'
+                    : 'border-neutral-300 hover:scale-105'
+                }`}
+                title="Lilac (Brand)"
+              />
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* ── Side-by-Side Code Panel (slides in, canvas shrinks) ── */}
         <AnimatePresence>
           {codeDrawerOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setCodeDrawerOpen(false)}
-                className="fixed inset-0 bg-black/50 backdrop-blur-xs z-35 md:hidden"
-              />
-              <motion.div
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
-                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                className={`fixed sm:absolute right-0 top-0 bottom-0 z-40 w-full sm:max-w-lg border-l shadow-2xl p-4 sm:p-6 flex flex-col overflow-y-auto ${
-                  theme === 'light'
-                    ? 'bg-white border-neutral-200 text-neutral-900'
-                    : 'bg-[#17151C] border-[#2B2732] text-white'
-                }`}
-              >
-                <div className={`flex items-center justify-between pb-4 border-b sticky top-0 ${
-                  theme === 'light' ? 'border-neutral-200 bg-white' : 'border-[#2B2732] bg-[#17151C]'
-                }`}>
-                  <div>
-                    <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                      {currentFound.entry.title}
-                    </h3>
-                    <span className="text-[11px] font-mono text-neutral-400">
-                      RewampUI Component
-                    </span>
-                  </div>
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: '50%', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 32 }}
+              className={`h-full rounded-[22px] sm:rounded-[24px] overflow-hidden flex flex-col shrink-0 border ${
+                theme === 'light'
+                  ? 'bg-white border-neutral-200/80 text-neutral-900'
+                  : 'bg-[#17151C] border-[#2B2732] text-white'
+              }`}
+              style={{ minWidth: 0 }}
+            >
+              {/* Header bar with Install, Expand, Close, Copy */}
+              <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
+                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              }`}>
+                <div className="flex items-center gap-2">
+                  <span className={`font-semibold text-sm ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                    Code Block
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {/* Install pill */}
+                  <button
+                    onClick={handleCopyInstall}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                      theme === 'light'
+                        ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
+                        : 'bg-[#24202C] hover:bg-[#302A3C] text-neutral-300'
+                    }`}
+                  >
+                    {copiedInstall ? <Check className="w-3 h-3 text-emerald-500" /> : <Download className="w-3 h-3" />}
+                    <span>Install</span>
+                  </button>
+                  {/* Fullscreen toggle placeholder */}
+                  <button
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
+                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
+                    }`}
+                    title="Expand"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5" />
+                  </button>
+                  {/* Close */}
                   <button
                     onClick={() => setCodeDrawerOpen(false)}
-                    className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
+                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
+                    }`}
+                    title="Close"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                  {/* Copy code */}
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(sourceInfo.code || '');
+                      setCopiedInstall(true);
+                      setTimeout(() => setCopiedInstall(false), 2000);
+                    }}
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
+                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
+                    }`}
+                    title="Copy code"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
                   </button>
                 </div>
+              </div>
 
-                <div className="pt-4 space-y-4">
-                  <div>
-                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                      Install
-                    </span>
-                    <div className={`p-3 rounded-xl font-mono text-xs flex items-center justify-between ${
-                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                    }`}>
-                      <code>npx rewampui add {activeSlug}</code>
-                      <button
-                        onClick={handleCopyInstall}
-                        className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+              {/* Code content */}
+              <div className="flex-1 overflow-auto p-4">
+                {sourceInfo.loading ? (
+                  <p className="text-neutral-400 font-mono text-xs">Loading source…</p>
+                ) : (
+                  <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                    theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                  }`}>{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                )}
+                {sourceInfo.css && (
+                  <>
+                    <div className={`my-4 border-t ${theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'}`} />
+                    <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                      theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                    }`}>{sourceInfo.css}</pre>
+                  </>
+                )}
+              </div>
+
+              {/* Bottom dock with color circles — matching reference screenshot */}
+              {sourceInfo.dependencies.length > 0 && (
+                <div className={`px-4 py-2.5 border-t shrink-0 ${
+                  theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+                }`}>
+                  <div className="flex flex-wrap gap-1.5">
+                    {sourceInfo.dependencies.map((dep) => (
+                      <code
+                        key={dep}
+                        className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${
+                          theme === 'light' ? 'bg-neutral-100 text-neutral-600' : 'bg-[#24202C] text-neutral-400'
+                        }`}
                       >
-                        {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                      </button>
-                    </div>
+                        {dep}
+                      </code>
+                    ))}
                   </div>
-
-                  {sourceInfo.dependencies.length > 0 && (
-                    <div>
-                      <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                        Dependencies
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {sourceInfo.dependencies.map((dep) => (
-                          <code
-                            key={dep}
-                            className={`px-2 py-1 rounded-md text-[11px] font-mono ${
-                              theme === 'light' ? 'bg-neutral-100 text-neutral-700' : 'bg-[#24202C] text-neutral-300'
-                            }`}
-                          >
-                            {dep}
-                          </code>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div>
-                    <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                      Code
-                    </span>
-                    <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[420px] overflow-y-auto ${
-                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                    }`}>
-                      {sourceInfo.loading ? (
-                        <p className="text-neutral-400">Loading source…</p>
-                      ) : (
-                        <pre className="whitespace-pre">{sourceInfo.code || '// Source unavailable for this component'}</pre>
-                      )}
-                    </div>
-                  </div>
-
-                  {sourceInfo.css && (
-                    <div>
-                      <span className="text-[11px] font-mono uppercase text-neutral-400 block mb-1.5">
-                        CSS
-                      </span>
-                      <div className={`p-3.5 rounded-xl font-mono text-[11px] leading-relaxed overflow-x-auto max-h-[240px] overflow-y-auto ${
-                        theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                      }`}>
-                        <pre className="whitespace-pre">{sourceInfo.css}</pre>
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </motion.div>
-            </>
+              )}
+            </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Slide-over Prompt Drawer — kept separate from the Code drawer */}
+        {/* ── Side-by-Side Prompt Panel (slides in, canvas shrinks) ── */}
         <AnimatePresence>
           {promptDrawerOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setPromptDrawerOpen(false)}
-                className="fixed inset-0 bg-black/50 backdrop-blur-xs z-35 md:hidden"
-              />
-              <motion.div
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
-                transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                className={`fixed sm:absolute right-0 top-0 bottom-0 z-40 w-full sm:max-w-md border-l shadow-2xl p-4 sm:p-6 flex flex-col ${
-                  theme === 'light'
-                    ? 'bg-white border-neutral-200 text-neutral-900'
-                    : 'bg-[#17151C] border-[#2B2732] text-white'
-                }`}
-              >
-                <div className={`flex items-center justify-between pb-4 border-b ${
-                  theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-                }`}>
-                  <div>
-                    <h3 className={`font-bold ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                      {currentFound.entry.title}
-                    </h3>
-                    <span className="text-[11px] font-mono text-neutral-400">
-                      Natural-language prompt
-                    </span>
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: '45%', opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 32 }}
+              className={`h-full rounded-[22px] sm:rounded-[24px] overflow-hidden flex flex-col shrink-0 border ${
+                theme === 'light'
+                  ? 'bg-white border-neutral-200/80 text-neutral-900'
+                  : 'bg-[#17151C] border-[#2B2732] text-white'
+              }`}
+              style={{ minWidth: 0 }}
+            >
+              {/* Header */}
+              <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
+                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              }`}>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-[#D4CBE5]">
+                    <Sparkles className="w-3 h-3 text-[#4A3D6A]" />
                   </div>
+                  <span className={`font-semibold text-sm ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                    Prompt
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => setPromptDrawerOpen(false)}
-                    className="p-1 rounded-lg text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer"
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
+                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
+                    }`}
+                    title="Close"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
+              </div>
 
-                <div className="pt-4 flex-1 flex flex-col">
-                  <div className={`flex-1 p-3.5 rounded-xl font-mono text-xs leading-relaxed overflow-y-auto ${
-                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                  }`}>
-                    <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      handleCopyPrompt();
-                      setCopiedPromptDrawer(true);
-                      setTimeout(() => setCopiedPromptDrawer(false), 2000);
-                    }}
-                    className="mt-4 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] transition-colors cursor-pointer"
-                  >
-                    {copiedPromptDrawer ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    <span>{copiedPromptDrawer ? 'Copied' : 'Copy prompt'}</span>
-                  </button>
+              {/* Prompt content */}
+              <div className="flex-1 overflow-y-auto p-4">
+                <div className={`p-4 rounded-xl font-mono text-xs leading-relaxed ${
+                  theme === 'light' ? 'bg-neutral-50 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                }`}>
+                  <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
                 </div>
-              </motion.div>
-            </>
+              </div>
+
+              {/* Copy button at bottom */}
+              <div className={`px-4 py-3 border-t shrink-0 ${
+                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              }`}>
+                <button
+                  onClick={() => {
+                    handleCopyPrompt();
+                    setCopiedPromptDrawer(true);
+                    setTimeout(() => setCopiedPromptDrawer(false), 2000);
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] transition-colors cursor-pointer"
+                >
+                  {copiedPromptDrawer ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  <span>{copiedPromptDrawer ? 'Copied' : 'Copy prompt'}</span>
+                </button>
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
