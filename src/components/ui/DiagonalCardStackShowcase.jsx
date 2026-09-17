@@ -30,7 +30,7 @@ export default function DiagonalCardStackShowcase() {
             onClick={() => setIsStacked(!isStacked)}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer ${
               isStacked
-                ? 'bg-[#EC5E27] text-white shadow-md shadow-[#EC5E27]/25'
+                ? 'bg-[#C1B4D8] text-neutral-900 shadow-md shadow-[#C1B4D8]/25'
                 : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200'
             }`}
           >
@@ -71,7 +71,7 @@ export default function DiagonalCardStackShowcase() {
         {/* Speed & Interactive Hint */}
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#EC5E27] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C1B4D8] animate-pulse" />
             <span>Click card to stack · Drag to scrub</span>
           </div>
 

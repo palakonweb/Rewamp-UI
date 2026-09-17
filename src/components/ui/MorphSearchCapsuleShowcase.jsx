@@ -32,7 +32,7 @@ export default function MorphSearchCapsuleShowcase() {
         </div>
 
         <div className="flex items-center gap-2 text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#EC5E27] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C1B4D8] animate-pulse" />
           <span>Click pill to trigger icon turn & typing cursor</span>
         </div>
       </div>

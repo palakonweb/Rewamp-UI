@@ -37,7 +37,7 @@ export default function AnimatedSearchDemo() {
         className="h-16 rounded-full bg-white border border-black/[0.08] flex items-center overflow-hidden cursor-pointer relative"
         style={{
           boxShadow: isExpanded
-            ? "0 20px 40px -12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(236, 94, 39, 0.2)"
+            ? "0 20px 40px -12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(193, 180, 216, 0.4)"
             : "0 10px 25px -8px rgba(0, 0, 0, 0.08)",
         }}
       >
@@ -46,7 +46,7 @@ export default function AnimatedSearchDemo() {
           <motion.div
             animate={{
               scale: isExpanded ? 1.08 : 1,
-              color: isExpanded ? "#EC5E27" : "#4B5563",
+              color: isExpanded ? "#C1B4D8" : "#4B5563",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >

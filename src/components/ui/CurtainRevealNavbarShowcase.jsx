@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, ChevronDown } from 'lucide-react';
 
-const promptContent = `editorial luxury navbar (About, Projects, Contact) dropping a full height brand-orange background curtain via framer motion, RewampUI wordmark and logo in SF Pro Semibold`;
+const promptContent = `editorial luxury navbar (About, Projects, Contact) dropping a full height brand lilac background curtain via framer motion, RewampUI wordmark and logo in SF Pro Semibold`;
 
 export default function CurtainRevealNavbarShowcase() {
     const [copied, setCopied] = useState(false);
@@ -15,9 +15,9 @@ export default function CurtainRevealNavbarShowcase() {
     };
 
     const links = [
-        { id: "about", label: "About", color: "from-[#1F1F1F] to-[#3A3A3A]" },
-        { id: "projects", label: "Projects", color: "from-[#D2471A] to-[#EC5E27]" },
-        { id: "contact", label: "Contact", color: "from-[#7A2D12] to-[#D2471A]" }
+        { id: "about", label: "About", color: "from-[#171717] to-[#404040]" },
+        { id: "projects", label: "Projects", color: "from-[#525252] to-[#C1B4D8]" },
+        { id: "contact", label: "Contact", color: "from-[#404040] to-[#C1B4D8]" }
     ];
 
     return (
@@ -59,14 +59,19 @@ export default function CurtainRevealNavbarShowcase() {
                                 key={link.id}
                                 onMouseEnter={() => setActiveCurtain(link.id)}
                                 onMouseLeave={() => setActiveCurtain(null)}
-                                className={`text-[12px] font-semibold tracking-[0.2em] uppercase flex items-center gap-1 transition-colors duration-500 ${
+                                className={`relative text-[12px] font-semibold tracking-[0.2em] uppercase flex items-center gap-1 transition-colors duration-500 ${
                                     activeCurtain
                                         ? (activeCurtain === link.id ? 'text-white' : 'text-white/40')
-                                        : 'text-black/60 dark:text-white/60 hover:text-[#EC5E27] dark:hover:text-[#EC5E27]'
+                                        : 'text-black/60 dark:text-white/60 hover:text-black dark:hover:text-[#E4DDF0]'
                                 }`}
                             >
                                 {link.label}
                                 <ChevronDown size={12} className={`transition-transform duration-300 ${activeCurtain === link.id ? 'rotate-180' : ''}`} />
+                                <span
+                                    className={`absolute -bottom-1 left-0 right-0 h-[2px] rounded-full bg-[#C1B4D8] origin-left transition-transform duration-300 ${
+                                        activeCurtain === link.id ? 'scale-x-100' : 'scale-x-0'
+                                    }`}
+                                />
                             </button>
                         ))}
                     </nav>

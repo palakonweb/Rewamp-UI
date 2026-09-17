@@ -16,7 +16,7 @@ export default function FrostedFolderCardShowcase() {
       >
         {/* Subtle top indicator */}
         <div className="absolute top-6 left-7 flex items-center gap-2 z-10">
-          <div className="w-2 h-2 rounded-full bg-[#EC5E27]" />
+          <div className="w-2 h-2 rounded-full bg-[#C1B4D8]" />
           <span className="text-[11px] font-mono tracking-widest text-black/55 uppercase font-semibold">
             Tactile 3D · Obsidian & Smoked Acrylic
           </span>

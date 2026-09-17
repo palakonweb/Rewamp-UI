@@ -29,7 +29,7 @@ export default function PerspectiveFlipDeckShowcase() {
         </div>
 
         <div className="flex items-center gap-2 text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#EC5E27] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C1B4D8] animate-pulse" />
           <span>Click deck to flip next card</span>
         </div>
       </div>

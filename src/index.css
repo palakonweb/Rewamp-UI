@@ -80,10 +80,14 @@
     --text-2: var(--text-secondary);
     --text-3: var(--text-subtle);
 
-    --font-display: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
-    --font-heading: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+    /* Brand typeface: SF Pro (src/Agent.md). SF Pro is an Apple system font
+       and cannot be webfont-loaded via CDN/@font-face in this environment —
+       it resolves via -apple-system on Mac/iOS/Safari. Per Agent.md, no other
+       typeface (Inter, Geist, etc.) is mixed into the fallback stack. */
+    --font-display: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-heading: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-serif: 'Playfair Display', serif;
-    --font-sans: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+    --font-sans: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'Geist Mono', monospace;
 
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.03);

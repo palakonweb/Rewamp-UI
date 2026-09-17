@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `minimalist white navbar where each link (About, Projects, Contact) is preceded by a tiny pixel-grid icon (info circle, folder, envelope — replicating real Hugeicons glyphs as a 7x7 dot matrix), dots are light gray at idle and snap to a brand-orange accent with a slight scale pop on hover/active, staggered spring per dot`;
+const promptContent = `minimalist white navbar where each link (About, Projects, Contact) is preceded by a tiny pixel-grid icon (info circle, folder, envelope — replicating real Hugeicons glyphs as a 7x7 dot matrix), dots are light gray at idle and snap to the brand lilac accent with a slight scale pop on hover/active, staggered spring per dot`;
 
 // 7x7 dot-matrix glyphs, hand-mapped to resemble real Hugeicons line icons
 const ICONS = {
@@ -63,13 +63,13 @@ function PixelIcon({ dots, active }) {
                                     x: 0,
                                     y: 0,
                                     scale: 1.15,
-                                    backgroundColor: '#EC5E27',
+                                    backgroundColor: '#C1B4D8',
                                 }
                                 : {
                                     x: seed * 0.25,
                                     y: -seed * 0.25,
                                     scale: 1,
-                                    backgroundColor: '#d4d4d8',
+                                    backgroundColor: '#D4D4D4',
                                 }
                         }
                         transition={{ type: 'spring', stiffness: 500, damping: 22, mass: 0.5, delay: i * 0.01 }}
@@ -111,7 +111,7 @@ export default function PixelDotNavbarShowcase() {
                                 <PixelIcon dots={ICONS[link]} active={isOn} />
                                 <span
                                     className={`text-[15px] font-medium tracking-tight transition-colors duration-200 ${
-                                        isOn ? 'text-[#EC5E27]' : 'text-zinc-400'
+                                        isOn ? 'text-[#171717]' : 'text-zinc-400'
                                     }`}
                                 >
                                     {link}

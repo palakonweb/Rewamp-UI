@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Play, Pause, MousePointerClick, AlignCenter, AlignLeft } from 'lucide-react';
 import { KineticLensSidebar, DEFAULT_LENS_ITEMS } from './KineticLensSidebar';
 
@@ -23,7 +23,7 @@ export default function KineticLensSidebarShowcase() {
               }`}
               title="Centered text"
             >
-              <AlignCenter className="w-3.5 h-3.5 text-[#EC5E27]" />
+              <AlignCenter className="w-3.5 h-3.5 text-[#C1B4D8]" />
               <span>Center</span>
             </button>
             <button
@@ -45,13 +45,13 @@ export default function KineticLensSidebarShowcase() {
             onClick={() => setAutoCycle(!autoCycle)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
               autoCycle
-                ? 'bg-neutral-900 text-white border border-[#EC5E27]/40'
+                ? 'bg-neutral-900 text-white border border-[#C1B4D8]/40'
                 : 'bg-neutral-900/60 text-neutral-400 border border-neutral-800 hover:bg-neutral-850'
             }`}
           >
             {autoCycle ? (
               <>
-                <Pause className="w-3.5 h-3.5 text-[#EC5E27]" />
+                <Pause className="w-3.5 h-3.5 text-[#C1B4D8]" />
                 <span>Auto-Scroll Active</span>
               </>
             ) : (
@@ -66,14 +66,14 @@ export default function KineticLensSidebarShowcase() {
         {/* Status indicator */}
         <div className="flex items-center gap-3 text-xs font-mono text-neutral-400">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#EC5E27] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#C1B4D8] animate-pulse" />
             <span className="text-neutral-200 font-sans font-medium">
               {selectedItem?.label || 'Buttons'}
             </span>
           </div>
           <span className="hidden sm:inline text-neutral-600">|</span>
           <span className="hidden sm:inline text-[11px] text-neutral-500">
-            Centered text · Auto-scrolling
+            Centered text Â· Auto-scrolling
           </span>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function KineticLensSidebarShowcase() {
 
           <div className="absolute bottom-4 flex items-center gap-2 text-xs text-neutral-500 font-mono pointer-events-none z-30">
             <MousePointerClick className="w-3.5 h-3.5 text-neutral-400" />
-            <span>Auto-scrolling · Wheel or drag to scrub · Click item to focus</span>
+            <span>Auto-scrolling Â· Wheel or drag to scrub Â· Click item to focus</span>
           </div>
         </div>
       </div>

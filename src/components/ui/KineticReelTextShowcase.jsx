@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Play, Pause, Sun, Moon } from 'lucide-react';
 import { KineticReelText, DEFAULT_REEL_ITEMS } from './KineticReelText';
 
@@ -28,17 +28,17 @@ export default function KineticReelTextShowcase() {
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
               isDark
                 ? 'bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-200'
-                : 'bg-white hover:bg-[#F1E6D7] border border-[#D9D9D6] text-[#1F1F1F]'
+                : 'bg-white hover:bg-[#EEEAF7] border border-[#D9D9D6] text-[#1F1F1F]'
             }`}
           >
             {autoPlay ? (
               <>
-                <Pause className="w-3.5 h-3.5 text-[#EC5E27]" />
+                <Pause className="w-3.5 h-3.5 text-[#C1B4D8]" />
                 <span>Pause</span>
               </>
             ) : (
               <>
-                <Play className="w-3.5 h-3.5 text-[#EC5E27]" />
+                <Play className="w-3.5 h-3.5 text-[#C1B4D8]" />
                 <span>Auto-Roll</span>
               </>
             )}
@@ -50,7 +50,7 @@ export default function KineticReelTextShowcase() {
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
               isDark
                 ? 'bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-200'
-                : 'bg-white hover:bg-[#F1E6D7] border border-[#D9D9D6] text-[#1F1F1F]'
+                : 'bg-white hover:bg-[#EEEAF7] border border-[#D9D9D6] text-[#1F1F1F]'
             }`}
           >
             {isDark ? (
@@ -76,7 +76,7 @@ export default function KineticReelTextShowcase() {
               onClick={() => setPrefix(p)}
               className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 prefix === p
-                  ? 'bg-[#EC5E27] text-white shadow-xs'
+                  ? 'bg-[#C1B4D8] text-neutral-900 shadow-xs'
                   : isDark
                   ? 'bg-neutral-900/60 hover:bg-neutral-800 text-neutral-400'
                   : 'bg-white/80 hover:bg-white text-neutral-600 border border-neutral-200'
@@ -89,7 +89,7 @@ export default function KineticReelTextShowcase() {
 
         {/* Right: Active Indicator */}
         <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="w-2 h-2 rounded-full bg-[#EC5E27] animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-[#C1B4D8] animate-pulse" />
           <span className="font-sans font-medium">{activeItem}</span>
         </div>
       </div>
@@ -129,7 +129,7 @@ export default function KineticReelTextShowcase() {
             isDark ? 'text-neutral-500' : 'text-neutral-400'
           }`}
         >
-          <span>Centered · Scroll mouse wheel over reel · Click to roll · Drag vertically</span>
+          <span>Centered Â· Scroll mouse wheel over reel Â· Click to roll Â· Drag vertically</span>
         </div>
       </div>
     </div>
