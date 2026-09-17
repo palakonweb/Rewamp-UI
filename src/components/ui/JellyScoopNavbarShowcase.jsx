@@ -1,27 +1,16 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
-
-const promptContent = `playful stretchable jelly scoop active state indicator utilizing heavy framer motion spring scale morphing (About, Projects, Contact)`;
+import { motion } from 'framer-motion';
 
 export default function JellyScoopNavbarShowcase() {
-    const [copied, setCopied] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    const navItems = ["About", "Projects", "Contact"];
+    const navItems = ["Home", "About", "Projects", "Contacts"];
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
-            <div className="relative w-full h-full flex items-center justify-center p-8 group">
-
-                {/* 🎯 THE JELLY NAVBAR */}
-                <nav className="relative flex items-center p-3 rounded-3xl bg-white dark:bg-[#2A2433] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#C1B4D8]/20">
+        <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
+            {/* 🎯 THE JELLY NAVBAR */}
+            <div className="relative flex items-center justify-center">
+                <nav className="relative flex items-center p-2 sm:p-2.5 rounded-3xl bg-white dark:bg-[#1E1B28] shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.5)] border border-black/[0.08] dark:border-white/12 transition-colors duration-200">
                     {navItems.map((item, index) => {
                         const isActive = activeIndex === index;
 
@@ -29,23 +18,22 @@ export default function JellyScoopNavbarShowcase() {
                             <button
                                 key={item}
                                 onClick={() => setActiveIndex(index)}
-                                className={`relative px-8 py-3 rounded-2xl text-[15px] font-bold transition-colors duration-300 z-10 ${
+                                className={`relative px-5 sm:px-7 py-2.5 sm:py-3 rounded-2xl text-[14px] sm:text-[15px] font-bold transition-colors duration-300 z-10 cursor-pointer ${
                                     isActive
-                                        ? 'text-[#171717]'
-                                        : 'text-[#5B4B7A] hover:text-[#171717] dark:text-[#D4CBE5]/40 dark:hover:text-[#E4DDF0]'
+                                        ? 'text-[#171717] dark:text-[#171717]'
+                                        : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'
                                 }`}
                             >
                                 {isActive && (
                                     <motion.div
                                         layoutId="jelly-scoop-indicator"
-                                        // The jelly effect is achieved utilizing extreme spring elasticity and minimal damping constraints
                                         transition={{
                                             type: "spring",
-                                            stiffness: 250,
-                                            damping: 15,
+                                            stiffness: 260,
+                                            damping: 16,
                                             mass: 0.8
                                         }}
-                                        className="absolute inset-0 bg-[#D4CBE5] dark:bg-[#4A4056] rounded-2xl -z-10 shadow-[0_1px_3px_rgba(0,0,0,0.06)] origin-center"
+                                        className="absolute inset-0 bg-[#D4CBE5] rounded-2xl -z-10 shadow-[0_2px_8px_rgba(0,0,0,0.1)] origin-center"
                                     />
                                 )}
                                 <span className="relative z-20">{item}</span>
@@ -53,9 +41,12 @@ export default function JellyScoopNavbarShowcase() {
                         );
                     })}
                 </nav>
-                
-                <span className="absolute bottom-6 text-black/30 dark:text-white/30 text-[13px] font-semibold tracking-widest uppercase">Jelly Scoop Elastic</span>
             </div>
-</div>
+
+            {/* Centered Single-line Description */}
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click tabs for elastic jelly scoop effect
+            </p>
+        </div>
     );
 }

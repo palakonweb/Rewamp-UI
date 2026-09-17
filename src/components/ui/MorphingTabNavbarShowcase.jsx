@@ -1,50 +1,45 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, Home, Compass, MessageCircle } from 'lucide-react';
-
-const promptContent = `Fluid Pill Navbar. A highly polished glassmorphic navigation bar where the active tab background smoothly glides and morphs between items using Framer Motion layoutId.`;
+import { Home, User, FolderKanban, MessageCircle } from 'lucide-react';
 
 export default function MorphingTabNavbarShowcase() {
-    const [copied, setCopied] = useState(false);
-    const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
-
-    const [activeTab, setActiveTab] = useState("About");
+    const [activeTab, setActiveTab] = useState("Home");
 
     const tabs = [
-        { id: "About", icon: Home },
-        { id: "Projects", icon: Compass },
-        { id: "Contact", icon: MessageCircle },
+        { id: "Home", icon: Home },
+        { id: "About", icon: User },
+        { id: "Projects", icon: FolderKanban },
+        { id: "Contacts", icon: MessageCircle },
     ];
 
     return (
-        <div className="w-full h-full flex flex-col gap-6">
-            <div className="relative w-full h-full flex items-center justify-center">
-                
-                {/* 🎯 THE MORPHING NAVBAR */}
-                <nav className="relative flex items-center p-2 rounded-full bg-black/[0.04] dark:bg-white/[0.05] border border-black/10 dark:border-white/10 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+        <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
+            {/* 🎯 THE MORPHING NAVBAR */}
+            <div className="relative flex items-center justify-center">
+                <nav className="relative flex items-center p-2 rounded-full bg-white/80 dark:bg-[#181622]/90 border border-black/10 dark:border-white/12 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_14px_40px_rgba(0,0,0,0.6)] transition-colors duration-200">
                     {tabs.map((tab) => {
                         const isActive = activeTab === tab.id;
                         return (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`relative flex items-center gap-2 px-6 py-3 rounded-full transition-colors duration-300 ${
-                                    isActive ? 'text-black dark:text-white' : 'text-black/50 dark:text-white/50 hover:text-black/80 dark:hover:text-white/80'
+                                className={`relative flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full transition-colors duration-300 cursor-pointer ${
+                                    isActive ? 'text-black dark:text-white' : 'text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                                 }`}
                             >
                                 {/* The Sliding Background Bubble */}
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeTabBubble"
-                                        className="absolute inset-0 bg-black/10 dark:bg-white/10 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] dark:mix-blend-screen"
-                                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                        className="absolute inset-0 bg-black/[0.08] dark:bg-white/[0.12] rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                                        transition={{ type: "spring", stiffness: 420, damping: 30 }}
                                     />
                                 )}
 
                                 <span className="relative z-10 flex items-center justify-center">
-                                    <tab.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                                    <tab.icon size={18} strokeWidth={isActive ? 2.4 : 2} />
                                 </span>
-                                <span className="relative z-10 text-[14px] font-medium tracking-wide">
+                                <span className="relative z-10 text-[14px] font-semibold tracking-wide">
                                     {tab.id}
                                 </span>
                             </button>
@@ -52,6 +47,11 @@ export default function MorphingTabNavbarShowcase() {
                     })}
                 </nav>
             </div>
-</div>
+
+            {/* Centered Single-line Description */}
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Click tabs to morph glass highlight
+            </p>
+        </div>
     );
 }

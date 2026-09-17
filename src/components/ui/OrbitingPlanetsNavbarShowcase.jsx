@@ -1,59 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { Copy, Check, Sun, Cloud, Compass, Map, Wind, Droplets } from 'lucide-react';
-
-const promptContent = `avant-garde orbiting planets navbar that snaps to a horizontal array on hover`;
+import { Sun, Home, User, FolderKanban, Mail } from 'lucide-react';
 
 export default function OrbitingPlanetsNavbarShowcase() {
-    const [copied, setCopied] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const orbitControls = useAnimation();
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    const icons = [Cloud, Compass, Map, Wind, Droplets];
-    const radius = 100; // Orbit radius
+    const navItems = [
+        { id: 'home', label: 'Home', icon: Home },
+        { id: 'about', label: 'About', icon: User },
+        { id: 'projects', label: 'Projects', icon: FolderKanban },
+        { id: 'contacts', label: 'Contacts', icon: Mail },
+    ];
+    const radius = 95; // Orbit radius
 
     // Handle continuous rotation vs snapped translation
     useEffect(() => {
         if (isHovered) {
             orbitControls.stop();
-            orbitControls.set({ rotate: 0 }); // reset rotation wrapper so they snap cleanly
+            orbitControls.set({ rotate: 0 });
         } else {
             orbitControls.start({
                 rotate: 360,
-                transition: { duration: 25, repeat: Infinity, ease: "linear" }
+                transition: { duration: 22, repeat: Infinity, ease: "linear" }
             });
         }
     }, [isHovered, orbitControls]);
 
     return (
-        <div className="w-full h-full flex flex-col gap-6">
-            <div className="relative w-full h-full flex items-center justify-center p-8 group">
-                
-                {/* 🎯 THE ORBITAL NAVBAR */}
+        <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
+            {/* 🎯 THE ORBITAL NAVBAR */}
+            <div className="relative flex items-center justify-center w-[460px] h-[250px]">
                 <div
-                    className="relative flex items-center justify-center w-[460px] h-[250px] z-20"
+                    className="relative flex items-center justify-center w-full h-full"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
                     {/* The Center "Sun" Logo */}
                     <motion.div 
-                        animate={{ scale: isHovered ? 0.8 : 1, x: isHovered ? -160 : 0 }}
+                        animate={{ scale: isHovered ? 0.82 : 1, x: isHovered ? -150 : 0 }}
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                        className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-[#9C8EB8] to-[#D4CBE5] shadow-[0_0_18px_rgba(193,180,216,0.3)] flex items-center justify-center z-30"
+                        className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-[#9C8EB8] to-[#D4CBE5] shadow-[0_0_20px_rgba(193,180,216,0.4)] flex items-center justify-center z-30 cursor-pointer"
                     >
                         <Sun size={28} className="text-white" />
                     </motion.div>
 
-                    {/* Orbit Ring (Visual only) */}
+                    {/* Orbit Ring */}
                     <motion.div
-                        animate={{ opacity: isHovered ? 0 : 0.2, scale: isHovered ? 0.5 : 1 }}
-                        className="absolute w-[180px] h-[180px] rounded-full border border-[#C1B4D8]/50 border-dashed pointer-events-none"
+                        animate={{ opacity: isHovered ? 0 : 0.25, scale: isHovered ? 0.5 : 1 }}
+                        className="absolute w-[190px] h-[190px] rounded-full border border-[#C1B4D8]/50 border-dashed pointer-events-none"
                     />
 
                     {/* The Planets (Nav Items) Wrapper */}
@@ -62,50 +57,44 @@ export default function OrbitingPlanetsNavbarShowcase() {
                         animate={orbitControls}
                         className="absolute flex items-center justify-center pointer-events-none"
                     >
-                        {icons.map((Icon, i) => {
-                            // Calculate orbital starting angle
-                            const angle = (i * (360 / icons.length));
+                        {navItems.map((item, i) => {
+                            const Icon = item.icon;
+                            const angle = (i * (360 / navItems.length));
                             const rad = (angle * Math.PI) / 180;
                             
-                            // Orbital coordinates
                             const orbX = radius * Math.cos(rad);
                             const orbY = radius * Math.sin(rad);
 
-                            // Horizontal Snapped coordinates (spread out to the right of the sun)
-                            const snapX = -100 + (i * 80); // Offset to right side when sun moves left, extra breathing room
+                            // Horizontal Snapped coordinates
+                            const snapX = -85 + (i * 75);
                             const snapY = 0;
 
                             return (
                                 <motion.button
-                                    key={i}
+                                    key={item.id}
+                                    title={item.label}
                                     animate={{
                                         x: isHovered ? snapX : orbX,
                                         y: isHovered ? snapY : orbY,
-                                        // Counter-rotate the icons so they stay upright while the wrapper spins
                                         rotate: isHovered ? 0 : -angle
                                     }}
                                     transition={{ type: "spring", stiffness: 420, damping: 30, mass: 0.5 }}
-                                    whileHover={{ scale: 1.14 }}
-                                    className="absolute w-13 h-13 rounded-full bg-white dark:bg-[#241F2E] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)] border border-black/5 dark:border-white/10 flex items-center justify-center pointer-events-auto z-20"
-                                    style={{ width: 52, height: 52 }}
+                                    whileHover={{ scale: 1.15 }}
+                                    className="absolute w-13 h-13 rounded-full bg-white dark:bg-[#1E1B28] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.6)] border border-black/[0.08] dark:border-white/12 flex items-center justify-center pointer-events-auto z-20 cursor-pointer"
+                                    style={{ width: 50, height: 50 }}
                                 >
-                                    <Icon size={22} strokeWidth={2.25} className="text-[#5B4B7A] dark:text-[#E4DDF0]" />
+                                    <Icon size={20} strokeWidth={2.2} className="text-[#5B4B7A] dark:text-[#D4CBE5]" />
                                 </motion.button>
                             );
                         })}
                     </motion.div>
-                    
-                    {/* Tooltip hint */}
-                    <motion.div 
-                        animate={{ opacity: isHovered ? 0 : 1, y: isHovered ? 10 : 0 }}
-                        className="absolute -bottom-10 text-[11px] font-medium tracking-widest text-black/40 dark:text-white/40 uppercase"
-                    >
-                        Hover System
-                    </motion.div>
                 </div>
-                
-                <span className="absolute bottom-6 text-black/30 dark:text-white/30 text-[13px] font-semibold tracking-widest uppercase">Orbiting Planets</span>
             </div>
-</div>
+
+            {/* Centered Single-line Description */}
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Hover solar center to align orbital navigation
+            </p>
+        </div>
     );
 }

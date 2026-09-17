@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
 
-const promptContent = `minimalist white navbar where each link (About, Projects, Contact) is preceded by a tiny pixel-grid icon (info circle, folder, envelope — replicating real Hugeicons glyphs as a 7x7 dot matrix), dots are light gray at idle and snap to the brand lilac accent with a slight scale pop on hover/active, staggered spring per dot`;
-
-// 7x7 dot-matrix glyphs, hand-mapped to resemble real Hugeicons line icons
+// 7x7 dot-matrix glyphs for the 4 core navigation items
 const ICONS = {
+    Home: [
+        [0, 3],
+        [1, 2], [1, 3], [1, 4],
+        [2, 1], [2, 5],
+        [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6],
+        [4, 1], [4, 5],
+        [5, 1], [5, 3], [5, 5],
+        [6, 1], [6, 2], [6, 4], [6, 5],
+    ],
     About: [
-        // info circle with dot + stem
         [0, 1], [0, 2], [0, 3], [0, 4], [0, 5],
         [1, 0], [1, 6],
         [2, 0], [2, 3], [2, 6],
@@ -17,7 +22,6 @@ const ICONS = {
         [6, 1], [6, 2], [6, 3], [6, 4], [6, 5],
     ],
     Projects: [
-        // folder: top tab + body outline
         [0, 0], [0, 1], [0, 2],
         [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6],
         [2, 0], [2, 6],
@@ -26,8 +30,7 @@ const ICONS = {
         [5, 0], [5, 6],
         [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6],
     ],
-    Contact: [
-        // envelope: outline + center flap point
+    Contacts: [
         [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6],
         [1, 0], [1, 1], [1, 5], [1, 6],
         [2, 0], [2, 2], [2, 4], [2, 6],
@@ -69,7 +72,7 @@ function PixelIcon({ dots, active }) {
                                     x: seed * 0.25,
                                     y: -seed * 0.25,
                                     scale: 1,
-                                    backgroundColor: '#D4D4D4',
+                                    backgroundColor: '#A1A1AA',
                                 }
                         }
                         transition={{ type: 'spring', stiffness: 500, damping: 22, mass: 0.5, delay: i * 0.01 }}
@@ -81,37 +84,34 @@ function PixelIcon({ dots, active }) {
 }
 
 export default function PixelDotNavbarShowcase() {
-    const [copied, setCopied] = useState(false);
-    const [active, setActive] = useState(null);
+    const [active, setActive] = useState('Home');
     const [hovered, setHovered] = useState(null);
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
 
     const links = Object.keys(ICONS);
 
     return (
-        <div className="w-full h-full flex flex-col gap-6">
-            <div className="relative w-full h-full flex items-center justify-center p-8">
-
-                {/* 🎯 THE NAVBAR */}
-                <nav className="relative flex items-center gap-8" onMouseLeave={() => setHovered(null)}>
+        <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
+            {/* 🎯 THE NAVBAR */}
+            <div className="relative flex items-center justify-center">
+                <nav
+                    className="relative flex items-center gap-6 sm:gap-8 px-6 sm:px-8 py-3 rounded-full bg-white dark:bg-[#181622] border border-black/[0.08] dark:border-white/12 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.1)] dark:shadow-[0_16px_36px_-8px_rgba(0,0,0,0.6)] transition-colors duration-200"
+                    onMouseLeave={() => setHovered(null)}
+                >
                     {links.map((link) => {
                         const isOn = active === link || hovered === link;
                         return (
                             <button
                                 key={link}
-                                onClick={() => setActive((prev) => (prev === link ? null : link))}
+                                onClick={() => setActive(link)}
                                 onMouseEnter={() => setHovered(link)}
-                                className="group flex items-center gap-2.5 py-3 cursor-pointer select-none"
+                                className="group flex items-center gap-2.5 py-1.5 cursor-pointer select-none"
                             >
                                 <PixelIcon dots={ICONS[link]} active={isOn} />
                                 <span
-                                    className={`text-[15px] font-medium tracking-tight transition-colors duration-200 ${
-                                        isOn ? 'text-[#9C8EB8] dark:text-[#D4CBE5]' : 'text-zinc-400 dark:text-zinc-500'
+                                    className={`text-[14px] sm:text-[15px] font-medium tracking-tight transition-colors duration-200 ${
+                                        isOn
+                                            ? 'text-[#6D5A8E] dark:text-[#D4CBE5]'
+                                            : 'text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white'
                                     }`}
                                 >
                                     {link}
@@ -120,8 +120,12 @@ export default function PixelDotNavbarShowcase() {
                         );
                     })}
                 </nav>
-
             </div>
-</div>
+
+            {/* Centered Single-line Description */}
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Hover or click tabs to activate pixel icons
+            </p>
+        </div>
     );
 }

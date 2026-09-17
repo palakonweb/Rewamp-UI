@@ -1,27 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
-
-const promptContent = `minimalist top navbar with rapid svg liquid drawing underline mechanics on hover states`;
 
 export default function LiquidUnderlineNavbarShowcase() {
-    const [copied, setCopied] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
-    const links = ["About", "Projects", "Contact"];
+    const links = ["Home", "About", "Projects", "Contacts"];
 
     return (
-        <div className="w-full h-full flex flex-col gap-6">
-            <div className="relative w-full h-full flex items-start justify-center p-8 pt-12 group">
-                
-                {/* 🎯 THE NAVBAR */}
-                <nav className="relative flex items-center justify-center gap-12 w-full">
+        <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
+            {/* 🎯 THE NAVBAR */}
+            <div className="relative flex items-center justify-center">
+                <nav className="relative flex items-center justify-center gap-8 sm:gap-12 px-6 sm:px-10 py-3 rounded-full bg-white dark:bg-[#181622] border border-black/[0.08] dark:border-white/12 shadow-[0_10px_30px_-8px_rgba(0,0,0,0.08)] dark:shadow-[0_14px_34px_-8px_rgba(0,0,0,0.5)] transition-colors duration-200">
                     {links.map((link, index) => {
                         const isHovered = hoveredIndex === index;
 
@@ -30,9 +19,11 @@ export default function LiquidUnderlineNavbarShowcase() {
                                 key={link}
                                 onMouseEnter={() => setHoveredIndex(index)}
                                 onMouseLeave={() => setHoveredIndex(null)}
-                                className="relative py-2 flex flex-col items-center"
+                                className="relative py-2 flex flex-col items-center cursor-pointer"
                             >
-                                <span className={`text-[15px] font-medium tracking-wide uppercase transition-colors duration-300 ${isHovered ? 'text-black dark:text-white' : 'text-black/50 dark:text-white/50'}`}>
+                                <span className={`text-[14px] sm:text-[15px] font-semibold tracking-wide uppercase transition-colors duration-300 ${
+                                    isHovered ? 'text-black dark:text-white' : 'text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                                }`}>
                                     {link}
                                 </span>
                                 
@@ -48,14 +39,14 @@ export default function LiquidUnderlineNavbarShowcase() {
                                         <motion.path 
                                             d="M 0,5 Q 25,0 50,5 T 100,5" 
                                             fill="none" 
-                                            strokeWidth="2" 
+                                            strokeWidth="2.5" 
                                             strokeLinecap="round"
                                             initial={{ pathLength: 0, opacity: 0 }}
                                             animate={{ 
                                                 pathLength: isHovered ? 1 : 0, 
                                                 opacity: isHovered ? 1 : 0,
                                             }}
-                                            transition={{ duration: 0.4, ease: "easeOut" }}
+                                            transition={{ duration: 0.35, ease: "easeOut" }}
                                         />
                                     </motion.svg>
                                 </div>
@@ -63,9 +54,12 @@ export default function LiquidUnderlineNavbarShowcase() {
                         );
                     })}
                 </nav>
-                
-                <span className="absolute bottom-6 text-black/30 dark:text-white/30 text-[13px] font-semibold tracking-widest uppercase">Liquid Underline</span>
             </div>
-</div>
+
+            {/* Centered Single-line Description */}
+            <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+                Hover navigation links to draw liquid underline
+            </p>
+        </div>
     );
 }
