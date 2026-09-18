@@ -1,5 +1,6 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 
 import { PackageManagerProvider } from './components/ui/InstallSection'
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/documentation" element={<DocumentationPage />} />
         </Routes>
       </Suspense>
+      <Analytics />
     </PackageManagerProvider>
   )
 }
