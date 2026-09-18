@@ -29,7 +29,7 @@ export default function MacOSSidebarShowcase() {
                 {/* Simulated Desktop Window Wrapper */}
                 <div className="absolute inset-8 rounded-xl overflow-hidden border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex">
                     
-                    {/* 🎯 THE MACOS SIDEBAR */}
+                    {/* THE MACOS SIDEBAR */}
                     <aside className="w-[220px] h-full bg-[#f6f6f6]/80 dark:bg-[#282828]/80 backdrop-blur-3xl border-r border-black/10 dark:border-white/10 flex flex-col pt-4">
                         
                         {/* Traffic Lights */}

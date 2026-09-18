@@ -8,7 +8,7 @@ export function PurrformReveal() {
       style={{ boxShadow: 'inset 0 20px 40px -10px rgba(139, 0, 0, 0.08)' }}
     >
       <div className="w-full max-w-7xl mx-auto px-4 h-[clamp(100px,15vw,240px)]">
-        <TextHoverEffect text="PURRFORM" />
+        <TextHoverEffect text="REWAMP UI" />
       </div>
     </section>
   );

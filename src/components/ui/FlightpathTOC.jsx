@@ -4,8 +4,8 @@ import { Plane, ListTree } from 'lucide-react';
 
 /**
  * FlightpathTOC
- * Purrform UI Navigation Tree with Supersonic Traveler:
- * Light-mode hierarchical tree showing real Purrform categories and components,
+ * Rewamp UI UI Navigation Tree with Supersonic Traveler:
+ * Light-mode hierarchical tree showing real Rewamp UI categories and components,
  * with a supersonic airplane indicator gliding along an organic curved SVG rail.
  * Clean light mode, zero extra text.
  */
@@ -18,7 +18,7 @@ export function FlightpathTOC({
   headerTitle = 'RewampUI',
   className = '',
 }) {
-  // Real Purrform UI categories and components
+  // Real Rewamp UI UI categories and components
   const defaultItems = useMemo(
     () => [
       { id: 'cards', label: 'Cards', level: 0 },
@@ -44,7 +44,7 @@ export function FlightpathTOC({
     if (activeId) setCurrentId(activeId);
   }, [activeId]);
 
-  // Auto-tour through Purrform components
+  // Auto-tour through Rewamp UI components
   useEffect(() => {
     if (!autoTour || isHovered) return;
     const timer = setInterval(() => {
@@ -108,7 +108,7 @@ export function FlightpathTOC({
       onMouseLeave={() => setIsHovered(false)}
       className={`relative w-full max-w-[300px] sm:max-w-[320px] rounded-2xl bg-[#FFFDF2] border border-[#E8E2D5] p-4 sm:p-5 select-none shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06),0_2px_6px_rgba(0,0,0,0.03)] overflow-hidden ${className}`}
     >
-      {/* Header: Purrform UI */}
+      {/* Header: Rewamp UI UI */}
       <div className="flex items-center gap-2 pb-3 mb-1 border-b border-[#EAE4D8]">
         <ListTree className="w-3.5 h-3.5 text-neutral-400" />
         <span className="text-[11px] font-semibold font-mono tracking-widest uppercase text-neutral-400">
@@ -181,7 +181,7 @@ export function FlightpathTOC({
           </motion.div>
         </motion.div>
 
-        {/* Interactive Text Labels - Pure Purrform components */}
+        {/* Interactive Text Labels - Pure Rewamp UI components */}
         <div className="absolute top-0 left-0 w-full h-full flex flex-col pointer-events-none">
           {nodes.map((node) => {
             const isActive = node.id === currentId;

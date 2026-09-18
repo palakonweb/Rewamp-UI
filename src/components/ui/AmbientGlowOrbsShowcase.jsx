@@ -19,7 +19,7 @@ export default function AmbientGlowOrbsShowcase() {
             {/* PREVIEW SECTION */}
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#0c0c0c] shadow-2xl flex items-center justify-center p-8 group">
                 
-                {/* 🌌 MOTION BACKGROUND */}
+                {/* MOTION BACKGROUND */}
                 <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                     <motion.div
                         animate={{
@@ -55,7 +55,7 @@ export default function AmbientGlowOrbsShowcase() {
                 <BackgroundHeroOverlay />
             </div>
 
-            {/* 📋 PROMPT CARD */}
+            {/* PROMPT CARD */}
 </div>
     );
 }

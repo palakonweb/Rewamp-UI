@@ -10,7 +10,7 @@ const PHRASES = [
     'cooking up ideas...',
     'hold tight...',
     'let me cook...',
-    'done bestie ✨',
+    'done bestie',
 ];
 
 export default function ParticleDotOrbShowcase() {

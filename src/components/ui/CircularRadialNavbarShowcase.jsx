@@ -16,7 +16,7 @@ export default function CircularRadialNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE RADIATING NAVBAR */}
+            {/* THE RADIATING NAVBAR */}
             <div className="relative flex items-center justify-center h-[200px] w-full">
                 <div className="relative flex items-center justify-center">
                     {/* The Menu Items */}

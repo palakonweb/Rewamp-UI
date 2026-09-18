@@ -10,7 +10,7 @@ const PHRASES = [
     'cooking in the dark...',
     'hold up wait...',
     'let him cook...',
-    'done bestie 🔥',
+    'done bestie',
 ];
 
 export default function ParticleMorphOrbShowcase() {

@@ -18,7 +18,7 @@ export default function AuroraToggleShowcase() {
         <div className="w-full h-full flex items-center justify-center">
             <div className="relative w-full h-full flex items-center justify-center p-8 group">
                 
-                {/* 🎯 THE TOGGLE WRAPPER */}
+                {/* THE TOGGLE WRAPPER */}
                 <div 
                     onClick={() => setIsOn(!isOn)}
                     className="relative w-[320px] h-[100px] rounded-[100px] bg-[#111] dark:bg-[#050505] shadow-[inset_0_4px_16px_rgba(0,0,0,0.8),_0_2px_4px_rgba(255,255,255,0.1)] p-3 cursor-pointer flex items-center overflow-hidden"

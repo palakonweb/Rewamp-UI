@@ -91,7 +91,7 @@ export default function GooglyEyesButtonShowcase() {
         <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
             <div className="relative flex items-center justify-center group">
 
-                {/* 🎯 THE BUTTON */}
+                {/* THE BUTTON */}
                 <motion.button
                     onClick={() => setClicked((prev) => !prev)}
                     whileHover={{ scale: 1.02 }}

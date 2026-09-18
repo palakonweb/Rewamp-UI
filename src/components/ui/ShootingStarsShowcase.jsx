@@ -148,13 +148,13 @@ export default function ShootingStarsShowcase() {
             {/* PREVIEW SECTION */}
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#020205] shadow-2xl flex items-center justify-center p-8">
                 
-                {/* 🌌 MOTION BACKGROUND */}
+                {/* MOTION BACKGROUND */}
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full bg-gradient-to-b from-[#050510] to-[#020205]" />
 
                 <BackgroundHeroOverlay />
             </div>
 
-            {/* 📋 PROMPT CARD */}
+            {/* PROMPT CARD */}
 </div>
     );
 }

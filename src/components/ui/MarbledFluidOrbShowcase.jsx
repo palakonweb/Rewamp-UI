@@ -10,7 +10,7 @@ const PHRASES = [
   'connecting sparks...',
   'almost there...',
   'crafting magic...',
-  'all set for you ✨',
+  'all set for you',
 ];
 
 export default function MarbledFluidOrbShowcase() {

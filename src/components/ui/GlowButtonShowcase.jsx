@@ -17,7 +17,7 @@ export default function GlowButtonShowcase() {
         <div className="w-full h-full flex items-center justify-center">
             <div className="relative w-full h-full flex items-center justify-center p-8 group">
                 
-                {/* 🎯 THE BUTTON WRAPPER */}
+                {/* THE BUTTON WRAPPER */}
                 <motion.div
                     whileHover="hover"
                     whileTap="tap"

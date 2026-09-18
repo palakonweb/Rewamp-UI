@@ -15,7 +15,7 @@ export default function DarkModeMobileNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE NAVBAR */}
+            {/* THE NAVBAR */}
             <div className="relative flex items-center justify-center">
                 <nav
                     className="relative inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-[#181622] p-2 border border-black/[0.08] dark:border-white/12 shadow-[0_8px_24px_rgba(0,0,0,0.08)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)] transition-colors duration-200"

@@ -2,7 +2,7 @@ export const wireframeRingOrbPrompt = `Create an AI reasoning indicator capsule 
 - Visual Identity: Dark matte aesthetics matching modern AI models with a floating capsule (rounded-full, bg-[#1C1C21], border border-white/12, shadow-2xl).
 - Left: A real-time 3D wireframe orb composed of concentric latitude contour rings slicing through a sphere, rotating smoothly at a 32-degree tilt with harmonic wave breathing along the rings.
 - Right: Reasoning status text smoothly cycling with blur-fade transitions:
-  "analyzing..." -> "mapping contours..." -> "simulating..." -> "hold on tight..." -> "piecing it together..." -> "nailed it 🎯"
+  "analyzing..." -> "mapping contours..." -> "simulating..." -> "hold on tight..." -> "piecing it together..." -> "nailed it"
 - Tech: React, Three.js (WebGL), and Framer Motion.`;
 
 export const wireframeRingOrbCode = `import React, { useEffect, useRef } from 'react';

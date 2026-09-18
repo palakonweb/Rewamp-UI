@@ -2,7 +2,7 @@ export const particleMorphOrbPrompt = `Create a dark-themed AI reasoning indicat
 - Visual Theme: Deep obsidian dark matte styling (rounded-full capsule, bg-[#18181B], border border-white/12, shadow-2xl).
 - Left: A real-time 3D particle mesh orb rendered with Three.js (thousands of luminous points displaced dynamically with 3D simplex noise harmonics, featuring glowing volumetric fold edges).
 - Right: Shimmery text with animated specular sweep smoothly cycling through reasoning phrases:
-  "deep thinking..." -> "manifesting..." -> "cooking in the dark..." -> "hold up wait..." -> "let him cook..." -> "done bestie 🔥"
+  "deep thinking..." -> "manifesting..." -> "cooking in the dark..." -> "hold up wait..." -> "let him cook..." -> "done bestie"
 - Tech: React, Three.js (WebGL), GLSL vertex/fragment shaders, and Framer Motion.`;
 
 export const particleMorphOrbCode = `import React, { useEffect, useRef, useState } from 'react';
@@ -15,7 +15,7 @@ const PHRASES = [
   'cooking in the dark...',
   'hold up wait...',
   'let him cook...',
-  'done bestie 🔥',
+  'done bestie',
 ];
 
 export default function DarkParticleMorphCapsule() {

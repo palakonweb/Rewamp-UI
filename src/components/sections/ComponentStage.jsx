@@ -269,7 +269,7 @@ function CardThinkingCapsule() {
     'Synthesizing spring physics...',
     'Calculating fluid paths...',
     'Rendering camera matrices...',
-    'Optimal state reached ✨'
+    'Optimal state reached'
   ];
   const [stepIdx, setStepIdx] = useState(0);
 

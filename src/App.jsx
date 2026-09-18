@@ -9,7 +9,7 @@ import { PackageManagerProvider } from './components/ui/InstallSection'
 // /components) still forced the browser to download and parse every other
 // route's bundle too — including the landing page's ~8 heavy marketing
 // sections (Hero, InfiniteBelt, FeaturesBento, LiveProductDemo,
-// InfiniteSpiralGallery, DomeGalleryCTA, PurrformReveal, SplashCursor) and
+// InfiniteSpiralGallery, DomeGalleryCTA, RewampUIReveal, SplashCursor) and
 // the whole documentation page, before the requested route could render.
 // Each page now loads only when its route is actually visited.
 const LandingPage = lazy(() => import('./pages/LandingPage').then((m) => ({ default: m.LandingPage })))

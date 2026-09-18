@@ -6,7 +6,7 @@ export const marbledFluidOrbPrompt = `Create an iridescent marbled fluid silk or
   - Rich pastel-neon palette: glowing coral crimson (#FF2E55), vibrant rose pink (#FF7599), warm apricot peach (#FFB38F), and soft lilac violet (#BD5CF0).
   - Subsurface scattering simulating light passing through the translucent marble.
 - Right: Shimmery reasoning text cycling with blur-fade transitions:
-  "thinking..." -> "weaving thoughts..." -> "connecting sparks..." -> "almost there..." -> "crafting magic..." -> "all set for you ✨"
+  "thinking..." -> "weaving thoughts..." -> "connecting sparks..." -> "almost there..." -> "crafting magic..." -> "all set for you"
 - Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion.`;
 
 export const marbledFluidOrbCode = `import React, { useEffect, useRef } from 'react';

@@ -1,4 +1,4 @@
-// Automatically generated and verified natural-language component prompts for Purrform (RewampUI)
+// Automatically generated and verified natural-language component prompts for Rewamp UI (RewampUI)
 // Every component contains complete, 100% accurate visual and functional specifications,
 // including exact styling tokens, interaction mechanics, and required tech stack dependencies.
 
@@ -15,7 +15,7 @@ export const componentPrompts = {
   - Characters inside the cursor cone undergo rapid randomized character mutation (cycling at 60fps) and illuminate in brilliant neon mint / cyan (#4ECCA3 / #00F2FE) with vivid text-shadow bloom.
   - As the cursor leaves, characters smoothly stabilize back to their idle glyphs with exponential decay.
 - Responsive canvas/grid sizing: Dynamically recalculates columns and rows on viewport resize with debounced window listeners.
-- Overlay & Demo Shell: Includes centered hero title with Purrform badge, high-contrast typography, and live demo content toggle switch.
+- Overlay & Demo Shell: Includes centered hero title with Rewamp UI badge, high-contrast typography, and live demo content toggle switch.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
@@ -486,7 +486,7 @@ export const componentPrompts = {
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
   "flightpath-toc": `Create a Supersonic Airplane Flightpath TOC Navigation in React:
-- Visual Identity: Light-mode Purrform Milk/Cream tokens (#FFFDF2, #FAF6ED, #E8E2D5) with hierarchical tree navigation.
+- Visual Identity: Light-mode Rewamp UI Milk/Cream tokens (#FFFDF2, #FAF6ED, #E8E2D5) with hierarchical tree navigation.
 - Mechanics: Continuous curved SVG rail connecting each item node with smooth cubic bezier S-curves. An animated supersonic airplane traveler physically glides along the rail with spring physics (stiffness: 360, damping: 26) pointing toward the active label.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
@@ -546,41 +546,41 @@ export const componentPrompts = {
   "marbled-fluid-orb": `Create an Iridescent Marbled Fluid Silk Orb AI Thinking Indicator in React:
 - Visual Identity: Clean white floating AI pill capsule (bg-white, border border-black/10, shadow-lg).
 - Left: Interactive 3D WebGL sphere featuring a swirling iridescent silk fluid core (coral crimson #FF2E55, rose pink #FF7599, warm apricot #FFB38F, lilac violet #BD5CF0) with domain-warped 3D simplex noise and subsurface scattering.
-- Right: Shimmery reasoning text cycling: "thinking..." -> "weaving thoughts..." -> "connecting sparks..." -> "almost there..." -> "crafting magic..." -> "all set for you ✨".
+- Right: Shimmery reasoning text cycling: "thinking..." -> "weaving thoughts..." -> "connecting sparks..." -> "almost there..." -> "crafting magic..." -> "all set for you".
 - Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
 
   "particle-dot-orb": `Create a 3D Fibonacci Particle Dot Orb AI Thinking Capsule in React:
 - Visual Identity: Pure white floating pill capsule (bg-white, border border-black/10, soft shadow).
 - Left: 3D rotating Fibonacci particle sphere rendered with Three.js (crisp charcoal dots with depth scaling).
-- Right: Shimmery text with animated light sweep cycling: "thinking..." -> "connecting dots..." -> "cooking up ideas..." -> "hold tight..." -> "let me cook..." -> "done bestie ✨".
+- Right: Shimmery text with animated light sweep cycling: "thinking..." -> "connecting dots..." -> "cooking up ideas..." -> "hold tight..." -> "let me cook..." -> "done bestie".
 - Tech Stack: React, Three.js (WebGL), Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
 
   "fluid-morph-orb": `Create a 3D Fluid Morph Orb AI Thinking Capsule in React:
 - Visual Identity: Floating dark matte pill capsule (bg-[#1E1E23], border border-white/12, shadow-2xl).
 - Left: Real-time 3D fluid morphing mesh orb displaced with harmonic 3D noise shaders.
-- Right: Smooth cycling reasoning status text with blur-fade transitions: "pondering..." -> "manifesting vibes..." -> "brewing thoughts..." -> "hold up a sec..." -> "crafting magic..." -> "all set for you 💫".
+- Right: Smooth cycling reasoning status text with blur-fade transitions: "pondering..." -> "manifesting vibes..." -> "brewing thoughts..." -> "hold up a sec..." -> "crafting magic..." -> "all set for you".
 - Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
 
   "wireframe-ring-orb": `Create a 3D Wireframe Contour Ring Orb AI Reasoning Capsule in React:
 - Visual Identity: Floating dark capsule (bg-[#1C1C21], border border-white/12, shadow-2xl).
 - Left: Real-time 3D wireframe orb composed of concentric latitude contour rings slicing through a sphere at a 32° tilt with harmonic wave breathing.
-- Right: Reasoning status text smoothly cycling: "analyzing..." -> "mapping contours..." -> "simulating..." -> "hold on tight..." -> "piecing it together..." -> "nailed it 🎯".
+- Right: Reasoning status text smoothly cycling: "analyzing..." -> "mapping contours..." -> "simulating..." -> "hold on tight..." -> "piecing it together..." -> "nailed it".
 - Tech Stack: React, Three.js (WebGL), Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
 
   "particle-morph-orb": `Create a 3D Particle Morph Mesh Orb AI Reasoning Capsule in React:
 - Visual Identity: Deep obsidian dark matte capsule (bg-[#18181B], border border-white/12, shadow-2xl).
 - Left: Real-time 3D particle mesh orb rendered with Three.js (thousands of luminous points displaced with 3D simplex noise harmonics and glowing fold edges).
-- Right: Shimmery text cycling through reasoning phrases: "deep thinking..." -> "manifesting..." -> "cooking in the dark..." -> "hold up wait..." -> "let him cook..." -> "done bestie 🔥".
+- Right: Shimmery text cycling through reasoning phrases: "deep thinking..." -> "manifesting..." -> "cooking in the dark..." -> "hold up wait..." -> "let him cook..." -> "done bestie".
 - Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
 
   // Additional registered components
   "apple-navbar": `Create an authentic MacBook Dynamic Notch Navbar in React:
-- Resting AI State: Black notch hanging from top screen bezel with live assistant action status and glowing orange breathing indicator pill (Purrform brand #EC5E27).
+- Resting AI State: Black notch hanging from top screen bezel with live assistant action status and glowing orange breathing indicator pill (Rewamp UI brand #EC5E27).
 - Expansion: Hover fluidly expands into macOS NotchNook navbar with calendar strip, Spotify media widget, navigation links, and action buttons using spring physics (stiffness: 360, damping: 28).
 - Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
@@ -609,7 +609,7 @@ export function getPromptForSlug(slug, title) {
   
   const componentName = (title || slug).replace(/\s+/g, '');
   return `Create a high-performance interactive \${title || slug} component in React:
-- Visual Identity: Clean modern aesthetic matching Purrform design tokens (Primary: #EC5E27, Milk: #FFFDF2, Sand: #F1E6D7, Charcoal: #1F1F1F).
+- Visual Identity: Clean modern aesthetic matching Rewamp UI design tokens (Primary: #EC5E27, Milk: #FFFDF2, Sand: #F1E6D7, Charcoal: #1F1F1F).
 - Interactive Mechanics: Smooth spring physics transitions (stiffness: 340, damping: 26), responsive hover & active states, and dark/light mode support.
 - Component API: Supports customizable props (className, children, onChange) with zero layout shift.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.

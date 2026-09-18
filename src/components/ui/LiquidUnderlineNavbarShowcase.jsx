@@ -8,7 +8,7 @@ export default function LiquidUnderlineNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE NAVBAR */}
+            {/* THE NAVBAR */}
             <div className="relative flex items-center justify-center">
                 <nav className="relative flex items-center justify-center gap-8 sm:gap-12 px-6 sm:px-10 py-3 rounded-full bg-white dark:bg-[#181622] border border-black/[0.08] dark:border-white/12 shadow-[0_10px_30px_-8px_rgba(0,0,0,0.08)] dark:shadow-[0_14px_34px_-8px_rgba(0,0,0,0.5)] transition-colors duration-200">
                     {links.map((link, index) => {

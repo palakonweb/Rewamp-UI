@@ -119,7 +119,7 @@ export default function HyperspeedWarpShowcase() {
                 <BackgroundHeroOverlay />
             </div>
 
-            {/* 📋 PROMPT CARD */}
+            {/* PROMPT CARD */}
 </div>
     );
 }

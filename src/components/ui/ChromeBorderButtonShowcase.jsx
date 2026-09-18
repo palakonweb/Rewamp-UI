@@ -41,7 +41,7 @@ export default function ChromeBorderButtonShowcase() {
                             animate={{ backgroundPosition: ['0% 50%', '250% 50%'] }}
                             transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
                         >
-                            Purrform
+                            Rewamp UI
                         </motion.span>
                     </button>
                 </div>

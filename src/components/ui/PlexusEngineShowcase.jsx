@@ -139,7 +139,7 @@ export default function PlexusEngineShowcase() {
                 <BackgroundHeroOverlay />
             </div>
 
-            {/* 📋 PROMPT CARD */}
+            {/* PROMPT CARD */}
 </div>
     );
 }

@@ -20,7 +20,7 @@ export default function MinimalDotNavbarShowcase() {
         <div className="w-full h-full flex flex-col gap-6">
             <div className="relative w-full h-full flex items-center justify-center p-8 group">
                 
-                {/* 🎯 THE NAVBAR */}
+                {/* THE NAVBAR */}
                 <nav className="relative flex items-center gap-10">
                     {links.map((link, index) => {
                         const isActive = activeIndex === index;

@@ -21,7 +21,7 @@ export default function CosmicSparkleToggleShowcase() {
         <div className="w-full h-full flex items-center justify-center">
             <div className="relative w-full h-full flex items-center justify-center p-8 group overflow-hidden">
                 
-                {/* 🎯 THE TOGGLE WRAPPER */}
+                {/* THE TOGGLE WRAPPER */}
                 <div 
                     onClick={() => setIsOn(!isOn)}
                     className="relative w-[240px] h-[80px] rounded-full bg-[#11162b] shadow-[inset_0_4px_16px_rgba(0,0,0,0.8),_0_0_0_2px_rgba(255,255,255,0.05)] cursor-pointer flex items-center p-2"

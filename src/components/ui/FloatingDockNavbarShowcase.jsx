@@ -66,7 +66,7 @@ export default function FloatingDockNavbarShowcase() {
         <div className="w-full h-full flex items-center justify-center">
             <div className="relative w-full h-full flex items-end justify-center pb-12 group">
 
-                {/* 🎯 THE NAVBAR DOCK */}
+                {/* THE NAVBAR DOCK */}
                 <motion.div 
                     onMouseMove={(e) => mouseX.set(e.pageX)}
                     onMouseLeave={() => mouseX.set(Infinity)}

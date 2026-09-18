@@ -10,7 +10,7 @@ const PHRASES = [
     'simulating...',
     'hold on tight...',
     'piecing it together...',
-    'nailed it 🎯',
+    'nailed it',
 ];
 
 export default function WireframeRingOrbShowcase() {

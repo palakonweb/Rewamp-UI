@@ -29,7 +29,7 @@ export default function OrbitingPlanetsNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE ORBITAL NAVBAR */}
+            {/* THE ORBITAL NAVBAR */}
             <div className="relative flex items-center justify-center w-[460px] h-[250px]">
                 <div
                     className="relative flex items-center justify-center w-full h-full"

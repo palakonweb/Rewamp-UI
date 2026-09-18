@@ -14,7 +14,7 @@ export default function CurtainRevealNavbarShowcase() {
 
     return (
         <div className="w-full h-full flex flex-col justify-between select-none relative overflow-hidden rounded-[20px]">
-            {/* 🎯 THE CURTAIN LAYER */}
+            {/* THE CURTAIN LAYER */}
             <AnimatePresence>
                 {activeCurtain && (
                     <motion.div 
@@ -36,7 +36,7 @@ export default function CurtainRevealNavbarShowcase() {
                 )}
             </AnimatePresence>
 
-            {/* 🎯 THE NAVBAR HEADER */}
+            {/* THE NAVBAR HEADER */}
             <header className="relative z-20 w-full px-3 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-2 bg-black/90 dark:bg-black/95 backdrop-blur-xl border-b border-white/10">
                 <span className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-white shrink-0">
                     <img src="/logo.svg" alt="RewampUI" className="w-6 h-6 object-contain shrink-0" />

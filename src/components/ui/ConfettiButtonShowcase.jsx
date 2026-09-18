@@ -95,10 +95,10 @@ export default function ConfettiButtonShowcase() {
         <div className="w-full h-full flex items-center justify-center">
             <div className="relative w-full h-full flex items-center justify-center p-8 group">
                 
-                {/* 💥 EXPLOSION CANVAS OVERLAY */}
+                {/* EXPLOSION CANVAS OVERLAY */}
                 <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none w-full h-full" />
 
-                {/* 🎯 THE BUTTON */}
+                {/* THE BUTTON */}
                 <motion.button 
                     ref={buttonRef}
                     onClick={fireConfetti}

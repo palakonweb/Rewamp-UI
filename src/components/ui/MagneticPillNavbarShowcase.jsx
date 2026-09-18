@@ -8,7 +8,7 @@ export default function MagneticPillNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE NAVBAR */}
+            {/* THE NAVBAR */}
             <div className="relative flex items-center justify-center">
                 <nav className="relative flex items-center p-1.5 rounded-full bg-white dark:bg-[#181622] shadow-[0_10px_30px_-6px_rgba(0,0,0,0.1)] dark:shadow-[0_14px_34px_-6px_rgba(0,0,0,0.6)] border border-black/[0.08] dark:border-white/12 transition-colors duration-200">
                     {navItems.map((item, index) => {

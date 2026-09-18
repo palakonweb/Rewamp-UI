@@ -8,7 +8,7 @@ export default function JellyScoopNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE JELLY NAVBAR */}
+            {/* THE JELLY NAVBAR */}
             <div className="relative flex items-center justify-center">
                 <nav className="relative flex items-center p-2 sm:p-2.5 rounded-3xl bg-white dark:bg-[#1E1B28] shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.5)] border border-black/[0.08] dark:border-white/12 transition-colors duration-200">
                     {navItems.map((item, index) => {

@@ -19,7 +19,7 @@ export default function AuroraBackgroundShowcase() {
             {/* PREVIEW SECTION */}
             <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#0a0a0a] shadow-2xl flex items-center justify-center p-8">
                 
-                {/* 🌌 MOTION BACKGROUND */}
+                {/* MOTION BACKGROUND */}
                 <div className="absolute inset-0 z-0 overflow-hidden bg-[#050505]">
                     {/* Dark radial overlay for depth */}
                     <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_0%,#000000_100%)] opacity-80 mix-blend-multiply" />
@@ -62,7 +62,7 @@ export default function AuroraBackgroundShowcase() {
                 <BackgroundHeroOverlay />
             </div>
 
-            {/* 📋 PROMPT CARD */}
+            {/* PROMPT CARD */}
 </div>
     );
 }

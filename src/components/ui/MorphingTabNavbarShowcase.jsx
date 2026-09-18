@@ -14,7 +14,7 @@ export default function MorphingTabNavbarShowcase() {
 
     return (
         <div className="w-full flex flex-col items-center justify-center p-6 sm:p-12 select-none">
-            {/* 🎯 THE MORPHING NAVBAR */}
+            {/* THE MORPHING NAVBAR */}
             <div className="relative flex items-center justify-center">
                 <nav className="relative flex items-center p-2 rounded-full bg-white/80 dark:bg-[#181622]/90 border border-black/10 dark:border-white/12 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_14px_40px_rgba(0,0,0,0.6)] transition-colors duration-200">
                     {tabs.map((tab) => {

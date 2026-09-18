@@ -64,7 +64,7 @@ export default function PillExpandNavbarShowcase() {
                 </button>
             </div>
 
-            {/* 🎯 THE EXPANDING PILL NAVBAR */}
+            {/* THE EXPANDING PILL NAVBAR */}
             <div className="relative flex items-center justify-center">
                 <nav
                     className={`inline-flex items-center rounded-full p-2 gap-1.5 transition-colors duration-250 border ${

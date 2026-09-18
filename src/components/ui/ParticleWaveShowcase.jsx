@@ -102,7 +102,7 @@ export default function ParticleWaveShowcase() {
                 <BackgroundHeroOverlay />
             </div>
 
-            {/* 📋 PROMPT CARD */}
+            {/* PROMPT CARD */}
 </div>
     );
 }

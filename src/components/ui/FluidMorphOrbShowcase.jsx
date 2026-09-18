@@ -10,7 +10,7 @@ const PHRASES = [
     'brewing thoughts...',
     'hold up a sec...',
     'crafting magic...',
-    'all set for you 💫',
+    'all set for you',
 ];
 
 export default function FluidMorphOrbShowcase() {
