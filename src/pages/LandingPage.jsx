@@ -15,11 +15,8 @@ export function LandingPage() {
     <>
       <Navbar />
       <SplashCursor />
-      <main className="w-full min-h-screen relative">
-        {/* Sticky Hero for Parallax Curtain Effect */}
-        <div className="sticky top-0 w-full h-[100svh] overflow-hidden -z-10">
-          <Hero />
-        </div>
+      <main className="w-full min-h-screen relative bg-[#FFFDF2]">
+        <Hero />
 
         {/* Scrollable Content overlapping the Hero */}
         <div className="relative z-10 w-full shadow-[0_-20px_40px_rgba(0,0,0,0.05)] border-t border-[var(--border)]">

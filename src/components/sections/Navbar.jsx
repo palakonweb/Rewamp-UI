@@ -42,11 +42,11 @@ export function Navbar() {
         }}
       >
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0 pr-2 sm:pr-4">
+        <Link to="/" className="flex items-center gap-2.5 shrink-0 pr-2 sm:pr-4">
           <img
             src="/logo.svg"
-            alt="RewampUI Logo"
-            className={`transition-all duration-500 w-auto object-contain ${scrolled ? 'h-7 sm:h-8' : 'h-9 sm:h-10'}`}
+            alt="Purrform Logo"
+            className={`transition-all duration-500 w-auto object-contain ${scrolled ? 'h-7 sm:h-8' : 'h-8 sm:h-9'}`}
           />
           <AnimatePresence>
             {!scrolled && (
@@ -54,9 +54,9 @@ export function Navbar() {
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: 'auto' }}
                 exit={{ opacity: 0, width: 0 }}
-                className="font-display tracking-[0.12em] text-[var(--text)] text-[12px] font-bold whitespace-nowrap overflow-hidden"
+                className="font-sans font-black tracking-tight text-[#1F1F1F] text-sm sm:text-base uppercase whitespace-nowrap overflow-hidden"
               >
-                REWAMPUI
+                PURRFORM
               </motion.span>
             )}
           </AnimatePresence>
