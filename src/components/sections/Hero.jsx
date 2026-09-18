@@ -57,7 +57,7 @@ export function Hero() {
               </button>
 
               <a
-                href="https://github.com/palakonweb/rewampui"
+                href="https://github.com/palakonweb/Rewamp-UI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 rounded-full bg-[var(--text-primary)] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-[var(--bg)] transition-transform active:scale-95 cursor-pointer"

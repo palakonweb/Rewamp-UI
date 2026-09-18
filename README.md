@@ -1,16 +1,46 @@
-# React + Vite
+# Rewamp UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A copy-paste React component library — highly interactive, physically-accurate, Framer Motion-driven components you drop directly into your codebase. No NPM wrapper package; you own the code.
 
-Currently, two official plugins are available:
+Repo: [github.com/palakonweb/Rewamp-UI](https://github.com/palakonweb/Rewamp-UI)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+None of these designs are claimed as original work — inspired by the goats of the internet, made with love by Palak aka [palakonweb](https://github.com/palakonweb).
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Other scripts: `npm run build`, `npm run preview`, `npm run lint`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Using components in your own project
+
+Either copy a component's source straight from the `/components` browser in the app, or use the bundled CLI:
+
+```bash
+npx rewampui add theme-toggle
+npx rewampui add arch-card-carousel theme-toggle
+npx rewampui add --all
+```
+
+The CLI lives in [`cli/`](cli) — see `cli/package.json` for details. Requires Node 18+.
+
+## Stack
+
+- React 19 + Vite 7
+- Tailwind CSS 4 (theme tokens as CSS variables in `src/index.css`, for light/dark support)
+- Framer Motion for all interaction/animation
+- react-router-dom for routing
+- three.js for WebGL-based components
+
+## Project structure
+
+- `src/pages` — routed pages (landing, component browser, documentation)
+- `src/components/ui` — the component library itself, one Showcase file per component
+- `src/components/sections` — landing page marketing sections
+- `src/components/docsRegistry.js` — the component registry (categories, slugs, lazy imports)
+- `cli/` — the `rewampui` CLI package
+
+Full docs, installation, and architecture notes live at `/documentation` in the running app.
