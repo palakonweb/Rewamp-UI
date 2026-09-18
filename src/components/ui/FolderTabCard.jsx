@@ -51,11 +51,11 @@ export default function FolderTabCard({
   };
 
   return (
-    <div className="flex items-center justify-center p-2">
+    <div className="flex items-center justify-center p-2 w-full max-w-full">
       <div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-[340px] sm:w-[380px] h-[410px] sm:h-[450px] rounded-[38px] p-2.5 overflow-hidden select-none transition-colors duration-300 ${
+        className={`relative w-full max-w-[320px] sm:max-w-[380px] h-[390px] sm:h-[450px] rounded-[32px] sm:rounded-[38px] p-2.5 overflow-hidden select-none transition-colors duration-300 ${
           isDark 
             ? "bg-[#0c0b10] border border-white/10 shadow-[0_28px_60px_-15px_rgba(0,0,0,0.65)]" 
             : "bg-[#FFFFFF] border border-black/8 shadow-[0_24px_50px_-12px_rgba(156,142,184,0.22)]"

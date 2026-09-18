@@ -36,6 +36,7 @@ export default function ArchCardCarousel({
 }: ArchCardCarouselProps) {
   const [rotation, setRotation] = useState(0);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
@@ -48,23 +49,34 @@ export default function ArchCardCarousel({
   const userInteractedTimeRef = useRef(0);
   const currentRotationRef = useRef(0);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 640) setScreenSize('mobile');
+      else if (w < 1024) setScreenSize('tablet');
+      else setScreenSize('desktop');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const effRadius = screenSize === 'mobile' ? 440 : screenSize === 'tablet' ? 620 : radius;
+  const effCardWidth = screenSize === 'mobile' ? Math.min(cardWidth, 110) : screenSize === 'tablet' ? Math.min(cardWidth, 136) : cardWidth;
+  const effCardHeight = screenSize === 'mobile' ? Math.min(cardHeight, 154) : screenSize === 'tablet' ? Math.min(cardHeight, 190) : cardHeight;
+  const effStepAngleDeg = screenSize === 'mobile' ? 15.5 : screenSize === 'tablet' ? 14.5 : stepAngleDeg;
+
   const count = images.length;
-  const stepAngleRad = (stepAngleDeg * Math.PI) / 180;
+  const stepAngleRad = (effStepAngleDeg * Math.PI) / 180;
   const totalSpanRad = count * stepAngleRad;
 
-  // Exact animation timeline matching Recording 2026-09-13 220628.mp4:
-  // 0.0s - 0.5s: Hold at Center
-  // 0.5s - 2.1s: Smoothly slide to the Right (+18.0 degrees)
-  // 2.1s - 2.9s: Hold at Peak Right
-  // 2.9s - 4.5s: Smoothly slide back to Center
-  // 4.5s - 5.2s: Hold at Center, loop
-  // * On hover, the animation freezes in place, resuming smoothly when unhovered.
+  // Exact animation timeline
   useEffect(() => {
     let animId: number;
     let accumulatedTime = 0;
     let lastStamp = performance.now();
     const cycleDuration = 5200; // 5.2s full cycle
-    const maxAmplitudeDeg = stepAngleDeg * 1.55;
+    const maxAmplitudeDeg = effStepAngleDeg * 1.55;
 
     const tick = (now: number) => {
       const dt = now - lastStamp;
@@ -80,39 +92,30 @@ export default function ArchCardCarousel({
         velocityRef.current *= 0.92;
         setRotation(currentRotationRef.current);
       } else if (isHoveredRef.current) {
-        // Hover active: Pause animation and maintain current rotation smoothly
         setRotation(currentRotationRef.current);
       } else if (timeSinceInteract > 1200) {
-        // Increment animation clock only when active and not hovered
         accumulatedTime += dt;
         const elapsed = accumulatedTime % cycleDuration;
         const progress = elapsed / cycleDuration;
         let targetDeg = 0;
 
         if (progress < 0.10) {
-          // Pause at center (0.0s - 0.52s)
           targetDeg = 0;
         } else if (progress < 0.42) {
-          // Slide right smoothly (0.52s - 2.18s)
           const segProgress = (progress - 0.10) / 0.32;
           targetDeg = easeInOutCubic(segProgress) * maxAmplitudeDeg;
         } else if (progress < 0.56) {
-          // Pause at right peak (2.18s - 2.91s)
           targetDeg = maxAmplitudeDeg;
         } else if (progress < 0.88) {
-          // Slide left back to center (2.91s - 4.58s)
           const segProgress = (progress - 0.56) / 0.32;
           targetDeg = (1 - easeInOutCubic(segProgress)) * maxAmplitudeDeg;
         } else {
-          // Pause at center (4.58s - 5.20s)
           targetDeg = 0;
         }
 
-        // Smooth transition into the animated curve
         currentRotationRef.current += (targetDeg - currentRotationRef.current) * 0.08;
         setRotation(currentRotationRef.current);
       } else {
-        // Standby right after interaction
         setRotation(currentRotationRef.current);
       }
 
@@ -121,7 +124,7 @@ export default function ArchCardCarousel({
 
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
-  }, [stepAngleDeg]);
+  }, [effStepAngleDeg]);
 
   // Pointer drag handlers
   const onPointerDown = (e: React.PointerEvent) => {
@@ -143,7 +146,7 @@ export default function ArchCardCarousel({
     const dt = Math.max(now - lastTimeRef.current, 1);
 
     const deltaX = currentX - startXRef.current;
-    const degDelta = (deltaX / radius) * (180 / Math.PI) * 1.35;
+    const degDelta = (deltaX / effRadius) * (180 / Math.PI) * 1.35;
     const newRot = startRotationRef.current + degDelta;
 
     currentRotationRef.current = newRot;
@@ -165,7 +168,7 @@ export default function ArchCardCarousel({
   };
 
   return (
-    <div className={`relative w-full flex flex-col items-center select-none ${className}`}>
+    <div className={`relative w-full max-w-full flex flex-col items-center select-none ${className}`}>
       {/* ── Viewport ── */}
       <div
         ref={containerRef}
@@ -182,7 +185,7 @@ export default function ArchCardCarousel({
         }}
         className="relative w-full overflow-hidden flex items-end justify-center cursor-grab active:cursor-grabbing touch-pan-y"
         style={{
-          height: `${cardHeight + 165}px`,
+          height: `${effCardHeight + (screenSize === 'mobile' ? 95 : 165)}px`,
         }}
       >
         {/* ── Cards Rendered Along Circular Arch ── */}
@@ -202,22 +205,19 @@ export default function ArchCardCarousel({
             // Visible arc horizon
             if (Math.abs(offsetDeg) > 55) return null;
 
-            // Convex circular path:
-            // x moves out, y drops down from the crest
-            const x = radius * Math.sin(offsetAngle);
-            const y = radius * (1 - Math.cos(offsetAngle));
+            // Convex circular path
+            const x = effRadius * Math.sin(offsetAngle);
+            const y = effRadius * (1 - Math.cos(offsetAngle));
 
-            // Tangential tilt
             const rotateZ = offsetDeg;
 
-            // Distance scaling and z-index layering
             const distFromCenter = Math.abs(offsetDeg);
             const baseScale = Math.max(0.86, 1.0 - (distFromCenter / 55) * 0.15);
             const isHovered = hoveredCardIndex === i;
             const scale = isHovered ? baseScale * 1.025 : baseScale;
             const opacity = distFromCenter > 46 ? 1 - (distFromCenter - 46) / 9 : 1;
             const zIndex = isHovered ? 250 : Math.round(100 - distFromCenter * 1.5);
-            const isCenter = distFromCenter < stepAngleDeg / 2;
+            const isCenter = distFromCenter < effStepAngleDeg / 2;
 
             return (
               <div
@@ -232,13 +232,13 @@ export default function ArchCardCarousel({
                 onClick={(e) => {
                   e.stopPropagation();
                   userInteractedTimeRef.current = performance.now();
-                  currentRotationRef.current = -i * stepAngleDeg;
+                  currentRotationRef.current = -i * effStepAngleDeg;
                   setRotation(currentRotationRef.current);
                 }}
                 className="absolute pointer-events-auto cursor-pointer transition-all duration-300 ease-out"
                 style={{
-                  width: `${cardWidth}px`,
-                  height: `${cardHeight}px`,
+                  width: `${effCardWidth}px`,
+                  height: `${effCardHeight}px`,
                   transformOrigin: '50% 100%',
                   transform: `translate3d(${x}px, ${y}px, 0px) rotateZ(${rotateZ}deg) scale(${scale})`,
                   zIndex,
@@ -250,7 +250,7 @@ export default function ArchCardCarousel({
               >
                 {/* Pure Borderless Rounded Image Card with soft, delicate hover glow */}
                 <div
-                  className={`w-full h-full rounded-[22px] overflow-hidden bg-zinc-200 transition-all duration-500 ease-out relative ${
+                  className={`w-full h-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-zinc-200 transition-all duration-500 ease-out relative ${
                     isHovered
                       ? 'border border-black/10 shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_0_24px_3px_rgba(236,94,39,0.13),0_0_8px_1px_rgba(255,255,255,0.8)]'
                       : 'border border-black/5 shadow-xs'
@@ -268,7 +268,7 @@ export default function ArchCardCarousel({
 
                   {/* Soft ambient inner sheen on hover */}
                   {isHovered && (
-                    <div className="absolute inset-0 pointer-events-none rounded-[22px] ring-1 ring-inset ring-white/30 bg-gradient-to-t from-white/10 via-transparent to-white/15" />
+                    <div className="absolute inset-0 pointer-events-none rounded-[18px] sm:rounded-[22px] ring-1 ring-inset ring-white/30 bg-gradient-to-t from-white/10 via-transparent to-white/15" />
                   )}
                 </div>
               </div>

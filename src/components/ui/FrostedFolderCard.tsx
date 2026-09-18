@@ -46,17 +46,17 @@ export default function FrostedFolderCard({
       onMouseEnter={() => setInternalHovered(true)}
       onMouseLeave={() => setInternalHovered(false)}
       onClick={() => setInternalHovered((prev) => !prev)}
-      className={`relative select-none cursor-pointer flex items-center justify-center p-4 ${className}`}
+      className={`relative select-none cursor-pointer flex items-center justify-center p-2 sm:p-4 w-full max-w-full ${className}`}
       style={{ perspective: '1000px' }}
     >
-      {/* ── Main Folder Stage (400px x 360px) ── */}
+      {/* ── Main Folder Stage ── */}
       <motion.div
         animate={{
           y: isHovered ? -8 : 0,
           scale: isHovered ? 1.02 : 1,
         }}
         transition={springConfig}
-        className="relative w-[340px] sm:w-[400px] h-[306px] sm:h-[360px]"
+        className="relative w-full max-w-[320px] sm:max-w-[400px] h-[288px] sm:h-[360px]"
       >
         {/* ── 1. Deep Obsidian / Black Folder Backing with Left-Hand Tab ── */}
         <div className="absolute inset-0 filter drop-shadow-[0_24px_40px_rgba(0,0,0,0.42)] pointer-events-none">

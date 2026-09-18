@@ -1,232 +1,628 @@
-// Automatically generated component prompts map for RewampUI
-// Every component has its own verified, natural-language prompt.
+// Automatically generated and verified natural-language component prompts for Purrform (RewampUI)
+// Every component contains complete, 100% accurate visual and functional specifications,
+// including exact styling tokens, interaction mechanics, and required tech stack dependencies.
 
 export const componentPrompts = {
-  "halftone-pixel-background": "A dynamic pixel halftone background in React matching modern creative agency aesthetics:\n- High-density orthogonal dot matrix grid with dynamic radius modulation.\n- Smooth undulating harmonic metaball fluid nodes drifting organically across the canvas.\n- Dots swell and merge into glowing luminous cloud islands where fluid nodes intersect.\n- Supports both Dark Mode (deep purple-slate canvas with radiant lavender #D4CBE5 cores) and Light Mode (#EAEAEA canvas with lavender dots merging into pure white cloud peaks).\n- Fully responsive HTML5 canvas with requestAnimationFrame 60fps loop and debounced resize handling.\n- Centered Hero Overlay with RewampUI badge, high-contrast typography, and live demo content toggle switch.",
-  "flower-sidebar": "A tactile vertical Flower Sidebar Navigation component in React:\n- Features an SVG curved flightpath rail running along navigation items.\n- A blooming 6-petal lilac flower indicator icon glides smoothly along the rail using Framer Motion spring physics.\n- The rail path dynamically draws a filled progress trace up to the active flower node.\n- Supports hierarchical category sections with micro-animations on hover and active states.\n- Clean search bar, brand header with RewampUI logo, and compact responsive profile pill at the bottom.\n- Styled with brand lilac (#D4CBE5), slate (#171717), and translucent frosted glass backdrop.",
-  "add-to-cart-glow-button": "\"Add to Cart\" button: a dark charcoal rounded-rectangle button reading \"+ Add to cart\", wrapped in a thin continuously rotating rainbow conic-gradient border — the same moving-border trick used on the Liquid Metal button. On click it swaps to a green-accented rotating border with \"Added to cart\" and a checkmark, then reverts after a moment.",
-  "ai-product-bento": "Dark themed AI product bento grid with animated SVG neural network, soft violet accents, interconnected nodes pulsing gently, prompt engine tile with typewriter cursor, latency stat with progress bar, muted palette, buttery smooth animations, premium SaaS UI",
-  "ambient-glass-morph": "ambient glassmorphism background — slow flowing multi-blob gradient aurora, layered depth blur, frosted glass card floating above with backdrop-filter, soft grain noise texture, seamless loop",
-  "ambient-glow-orbs": "huge ambient glowing orbs slowly drifting and mixing colors, very soft SaaS aesthetic",
-  "animated-grid-background": "animated 3D grid with perspective distortion and glowing fade-out edges, futuristic minimalist UI",
-  "animated-highlight-sidebar": "premium animated vertical sidebar utilizing framer motion layoutId for elastic glides between links",
-  "animated-search": "Create an interactive hover-expandable search capsule component in React:\n- Idle state: A compact, clean circular capsule (64px) with a minimalist search icon centered on a crisp white surface.\n- Hover interaction: Activates strictly on hover (not automated), smoothly expanding via spring physics into a full 420px wide search bar.\n- Contents:\n  - Search icon smoothly shifts color/accent and gives visual feedback.\n  - Reveals an interactive search input with placeholder \"Search for something...\" and a subtle \"⌘K\" keyboard badge.\n  - Interactive typing with instant clear (✕) button when text is entered.\n  - Retains expanded form while focused or when containing search text.\n  - Smoothly collapses back to the compact circular pill when the mouse leaves.\n- Styling: High-precision spring animations, layered ambient drop shadows, and clean modern typography.",
-  "apple-navbar": "Create an authentic MacBook Dynamic Notch Navbar:\n- Resting AI Thinking State (matching Claude AI assistant style):\n  - Black dynamic notch hanging from the top screen bezel (276px wide by 66px tall).\n  - Top line: Live assistant action status (e.g. \"Read input.tsx 23 lines\").\n  - Bottom line: Glowing orange breathing indicator pill (Purrform brand #EC5E27) accompanied by \"Thinking\" status text.\n  - Authentic top-left and top-right concave flares (SVG paths) curving seamlessly into the top bezel line.\n- Alternative Camera Notch State:\n  - Compact camera notch with optical lens aperture and pulsing green indicator LED.\n- Hover & Dynamic Island Expansion:\n  - On hover or touch, the notch fluidly expands using spring physics (stiffness: 360, damping: 28) into a full-featured macOS NotchNook navbar (710px wide by 104px tall).\n  - Top Bar: \"Nook\" / \"Tray\" pill tabs, live calendar days strip (with active date highlight), and settings gear.\n  - Main Row:\n    - Left: Mini Spotify/media player widget with album art, Purrform paw glyph, and play/pause/skip controls.\n    - Center: Navigation links with a magnetic Framer Motion sliding hover pill.\n    - Right: \"+ Add To Reminders\" pill button with check confirmation, mirror camera icon, and primary CTA.\n- Smooth contraction back to the compact notch on mouse leave.\n- Tech Stack: React, Framer Motion, TypeScript, Tailwind CSS, Lucide Icons.",
-  "arch-card-carousel": "Create an animated curved arch card carousel with smooth pendulum gliding motion:\n- Cards: Borderless rounded portrait stock images riding along a circular convex wheel trajectory.\n- Animation: Continuous smooth harmonic pendulum oscillation (gliding right, pausing gently, gliding left) matching reference motion design.\n- Geometry: Tangential z-rotation aligned with the circle normal, apex elevation, and depth scaling.\n- Dome Track: A large subtle circular dome horizon at the bottom.\n- Interactive: Touch and pointer drag to freely scrub and inspect cards with inertia coasting.\n- Tech: React, TypeScript, Tailwind CSS, and requestAnimationFrame physics.",
-  "article-feature-card": "editorial article feature card — 3D tilt with mouse-proximity rotateX/rotateY, image layer parallax inside card, animated like button with spring burst, reading time badge, dark premium editorial aesthetic",
-  "ascii-matrix-hover": "ASCII Matrix Hover Background. A grid of characters where cursor proximity triggers wild character randomization and bright neon glowing, settling back into static state as the cursor leaves.",
-  "aurora-background": "animated aurora waves with slow organic motion and mesh gradient blending, premium dark UI aesthetic",
-  "aurora-feature-card": "premium glassmorphic profile card — frosted white glass, soft teal-to-white gradient, circular avatar, pill skill tags, 3x stat row, dual action buttons, 3D tilt on hover",
-  "aurora-glass-button": "premium dark glass pill button with animated colorful aurora underglow shadow",
-  "aurora-text": "Aurora Borealis text reveal using complex overlapping CSS radial gradients and SVG turbulence filters masked inside typography, ultra premium high-effort aesthetic, dark theme",
-  "aurora-toggle": "premium dark toggle switch with glowing holographic thumb and sleek inset track",
-  "balloon-contact-button": "\"Balloon Contact\" button: a glossy orange balloon-foil pill (dot-grain texture, faint rib seams, thick dark rim, inner glow) inside a dark socket. On press it dents inward — a fast squish (scaleY ~0.88, scaleX ~1.05, y +3) in ~130ms, flattening the top highlight and tightening/dimming the glow, with a diagonal shimmer sweep. On release it rebounds past its normal size and wobbles elastically (overshoot → undershoot → small overshoot → settle) over ~550ms, the glow and highlight flashing brighter mid-rebound before easing back to rest.",
-  "bento-drop-menu-navbar": "premium nav menu where dropping down reveals a beautiful bento grid sub navigation layout",
-  "bento-sidebar": "bento grid style sidebar replacing continuous rail with discrete floating card blocks",
-  "black-button": "\"Black Button\": glossy near-black rounded-full pill with a soft top-to-bottom sheen (lighter charcoal fading to deep black), medium-weight white text, a thin light border, and a soft ambient shadow beneath. On hover it lifts slightly and the sheen brightens.",
-  "blurry-glass-navbar": "heavy blurry backdrop glass navbar with continuously shifting ambient gradient bottom border",
-  "border-trace-button": "pure CSS animated glowing border tracing button utilizing spinning conic gradients",
-  "canvas-particles-cursor": "Canvas 2D particle sparks cursor, mouse movement emits physics-based glowing sparks that bounce, fade, and react to velocity, extremely stable high-performance animation without WebGL",
-  "cat-paw-button": "Playful micro-interaction for a pill-shaped CTA button: a cute cat paw pops up from behind the bottom edge on hover, briefly holds the edge with a tiny wiggle, then ducks back when the cursor leaves. Spring easing, slight overshoot, cotton/off-white paw with noir toe-pad details.",
-  "cat-paw-swipe-button": "Cat paw swipe button: a coral pill button reading \"Get Started\". On hover, a flat white cartoon cat-paw silhouette (rounded palm + 4-5 toe-bean bumps, no outline/shading) swipes in from the bottom-right, growing to fully cover the button and its label. While covered, the label swaps instantly to \"Login Now\", then the paw swipes back out toward the bottom-right revealing the new label. ~0.5s in, ~0.3s hold, ~0.5s out, eased in-out, replays on hover/click.",
-  "character-scramble-text": "Character scramble decode text animation where characters cycle through random letters before settling to the final character, matrix-like decode effect, dark background, monospace font, mint green accent, premium hacker aesthetic",
-  "chrome-border-button": "\"Chrome Border Button\": fully rounded white pill button with a thin true-chrome outline — a rotating conic-gradient ring in shades of black, white, and gray (mimicking a polished metal reflection) with one small hint of red, clipped so it only ever shows as a thin sliver at the border, never washing over the white face. The centered text itself is rendered with a moving black/white/gray metallic gradient that shimmers left to right on a loop. Soft drop shadow.",
-  "cinematic-banner-card": "cinematic widescreen hero card — staggered line-by-line text reveal, horizontal ambient light sweep, blurred atmospheric layers, minimal CTA with arrow, looping scene transitions",
-  "cinematic-reel-carousel": "cinematic reel carousel — center-focused 3D fan with rotateY perspective, drag momentum snap, golden hour accent glow on active card, staggered mount, wide 16:9 cinematic cards",
-  "circular-radial-navbar": "circular action floating button that expands into a radial animated layout of icons",
-  "collapsible-pin-sidebar": "collapsible sidebar toggled via a smooth pinning animation state maintaining strict layout bounds",
-  "confetti-button": "canvas confetti bursting button animation on click",
-  "cosmic-dust": "ultra-slow floating cosmic dust particles, minimal ambient scattering light effect",
-  "cosmic-sparkle-toggle": "premium cosmic switch with starfield particles exploding on toggle activation",
-  "count-up-text": "Animated count-up number statistics with eased counting, large bold numbers with suffixes, stats row layout, scroll-triggered animation, dark background, muted cyan and amber accents, premium SaaS dashboard feel",
-  "crypto-stat-card": "crypto stat card — animated SVG sparkline price chart, pulsing live indicator dot, percentage change ticker with color-coded up/down animation, dark terminal aesthetic with neon green/red accents",
-  "curtain-reveal-navbar": "editorial luxury navbar dropping a full height majestic background curtain via framer motion",
-  "cyber-glitch-button": "edgy cyberpunk neon glitch button with intense chromatic aberration typography",
-  "cyberpunk-glitch-navbar": "cyberpunk neon navigation bar with chromatic text glitching on hover states",
-  "cyberpunk-neon-toggle": "cyberpunk glitch toggle switch with high impact neon borders and chromatic aberration",
-  "dark-mode-mobile-navbar": "White, fully rounded floating toolbar with 5 circular icon-only buttons (Home, Profile, Theme, Chat, Brightness) tightly packed inside a bordered white pill container with a soft drop shadow. The active icon sits on a solid dark (near-black) filled circle that glides between buttons using Framer Motion's shared \\",
-  "dark-ui-button": "deep navy slate minimal dark UI generic button",
-  "data-card-flipper": "data card flipper carousel — 3-card row with Y-axis flip animation, one-at-a-time flip, matrix green terminal aesthetic, sparkline SVG graph on back, scanline texture overlay",
-  "data-viz-bento": "Dark analytics dashboard bento grid with animated SVG sparkline drawing, donut chart with stroke animation, bar chart with spring-up bars, counter numbers counting up on scroll, soft cyan and amber accents, muted dark palette, smooth easing, premium SaaS data visualization",
-  "day-night-morph-toggle": "Ultra-premium skeuomorphic Day/Night toggle. Features extreme 3D depth, inner shadows, and a knob that physically morphs from a glowing sun flare into a deeply cratered moon.",
-  "day-night-parallax-toggle": "parallax day and night toggle switch with layered illustrated masks and sliding thumb",
-  "day-night-sky-toggle": "Day/Night sky toggle: a wide glass pill containing a miniature illustrated sky. Night shows a starfield, crescent moon, drifting clouds and a glowing orb on the right. Toggling smoothly morphs the whole scene to day — navy fades to sky blue, the orb glides right-to-left, the moon rotates into a sun, stars fade out as tiny birds fade in. One continuous 900-1200ms transition, spring easing, no hard cuts.",
-  "depth-stack-card": "Aceternity-style dark card grid with cursor-proximity radial glow that illuminates each card's surface from behind as cursor approaches — hover-reveal pattern",
-  "diagonal-card-stack": "A sleek, continuous diagonal card stream and tactile stacked deck transition. Features deep obsidian matte rounded cards arranged in a cascading diagonal staircase from top-left to bottom-right that continuously glide in an infinite seamless marquee. Includes interactive pointer dragging along the diagonal axis, pause-on-hover, and a smooth spring-physics collapse into a 3D isometric stacked card deck in the center.",
-  "difference-lens-cursor": "Massive difference lens cursor that perfectly inverts colors beneath it. High-contrast, brutalist dark-mode typography layout where the cursor acts as a portal revealing the inverse spectrum.",
-  "digital-rain": "sleek modern digital rain, minimalist matrix effect with pure typography and cherry red leading edge",
-  "draggable-deck-card": "draggable stacked card deck — cards fan out as you drag, each has spring-physics snap-back, dark glass surfaces, distinct gradient identities, premium depth shadow stack",
-  "dynamic-island-sidebar": "dynamic island style sidebar that springs open from a tiny pill clip-path into a full height vertical menu component",
-  "editorial3-d-orbit-carousel": "A 3D tilted elliptical carousel of vibrant editorial poster cards with an architectural background watermark ('SHOWCASE 11'). Features six distinct artistic posters revolving smoothly in a 3D orbit with depth scaling, bank angles, draggable rotation, and click-to-center physics.",
-  "editorial-slider-carousel": "editorial slider carousel — luxury magazine wipe transition with cubic bezier ease, ink curtain sweep, progress bar depletion, editorial red label rotated -90deg, serif high-contrast headline",
-  "elastic-line-grid": "Elastic Line Grid Background. A highly interactive canvas background where a geometric grid of lines physically stretches, bends, and snaps back with elastic spring physics as the cursor drags through them.",
-  "elastic-string-cursor": "Elastic physics cursor that drags a floating glass tag attached via an animated spring string. Extremely smooth, ReactBits inspired interaction.",
-  "electric-plasma-card": "sci-fi card bordered by an infinitely looping electric plasma neon gradient",
-  "elegant-saa-s-feature-card": "elegant dark mode saas feature card grid background pulsing glowing brand icon spotlight effect",
-  "ethereal-pulse-card": "glassmorphic card with ethereal bioluminescent ripples radiating from the cursor on hover",
-  "expandable-accordion-card": "expandable accordion utility card unfolding complex config data forms via framer motion height layout shifts",
-  "expanding-sidebar": "expanding vertical sidebar navbar that reveals rich typography on hover",
-  "flat-button": "minimal flat ui pill button on soft pastel backdrop",
-  "flightpath-toc": "Create a light-mode Purrform UI tree navigation component with an animated supersonic airplane traveler gliding along an organic curved SVG rail.\n\nRequirements:\n- Clean light mode aesthetic matching Purrform Milk/Cream tokens (#FFFDF2, #FAF6ED, #E8E2D5).\n- Displays real Purrform UI categories and components (Cards -> Diagonal Card Stack, Perspective Flip Deck, Orbital Card Arch, Editorial 3D Orbit; Sidebars -> Flightpath TOC; Navbars -> Apple Navbar; Buttons).\n- Continuous curved SVG rail connecting each item node with smooth cubic bezier S-curves when branching into nested sub-items.\n- An animated supersonic airplane indicator that physically glides along the curved rail from node to node with spring physics (stiffness: 360, damping: 26).\n- The airplane points towards the active text label, which transitions to bold charcoal.\n- Auto-tour mode that steps through sections sequentially, with pause on hover and click-to-fly interaction.\n- Zero extraneous text or clutter.",
-  "flip3-d-button": "advanced 3D flip button revealing secondary content on hover utilizing preserve-3d",
-  "flip3-d-text": "3D Mechanical Flip Text. Words split into characters and perform staggered 3D rotateX flips to reveal the next word, simulating a mechanical ticker board.",
-  "flip3-d-toggle": "Physical 3D flip ON/OFF toggle: a molded-plastic capsule with a thick vertical slider at its center. On click the slider rotates ~180deg around its vertical axis (not a flat slide) while the raised/recessed surfaces swap sides and the ON/OFF label crossfades to the opposite side. Realistic bevels, dynamic shadows, spring landing with a tiny overshoot. Cherry Red off-state, Maroon on-state.",
-  "flipping-pricing-card": "180 degree 3d flipping pricing card revealing hidden features on the backface",
-  "floating-blobs-background": "floating blurred blobs with layered depth and parallax effect, deep high-contrast UI background",
-  "floating-dock-navbar": "macOS physics floating dock. True magnification calculations based on cursor distance using Framer Motion springs and useMotionValue.",
-  "floating-orbit-carousel": "floating orbit carousel — cards arranged on elliptical orbit with sin/cos math, idle auto-rotation, click to bring to front, Framer Motion x/y/scale/opacity per orbit position",
-  "floating-pill-sidebar": "vertical floating pill sidebar capsule offset from the edges resembling a mobile floating action bar",
-  "fluid-morph-orb": "Create a sleek AI thinking indicator capsule with a 3D animated orb on the left and dynamic reasoning status text on the right:\n- Layout: A compact floating dark matte pill capsule (rounded-full, bg-[#1E1E23], border border-white/12, shadow-2xl).\n- Left: An interactive 3D animated orb (supports Particle Matrix dot cloud with Fibonacci distribution, or Cobalt Fluid morphing mesh).\n- Right: Smooth cycling reasoning status text with blur-fade transitions:\n  \"pondering...\" -> \"manifesting vibes...\" -> \"brewing thoughts...\" -> \"hold up a sec...\" -> \"crafting magic...\" -> \"all set for you 💫\"\n- Tech: React, Three.js (WebGL), custom GLSL shaders, and Framer Motion.",
-  "fluid-morph-toggle": "fluid morphing switch track that expands when you drag the thumb in framer motion",
-  "fluid-wave-navbar": "Create an interactive floating pill navbar component with a liquid sliding scoop notch indicator, based on the reference video, using dark grey accents instead of blue:\n- Canvas: An expansive, sophisticated dark grey surface (#222227).\n- Navbar Pill: A pristine white rounded capsule (350px) with generous border radius and ambient drop shadows.\n- Navigation Items: 4 tabs (Home, Favorites, Messages, Files) with clean minimalist icons.\n- Hover & Motion Dynamics:\n  - Works on hover: hovering over any tab smoothly shifts the active state.\n  - Active icon springs up (-5px, scale: 1.15) and fills with solid dark grey (#18181B).\n  - Inactive icons sit in muted cool grey (#9CA3AF) outlines.\n  - A dark grey liquid scoop notch smoothly glides along the bottom edge directly beneath the active item via spring physics, revealing the dark grey background curving upwards into the white bar.\n  - A small dark accent dot floats at the crest of the scoop beneath the active icon.\n- Styling: Premium dark grey/graphite tones, tactile micro-interactions, and responsive layout.",
-  "focus-mode-glass-toggle": "Focus Mode glass toggle: a wide frosted-glass pill with a circular moon control on the left and \"Focus\" label, plus tiny up/down chevrons on the right. On click the moon control expands and rotates 15-20deg, a soft luminous ripple spreads through the glass, the label brightens, and the chevrons bounce. Reverses smoothly on a second click. Subtle blue-violet atmosphere, restrained bloom.",
-  "frosted-glass-toggle": "glassmorphic translucent switch with animated icon inside frosted button over vibrant blue backdrop",
-  "glass-button": "\"Glass Button\": real translucent glass pill — heavy backdrop blur actually refracts the scene behind it, with a bright top specular highlight, a crisp light-catching rim border, and a soft drop shadow.",
-  "glassmorphism-bento": "Warm linen glassmorphism bento grid with frosted glass cards, beige background, serif and sans-serif typography, illustrated SVG line-art icons per tile, pastel gradient blobs behind, soft hover lift, elegant editorial aesthetic, warm terracotta and sage accents, generous padding, premium design",
-  "glass-orb-toggle": "Create an interactive Dark/Light mode toggle component with an oversized 3D crystal glass sphere thumb, identical to the reference video:\n- Pill Track: A sleek rounded pill track (248px by 78px) with inset shadow and subtle rim border.\n  - In Dark mode: Deep charcoal surface (#18181B) with \"Light\" label clearly visible on the right.\n  - In Light mode: Soft smoke graphite surface (#56565E) with \"Dark\" label clearly visible on the left.\n- 3D Glass Orb Thumb:\n  - An oversized 3D crystal glass sphere (104px diameter) that extends beyond the top and bottom of the track.\n  - Realistic multi-layered glass shader highlights:\n    - Top-left crisp curved specular reflection arc.\n    - Bottom-right subsurface caustic glow.\n    - Soft refractive backdrop blur allowing the underlying track labels to refract through the glass sphere as it slides.\n  - Inside the glass sphere:\n    - Dark mode: A glowing white crescent moon (horns pointing right).\n    - Light mode: A radiant glowing white sun with central disc and 8 rounded pill beams.\n    - Animated rotation and scale morph with cushioned spring physics on transition.\n- Interaction: Smooth spring-driven sliding on click or drag with dynamic ambient background glow.",
-  "glass-profile-card": "glassmorphism profile card — frosted glass with backdrop-blur floating above soft blurred aurora blob background, circular avatar, stats row with hover lift, pill action buttons, ambient grain texture",
-  "glass-sidebar": "Ultra-premium heavy blur frosted glass sidebar. Features slowly floating ambient gradient orbs behind it and smooth Framer Motion active-state sliding indicators.",
-  "folder-tab-card": "A tactile modern UI card with an asymmetrical folder-tab cutout sheet, an ethereal animated mesh aurora gradient in brand lavender palette, translucent frosted glass circular action button, category heading 'Designs' and subtitle 'Web & App Designs', and bottom metrics row displaying prominent '04 Tags' counter and '1012 Shots' badge. Supports Dark Mode and Light Mode with interactive 3D tilt physics.",
-  "gloss-button": "\"Gloss Button\": rounded-full pill with a marbled, iridescent oil-slick surface (soft blush, lilac and gold swirls) that drifts slowly, plus a fixed glossy highlight arc.",
-  "glow-button": "copper glow button utilizing intense layered box shadows for magical ambient light",
-  "gooey-liquid-toggle": "Liquid Gooey Toggle in dark mode. The bright neon knob physically melts and tears away from its anchors using an SVG feColorMatrix filter, extremely tactile fluid motion.",
-  "gooey-morph-button": "gooey morphing CTA button — merges an avatar-stack invite into a \"Book a call\" pill using an SVG metaball filter",
-  "googly-eyes-button": "cursor-tracking googly eyes button",
-  "gradient-glow-bento": "Dark cinematic motion studio bento grid with SVG concentric play rings animation, deep navy background, dusty rose accents, card-border highlight on hover, sparkline and progress bars, muted palette, editorial typography, buttery smooth animations, premium SaaS design",
-  "gradient-product-card": "ecommerce product card — frosted glass overlay reveals on hover, floating price badge, animated add-to-cart button with spring feedback, tilt depth with product image parallax",
-  "gradient-reveal-text": "Gradient reveal text animation where large heading text uses an animated gradient as fill color, shifting through soft violet, cyan, and rose hues, smooth continuous loop, dark background, premium typography",
-  "gradient-wave": "A full-bleed WebGL/three.js animated background called GradientWaveBackground, matching luminous chromatic silk fluid ribbon waves: undulating S-curved liquid waves over a deep midnight navy base with electric fuchsia, neon rose, and royal violet silk ribbons, anchored by an intense luminous white caustic light beam with HDR bloom. Built as a five-pass fullscreen-quad pipeline rendered to manual WebGLRenderTargets (no scene geometry, no camera movement, no EffectComposer). Pass 1 renders the fluid wave ribbons into a half-float RGBA target so peaks exceed 1.0 without clipping. Pass 2 extracts over-bright peaks above a threshold at half resolution. Passes 3-4 run a separable 5-tap Gaussian blur (horizontal then vertical) over the bright buffer. Pass 5 composites the sharp fluid base with the blurred bloom (with a subtle per-channel chromatic fringe radiating from center on the bloom sample only) and applies filmic exposure tonemapping (1 - exp(-color * exposure)) so highlights roll off softly with an ethereal glow.",
-  "halftone-dot-cursor": "Halftone Dot Matrix Cursor trail effect inspired by editorial digital agencies. An interactive grid of halftone dots that dynamically scales and blooms into an organic fluid wake following the cursor trajectory with smooth dissipation decay and responsive light/dark theme adaptation.",
-  "hexagon-mesh-hover": "Hexagon Mesh Hover Background. A geometric honeycomb grid where the user's cursor acts as a spotlight, revealing vivid glowing neon borders of the hexagons nearest to the mouse.",
-  "highland-real-estate-card": "Real estate card with full-bleed background image of a highland house, top left dark transparent pill 'Newly Listed', bottom dark blurred gradient overlay. Carousel pagination dots in center. Crisp text for pricing '$200k', location '254 Highland Ave', and utility icons (Bed/Bath/Sqft) separated by subtle vertical dividers in the footer. Premium, high-contrast, moody aesthetic.",
-  "hold-to-delete-button": "Hold-to-delete pill button, ~280x64px, cotton base with an outline trash icon and \"Hold to Delete\" label. Holding for one second fills the pill with cherry red left to right, with a highlight on its leading edge; at 100% it turns completely solid red, the icon morphs into a white check, and the label becomes \"Deleted\" with a confirmation pulse. Releasing early reverses the fill smoothly back to 0% instead of snapping.",
-  "holo-depth-card": "spatial holographic card with deep parallax layers that shift independently on hover",
-  "holographic-button": "premium holographic foil shimmer effect mapped mathematically to mouse position",
-  "holographic-reflective-card": "collectible trading card wrapped in a holographic chromatic foil sheen mapped to cursor tilt",
-  "horizontal-ticker-carousel": "infinite horizontal ticker carousel — continuous auto-scroll with hover-pause, neon lime glow on hover, Framer Motion velocity-based speed control, portrait card design",
-  "hyperspeed-warp": "hyper-speed 3D starfield warp effect, pushing particles dynamically towards the viewer",
-  "ice-button": "\"Ice Button\": glossy periwinkle-blue rounded-rectangle button with a bright top highlight (glass-like sheen), bold white label and a small up-right arrow, sitting on a thin lighter-blue border with a soft blue drop shadow. On hover it lifts slightly, brightens, and the glossy highlight intensifies.",
-  "interactive-cards-bento": "Bold enterprise bento grid with large condensed heading, clean off-white background, dark charcoal border, one royal blue accent card, two neutral cards with tag pills, corner arrow links, subtle mouse spotlight, strong typographic hierarchy, editorial design, premium SaaS UI",
-  "jelly-scoop-navbar": "playful stretchable jelly scoop active state indicator utilizing heavy framer motion spring scale morphing",
-  "kinetic-lens-sidebar": "Create a vertical kinetic lens rolodex sidebar menu matching Recording 2026-09-15 155640.mp4.\n\nRequirements:\n- Pure pitch black canvas (#000000) with crisp vector typography.\n- Items represent design agency services: Design Gráfico, Branding, Estratégia, Design de Posts, Landing Page, Copywritter, Site, Identidade Verbal, Design Editorial, Consultoria, Naming, Identidade Visual, Criativos.\n- The active center item is bright pure white (#FFFFFF), larger scale, semibold, with an animated horizontal dash \"— \" preceding it.\n- Peripheral items are crisp deep indigo (#282D52) fading smoothly towards top and bottom edges into pitch black.\n- Scroll-reactive: continuous fractional mouse wheel scrubbing with inertia, touch/pointer drag, debounced snap to nearest item, and support for page or container scroll progress binding.",
-  "kinetic-reel-text": "Create an exact recreation of the kinetic rolling slot reel text animation from Recording 2026-09-15 155737.mp4 in React, Framer Motion, and Tailwind CSS.\n\nRequirements:\n- Pure pitch black backdrop (#000000).\n- Static lowercase bold prefix \"we do\" on the left with letter-spacing -0.03em.\n- On the right, a 3D cylindrical tumbling reel cycling through services:\n  \"Websites\", \"Brand identity\", \"SEO optimization\", \"Digital marketing\", \"Lead generation\", \"Influencer marketing\".\n- Active item is in the center row: crisp, sharp, full opacity pure white (#FFFFFF), matching the baseline and height of the prefix.\n- Adjacent items above and below are visible on the cylinder curve with 3D perspective tilt (rotateX) and subtle opacity falloff (~0.35).\n- Continuous drum index tracking with spring physics: all visible items move synchronously as a single tumbler drum.\n- Interactive mouse wheel scrubbing, pointer drag, click-to-roll, and auto-tumble timer.",
-  "landscape-orb-toggle": "Circular light/dark toggle styled as a landscape orb: a ~90px circle with a white ring border, a flat sky fill on top and a two-layer wavy dune/cloud silhouette across the lower 40%. Dark mode shows an indigo sky with a white crescent moon; light mode shows a warm gold sky with a glowing white sun. Clicking cross-fades every color (sky, dune layers, ambient glow, page background) over ~400ms ease-in-out, and the moon/sun swaps with a scale+fade transition.",
-  "layered-paper-waves": "A full-bleed WebGL/three.js animated background called LayeredPaperWaves, matching the pastel topographic paper cutout footage (Recording 2026-09-14 154048.mp4): seven physical papercraft wave strata stacked with depth, casting soft realistic drop shadows onto lower layers with crisp cut paper bevel highlights. The undulating wave sheets ripple smoothly across the diagonal axis, displaying a chromatic pastel gradient from top powder blue through lilac and periwinkle to blush rose and deep mauve. Built as a single-pass fullscreen quad shader with back-to-front composite layering, smoothstep drop shadow penumbras, and subtle fine-art paper grain. Exposed props: speed, scale, amplitude.",
-  "lens-blur-cursor": "Glassmorphic lens cursor that perfectly tracks the mouse, magnifying and blurring the background elements behind it with a soft frosty aesthetic.",
-  "liquid-cursor-gradient": "Liquid Cursor Gradient Background, ultra-premium SaaS aesthetic. Uses extreme blur layers over massive colored orbs. One orb smoothly tracks the cursor using spring physics.",
-  "liquid-glass-card": "frosted liquid glass card where an internal background blobl strictly stalks the mouse cursor",
-  "liquid-magnet-toggle": "premium liquid metal chrome toggle switch where thumb squashes dynamically using framer motion springs",
-  "liquid-metal-button": "\"Liquid Metal Button\": white rounded-full pill with a continuously rotating liquid-chrome conic-gradient border and dark medium-weight text — the same moving border treatment used site-wide for liquid-metal surfaces.",
-  "liquid-metal-card": "pure liquid metal card simulating chrome reflections reacting dynamically to mouse orientation",
-  "liquid-morph-button": "organic liquid morphing button utilizing SVG gooey filters and heavy bezier path manipulation",
-  "liquid-morph-card": "glass card with a gooey, liquid morphing blob background that constantly shifts and reacts organically",
-  "liquid-text-morph": "Liquid Text Morph. Words melt and fuse into one another using an SVG feColorMatrix gooey filter and Framer Motion layout animations.",
-  "liquid-underline-navbar": "minimalist top navbar with rapid svg liquid drawing underline mechanics on hover states",
-  "mac-os-sidebar": "macos native sidebar with traffic light window controls and translucent acrylic background materials",
-  "magnetic-button": "magnetic button that subtly attracts towards the user's cursor utilizing framer motion physics",
-  "magnetic-cursor": "Canvas reveal cursor effect with SVG mask flashlight revealing a vibrant hidden layer beneath a dark overlay, soft gaussian blur mask edge, spring-based cursor tracking, dark background with colorful content revealed on hover, Aceternity canvas-reveal inspired",
-  "magnetic-gooey-cursor": "Magnetic SVG Gooey Melt Cursor, dark-mode premium component. The cursor physically stretches, melts, and snaps into interactive buttons using an SVG feColorMatrix filter and organic spring physics.",
-  "magnetic-parallax-button": "Vercel/Linear style magnetic button. Glassmorphic dark pill with an interactive interior spotlight that precisely tracks the mouse cursor. Text layers have subtle parallax movement.",
-  "magnetic-pill-navbar": "sleek pill navigation bar using layoutId for a magnetic sliding active background state",
-  "magnetic-spotlight-card": "dark mode stealth card with a magnetic spotlight glare illuminating borders and inner surfaces strictly upon proximity",
-  "marbled-fluid-orb": "Create an iridescent marbled fluid silk orb AI thinking indicator in light mode:\n- Visual Identity: A clean white floating AI thinking pill capsule (rounded-full, bg-white, border border-black/10, shadow-lg).\n- Left: An interactive 3D WebGL sphere featuring a swirling iridescent silk fluid core (sampled from user reference video):\n  - Translucent milky white glass sphere with dual specular glints and bright white Fresnel rim lighting.\n  - Multi-frequency domain-warped 3D simplex noise creating smooth, folding silk ribbons.\n  - Rich pastel-neon palette: glowing coral crimson (#FF2E55), vibrant rose pink (#FF7599), warm apricot peach (#FFB38F), and soft lilac violet (#BD5CF0).\n  - Subsurface scattering simulating light passing through the translucent marble.\n- Right: Shimmery reasoning text cycling with blur-fade transitions:\n  \"thinking...\" -> \"weaving thoughts...\" -> \"connecting sparks...\" -> \"almost there...\" -> \"crafting magic...\" -> \"all set for you ✨\"\n- Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion.",
-  "matrix-trail-cursor": "Matrix Trail Follower Cursor, cursor leaves a trail of rapidly decoding matrix characters streaming behind the mouse, highly optimized DOM nodes with lifecycle management, cyberpunk hacker aesthetic",
-  "matte-folder-card": "Create a sleek modern folder-tab card component with an animated living aurora mesh gradient background and a matte dark folder flap, based on the reference design.\n- Outer container: A squircle card with rounded corners, subtle dark bezel, and soft drop shadow.\n- Background: A living, continuous animated aurora mesh gradient with fluid motion drifting between sunny amber yellow, coral peach, radiant violet-magenta, and sky blue beneath a subtle tactile noise texture.\n- Folder Flap: Precision inverted-fillet tab geometry on top of a dark matte obsidian surface (#1A1A1E to #0E0E11) with a delicate rim-light stroke.\n- Content:\n  - Top tab: \"Designs\" in clean bold sans-serif, with \"Web & App Designs\" subtitle.\n  - Top right: Interactive glass action indicator icon with hover tilt.\n  - Bottom row: High-contrast \"04 Tags\" with prominent bold numerals and \"1012 Shots\" count on the right.\n- Motion: Hover elevation with spring physics, rotation on the top indicator, and continuous silky drifting fluid motion on the gradient background.",
-  "mesh-folder-card": "A realistic 3D folder card. Hovering opens the front flap and slides out paper files. Vibrant dynamic neon backgrounds transition smoothly.",
-  "mesh-gradient-background": "animated mesh gradient with slow organic motion, liquid-like color blending, premium dark UI aesthetic",
-  "minimal-black-bento": "Dark portfolio bento grid with italic serif heading, stat counter tiles showing project numbers, SVG particle globe animation, starburst light illustration, warm white on black contrast, elegant and cinematic, unhurried animations, muted gold accents, generous whitespace, Dribbble-level premium design",
-  "minimal-dot-navbar": "hyper minimalist unstyled navbar relying solely on a gliding cherry red dot for layoutId indicator state",
-  "minimal-glow-toggle": "Minimal dark power-switch toggle: deep charcoal pill with a large rounded thumb fixed on the left and a recessed track on the right holding a tiny indicator dot. Turning on spreads a warm orange LED-like glow from the indicator through the track over ~550ms with a small spring settle; turning off contracts the glow back to the dot and fades it to grey. Matte plastic, no glass or chrome.",
-  "minimal-icon-sidebar": "ultra slim icon only sidebar where hovering springs icons out and displays elegantly positioned tooltip labels",
-  "morphing-code-card": "dark developer card — code types in character-by-character on hover, terminal frame with real syntax highlighting colors, pulsing cursor, copy-to-clipboard chip",
-  "morphing-showcase-carousel": "morphing showcase carousel — card background color & border-radius interpolates between states, breathing idle animation, AnimatePresence cross-fade, teal mesh gradient, feature pills",
-  "morphing-tab-navbar": "Fluid Pill Navbar. A highly polished glassmorphic navigation bar where the active tab background smoothly glides and morphs between items using Framer Motion layoutId.",
-  "morph-search-capsule": "Create an interactive glowing search capsule where clicking the bar triggers an icon morph animation: the search magnifying glass turns and straightens into a blinking vertical text input caret line.\n\nRequirements:\n- Vibrant rounded pill capsule with rich radial back-glow and gradient surface.\n- Dynamic click ripple that radiates from the exact tap coordinate.\n- Morphing SVG icon: on click, the magnifying glass ring scales down and rotates while its diagonal handle straightens into a vertical line '|' and blinks like a text cursor.\n- Text input automatically focuses and allows immediate typing.\n- Clicking outside or clearing smoothly reverses the transition back to the magnifying glass.",
-  "music-player-card": "music player card — spinning vinyl disc with radial gradient, animated waveform equalizer bars with Framer Motion, glassmorphic controls, progress scrubber, frosted dark background",
-  "neon-tech-bento": "Dark developer tools bento grid with SVG terminal typing animation, monospace code elements, git branch diagram, clean graphite background, muted mint accents, dot-grid pattern, subtle top-edge card highlights, soft entry animations, premium dev-focused SaaS UI",
-  "neon-testimonial-card": "dark testimonial carousel card — neon-bordered glass pane, animated quote reveal, avatar with ring glow, star rating dots, smooth slide transition",
-  "neon-trace-card": "sleek dark card with a continuous neon light beam that traces the entire border infinitely",
-  "neumorphic-download-button": "Neumorphic \"Download\" pill button, soft raised light-gray surface. State 1 (idle): a circular disc with a cloud-download icon sits on the left, label reads \"Download\". State 2 (downloading, on click): a ring around the disc sweeps clockwise amber over ~2s while the icon fades from gray to amber and the label reads \"Downloading…\". State 3 (done): the ring completes, the disc shows an amber checkmark, and the label reads \"Downloaded\" — then it resets after a short hold.",
-  "neumorphic-sidebar": "neumorphic 3d inset sidebar rail extruded cleanly from the root background surface",
-  "neumorphic-soft-toggle": "neumorphic soft recessed track toggle button with dual drop shadow extrusions",
-  "neural-glow-profile-card": "dark card with radial spotlight that follows cursor to reveal glowing text and subtext beneath a translucent dark veil — content only visible in the light cone",
-  "nexus-energy-card": "dark card with glowing energy beams that trace the inner borders on hover",
-  "notification-card": "notification feed card — staggered list entrance animation, drag-to-dismiss with velocity threshold, live unread count badge with pulse, icon-type color coding, dark glass card UI",
-  "odometer-text": "Physical slot-machine odometer text animation, numbers physically scroll vertically with spring physics and motion blur, high-effort custom implementation, premium dashboard aesthetic",
-  "orbital-card-arch": "A 3D curved orbital card arch with subtle floating physics and center card deck collapse. Features three square matte obsidian cards ('Orbit 7-03') arranged in an orbital trajectory with left and right cards tilted along the arc. Clicking or toggling smoothly collapses all three cards into a single stacked deck in the center with spring physics.",
-  "orbiting-planets-navbar": "avant-garde orbiting planets navbar that snaps to a horizontal array on hover",
-  "parallax3-d-card": "parallax 3d card tilting on hover while deeply extruding internal layers using framer motion",
-  "parallax-depth-carousel": "parallax depth carousel — multi-layer drag parallax (1x/0.7x/0.4x speeds), internal card element parallax on mousemove, electric blue accent, storm grey depth layers",
-  "particle-dot-orb": "Create an AI thinking capsule in clean white styling with an animated 3D particle dot orb on the left and shimmery reasoning text on the right:\n- Pill Capsule: Pure white floating pill (rounded-full, bg-white, border border-black/10, soft shadow).\n- Left: 3D rotating Fibonacci particle sphere rendered with Three.js (crisp charcoal dots with depth scaling).\n- Right: Shimmery text with animated light sweep, smoothly switching through AI reasoning phrases:\n  \"thinking...\" -> \"connecting dots...\" -> \"cooking up ideas...\" -> \"hold tight...\" -> \"let me cook...\" -> \"done bestie ✨\"\n- Tech: React, Three.js (WebGL), and Framer Motion.",
-  "particle-morph-orb": "Create a dark-themed AI reasoning indicator capsule featuring a 3D undulating particle morph orb on the left and shimmery reasoning text on the right:\n- Visual Theme: Deep obsidian dark matte styling (rounded-full capsule, bg-[#18181B], border border-white/12, shadow-2xl).\n- Left: A real-time 3D particle mesh orb rendered with Three.js (thousands of luminous points displaced dynamically with 3D simplex noise harmonics, featuring glowing volumetric fold edges).\n- Right: Shimmery text with animated specular sweep smoothly cycling through reasoning phrases:\n  \"deep thinking...\" -> \"manifesting...\" -> \"cooking in the dark...\" -> \"hold up wait...\" -> \"let him cook...\" -> \"done bestie 🔥\"\n- Tech: React, Three.js (WebGL), GLSL vertex/fragment shaders, and Framer Motion.",
-  "particle-wave": "thousands of glowing data points mathematically bound to a 3D oscillating sine wave generating an ocean-like data surface",
-  "pastel-pricing-cards": "Set of three pricing cards (Studio, Starter, Pro) with a soft pastel aesthetic. Cards feature rounded corners, light backgrounds, distinct colored feature blocks (faint green, yellow, pink), and large typography. The middle card has a bright lime accent button and a floating 'until may' pill on the price. Simple, clean, high-contrast text.",
-  "perspective3-d-navbar": "perspective 3d navbar that tilts and tracks the users mouse cursor using framer motion physics",
-  "perspective-flip-deck": "A 3D isometric perspective card deck carousel with sequential peeling flip transitions. Features wide dark obsidian cards fanned along a 3D perspective plane with clean white numbering ('01', '02', '03') and divider lines. The front card flips open to the right in 3D perspective around a vertical hinge as subsequent cards smoothly shift forward with spring physics.",
-  "pill-expand-navbar": "Compact black pill bottom navigation bar with 5 icon-only tabs (Home, Category, Cart, Save, Profile) tightly packed inside a rounded-full dark container with minimal padding — no extra whitespace around the icons. On hover or when active, a tab smoothly expands from a small fixed-width square icon button to a fixed wider pill width (same width for every tab, regardless of label length, so the overall navbar never shifts size) revealing its label next to the icon, while every other tab stays collapsed to just its icon. The currently active tab (when not hovered) keeps a faint background tint so it stays identifiable. Animate each tab's \\",
-  "pill-trail": "Create a custom animated cursor trail made from small rounded pill-shaped tags identical to the helix.tech reference.\nThe canvas is pure white with a minimalist 5-column editorial layout: top navigation links (\"Home\", \"Research\", \"Development\", \"News\", \"Institute\") separated by thin vertical grid divider lines, and a bold black \"helix.tech\" brand title at the bottom left.\nAs the user's cursor moves across the canvas:\n- Generate an overlapping ribbon trail of ~16 compact, colorful biotech pills (words: \"biotech\", \"health\", \"science\", \"innovation\", \"research\", \"dna\", \"cells\", \"genetics\", \"biology\", \"future\").\n- The trail follows the cursor with an elastic inverse-kinematics spring chain with distance constraints.\n- Pills remain strictly 0° horizontal at all times — they never rotate or tilt along curve vectors.\n- Newer pills render on top of older pills (descending z-index down the chain).\n- Spacing is velocity-responsive: expanding smoothly on fast movement and clustering tightly with overlap on deceleration or idle.\n- Vibrant organic biotech color palette (royal blue, deep magenta, neon lime, soft lavender, indigo, warm gold, magenta-pink, cyan, deep violet) with high-contrast readable text.\n- Fluid 60fps performance using requestAnimationFrame with zero React re-renders during animation.",
-  "pixel-cloud": "A full-bleed, locked WebGL/three.js animated sky background called PixelCloud, ported from Aceternity UI's Cloud Shader then pixelated. The underlying cloud technique is realistic rather than hand-drawn: each cloud is an asymmetric signed-distance envelope (a dome above its center, a flatter base below, giving the classic rounded-top/flat-bottom cloud silhouette) filled with domain-warped billow noise — noise built from 1 - abs(2 * valueNoise - 1) so it forms sharp puffy ridges like cauliflower tops, with the sample point warped by a second FBM field that slowly evolves over time so the detail crawls rather than just translating. Self-shadowing is faked cheaply by sampling the same density field a second time, offset upward toward the implied sun, and using the difference between the two samples as an occlusion term that darkens the underside of each puff toward the sky color. Six independently seeded clouds drift horizontally at different speeds/phases and wrap around the screen edge, split into far/middle/near depth layers via decreasing drift speed, increasing size, and an atmospheric-perspective fade (more distant clouds blend further into the sky color and lose opacity) — the count prop (1-6) controls how many of these layers render. A vertical sky gradient (skyBottomColor to skyTopColor) plus a faint horizon haze band sits behind everything. To pixelate this normally-smooth, photographic-looking cloud shader: screen coordinates are snapped to a chunky pixel grid (floor(fragCoord / pixelSize) * pixelSize) before every downstream sample, so cloud silhouettes read as blocky/stair-stepped instead of smooth-edged; additionally the raw density field and the self-shadow occlusion term are each quantized into a small number of flat steps (floor(value / step) * step) before shading, replacing the original's smooth gradient shading with flat posterized bands — together these two changes turn the same underlying cloud shapes into flat-shaded pixel art rather than soft realistic clouds, while keeping their drift, depth layering, and self-shadowing intact. Exposed props: cloudColor, skyTopColor, skyBottomColor, speed (global drift multiplier), count (number of cloud layers, 1-6), pixelSize (size in screen px of one pixel-art block — larger reads chunkier/more retro). The React component wraps this in a resizable, IntersectionObserver-gated canvas (pauses rendering when scrolled out of view, debounced resize handling, capped devicePixelRatio, disposes the renderer/geometry/material on unmount, and sets image-rendering: pixelated as a CSS backstop) with className/style passthrough so it composites as a background layer.",
-  "pixel-dot-navbar": "Minimalist white navbar where each link label is preceded by a tiny 7x7 pixel-matrix icon hand-mapped to resemble a real Hugeicons line glyph (info-circle for \"About\", magnifier for \"Research\", briefcase for \"Careers\") — each icon built from ~20 individual 1.5px dots rather than an SVG path. At idle the dots sit in a light gray (#a1a1aa) with a subtle per-dot jittered offset for a soft \"pixel dust\" feel; on hover or when a link becomes active, the dots snap back into a tight aligned grid, scale up slightly, and shift to a dark charcoal (#27272a), animated with Framer Motion springs and a small staggered delay per dot so the reassembly reads as tactile rather than instant. Built with React, Framer Motion, and Tailwind CSS on a plain white background — no external icon library, every icon is pure CSS/motion dots.",
-  "pixel-snow": "A full-bleed WebGL/three.js animated background called PixelSnow: a ray-marched, pixelated snowfall shader rendered on a single full-screen orthographic quad via a custom ShaderMaterial (no scene geometry, no lighting). A fragment shader ray-marches through a 3D voxel grid where each occupied cell (chosen by a hashed per-cell density threshold) contains one snowflake billboard, animated to drift and wobble using layered sine functions seeded by the cell's hash, then advected over time along a camera position offset by a configurable wind \"direction\" angle and \"speed\". Each flake is rendered as a signed-distance shape in one of three variants: a flat-topped square (max of abs UV components), a round dot (UV length), or a faceted hex-branched snowflake distance function (angular-folded SDF with two branch segments). Flake screen size scales with camera depth via a \"minFlakeSize\" floor so distant flakes don't vanish, and brightness/opacity fall off exponentially with ray-march distance (\"depthFade\"), gamma-corrected and multiplied by a \"brightness\" uniform, tinted by a single \"color\" uniform. Before ray-marching, screen coordinates are snapped to a coarse pixel grid sized by \"pixelResolution\" so the whole effect renders in big chunky retro pixels rather than smooth antialiased dots. Marching runs up to 128 steps per pixel with an early break at \"farPlane\" distance, using DDA-style grid stepping (precomputed stride/phase per axis) for efficiency. The React component wraps this in a resizable, IntersectionObserver-gated canvas (pauses rendering when scrolled out of view, debounced resize handling, capped devicePixelRatio, disposes the renderer/geometry/material on unmount) and exposes every shader knob as a prop: color, flakeSize, minFlakeSize, pixelResolution, speed, depthFade, farPlane, brightness, gamma, density, variant ('square' | 'round' | 'snowflake'), direction (wind angle in degrees), plus className/style passthrough. Transparent background (alpha:true, no clear color) so it composites over existing page content as an overlay layer.",
-  "plexus-engine": "advanced plexus engine, interactive floating nodes drawing geometric connection lines based on proximity",
-  "pricing-card": "premium pricing card — three tiers with monthly/annual toggle, staggered entrance animation, active tier full-color glow border, feature list with animated checkmarks, dark glass aesthetic",
-  "prismatic-border-button": "dark matte button with a high fidelity spinning prismatic rgb conic gradient border",
-  "prismatic-track-toggle": "premium toggle switch featuring spinning prismatic conic gradient border bounding box",
-  "productivity-bento": "Clean light productivity bento grid with white cards on cloud-gray background, SVG circular progress ring, task checklist with animated checkmarks, calendar date tile, team chat with typing indicator, soft blue accent, warm gray text, gentle entry animations, premium workspace UI",
-  "radial-spotlight-background": "dark radial spotlight interacting with mouse movement, subtle grainy noise overlay",
-  "rainbow-button": "\"Rainbow Button\": near-white rounded-rectangle pill with a thin static iridescent pastel-spectrum border and medium-weight dark text. No hover animation — a clean, static, minimal button.",
-  "ravello-travel-glass-card": "Glassmorphism travel widget floating over an ocean background. Features a heavily frosted glass container, a top search bar with inset shadow, nested image of Ravello Village with an internal 'Directions' glass button, and a bottom weather/time widget. Extremely premium, soft light scattering effects.",
-  "refracted-beams": "futuristic sharp refracted laser light beams intersecting dynamically over a dark canvas",
-  "ripple-button": "true fluid material ripple interaction expanding exactly from user click coordinate",
-  "ripple-grid": "Ripple Grid Background, interactive canvas background. A dense matrix of tiny dots physically scales up and reacts in a wave pattern as the cursor moves through them, high performance canvas rendering.",
-  "saa-s-admin-sidebar": "Vercel-style deep dark Admin Sidebar. Features collapsible nested sub-menus, smooth Framer Motion layout sliding hover effects, and a highly polished agency aesthetic.",
-  "saa-s-dashboard-card": "3D tilt card with deep perspective distortion, inner glow that shifts with tilt direction, dark surface with floating frosted chip badges, neon underline CTA",
-  "saa-s-feature-bento": "Light SaaS feature bento grid with warm cream background, one bold sage green accent hero card, smaller feature cards for collaboration, progress tracking, and integrations, avatar stack, animated bar chart, SVG vine illustration, clean sans-serif typography, premium editorial design",
-  "share-slide-button": "\"Share\" slide button: a glossy white pill reading \"Share\" in navy text. On hover/click the label slides out to the left while fading, and four social icons (WhatsApp, Instagram, X, Facebook) slide in from the right with a light stagger, filling the same pill. Leaving/clicking again reverses back to the \"Share\" label. Same glossy white surface throughout, no width change.",
-  "share-system-modal-card": "Clean, functional utility modal showcasing both light and dark mode overlapping. Features stacked avatar faces with subtle colored rings, copy link buttons with soft borders, and a dark/light 'Create Link' action button. High emphasis on typography and spacing.",
-  "shimmer-button": "Shimmer button: clean white pill with a subtle grey border. A narrow soft light streak periodically sweeps diagonally across the surface like light reflecting off a polished surface, repeating every few seconds and accelerating once on click. Lifts 1-2px on hover.",
-  "shooting-stars": "stunning night sky with twinkling stars and dynamic shooting stars, high-end canvas animation",
-  "silk-waves": "A full-bleed WebGL/three.js animated background called SilkWaves, matching the iridescent flowing satin folds footage (Recording 2026-09-14 152443.mp4): voluptuous, liquid silk drapes sweeping diagonally across the canvas with deep electric-violet shadows, lustrous silver-lavender specular crests along the fold ridges, and an ambient cool teal glow in the lower-left corner. Built as a single-pass fullscreen quad shader with numerical surface normal calculation for satin anisotropic highlights and Fresnel grazing sheen. Exposed props: speed, scale, intensity, shadowColor, violetColor, highlightColor, ambientColor.",
-  "simple-premium-profile-card": "simple elegant minimalist profile card with staggered entrance animations",
-  "sine-ribbons": "elegant overlapping translucent sine ribbons blending colors, native canvas rendering",
-  "skeuomorphic3-d-toggle": "hyper realistic 3d skeuomorphic toggle switch with deep inset shadow tracks and physical physical red thumb",
-  "skeuomorphic-button": "hyper-realistic skeuomorphic plastic glossy button with soft inset shadows",
-  "slide-to-confirm-button": "\"Slide to Confirm\" order button: a dark navy pill reading \"Complete Order\". On click, the label fades and a tan package icon appears near the left edge; a white cargo-trailer + blue cab truck slides left to right across the track. A dashed white \"road\" line trails behind it, headlight beams fade in near the end, and the truck exits past the right edge and fades. The track settles back to solid dark and the label crossfades to \"Order Placed\" with a green check. ~1s slide, ease-in-out with a slight speed-up near the end.",
-  "soft3-d-bento": "Dark plum design system bento grid with SVG morphing organic blob, soft lavender accents, floating 3D-like shapes with subtle rotation, parallax depth, ambient gradient glow, pearl text on dark background, unhurried animations, premium design tool aesthetic",
-  "soft3-d-folder-card": "Soft 3D purple folder illustration constructed with CSS and Framer Motion. Features a layered back folder tab, stacked floating white pages inside, and a glossy, semi-transparent purple front flap. Includes simple text 'Designs 318 images' and an opaque glassy reflection. Floating on a clean minimal grid background.",
-  "soft-aurora": "soft aurora glowing waves, premium canvas fragment shader for deep fluid color transition",
-  "splash-cursor": "A high-performance WebGL fluid simulation cursor effect rendered in radiant shades of lavender with an interactive centered cursor and responsive dissipation dynamics.",
-  "split-text-reveal": "Split text reveal animation where individual characters fly in from random vertical offsets with staggered timing, each character animates independently, dark background, large bold heading, smooth easing with blur transition",
-  "spotlight-button": "dark mode button with dynamic radial gradient spotlight that perfectly tracks the cursor",
-  "spotlight-grid": "Spotlight Grid Background, ultra-premium dark mode background. A hidden geometric grid is beautifully revealed by a smooth, cursor-tracking radial flashlight mask using Framer Motion templates.",
-  "spotlight-text": "Spotlight Text Reveal. A pitch black container where text is hidden. The cursor acts as a highly saturated gradient spotlight, revealing the text underneath using CSS mask-image and Framer Motion template math.",
-  "stacked-deck-carousel": "stacked deck carousel — physical card stack with velocity-based throw, rotateZ flyoff animation, peek layers at 95%/90% scale, drag-swipeable with snap-back physics",
-  "stroke-button": "minimalist stroke ui pill button with internal arrow circle translated on hover",
-  "svg-border-beam-button": "Aceternity-style moving border button. A continuous conic gradient spins behind a dark pill, creating a mesmerizing glowing border trace effect.",
-  "task-kanban-card": "kanban task card — drag-to-reorder task list with Framer Motion Reorder, animated SVG radial progress ring, checkbox completion with spring animation, priority flag badges, dark glass aesthetic",
-  "testimonial-card": "testimonial card — auto-cycling quotes with staggered word reveal animation, animated star fill on transition, avatar row with active indicator, glassmorphic dark card with soft gradient background",
-  "text-ring-cursor": "Text Ring Cursor, dark mode premium agency aesthetic. Circular text rotates smoothly around the cursor pointer on a spring, expanding heavily and glowing neon when hovering interactive elements.",
-  "trail-cursor": "Organic blob cursor with multiple layered trailing blobs at different spring stiffnesses creating depth and parallax, mix-blend-mode for color interaction, dark background with gradient content, React Bits blob cursor inspired",
-  "typewriter-terminal-navbar": "pure hacker terminal navbar where hidden links are typed out via blinking cursor on hover",
-  "typewriter-text": "Typewriter text animation with blinking cursor, characters appear one by one with smooth timing, dark background, warm white text, monospace feel, premium SaaS aesthetic",
-  "upload-progress-button": "Premium upload button with three states — Upload, Uploading, Uploaded — that transform in place without changing the button's outer dimensions. The pill's own color shifts per state: bright blue when idle, light blue while a shimmering progress fill grows 0-100%, and green once complete. Icon morphs cloud → spinner → check, label crossfades, restrained spring transitions.",
-  "velocity-marquee-text": "Velocity Marquee Text. A massive, continuously scrolling text track that dynamically increases its speed when the user drags their cursor or scrolls, simulating momentum physics.",
-  "vertical-stage-carousel": "vertical stage carousel — cards slide up/down on scroll/swipe, partial peek cards above & below, spring physics Y-axis, rose quartz SVG shapes, vertical dot rail navigation",
-  "vinyl-player-card": "dark feature card with animated neon border beam that continuously travels around the card perimeter, glass inner panel, minimal icon, clean typography",
-  "vision-os-profile-card": "dark invitation-style event card with floating date chip, parallax depth layers that shift on tilt, shimmer headline with gradient text, ticket perforated tear edge, minimal layout",
-  "wallet-card-reveal": "Create an interactive layered fintech wallet card component that reveals masked balances on clicking an eye toggle, identical to the video reference.\n- Outer container: A soft mint-sage background with a clean card frame.\n- Behind the wallet: A tiered stack of 3 soft, beautifully styled branded payment cards:\n  1. Stripe (soft lavender/periwinkle gradient with white lowercase logo, balance $32,495 / masked as \"******\")\n  2. Wise (fresh lime gradient with Wise logo and arrow, balance $45,654 / masked as \"******\")\n  3. PayPal (clean porcelain white ceramic card with PayPal double-P logo, balance $345,865 / masked as \"******\")\n- Front pouch: A sleek tactile matte black leather wallet (#121212) with perimeter dashed stitching, a subtle top concave scoop opening, and a center display showing \"Total Balance\".\n  - In hidden state: all 3 card headers peek out in neat tiers showing logos + masked asterisks \"******\", total balance shows \"* * * * * *\", eye icon at the bottom is eye-off in muted gray.\n  - On clicking the eye button:\n    - Cards slide up and fan out smoothly using cushioned spring physics.\n    - Card balances animate from \"******\" into dollar amounts ($32,495, $45,654, $345,865).\n    - Center total balance counts up smoothly from 0 to \"$424,014\" in refined Inter Medium typography.\n    - Eye toggle icon illuminates into a glowing emerald green eye.\n    - Clicking the eye again retracts all cards back into the pouch and re-masks the values.",
-  "water-caustics": "A full-bleed WebGL/three.js animated background called WaterCaustics, matching sunlit swimming pool footage (Recording 2026-09-14 153504.mp4): authentic refracted turquoise and aquamarine pool water with shimmering caustic light filaments, perspective depth compression, light conservation shadow penumbras, and dancing surface sun glints. Built as a five-pass fullscreen-quad pipeline rendered to manual WebGLRenderTargets (no scene geometry, no camera movement, no EffectComposer). Pass 1 renders the water caustics into a half-float RGBA target so caustic peaks exceed 1.0 without clipping: the caustic pattern uses multi-octave sine-feedback light convergence, perspective mapping (compressed cells near top, broader loops in foreground), and ripple displacement. Pass 2 extracts over-bright peaks above a threshold at half resolution. Passes 3-4 run a separable 5-tap Gaussian blur (horizontal then vertical) over the bright buffer. Pass 5 composites the sharp water base with the blurred bloom (with a subtle per-channel chromatic fringe radiating from center on the bloom sample only) and applies filmic exposure tonemapping (1 - exp(-color * exposure)) so highlights roll off softly with authentic sunlit pool radiance. Exposed props: deepColor, midColor, lineColor, edgeColor, speed, scale, refract, ripple, threshold, bloomStrength, exposure.",
-  "weather-card": "weather card — animated sky gradient that transitions with weather state, floating animated sun/cloud SVG elements with spring motion, hourly forecast row, glassmorphic stat chips, premium dark glass card",
-  "wireframe-ring-orb": "Create an AI reasoning indicator capsule featuring a 3D wireframe contour ring orb on the left and dynamic reasoning status text on the right:\n- Visual Identity: Dark matte aesthetics matching modern AI models with a floating capsule (rounded-full, bg-[#1C1C21], border border-white/12, shadow-2xl).\n- Left: A real-time 3D wireframe orb composed of concentric latitude contour rings slicing through a sphere, rotating smoothly at a 32-degree tilt with harmonic wave breathing along the rings.\n- Right: Reasoning status text smoothly cycling with blur-fade transitions:\n  \"analyzing...\" -> \"mapping contours...\" -> \"simulating...\" -> \"hold on tight...\" -> \"piecing it together...\" -> \"nailed it 🎯\"\n- Tech: React, Three.js (WebGL), and Framer Motion.",
-  "word-by-word-text": "Word by word text reveal animation where each word fades and slides up sequentially, staggered timing, clean dark background, warm white text, smooth easing, premium editorial feel"
+  // ──────────────────────────────────────────────────────────────────────────
+  // 1. ANIMATED BACKGROUNDS (bgs)
+  // ──────────────────────────────────────────────────────────────────────────
+  "ascii-matrix-hover": `Create an interactive ASCII Matrix Character Stream background component in React:
+- Visual Identity: Deep obsidian black canvas (#0D0C10 or #000000) filled with a dense orthogonal matrix grid of monospace typography characters ("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+<>[]{}").
+- Baseline State: Characters render at 24px grid spacing with faint low-opacity slate (#333333 / 15% opacity), maintaining subtle ambient matrix density.
+- Proximity Hover Interaction:
+  - Tracks cursor position in real-time with Framer Motion spring physics (stiffness: 60, damping: 20).
+  - A 250px radial spotlight mask (using CSS mask-image: radial-gradient) illuminates characters near the cursor.
+  - Characters inside the cursor cone undergo rapid randomized character mutation (cycling at 60fps) and illuminate in brilliant neon mint / cyan (#4ECCA3 / #00F2FE) with vivid text-shadow bloom.
+  - As the cursor leaves, characters smoothly stabilize back to their idle glyphs with exponential decay.
+- Responsive canvas/grid sizing: Dynamically recalculates columns and rows on viewport resize with debounced window listeners.
+- Overlay & Demo Shell: Includes centered hero title with Purrform badge, high-contrast typography, and live demo content toggle switch.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "elastic-line-grid": `Create an interactive Elastic Line Grid Canvas background in React:
+- Visual Identity: Dark minimalist grid system (#0D0C10) composed of intersecting horizontal and vertical vector grid lines (50px cell pitch) drawn in translucent silver-slate (#2A2734).
+- Elastic Physics Simulation:
+  - Line vertices act as physical elastic spring nodes with mass, damping (0.85), and stiffness tension (0.08).
+  - Cursor pointer drag or hover physically displaces the nearest grid lines with an influence radius of 120px, stretching and bowing them along the mouse trajectory vector.
+  - On cursor release or departure, displaced lines snap back and oscillate with harmonic damped harmonic vibration before settling to static rest.
+  - Line stroke color and opacity dynamically brighten from faint mist to luminous neon orange (#EC5E27) proportionally to elongation strain.
+- Performance: Native HTML5 Canvas 2D rendering loop with requestAnimationFrame, offscreen delta calculations, and zero React DOM re-renders during active drag.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "spotlight-grid": `Create an ultra-premium dark mode Spotlight Grid Background component in React:
+- Visual Identity: Pitch-black container (#0A090D) overlaying a subtle geometric dot/line grid (40px square grid in #1E1B26 with 1px border stroke).
+- Dynamic Cursor Spotlight:
+  - Mouse coordinates tracked via Framer Motion useMotionValue with spring smoothing (stiffness: 300, damping: 30).
+  - Two-stage radial gradient illumination mask created via useMotionTemplate:
+    1. Intense inner core: 180px radial cone illuminating grid lines with radiant warm amber (#F59E0B) and brand orange (#EC5E27).
+    2. Atmospheric outer halo: 450px soft ambient falloff fading seamlessly to 0% opacity into the dark background.
+  - Subtle tactile grain noise overlay (mix-blend-mode: overlay, opacity: 0.04) across the entire surface.
+- Smooth idle resting state: When mouse exits viewport, spotlight eases to the center of the canvas at 50% luminosity.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "liquid-cursor-gradient": `Create an ethereal Liquid Cursor Gradient ambient background in React:
+- Visual Identity: Deep nocturnal indigo-slate backdrop (#0B0A10) layered with 4 massive, overlapping organic fluid gradient blobs.
+- Color Symphony: Curated palette consisting of electric violet (#7C3AED), luminous neon peach (#FB923C), deep coral rose (#F43F5E), and cool cyan (#06B6D4).
+- Multi-Layer Motion & Physics:
+  - Background Blobs: 3 large background blobs (400px-600px diameter) float autonomously along smooth Lissajous curve paths using CSS keyframe oscillations (18s-25s durations).
+  - Cursor Interactive Stalker: A dedicated primary gradient orb (350px diameter) follows cursor coordinates using Framer Motion springs (stiffness: 120, damping: 24, mass: 0.8).
+  - Extreme Gaussian Depth Blur: Backdrop filter blur (backdrop-blur-[100px] to blur-[140px]) transforms sharp circles into voluptuous, interconnected chromatic silk metaballs.
+  - Surface Frosted Card: Centered translucent frosted glass container (bg-white/5, backdrop-blur-xl, border border-white/10, rounded-3xl) floating above the fluid layer.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "ripple-grid": `Create a high-performance Ripple Grid Canvas background in React:
+- Visual Identity: Minimalist dark matrix grid (#0D0C10) composed of a uniform 2D array of circular dot nodes (spaced 28px apart, baseline dot radius: 1.5px, color: #4B4658).
+- Wave Propagation Dynamics:
+  - On mouse move or click, an impulse wave emits outward from the cursor origin with propagation velocity (v = 320px/s) and exponential distance decay.
+  - Wave peaks modulate both dot scale (enlarging up to 4.5px) and opacity (brightening to pure white #FFFDF2 and brand orange #EC5E27).
+  - Constructive interference: Multiple concurrent wave pulses combine harmonically across intersecting wavefronts.
+- Rendering Pipeline: HTML5 Canvas 2D context optimized with pre-allocated Float32Array buffers for wave centers, amplitudes, and phases, executing at a locked 60fps with zero garbage collection allocations.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "shooting-stars": `Create a cinematic Night Sky with Twinkling Stars and Shooting Star Meteor Showers in React:
+- Visual Identity: Ultra-deep midnight gradient backdrop (linear-gradient from #050508 through #0D0C18 to #08060F).
+- Starfield & Meteor Physics:
+  - Static Starfield: 150-200 micro star points with randomized radii (0.5px to 2px) and individualized CSS animation delays creating organic scintillation/twinkling.
+  - Dynamic Shooting Star Meteors:
+    - Periodically spawn from randomized upper-canvas origins at a consistent 45° trajectory.
+    - Each meteor features an intense luminous white head with a 160px tapered gradient tail (fading from pure white #FFF to electric cyan #38BDF8 and transparent).
+    - High-velocity linear glide (duration: 800ms-1200ms) with ease-out dissipation and randomized interval triggers (every 2.5s-6s).
+- Interactive Pulse: Clicking canvas spawns an immediate starburst cluster at cursor location.
+- Tech Stack: React, HTML5 Canvas 2D / CSS Animations, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "soft-aurora": `Create an animated Soft Aurora Mesh Gradient background in React:
+- Visual Identity: Dark luxury aesthetic (#09080D) with undulating, translucent aurora borealis ribbon waves blending seamlessly across the viewport.
+- Gradient Architecture:
+  - 4 layered mesh nodes shifting between royal purple (#6366F1), emerald teal (#10B981), celestial cyan (#06B6D4), and warm peach (#F97316).
+  - Organic harmonic distortion using multi-octave Perlin/Simplex noise formulas to produce natural curtain-like folds and undulating wave crests.
+  - Extreme layered diffusion blur (blur-[120px]) with high-precision color interpolation preventing banding artifacts.
+- Performance & Interactivity: GPU-accelerated CSS/WebGL animation loop with subtle parallax shift reacting to mouse movements.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "plexus-engine": `Create an interactive Plexus Constellation Engine background in React:
+- Visual Identity: Dark spatial canvas (#0B0A10) populated with 80-120 floating celestial nodes (radii: 2px to 3.5px, color: #E0E7FF).
+- Autonomous Particle Dynamics:
+  - Particles drift autonomously with 2D velocity vectors (vx, vy), softly bouncing off viewport boundaries with velocity preservation.
+  - Dynamic Proximity Connections:
+    - Distance between all node pairs calculated every frame.
+    - When distance d < 120px, an anti-aliased connecting line is drawn with opacity proportional to (1 - d / 120).
+    - When distance d < 60px, connecting lines glow with brand lilac-orange accent.
+  - Interactive Cursor Gravity: Cursor exerts a magnetic attract/repel force within a 180px radius, with particles springing toward the pointer and forming dense constellation hubs.
+- High Performance: Native Canvas 2D implementation with spatial hash grid partitioning for O(N log N) distance checks.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "particle-wave": `Create a 3D Oscillating Particle Wave data ocean surface in React:
+- Visual Identity: Deep nocturnal perspective ocean (#07060A) displaying a 3D grid of 2,500 glowing data nodes (50 x 50 grid).
+- 3D Wave Equations:
+  - 3D perspective projection math (x, y, z -> 2D screen coordinates) with pitch tilt (45°) and depth scaling (1 / (1 + z * focalLength)).
+  - Compound sine and cosine wave oscillation: y = sin(x * 0.15 + t * speed) * cos(z * 0.12 + t * speed * 0.8) * amplitude.
+  - Dot scale (1px to 4px) and color luminance (from deep indigo #312E81 to radiant cyan #22D3EE and white) scale with wave apex elevation.
+  - Interactive Camera Orbit: Mouse X/Y movement smoothly tilts camera elevation angle and wave propagation speed.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "hyperspeed-warp": `Create a 3D Hyperspeed Starfield Warp Tunnel background in React:
+- Visual Identity: Pitch-black void (#050507) with 500 hyper-velocity star vectors streaking toward the viewer along the Z-axis.
+- Warp Geometry & Projection:
+  - Stars initialized with 3D coordinates (X, Y, Z) where Z ranges from depth 1000 to 0.
+  - Screen projection: screenX = X / Z * fov + centerX, screenY = Y / Z * fov + centerY.
+  - As stars approach Z = 0, they stretch from circular points into luminous motion-blurred light trails (from 2px to 60px length) with cyan-white (#E0F2FE to #38BDF8) gradient radiance.
+  - Z-recycling: When a star crosses the camera plane (Z <= 0), it instantly resets to maximum depth Z = 1000 with randomized X/Y.
+- Interactive Throttle: Mouse click/hold triggers hyperspeed boost (3x velocity acceleration with FOV camera expansion).
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "sine-ribbons": `Create an elegant Translucent Sine Ribbon Waves background in React:
+- Visual Identity: Dark luxury container (#0A0910) with 6-8 overlapping chromatic sinusoidal ribbon bands sweeping horizontally across the screen.
+- Harmonic Mathematics:
+  - Each ribbon is generated by evaluating compound multi-frequency sine wave curves: y(x) = A1 * sin(w1 * x + phi1) + A2 * sin(w2 * x + phi2).
+  - Ribbon thickness modulated by secondary harmonic envelopes, filled with semi-transparent linear gradients (violet #8B5CF6, rose #F43F5E, amber #F59E0B, cyan #06B6D4) with mix-blend-mode: screen.
+  - Continuous silky smooth undulating motion with independent phase offsets per ribbon.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "ambient-glow-orbs": `Create an Ambient Glowing Orbs background component in React:
+- Visual Identity: Deep nocturnal canvas (#0E0D13) with 5 massive atmospheric glowing spheres drifting in slow, continuous harmonic orbits.
+- Lighting Architecture:
+  - Spheres render with soft multi-stop radial gradient fills (warm coral #F97316, radiant violet #A855F7, soft amber #FBBF24, celestial blue #3B82F6).
+  - Heavy 120px Gaussian surface diffusion transforms circles into radiant ambient cloud volumes that blend dynamically where they overlap.
+  - Foreground content card (frosted glass with backdrop-filter, border border-white/10, soft inner glow) highlights the lighting shifts underneath.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "refracted-beams": `Create an interactive Refracted Laser Beams background in React:
+- Visual Identity: Pure pitch-black canvas (#000000) intersected by sharp, dynamic geometric light beams and chromatic prism refractions.
+- Optics & Raycasting:
+  - 3 primary laser emitters project focused light vectors across the screen.
+  - When beams intersect or strike interactive geometric prism nodes, they calculate reflection angle (theta_r = theta_i) and split into chromatic RGB dispersion rays (red #EF4444, green #10B981, blue #3B82F6).
+  - Cursor acts as an interactive optical prism that captures, bends, and focuses laser paths in real time.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "cosmic-dust": `Create an ultra-slow Floating Cosmic Dust ambient background in React:
+- Visual Identity: Deep obsidian canvas (#08070C) populated with 300 micro cosmic dust specks drifting in organic zero-gravity fluid currents.
+- Fluid Brownian Motion:
+  - Dust particles move according to low-frequency 2D Simplex noise vector fields, producing natural curling vortexes and eddy currents.
+  - Particle radii vary from 0.8px to 2.2px with subtle luminance breathing (opacity pulsing between 0.2 and 0.85).
+  - Cursor pointer emits a gentle ambient pressure wave that disperses nearby dust particles with soft aerodynamic damping.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "digital-rain": `Create a modern minimalist Digital Rain matrix background in React:
+- Visual Identity: Deep charcoal canvas (#0B0A0F) with vertical monospace character columns raining downward with varying column velocities.
+- Typography & Glyphs:
+  - Custom font matrix containing Japanese katakana, alphanumeric glyphs, and mathematical symbols.
+  - Column Heads: The leading character of each stream glows in brilliant cherry red / neon coral (#EC5E27 / #FF4D4D) with crisp text-shadow bloom.
+  - Column Tails: Trailing characters fade through pure white (#FFFFFF) down to dark slate (#2A2833) over 16-24 character steps before dissolving into the background.
+  - Randomized in-place glyph scrambling occurs at random character positions in falling streams.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "pixel-snow-background": `Create a full-bleed WebGL/Three.js animated Pixel Snow background component:
+- Shading & Ray-marching Pipeline:
+  - Single fullscreen orthographic quad rendered with a custom GLSL ShaderMaterial.
+  - Ray-marches through a 3D voxel grid containing billboarded snowflakes drifting and wobbling with layered sine functions seeded by per-cell hash coordinates.
+  - Three distinct snowflake SDF variants: flat-topped square, circular dot, and hex-branched crystal snowflake.
+  - Screen coordinates snapped to a chunky pixel resolution grid (pixelResolution: 4-8px) for authentic retro pixel-art aesthetic.
+- Configurable Props: color (#E2E8F0), flakeSize, speed, depthFade, density, variant, direction (wind angle in degrees).
+- Tech Stack: React, Three.js, WebGL GLSL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
+  "water-caustics-background": `Create a full-bleed WebGL/Three.js animated Water Caustics background component:
+- 5-Pass WebGL Post-Processing Pipeline:
+  - Pass 1: Renders water caustics into half-float RGBA target using multi-octave sine-feedback light convergence, perspective mapping (tight loops in background, broad loops in foreground), and ripple displacement.
+  - Pass 2: Over-bright peak extraction (threshold: 0.85).
+  - Passes 3-4: Separable 5-tap Gaussian blur (horizontal and vertical) for bloom radiance.
+  - Pass 5: Composites sharp water base with blurred bloom, subtle chromatic aberration fringe, and filmic exposure tonemapping (1 - exp(-color * exposure)).
+- Configurable Props: deepColor (#0E3A4D), midColor (#1A6B85), lineColor (#5CE1E6), speed, scale, refract, bloomStrength, exposure.
+- Tech Stack: React, Three.js, WebGL GLSL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
+  "gradient-wave-background": `Create a full-bleed WebGL/Three.js animated Gradient Wave Ribbon background component:
+- Shader Architecture:
+  - 5-pass fullscreen-quad WebGL pipeline rendering undulating chromatic silk ribbon waves.
+  - Deep midnight navy base (#060514) accented with glowing fuchsia (#E11D48), neon rose (#F43F5E), and royal violet (#8B5CF6) silk ribbons.
+  - Anchored by an intense luminous white caustic light beam with HDR bloom extraction and filmic tonemapping.
+- Interactive & Responsive: Smoothly adapts to resize events with capped devicePixelRatio and IntersectionObserver performance gating.
+- Tech Stack: React, Three.js, WebGL GLSL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
+  "pixel-cloud-background": `Create a full-bleed WebGL/Three.js Pixel Cloud animated sky background component:
+- Procedural Volumetric Modeling:
+  - Asymmetric signed-distance cloud envelope filled with domain-warped billow noise (1 - abs(2 * valueNoise - 1)).
+  - Self-shadowing occlusion calculation via secondary sun-offset density sampling.
+  - Screen coordinates snapped to a chunky pixel grid (floor(coord / pixelSize) * pixelSize) and quantized flat step lighting for retro pixel-art aesthetic.
+- Depth Layering: 6 independently seeded cloud strata drifting at distinct speeds with atmospheric perspective fade.
+- Tech Stack: React, Three.js, WebGL GLSL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
+  "silk-waves-background": `Create a full-bleed WebGL/Three.js Silk Waves animated background component:
+- Shading Mechanics:
+  - Single-pass fullscreen quad shader rendering voluptuous, liquid silk drapes sweeping diagonally across the canvas.
+  - Deep electric-violet shadows (#1E1035), lustrous silver-lavender specular crests (#D4CBE5), and an ambient cool teal glow (#14B8A6).
+  - Numerical surface normal calculation for satin anisotropic highlights and Fresnel grazing sheen.
+- Exposed Props: speed (0.4), scale (1.0), intensity (1.2), shadowColor, violetColor, highlightColor, ambientColor.
+- Tech Stack: React, Three.js, WebGL GLSL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
+  "layered-paper-waves-background": `Create a full-bleed WebGL/Three.js Layered Paper Waves animated background component:
+- Layered Topographic Papercraft:
+  - Seven physical papercraft wave strata stacked with depth, casting soft realistic drop shadows onto lower layers with crisp cut paper bevel highlights.
+  - Undulating wave sheets ripple smoothly across the diagonal axis with chromatic pastel gradient from powder blue through lilac and periwinkle to blush rose and deep mauve.
+  - Single-pass fullscreen quad shader with back-to-front composite layering, smoothstep drop shadow penumbras, and fine-art paper grain texture.
+- Props: speed (0.4), scale (1.0), amplitude (1.0).
+- Tech Stack: React, Three.js, WebGL GLSL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 2. BUTTONS (buttons)
+  // ──────────────────────────────────────────────────────────────────────────
+  "googly-eyes-button": `Create an interactive Googly Eyes Button component in React:
+- Visual Identity: Dark charcoal rounded-full pill button (bg-[#1E1C24], border border-white/10, shadow-xl) reading "Look Around".
+- Googly Eyes Mechanics:
+  - Contains two white circular eyeball discs (22px diameter) with dark iris pupils (8px diameter).
+  - Pupils track the real-time global cursor position using trigonometric angle calculation: theta = atan2(mouseY - eyeCenterY, mouseX - eyeCenterX).
+  - Pupil distance clamped inside the eyeball socket with elastic spring physics (stiffness: 300, damping: 20).
+  - On button hover: Eyeballs widen and pupils bounce playfully with micro-vibrations.
+  - On button press: Eyes squish vertically (scaleY: 0.7, scaleX: 1.15) with tactile click audio/visual confirmation.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "gloss-button": `Create an ultra-glossy Marbled Oil-Slick Pill Button component in React:
+- Visual Identity: Rounded-full pill CTA with a living, iridescent marbled oil-slick surface (swirling blush rose, lavender, and champagne gold hues) that slowly undulates in an infinite loop.
+- Optical Sheen: Fixed glossy top highlight arc (white 40% opacity gradient) simulating curved glass reflection with deep drop shadow beneath.
+- Hover & Press Feedback: On hover, button lifts 2px with intensified specular sheen; on click, springs inward with a soft ripple pulse.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "neumorphic-download-button": `Create a 3-State Neumorphic Download Button component in React:
+- Visual Identity: Soft raised light-gray tactile surface (#E5E7EB) with dual extruded neumorphic drop shadows.
+- 3 Interactive States:
+  1. Idle State: Circular disc with cloud-download icon on the left, reading "Download".
+  2. Downloading State (on click): Amber progress ring sweeps clockwise around the disc over ~2s while the icon shifts to amber and label reads "Downloading...".
+  3. Downloaded State (completion): Progress ring completes, disc displays a bright emerald checkmark, and label crossfades to "Downloaded". Resets after 2s.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "add-to-cart-glow-button": `Create an interactive Add to Cart Glow Button component in React:
+- Visual Identity: Dark charcoal rounded pill (bg-[#18181B], text-white) reading "+ Add to cart", wrapped in a continuous rotating rainbow conic-gradient border.
+- State Transition: On click, border swaps to emerald green with rotating sheen, label transitions to "Added to cart" with an animated checkmark, then reverts gracefully after 2 seconds.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "rainbow-button": `Create a clean minimalist Rainbow Border Button component in React:
+- Visual Identity: Pristine near-white rounded-rectangle pill (bg-white/95 dark:bg-[#18181B]) wrapped in a static, delicate pastel iridescent rainbow border ring.
+- Micro-Interactions: Subtle lift on hover (-1.5px) and spring compression on active press with crisp typography.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "slide-to-confirm-button": `Create an animated Slide to Confirm Order Button component in React:
+- Visual Identity: Deep navy/charcoal rounded pill track reading "Complete Order".
+- Interactive Sequence: On click, label fades out; a tan package icon appears on the left; a white cargo-trailer truck slides from left to right across the track leaving a dashed road line trail and headlight beams; track settles and label crossfades to "Order Placed" with an animated green check.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "chrome-border-button": `Create a Polished Chrome Border Pill Button component in React:
+- Visual Identity: Crisp white rounded-full pill button wrapped in a rotating true-chrome metallic border ring (conic gradient in shades of silver, white, and obsidian).
+- Metallic Text Sheen: Centered text rendered with a looping horizontal metallic gradient sweep simulating polished platinum reflection.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "book-a-call-button": `Create an agency-grade Book a Call interactive CTA button in React:
+- Visual Identity: Frosted glass dark capsule with an embedded avatar stack on the left, glowing status pulse dot, and arrow action icon on the right.
+- Motion: Hover expands avatar stack with spring physics, brightens ambient border glow, and translates arrow icon 4px diagonally.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "shimmer-button": `Create a Minimalist Shimmer Light Streak Button component in React:
+- Visual Identity: Clean white pill with delicate slate border and dark charcoal typography.
+- Light Streak Animation: A narrow soft specular light streak periodically sweeps diagonally across the surface at a 45° angle, accelerating smoothly on click with 1-2px hover lift.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 3. TEXT ANIMATIONS (text)
+  // ──────────────────────────────────────────────────────────────────────────
+  "kinetic-reel-text": `Create an authentic Kinetic Rolling Slot Reel Text animation in React:
+- Visual Identity: Pure pitch-black backdrop (#000000). Static bold lowercase prefix "we do" on the left with letter-spacing -0.03em.
+- 3D Drum Reel Mechanics:
+  - 3D cylindrical tumbling reel on the right cycling through services: "Websites", "Brand identity", "SEO optimization", "Digital marketing", "Lead generation", "Influencer marketing".
+  - Center active item is full opacity pure white (#FFFFFF), aligned perfectly with prefix baseline.
+  - Above/below items curve along the cylinder with 3D perspective tilt (rotateX: ±35deg) and opacity falloff (0.35).
+  - Interactive mouse wheel scrubbing, touch/pointer drag, click-to-roll, and auto-tumble timer with spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "split-text-reveal": `Create an editorial Split Text Character Reveal animation in React:
+- Visual Identity: Dark container with large bold heading typography.
+- Motion Mechanics: Text splits into individual character spans; on trigger/mount, characters fly in from randomized vertical offsets (-60px to +60px) with staggered spring timing (0.03s delay per char), blur-to-focus transitions (blur(8px) -> blur(0px)), and opacity fade.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "word-by-word-text": `Create a smooth Word-by-Word Sequence Reveal animation in React:
+- Visual Identity: Dark minimalist editorial layout with high-contrast warm white typography (#FFFDF2).
+- Motion: Splits sentence into word tokens; words slide up smoothly from an overflow-hidden mask with staggered spring physics, creating a rhythmic and unhurried reading experience.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "character-scramble-text": `Create a Hacker Matrix Character Scramble Decode text animation in React:
+- Visual Identity: Monospace dark terminal layout with mint-green / cyan accent highlights (#4ECCA3).
+- Scramble Algorithm: Each character cycles rapidly through random ASCII symbols ("!@#$%^&*<>[]{}~") for a randomized duration before locking smoothly into the final target character from left to right.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "gradient-reveal-text": `Create a Living Gradient Shimmer Heading text component in React:
+- Visual Identity: Bold display typography masked over a continuous shifting multi-stop linear gradient (lavender #C084FC, cyan #38BDF8, rose #FB7185, and amber #FBBF24).
+- Animation: Smooth 8s horizontal background-position animation loop with CSS background-clip: text.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "aurora-text": `Create an Aurora Borealis Typography Reveal component in React:
+- Visual Identity: Ultra-premium dark theme typography masked over overlapping CSS radial gradients and SVG turbulence filters.
+- Fluid Text Fill: Colors blend organically inside character glyphs with proper descender line-height (leading-[1.15]) preventing character descender clipping on letters like "g", "j", "p", "y".
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "spotlight-text": `Create an interactive Spotlight Text Reveal component in React:
+- Visual Identity: Pitch-black container where text is initially concealed.
+- Mask Interaction: Cursor acts as a saturated gradient spotlight, revealing the high-contrast typography underneath using CSS mask-image and Framer Motion spring coordinates.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "flip-3-d-text": `Create a 3D Mechanical Flip Clock / Ticker Text animation in React:
+- Visual Identity: Mechanical airport ticker board aesthetic.
+- 3D Flip Physics: Text phrases split into character tiles; on transition, top and bottom tile halves rotate 180° along the horizontal X-axis (rotateX) with realistic bevel shadows and spring landing overshoot.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "typewriter-text": `Create a Typewriter Text component with an interactive blinking cursor in React:
+- Visual Identity: Clean monospace typography on dark backdrop with warm white characters and an amber/cyan vertical blinking caret.
+- Typing Logic: Types out phrases character-by-character with realistic randomized keystroke intervals (50ms-120ms), pauses at sentence completion, deletes with accelerated backspace, and cycles to next phrase.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "velocity-marquee-text": `Create an interactive Velocity Marquee Text component in React:
+- Visual Identity: Large bold uppercase typography running continuously in an infinite horizontal track.
+- Physics: Track scrolls at a baseline velocity (v = 2px/frame); user horizontal dragging or window scrolling increases velocity proportionally with momentum coasting and spring deceleration.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 4. TOGGLES (toggles)
+  // ──────────────────────────────────────────────────────────────────────────
+  "glass-orb-toggle": `Create an interactive Dark/Light Mode Toggle with an oversized 3D Crystal Glass Sphere in React:
+- Pill Track: Sleek rounded capsule (248px x 78px) with inset shadow and subtle rim border.
+  - Dark Mode: Deep charcoal surface (#18181B) with visible "Light" label on the right.
+  - Light Mode: Soft graphite surface (#56565E) with visible "Dark" label on the left.
+- 3D Glass Orb Thumb:
+  - Oversized crystal sphere (104px diameter) extending beyond track boundaries.
+  - Realistic multi-layered glass shader highlights: top-left specular reflection arc, bottom-right subsurface caustic glow, and backdrop blur refracting track labels as it slides.
+  - Inside the sphere: morphs between a glowing white crescent moon (dark mode) and a radiant sun with 8 rounded beams (light mode) with spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "day-night-sky-toggle": `Create an illustrated Day/Night Sky Capsule Toggle component in React:
+- Visual Identity: Wide glass pill containing a miniature illustrated sky scene.
+- Transitions:
+  - Night State: Deep navy sky with twinkling starfield, crescent moon, drifting clouds, and glowing orb on the right.
+  - Day State: Morphs seamlessly to sky blue, orb glides left, moon rotates into a sun, stars fade out as tiny flying birds fade in.
+  - Continuous 900ms spring-eased transition with zero hard cuts.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "landscape-orb-toggle": `Create a Circular Landscape Orb Theme Toggle in React:
+- Visual Identity: 90px circular orb with a white ring border. Upper 60% shows flat sky fill, lower 40% shows two-layer wavy dune silhouette.
+- Transitions: Dark mode shows indigo sky with crescent moon; light mode shows warm gold sky with glowing sun. Clicking smoothly cross-fades sky and dune colors over 400ms with scale-fade icon swap.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 5. CURSORS (cursors)
+  // ──────────────────────────────────────────────────────────────────────────
+  "splash-cursor": `Create a high-performance WebGL Fluid Splash Cursor in React:
+- Simulation: Fullscreen WebGL fluid simulation with Navier-Stokes velocity advection, pressure Poisson solver, and vorticity confinement.
+- Aesthetics: Mouse movement injects radiant lavender / violet fluid dyes with velocity-responsive bloom, realistic dissipation decay, and light/dark theme adaptability.
+- Tech Stack: React, WebGL, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  "pill-trail-cursor": `Create a Custom Animated Cursor Trail of Biotech Pill Tags in React:
+- Mechanics: Cursor leaves an overlapping ribbon trail of ~16 compact biotech pills ("biotech", "health", "science", "dna", "cells", "future") following an elastic inverse-kinematics spring chain.
+- Constraints: Pills remain strictly 0° horizontal (never tilt), newer pills render above older pills, velocity expands/clusters spacing, executed at locked 60fps.
+- Tech Stack: React, TypeScript, HTML5 Canvas / DOM, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "halftone-dot-cursor": `Create an interactive Halftone Dot Matrix Cursor in React:
+- Mechanics: Canvas grid of halftone dots that dynamically scale up and bloom into an organic fluid wake following cursor trajectory with smooth exponential dissipation decay.
+- Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 6. NAVBARS (navbars)
+  // ──────────────────────────────────────────────────────────────────────────
+  "pill-expand-navbar": `Create a Compact Expanding Icon Pill Navbar in React:
+- Layout: Rounded-full dark container packed with 5 icon-only tabs (Home, Category, Cart, Save, Profile).
+- Expand Interaction: Hovering or selecting any tab smoothly expands its width via spring physics to reveal the text label beside the icon while non-hovered tabs stay collapsed.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "pixel-dot-navbar": `Create a Minimalist Pixel-Dot Matrix Navbar component in React:
+- Mechanics: Each nav link is preceded by a 7x7 pixel-matrix icon built from individual 1.5px dots (no SVG paths). Idle dots sit in light gray with subtle jitter; on hover/active, dots snap into a crisp aligned grid and darken with spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "dark-mode-mobile-navbar": `Create a Floating Dark/Light Mobile Toolbar in React:
+- Layout: White rounded floating capsule with 5 icon buttons (Home, Profile, Theme, Chat, Brightness). The active item sits on a solid dark circle that glides between buttons using Framer Motion layoutId shared spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "fluid-wave-navbar": `Create an interactive Floating Pill Navbar with Liquid Scoop Notch in React:
+- Visual Identity: White rounded capsule (350px) over a dark grey surface (#222227). 4 tabs (Home, Favorites, Messages, Files).
+- Motion: Hovering over any tab springs the active icon upward (-5px, scale: 1.15) and glides a dark liquid scoop notch along the bottom edge beneath the active item via spring physics.
+- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "magnetic-pill-navbar": `Create a Magnetic Pill Navigation Bar in React:
+- Mechanics: Floating glassmorphic navbar where hovering links smoothly slides a magnetic frosted pill indicator behind the active text using Framer Motion layoutId.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "circular-radial-navbar": `Create an Expanding Circular Radial Navigation Bar in React:
+- Mechanics: Center floating trigger button; clicking/hovering fans out satellite navigation icon buttons in a radial 360° circle using spring physics and staggered delays.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "curtain-reveal-navbar": `Create an Luxury Editorial Curtain Reveal Navbar in React:
+- Mechanics: Header nav where clicking menu triggers a majestic full-height silk backdrop curtain drop with staggered typography link entrances.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "jelly-scoop-navbar": `Create an Elastic Jelly Scoop Navbar in React:
+- Mechanics: Navigation bar with a playful stretchable jelly active indicator that squashes and stretches dynamically during tab transitions using Framer Motion spring morphing.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "liquid-underline-navbar": `Create a Liquid Drawing Underline Navbar in React:
+- Mechanics: Minimalist navbar where hovering links dynamically animates an SVG liquid line drawing across the bottom border to underline the active link.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "morphing-tab-navbar": `Create a Morphing Glassmorphic Tab Navbar in React:
+- Mechanics: Floating glass navbar where the active background pill seamlessly stretches, morphs, and snaps between tabs of varying widths using Framer Motion layoutId.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "orbiting-planets-navbar": `Create an Orbiting Planets Navigation Menu in React:
+- Mechanics: Avant-garde nav where icon nodes orbit around a central sun in idle state and snap smoothly into a horizontal linear toolbar on hover.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 7. SEARCH BARS (search-bars)
+  // ──────────────────────────────────────────────────────────────────────────
+  "morph-search-capsule": `Create an interactive Morphing Icon Search Capsule in React:
+- Mechanics: Rounded pill search bar where clicking triggers an SVG icon morph: the magnifying glass ring scales down and its handle rotates and straightens into a vertical blinking text cursor line '|'. Text input auto-focuses for immediate typing.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "animated-search-demo": `Create an Expandable Search Capsule in React:
+- Mechanics: Idle circular capsule (64px) with centered search icon; hovering smoothly expands via spring physics into a 420px wide search bar with placeholder and "⌘K" keyboard shortcut badge.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 8. SIDEBARS (sidebars)
+  // ──────────────────────────────────────────────────────────────────────────
+  "kinetic-lens-sidebar": `Create a vertical Kinetic Lens Rolodex Sidebar Menu in React:
+- Visual Identity: Pitch-black canvas (#000000) with vector typography service items.
+- Mechanics: Active center item is pure white (#FFFFFF), larger scale, semibold, with preceding horizontal dash "— ". Peripheral items are deep indigo (#282D52) fading toward edges. Continuous mouse wheel scrubbing with inertia, touch drag, and snap physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "flightpath-toc": `Create a Supersonic Airplane Flightpath TOC Navigation in React:
+- Visual Identity: Light-mode Purrform Milk/Cream tokens (#FFFDF2, #FAF6ED, #E8E2D5) with hierarchical tree navigation.
+- Mechanics: Continuous curved SVG rail connecting each item node with smooth cubic bezier S-curves. An animated supersonic airplane traveler physically glides along the rail with spring physics (stiffness: 360, damping: 26) pointing toward the active label.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "sidebar": `Create a full-featured Expandable SaaS Application Sidebar in React:
+- Visual Identity: Refined dark/light surface with collapsible hierarchical navigation sections, search filter, active item indicator pill, and compact user profile footer.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "flower-sidebar": `Create a vertical Flower Flightpath Rail Sidebar in React:
+- Visual Identity: Curved SVG flightpath rail with a blooming 6-petal lilac flower indicator icon gliding smoothly along the rail using Framer Motion springs. Active trace line draws filled progress up to the active flower node.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 9. CARDS (cards)
+  // ──────────────────────────────────────────────────────────────────────────
+  "diagonal-card-stack": `Create a Continuous Diagonal Card Stream & Stacked Deck component in React:
+- Visual Identity: Deep obsidian matte rounded cards arranged in a cascading diagonal staircase gliding in an infinite seamless marquee.
+- Mechanics: Pointer dragging along the diagonal axis, pause-on-hover, and a smooth spring-physics collapse into a 3D isometric stacked card deck in the center.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "perspective-flip-deck": `Create a 3D Perspective Card Deck with Peeling Flip Transitions in React:
+- Visual Identity: Wide dark obsidian cards fanned along a 3D perspective plane. Front card flips open to the right in 3D around a vertical hinge as subsequent cards smoothly shift forward with spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "orbital-card-arch": `Create a 3D Curved Orbital Card Arch with Deck Collapse in React:
+- Visual Identity: Three square matte obsidian cards arranged in an orbital arc with left and right cards tilted. Clicking smoothly collapses all three cards into a single stacked deck in the center with spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "editorial-3-d-orbit-carousel": `Create a 3D Tilted Elliptical Carousel of Editorial Poster Cards in React:
+- Visual Identity: Six distinct artistic poster cards revolving smoothly in a 3D orbit with depth scaling, bank angles, draggable rotation, and click-to-center spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "wallet-card-reveal": `Create an interactive Layered Fintech Wallet Card Reveal in React:
+- Visual Identity: Soft mint-sage background with a matte black leather wallet (#121212) containing 3 branded payment cards (Stripe, Wise, PayPal).
+- Interactive Reveal: Clicking the eye toggle slides cards up in neat tiers, unmasks balances with smooth count-up typography ($32,495, $45,654, $345,865 -> Total $424,014), and illuminates a glowing green eye.
+- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "arch-card-carousel": `Create an animated Curved Arch Card Carousel with Pendulum Gliding in React:
+- Visual Identity: Borderless rounded portrait cards riding along a circular convex wheel trajectory with continuous harmonic pendulum oscillation and inertia scrubbing.
+- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "folder-tab-card": `Create a tactile Folder-Tab Card with Living Aurora Mesh Gradient in React:
+- Visual Identity: Asymmetrical folder-tab cutout sheet, living aurora mesh gradient in brand lavender palette, frosted glass action button, category heading "Designs", and metrics row ("04 Tags", "1012 Shots").
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "frosted-folder-card": `Create an interactive Frosted Folder Card with Photo Collage Burst in React:
+- Visual Identity: Smoked obsidian acrylic folder card; hovering or clicking bursts interior photo files into a staggered collage with spring physics and macOS-style reveal.
+- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "matte-folder-card": `Create a tactile Matte Folder Card with Living Aurora Mesh Gradient in React:
+- Visual Identity: Inverted-fillet folder tab geometry on dark matte obsidian surface with continuous animated aurora mesh gradient drifting beneath.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // 10. UI FOR AI (ai-ui)
+  // ──────────────────────────────────────────────────────────────────────────
+  "marbled-fluid-orb": `Create an Iridescent Marbled Fluid Silk Orb AI Thinking Indicator in React:
+- Visual Identity: Clean white floating AI pill capsule (bg-white, border border-black/10, shadow-lg).
+- Left: Interactive 3D WebGL sphere featuring a swirling iridescent silk fluid core (coral crimson #FF2E55, rose pink #FF7599, warm apricot #FFB38F, lilac violet #BD5CF0) with domain-warped 3D simplex noise and subsurface scattering.
+- Right: Shimmery reasoning text cycling: "thinking..." -> "weaving thoughts..." -> "connecting sparks..." -> "almost there..." -> "crafting magic..." -> "all set for you ✨".
+- Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
+
+  "particle-dot-orb": `Create a 3D Fibonacci Particle Dot Orb AI Thinking Capsule in React:
+- Visual Identity: Pure white floating pill capsule (bg-white, border border-black/10, soft shadow).
+- Left: 3D rotating Fibonacci particle sphere rendered with Three.js (crisp charcoal dots with depth scaling).
+- Right: Shimmery text with animated light sweep cycling: "thinking..." -> "connecting dots..." -> "cooking up ideas..." -> "hold tight..." -> "let me cook..." -> "done bestie ✨".
+- Tech Stack: React, Three.js (WebGL), Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
+
+  "fluid-morph-orb": `Create a 3D Fluid Morph Orb AI Thinking Capsule in React:
+- Visual Identity: Floating dark matte pill capsule (bg-[#1E1E23], border border-white/12, shadow-2xl).
+- Left: Real-time 3D fluid morphing mesh orb displaced with harmonic 3D noise shaders.
+- Right: Smooth cycling reasoning status text with blur-fade transitions: "pondering..." -> "manifesting vibes..." -> "brewing thoughts..." -> "hold up a sec..." -> "crafting magic..." -> "all set for you 💫".
+- Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
+
+  "wireframe-ring-orb": `Create a 3D Wireframe Contour Ring Orb AI Reasoning Capsule in React:
+- Visual Identity: Floating dark capsule (bg-[#1C1C21], border border-white/12, shadow-2xl).
+- Left: Real-time 3D wireframe orb composed of concentric latitude contour rings slicing through a sphere at a 32° tilt with harmonic wave breathing.
+- Right: Reasoning status text smoothly cycling: "analyzing..." -> "mapping contours..." -> "simulating..." -> "hold on tight..." -> "piecing it together..." -> "nailed it 🎯".
+- Tech Stack: React, Three.js (WebGL), Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
+
+  "particle-morph-orb": `Create a 3D Particle Morph Mesh Orb AI Reasoning Capsule in React:
+- Visual Identity: Deep obsidian dark matte capsule (bg-[#18181B], border border-white/12, shadow-2xl).
+- Left: Real-time 3D particle mesh orb rendered with Three.js (thousands of luminous points displaced with 3D simplex noise harmonics and glowing fold edges).
+- Right: Shimmery text cycling through reasoning phrases: "deep thinking..." -> "manifesting..." -> "cooking in the dark..." -> "hold up wait..." -> "let him cook..." -> "done bestie 🔥".
+- Tech Stack: React, Three.js (WebGL), GLSL Shaders, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install three framer-motion lucide-react clsx tailwind-merge`,
+
+  // Additional registered components
+  "apple-navbar": `Create an authentic MacBook Dynamic Notch Navbar in React:
+- Resting AI State: Black notch hanging from top screen bezel with live assistant action status and glowing orange breathing indicator pill (Purrform brand #EC5E27).
+- Expansion: Hover fluidly expands into macOS NotchNook navbar with calendar strip, Spotify media widget, navigation links, and action buttons using spring physics (stiffness: 360, damping: 28).
+- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "ai-product-bento": `Create a Dark Themed AI Product Bento Grid component in React:
+- Visual Identity: Deep obsidian bento grid with animated SVG neural network graph, soft violet accents, interconnected pulsing nodes, typewriter prompt engine tile, and latency progress stats.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "data-viz-bento": `Create a Dark Analytics Dashboard Bento Grid in React:
+- Visual Identity: Dark analytics dashboard bento grid with animated SVG sparkline drawing, animated donut chart, spring-up bar charts, and eased number counters.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 };
 
 export function getPromptForSlug(slug, title) {
   if (componentPrompts[slug]) return componentPrompts[slug];
-  // Fallbacks by normalized slug
-  const normalized = slug.replace(/-(showcase|source|demo|background)$/, '');
+  
+  // Try matching without prefixes/suffixes
+  const cleanSlug = slug.replace(/-(showcase|source|demo|background)$/, '');
+  if (componentPrompts[cleanSlug]) return componentPrompts[cleanSlug];
+
   for (const [k, v] of Object.entries(componentPrompts)) {
-    if (k.startsWith(normalized) || normalized.startsWith(k)) return v;
+    if (k.startsWith(cleanSlug) || cleanSlug.startsWith(k)) return v;
   }
-  return `Create a high-performance interactive ${title || slug} component for RewampUI with smooth Framer Motion spring physics, dark/light theme support, and responsive styling.`;
+  
+  const componentName = (title || slug).replace(/\s+/g, '');
+  return `Create a high-performance interactive \${title || slug} component in React:
+- Visual Identity: Clean modern aesthetic matching Purrform design tokens (Primary: #EC5E27, Milk: #FFFDF2, Sand: #F1E6D7, Charcoal: #1F1F1F).
+- Interactive Mechanics: Smooth spring physics transitions (stiffness: 340, damping: 26), responsive hover & active states, and dark/light mode support.
+- Component API: Supports customizable props (className, children, onChange) with zero layout shift.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`;
 }

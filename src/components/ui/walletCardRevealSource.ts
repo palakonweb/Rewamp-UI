@@ -159,8 +159,8 @@ export default function WalletCardReveal({
   ];
 
   return (
-    <div className={\`relative flex flex-col items-center justify-center p-4 sm:p-8 select-none \${className}\`}>
-      <div className="relative w-[320px] sm:w-[335px] pt-14 pb-4 flex flex-col items-center">
+    <div className={\`relative flex flex-col items-center justify-center p-2 select-none \${className}\`}>
+      <div className="relative w-full max-w-[320px] sm:max-w-[335px] pt-14 pb-4 flex flex-col items-center">
         {/* Behind Pouch: Stacked Brand Cards */}
         <div className="absolute top-0 w-full flex justify-center">
           {cards.map((card, index) => (

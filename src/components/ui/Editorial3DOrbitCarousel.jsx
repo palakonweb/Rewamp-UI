@@ -29,7 +29,25 @@ export function Editorial3DOrbitCarousel({
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
+  const [screenSize, setScreenSize] = useState('desktop');
   const dragStartRef = useRef({ x: 0, y: 0, initialStep: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 480) setScreenSize('mobile');
+      else if (w < 820) setScreenSize('tablet');
+      else setScreenSize('desktop');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const effWidth = screenSize === 'mobile' ? Math.min(cardWidth, 130) : screenSize === 'tablet' ? Math.min(cardWidth, 175) : cardWidth;
+  const effHeight = screenSize === 'mobile' ? Math.min(cardHeight, 180) : screenSize === 'tablet' ? Math.min(cardHeight, 240) : cardHeight;
+  const stepX = screenSize === 'mobile' ? 88 : screenSize === 'tablet' ? 140 : 195;
+  const stepY = screenSize === 'mobile' ? 52 : screenSize === 'tablet' ? 82 : 115;
 
   // Effective ticking interval factoring in speed
   const effectiveInterval = Math.round(tickInterval / (speed || 1.0));
@@ -46,10 +64,6 @@ export function Editorial3DOrbitCarousel({
 
   const cards = items || defaultItems;
   const numCards = cards.length;
-
-  // Generous breathing space stride along diagonal path
-  const stepX = 195;
-  const stepY = 115;
 
   // Mark entrance animation complete after mount
   useEffect(() => {
@@ -127,89 +141,53 @@ export function Editorial3DOrbitCarousel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full h-[600px] md:h-[660px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[24px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] shadow-xl flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-full h-[460px] sm:h-[600px] md:h-[660px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[20px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] shadow-xl flex items-center justify-center ${className}`}
       style={{
         perspective: 1400,
       }}
     >
-      {/* Top Header Controls: Arrow + SHOWCASE 11 */}
+      {/* Top Header Controls */}
       <div className="absolute top-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800 dark:text-neutral-200">
         <button
           onClick={() => setCurrentStep((prev) => prev - 1)}
           className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
           title="Previous tick"
         >
-          <ArrowLeft className="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+          <ArrowLeft className="w-4 h-4" />
         </button>
-        <div className="flex items-center gap-3">
-          <span className="text-[11px] font-mono tracking-widest uppercase font-semibold text-neutral-500 dark:text-neutral-400">
-            SHOWCASE 11
-          </span>
-          <button
-            onClick={() => setIsPaused(!isPaused)}
-            className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors pointer-events-auto cursor-pointer"
-            title={isPaused ? 'Resume ticking' : 'Pause ticking'}
-          >
-            {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-          </button>
-        </div>
+        <span className="font-mono text-xs tracking-widest uppercase font-semibold opacity-70">
+          SHOWCASE 11
+        </span>
+        <button
+          onClick={() => setIsPaused((prev) => !prev)}
+          className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
+          title={isPaused ? 'Resume ticking' : 'Pause ticking'}
+        >
+          {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+        </button>
       </div>
 
-      {/* Giant Architectural Background Watermark: "SHOWCASE 11" */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-        <div className="flex items-center justify-center w-full px-6 opacity-[0.09] dark:opacity-[0.07]">
-          <span className="text-[130px] sm:text-[190px] md:text-[240px] font-black tracking-tighter text-black uppercase leading-none">
-            SH
-          </span>
-          <span className="w-28 sm:w-52" />
-          <span className="text-[130px] sm:text-[190px] md:text-[240px] font-black tracking-tighter text-black uppercase leading-none">
-            E 11
-          </span>
-        </div>
-      </div>
-
-      {/* Diagonal Stream Center Anchor */}
-      <div
-        className="relative w-0 h-0 flex items-center justify-center pointer-events-none z-10"
-        style={{
-          transformStyle: 'preserve-3d',
-        }}
-      >
+      {/* Cards Engine Anchor */}
+      <div className="relative w-0 h-0 flex items-center justify-center pointer-events-none">
         {cards.map((card, idx) => {
-          // Relative position slot from currentStep:
-          // Center card is offset = 0
-          // Offset can wrap around [-2, -1, 0, 1, 2]
           let offset = (idx - (currentStep % numCards) + numCards) % numCards;
           if (offset > 2) {
-            offset -= numCards; // Wrap so range is -2, -1, 0, 1, 2
+            offset -= numCards;
           }
 
-          // Visual coordinates along diagonal with generous breathing room
-          // offset > 0 is bottom-right; offset < 0 is top-left
           const posX = offset * stepX;
           const posY = offset * stepY;
 
-          // Clock-arm motion angles (subtle and reduced per user request):
-          // Bottom-right entrance (offset = +2): +9° clockwise
-          // Approaching center (offset = +1): +4.5°
-          // Center focus (offset = 0): 0° strictly upright
-          // Departing center (offset = -1): -5.5°
-          // Top-left exit (offset = -2): -11° counter-clockwise
           let rotZ = 0;
           if (offset > 0) {
-            rotZ = offset * 4.5; // +4.5deg at +1, +9deg at +2
+            rotZ = offset * 4.5;
           } else if (offset < 0) {
-            rotZ = offset * 5.5; // -5.5deg at -1, -11deg at -2
+            rotZ = offset * 5.5;
           }
 
-          // Center hero card is prominent; side cards scale gently
           const dist = Math.abs(offset);
-          const scale = dist === 0 ? 1.15 : Math.max(0.85, 1.0 - dist * 0.08);
-
-          // zIndex: lower-right card overlaps card behind it
+          const scale = dist === 0 ? (isMobile ? 1.08 : 1.15) : Math.max(0.82, 1.0 - dist * 0.08);
           const zIndex = Math.round(40 - offset * 10);
-
-          // Opacity fades smoothly for cards furthest away
           const opacity = dist > 2.2 ? 0 : dist > 1.6 ? 0.6 : 1;
 
           return (
@@ -246,23 +224,22 @@ export function Editorial3DOrbitCarousel({
                     }
               }
               style={{
-                width: cardWidth,
-                height: cardHeight,
+                width: effWidth,
+                height: effHeight,
                 position: 'absolute',
-                top: -cardHeight / 2,
-                left: -cardWidth / 2,
+                top: -effHeight / 2,
+                left: -effWidth / 2,
                 zIndex,
                 transformStyle: 'preserve-3d',
               }}
               className="pointer-events-auto"
               onClick={() => {
-                // Clicking any card ticks it into center hero position
                 setCurrentStep((prev) => prev + offset);
               }}
             >
-              {/* Pure Card Surface - Full bleed surreal art, zero text, zero black overlays */}
+              {/* Pure Card Surface */}
               <div
-                className="w-full h-full rounded-[22px] overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
+                className="w-full h-full rounded-[18px] sm:rounded-[22px] overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
                 style={{
                   boxShadow:
                     dist === 0
@@ -283,27 +260,36 @@ export function Editorial3DOrbitCarousel({
         })}
       </div>
 
-      {/* Bottom Editor Bar: JITTER · VIDEO · TEMPLATE */}
-      <div className="absolute bottom-3 left-6 right-6 flex items-center justify-between pointer-events-none z-20 text-[10px] font-mono tracking-wider uppercase text-neutral-500 dark:text-neutral-400">
-        <span>JITTER</span>
-        <div className="flex items-center gap-1.5 pointer-events-auto">
+      {/* Bottom Footer Navigation */}
+      <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800 dark:text-neutral-200 text-xs">
+        <button
+          onClick={() => setCurrentStep((prev) => prev - 1)}
+          className="flex items-center gap-1 hover:opacity-100 opacity-70 transition-opacity pointer-events-auto cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <span className="font-mono text-[11px] hidden sm:inline">Prev</span>
+        </button>
+        <div className="flex gap-1.5 pointer-events-auto">
           {cards.map((_, i) => {
             const activeIdx = ((currentStep % numCards) + numCards) % numCards;
             return (
               <button
                 key={i}
                 onClick={() => setCurrentStep(i)}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  i === activeIdx
-                    ? 'w-4 bg-neutral-900 dark:bg-white'
-                    : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-500'
+                className={`h-1 rounded-full transition-all cursor-pointer ${
+                  activeIdx === i ? 'w-6 bg-neutral-900 dark:bg-white' : 'w-2 bg-neutral-300 dark:bg-neutral-700'
                 }`}
-                title={`Card ${i + 1}`}
               />
             );
           })}
         </div>
-        <span>TEMPLATE</span>
+        <button
+          onClick={() => setCurrentStep((prev) => prev + 1)}
+          className="flex items-center gap-1 hover:opacity-100 opacity-70 transition-opacity pointer-events-auto cursor-pointer"
+        >
+          <span className="font-mono text-[11px] hidden sm:inline">Next</span>
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

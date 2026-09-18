@@ -129,15 +129,15 @@ export default function AIProductBentoShowcase() {
   const handleCopy = () => { navigator.clipboard.writeText(promptContent); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-6 sm:p-8"
-        style={{ background: '#0f1117', minHeight: 640 }}>
+    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto px-1 sm:px-0">
+      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/[0.04] p-4 sm:p-8"
+        style={{ background: '#0f1117', minHeight: 480 }}>
 
         {/* Ambient glow */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 30% 50%, rgba(139,126,200,0.08) 0%, transparent 60%)' }} />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative z-10 auto-rows-[200px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative z-10 auto-rows-auto sm:auto-rows-[200px]">
 
           {/* ── Hero: Neural Network (2col × 2row) ── */}
           <Tile className="md:col-span-2 md:row-span-2 justify-between" custom={0}

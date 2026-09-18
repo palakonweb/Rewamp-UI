@@ -97,8 +97,8 @@ export function KineticReelText({
   }, [drumIndex]);
 
   const isDark = theme === 'dark';
-  const rowHeight = 56;
-  const viewportHeight = 180;
+  const rowHeight = 48;
+  const viewportHeight = 160;
   const baseCenter = Math.floor(displayPos);
   const visibleSlots = [-2, -1, 0, 1, 2];
 
@@ -106,15 +106,15 @@ export function KineticReelText({
     <div
       ref={containerRef}
       onClick={() => advance(1)}
-      className={`relative w-full flex items-center justify-center select-none cursor-pointer py-2 ${className}`}
+      className={`relative w-full max-w-full flex items-center justify-center select-none cursor-pointer py-4 px-2 ${className}`}
       style={{ perspective: '900px', touchAction: 'none' }}
       title="Click or scroll mouse wheel to roll"
     >
-      {/* Centered lockup */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-3 sm:gap-4 text-center">
+      {/* Centered lockup with fluid responsive typography */}
+      <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 max-w-full overflow-visible">
         {/* Centered Prefix: "we make" */}
         <span
-          className={`text-3xl sm:text-5xl md:text-6xl font-bold tracking-[-0.03em] font-sans antialiased whitespace-nowrap text-center ${
+          className={`text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] font-sans antialiased shrink-0 text-right ${
             isDark ? 'text-white' : 'text-[#1F1F1F]'
           }`}
         >
@@ -123,13 +123,13 @@ export function KineticReelText({
 
         {/* 3D Cylindrical Tumbler Viewport centered */}
         <div
-          className="relative overflow-hidden flex items-center justify-center min-w-[180px] sm:min-w-[280px] md:min-w-[340px]"
+          className="relative overflow-hidden flex items-center justify-start w-[130px] sm:w-[210px] md:w-[280px] lg:w-[320px] shrink-0"
           style={{
             height: `${viewportHeight}px`,
             maskImage:
-              'linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%)',
+              'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
             WebkitMaskImage:
-              'linear-gradient(to bottom, transparent 0%, black 24%, black 76%, transparent 100%)',
+              'linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%)',
           }}
         >
           <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
@@ -142,7 +142,7 @@ export function KineticReelText({
 
               const y = offset * rowHeight;
               const rotateX = offset * -32;
-              const scale = Math.max(0.78, 1 - absOffset * 0.12);
+              const scale = Math.max(0.82, 1 - absOffset * 0.1);
               const opacity =
                 absOffset < 0.45
                   ? 1 - absOffset * 0.4
@@ -153,26 +153,26 @@ export function KineticReelText({
               return (
                 <div
                   key={`${itemGlobalIndex}`}
-                  className="absolute left-0 right-0 flex items-center justify-center pointer-events-none transform-gpu text-center"
+                  className="absolute left-0 right-0 flex items-center justify-start pointer-events-none transform-gpu text-left"
                   style={{
                     top: `calc(50% - ${rowHeight / 2}px)`,
                     height: `${rowHeight}px`,
                     transform: `translateY(${y}px) translateZ(${
                       -absOffset * 18
                     }px) rotateX(${rotateX}deg) scale(${scale})`,
-                    transformOrigin: 'center center',
+                    transformOrigin: 'left center',
                     opacity,
                   }}
                 >
                   <span
-                    className={`font-sans tracking-[-0.025em] whitespace-nowrap antialiased leading-none text-center ${
+                    className={`font-sans tracking-[-0.025em] whitespace-nowrap antialiased leading-none text-left ${
                       isCenter
                         ? isDark
-                          ? 'text-3xl sm:text-5xl md:text-6xl font-semibold text-[#D4CBE5]'
-                          : 'text-3xl sm:text-5xl md:text-6xl font-semibold text-[#6D5896]'
+                          ? 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#D4CBE5]'
+                          : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[#6D5896]'
                         : isDark
-                        ? 'text-3xl sm:text-5xl md:text-6xl font-medium text-neutral-400'
-                        : 'text-3xl sm:text-5xl md:text-6xl font-medium text-neutral-500'
+                        ? 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-neutral-400'
+                        : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-neutral-500'
                     }`}
                   >
                     {itemLabel}

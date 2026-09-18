@@ -68,7 +68,7 @@ export default function GlassProfileCardShowcase() {
         <AnimatePresence mode="wait">
           <motion.div key={variant} initial={{ opacity: 0, y: 20, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 flex flex-col items-center gap-5 w-[320px] my-12"
+            className="relative z-10 flex flex-col items-center gap-5 w-full max-w-[320px] my-6 sm:my-12"
             style={{ background: v.card, border: `1px solid ${v.border}`, borderRadius: 24, boxShadow: v.shadow, backdropFilter: 'blur(32px)', WebkitBackdropFilter: 'blur(32px)', padding: '28px 20px 20px' }}>
             <div className="absolute inset-x-6 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${v.border}, transparent)` }} />
 

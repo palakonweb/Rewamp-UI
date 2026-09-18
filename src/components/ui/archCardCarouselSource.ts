@@ -37,6 +37,7 @@ export default function ArchCardCarousel({
   cardHeight?: number;
 }) {
   const [rotation, setRotation] = useState(0);
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const startRotationRef = useRef(0);
@@ -46,15 +47,32 @@ export default function ArchCardCarousel({
   const userInteractedTimeRef = useRef(0);
   const currentRotationRef = useRef(0);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 640) setScreenSize('mobile');
+      else if (w < 1024) setScreenSize('tablet');
+      else setScreenSize('desktop');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const effRadius = screenSize === 'mobile' ? 440 : screenSize === 'tablet' ? 620 : radius;
+  const effCardWidth = screenSize === 'mobile' ? Math.min(cardWidth, 110) : screenSize === 'tablet' ? Math.min(cardWidth, 136) : cardWidth;
+  const effCardHeight = screenSize === 'mobile' ? Math.min(cardHeight, 154) : screenSize === 'tablet' ? Math.min(cardHeight, 190) : cardHeight;
+  const effStepAngleDeg = screenSize === 'mobile' ? 15.5 : screenSize === 'tablet' ? 14.5 : stepAngleDeg;
+
   const count = images.length;
-  const stepAngleRad = (stepAngleDeg * Math.PI) / 180;
+  const stepAngleRad = (effStepAngleDeg * Math.PI) / 180;
   const totalSpanRad = count * stepAngleRad;
 
   useEffect(() => {
     let animId: number;
     let startTime = performance.now();
     const cycleDuration = 5200;
-    const maxAmplitudeDeg = stepAngleDeg * 1.55;
+    const maxAmplitudeDeg = effStepAngleDeg * 1.55;
 
     const tick = (now: number) => {
       const timeSinceInteract = now - userInteractedTimeRef.current;
@@ -95,7 +113,7 @@ export default function ArchCardCarousel({
 
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
-  }, [stepAngleDeg]);
+  }, [effStepAngleDeg]);
 
   const onPointerDown = (e: React.PointerEvent) => {
     isDraggingRef.current = true;
@@ -116,7 +134,7 @@ export default function ArchCardCarousel({
     const dt = Math.max(now - lastTimeRef.current, 1);
 
     const deltaX = currentX - startXRef.current;
-    const degDelta = (deltaX / radius) * (180 / Math.PI) * 1.35;
+    const degDelta = (deltaX / effRadius) * (180 / Math.PI) * 1.35;
     setRotation(startRotationRef.current + degDelta);
 
     velocityRef.current = ((currentX - lastXRef.current) / dt) * 0.5;
@@ -133,21 +151,21 @@ export default function ArchCardCarousel({
   };
 
   return (
-    <div className="relative w-full flex flex-col items-center select-none">
+    <div className="relative w-full max-w-full flex flex-col items-center select-none">
       <div
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         className="relative w-full overflow-hidden flex items-end justify-center cursor-grab active:cursor-grabbing touch-pan-y"
-        style={{ height: \`\${cardHeight + 140}px\` }}
+        style={{ height: \`\${effCardHeight + (screenSize === 'mobile' ? 95 : 140)}px\` }}
       >
         {/* Dome arc horizon */}
         <div
           className="absolute rounded-full pointer-events-none"
           style={{
-            width: \`\${radius * 2}px\`,
-            height: \`\${radius * 2}px\`,
-            bottom: \`-\${radius * 2 - (cardHeight + 85)}px\`,
+            width: \`\${effRadius * 2}px\`,
+            height: \`\${effRadius * 2}px\`,
+            bottom: \`-\${effRadius * 2 - (effCardHeight + 85)}px\`,
             left: '50%',
             transform: 'translateX(-50%)',
             background: 'radial-gradient(circle at 50% 0%, #FFFFFF 0%, #F5F3ED 42%, #E7E3D8 100%)',
@@ -167,8 +185,8 @@ export default function ArchCardCarousel({
             const offsetDeg = (offsetAngle * 180) / Math.PI;
             if (Math.abs(offsetDeg) > 52) return null;
 
-            const x = radius * Math.sin(offsetAngle);
-            const y = radius * (1 - Math.cos(offsetAngle));
+            const x = effRadius * Math.sin(offsetAngle);
+            const y = effRadius * (1 - Math.cos(offsetAngle));
             const dist = Math.abs(offsetDeg);
 
             return (
@@ -176,12 +194,12 @@ export default function ArchCardCarousel({
                 key={i}
                 onClick={() => {
                   userInteractedTimeRef.current = performance.now();
-                  setRotation(-i * stepAngleDeg);
+                  setRotation(-i * effStepAngleDeg);
                 }}
                 className="absolute pointer-events-auto cursor-pointer"
                 style={{
-                  width: \`\${cardWidth}px\`,
-                  height: \`\${cardHeight}px\`,
+                  width: \`\${effCardWidth}px\`,
+                  height: \`\${effCardHeight}px\`,
                   transformOrigin: '50% 100%',
                   transform: \`translate3d(\${x}px, \${y}px, 0px) rotateZ(\${offsetDeg}deg) scale(\${Math.max(0.85, 1.0 - (dist / 58) * 0.16)})\`,
                   zIndex: Math.round(100 - dist * 1.5),
@@ -189,7 +207,7 @@ export default function ArchCardCarousel({
                   filter: \`drop-shadow(0 \${16 - dist * 0.18}px 22px rgba(0, 0, 0, 0.16))\`,
                 }}
               >
-                <div className="w-full h-full rounded-[22px] overflow-hidden bg-zinc-200 border border-black/5 shadow-xs transition-all duration-500 ease-out hover:border-black/10 hover:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_0_24px_3px_rgba(236,94,39,0.13)]">
+                <div className="w-full h-full rounded-[18px] sm:rounded-[22px] overflow-hidden bg-zinc-200 border border-black/5 shadow-xs transition-all duration-500 ease-out hover:border-black/10 hover:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_0_24px_3px_rgba(236,94,39,0.13)]">
                   <img
                     src={src}
                     alt={\`Card \${i + 1}\`}

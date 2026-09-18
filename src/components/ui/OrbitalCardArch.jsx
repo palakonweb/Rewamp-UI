@@ -21,9 +21,23 @@ export function OrbitalCardArch({
   const [scrollX, setScrollX] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef({ x: 0, startScroll: 0 });
-  const animFrameRef = useRef(null);
-  const lastTimeRef = useRef(null);
+  const [screenSize, setScreenSize] = useState('desktop');
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 480) setScreenSize('mobile');
+      else if (w < 820) setScreenSize('tablet');
+      else setScreenSize('desktop');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const effCardWidth = screenSize === 'mobile' ? Math.min(cardWidth, 130) : screenSize === 'tablet' ? Math.min(cardWidth, 175) : cardWidth;
+  const effCardHeight = screenSize === 'mobile' ? Math.min(cardHeight, 130) : screenSize === 'tablet' ? Math.min(cardHeight, 175) : cardHeight;
+  const stepDistance = screenSize === 'mobile' ? 145 : screenSize === 'tablet' ? 205 : 270;
 
   // Default cards with the surreal art images
   const defaultCards = [
@@ -36,8 +50,6 @@ export function OrbitalCardArch({
 
   const cardList = cards || defaultCards;
   const numCards = cardList.length;
-  // Spacing along curved horizon
-  const stepDistance = 270;
   const totalWidth = numCards * stepDistance;
 
   // Continuous cylindrical scroll (moving left)
@@ -107,7 +119,7 @@ export function OrbitalCardArch({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full h-[480px] md:h-[520px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-full h-[400px] sm:h-[480px] md:h-[520px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
       style={{
         perspective: 1200,
       }}
@@ -129,10 +141,10 @@ export function OrbitalCardArch({
           let opacity = 1;
 
           if (isStacked) {
-            // Collapsed into center card deck (shown at 00:04 of video)
             const stackOffset = idx;
-            posX = -stackOffset * 3;
-            posY = -stackOffset * 3;
+            const stackStep = screenSize === 'mobile' ? 1.5 : 3;
+            posX = -stackOffset * stackStep;
+            posY = -stackOffset * stackStep;
             rotY = 0;
             rotZ = 0;
             scale = 1 - stackOffset * 0.006;
@@ -146,18 +158,18 @@ export function OrbitalCardArch({
             }
 
             posX = currentX;
-            // Cylindrical curvature calculations
-            // As x moves away from center, y drops slightly and rotY turns inwards
-            const normalizedX = currentX / 300; // -1 to +1
-            posY = Math.pow(normalizedX, 2) * 28;
-            rotY = -normalizedX * 24; // Left turns right (+), Right turns left (-)
+            const normDivider = screenSize === 'mobile' ? 170 : screenSize === 'tablet' ? 240 : 300;
+            const normalizedX = currentX / normDivider; // -1 to +1
+            posY = Math.pow(normalizedX, 2) * (screenSize === 'mobile' ? 16 : 28);
+            rotY = -normalizedX * (screenSize === 'mobile' ? 18 : 24);
             rotZ = normalizedX * 7;
             scale = Math.max(0.85, 1 - Math.abs(normalizedX) * 0.12);
             zIndex = Math.round(50 - Math.abs(normalizedX) * 20);
 
             // Fade if far out
-            if (Math.abs(currentX) > 420) {
-              opacity = Math.max(0, 1 - (Math.abs(currentX) - 420) / 100);
+            const fadeThreshold = screenSize === 'mobile' ? 220 : screenSize === 'tablet' ? 340 : 420;
+            if (Math.abs(currentX) > fadeThreshold) {
+              opacity = Math.max(0, 1 - (Math.abs(currentX) - fadeThreshold) / 80);
             }
           }
 
@@ -180,11 +192,11 @@ export function OrbitalCardArch({
                 mass: 0.8,
               }}
               style={{
-                width: cardWidth,
-                height: cardHeight,
+                width: effCardWidth,
+                height: effCardHeight,
                 position: 'absolute',
-                top: -cardHeight / 2,
-                left: -cardWidth / 2,
+                top: -effCardHeight / 2,
+                left: -effCardWidth / 2,
                 zIndex,
                 transformStyle: 'preserve-3d',
               }}
@@ -193,7 +205,7 @@ export function OrbitalCardArch({
             >
               {/* Card Surface - Pure Image */}
               <div
-                className="w-full h-full rounded-[24px] overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03]"
+                className="w-full h-full rounded-[20px] sm:rounded-[24px] overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03]"
                 style={{
                   border: '1px solid rgba(255, 255, 255, 0.4)',
                   boxShadow:

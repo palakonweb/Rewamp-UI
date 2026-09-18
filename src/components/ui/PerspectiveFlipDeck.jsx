@@ -33,6 +33,24 @@ export function PerspectiveFlipDeck({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [screenSize, setScreenSize] = useState('desktop');
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 480) setScreenSize('mobile');
+      else if (w < 820) setScreenSize('tablet');
+      else setScreenSize('desktop');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const effWidth = screenSize === 'mobile' ? Math.min(cardWidth, 210) : screenSize === 'tablet' ? Math.min(cardWidth, 280) : cardWidth;
+  const effHeight = screenSize === 'mobile' ? Math.min(cardHeight, 135) : screenSize === 'tablet' ? Math.min(cardHeight, 175) : cardHeight;
+  const effStepX = screenSize === 'mobile' ? 24 : screenSize === 'tablet' ? 42 : 60;
+  const effBaseX = screenSize === 'mobile' ? 0 : screenSize === 'tablet' ? 10 : 20;
 
   // Trigger the 3D swinging flip
   const triggerFlip = () => {
@@ -58,33 +76,27 @@ export function PerspectiveFlipDeck({
     <div
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className={`relative w-full h-[480px] md:h-[530px] overflow-hidden select-none flex items-center justify-center rounded-2xl ${className}`}
+      className={`relative w-full max-w-full h-[380px] sm:h-[480px] md:h-[530px] overflow-hidden select-none flex items-center justify-center rounded-2xl ${className}`}
     >
       {/* 3D Isometric Deck Stage */}
       <div
-        className="relative flex items-center justify-center cursor-pointer"
+        className="relative flex items-center justify-center cursor-pointer max-w-full"
         style={{
           perspective: 1400,
           perspectiveOrigin: '50% 50%',
-          width: cardWidth,
-          height: cardHeight,
+          width: effWidth,
+          height: effHeight,
         }}
         onClick={triggerFlip}
       >
         {cardList.map((card, idx) => {
           // Relative position slot from current activeIndex
-          // 0 = front card, 1 = mid card, 2 = back card, etc.
           const slot = (idx - activeIndex + numCards) % numCards;
           const isFront = slot === 0;
 
-          // Straight deck coordinates: perfectly straight on, zero skew angle
-          // Front card (slot 0) centered at x: 20, y: 0
-          // Middle card (slot 1) offset slightly to the left at x: -40
-          // Back card (slot 2) offset to x: -100
-          let targetX = 20 - slot * 60;
-          let targetY = 0 - slot * 8;
+          let targetX = effBaseX - slot * effStepX;
+          let targetY = 0 - slot * (isMobile ? 5 : 8);
           let targetScale = 1 - slot * 0.035;
-          // Completely straight resting angles per user request
           let targetRotY = 0;
           let targetRotX = 0;
           let targetRotZ = 0;
@@ -94,7 +106,6 @@ export function PerspectiveFlipDeck({
           // When flip is in progress:
           if (isFlipping) {
             if (isFront) {
-              // The front card physically swings open around its right vertical hinge in 3D
               targetRotY = 90;
               targetRotX = 0;
               targetRotZ = 0;
@@ -102,10 +113,9 @@ export function PerspectiveFlipDeck({
               targetScale = 0.98;
               zIndex = 40;
             } else if (slot <= 3) {
-              // Cards behind slide forward smoothly into next slot position
               const nextSlot = slot - 1;
-              targetX = 20 - nextSlot * 60;
-              targetY = 0 - nextSlot * 8;
+              targetX = effBaseX - nextSlot * effStepX;
+              targetY = 0 - nextSlot * (isMobile ? 5 : 8);
               targetScale = 1 - nextSlot * 0.035;
               targetOpacity = nextSlot > 2 ? 0 : 1 - nextSlot * 0.06;
               zIndex = 30 - nextSlot * 5;
@@ -130,17 +140,17 @@ export function PerspectiveFlipDeck({
                 ease: isFront && isFlipping ? [0.35, 0.85, 0.45, 1] : [0.34, 1.3, 0.64, 1],
               }}
               style={{
-                width: cardWidth,
-                height: cardHeight,
+                width: effWidth,
+                height: effHeight,
                 position: 'absolute',
                 zIndex,
                 transformOrigin: 'right center',
                 transformStyle: 'preserve-3d',
               }}
             >
-              {/* Pure Card Surface - No text, No black overlays */}
+              {/* Pure Card Surface */}
               <div
-                className="w-full h-full rounded-[24px] overflow-hidden transition-all duration-300"
+                className="w-full h-full rounded-[18px] sm:rounded-[24px] overflow-hidden transition-all duration-300"
                 style={{
                   border: '1px solid rgba(255, 255, 255, 0.45)',
                   boxShadow:

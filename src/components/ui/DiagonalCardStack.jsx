@@ -21,9 +21,28 @@ export function DiagonalCardStack({
   const [offset, setOffset] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [screenSize, setScreenSize] = useState('desktop');
   const animFrameRef = useRef(null);
   const lastTimeRef = useRef(null);
   const dragStartRef = useRef({ x: 0, y: 0, startOffset: 0 });
+
+  // Responsive screen detection
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth;
+      if (w < 480) setScreenSize('mobile');
+      else if (w < 820) setScreenSize('tablet');
+      else setScreenSize('desktop');
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const effCardWidth = screenSize === 'mobile' ? Math.min(cardWidth, 140) : screenSize === 'tablet' ? Math.min(cardWidth, 180) : cardWidth;
+  const effCardHeight = screenSize === 'mobile' ? Math.min(cardHeight, 140) : screenSize === 'tablet' ? Math.min(cardHeight, 180) : cardHeight;
+  const effStepX = screenSize === 'mobile' ? Math.round(stepX * 0.58) : screenSize === 'tablet' ? Math.round(stepX * 0.76) : stepX;
+  const effStepY = screenSize === 'mobile' ? Math.round(stepY * 0.58) : screenSize === 'tablet' ? Math.round(stepY * 0.76) : stepY;
 
   // Default cards matching the exact video design with surreal art imagery
   const defaultCards = [
@@ -41,12 +60,12 @@ export function DiagonalCardStack({
 
   const cardList = cards || defaultCards;
   const numCards = cardList.length;
-  const totalLength = numCards * Math.hypot(stepX, stepY);
-  const unitStep = Math.hypot(stepX, stepY);
+  const totalLength = numCards * Math.hypot(effStepX, effStepY);
+  const unitStep = Math.hypot(effStepX, effStepY);
 
-  const norm = Math.hypot(stepX, stepY);
-  const dirX = stepX / norm;
-  const dirY = stepY / norm;
+  const norm = Math.hypot(effStepX, effStepY);
+  const dirX = effStepX / norm;
+  const dirY = effStepY / norm;
 
   // Continuous animation loop moving up-left
   useEffect(() => {
@@ -118,7 +137,7 @@ export function DiagonalCardStack({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full h-[480px] md:h-[520px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-full h-[400px] sm:h-[480px] md:h-[520px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-2xl flex items-center justify-center ${className}`}
     >
       {/* Cards Engine Anchor */}
       <div className="relative w-0 h-0 flex items-center justify-center pointer-events-none">
@@ -130,11 +149,11 @@ export function DiagonalCardStack({
           let opacity = 1;
 
           if (isStacked) {
-            // Stacked deck in center (exact recreation of frame 5.1s)
-            // The top card is in the front, and subsequent cards peek behind
+            // Stacked deck in center
             const layerFromTop = numCards - 1 - idx;
-            posX = -layerFromTop * 3;
-            posY = -layerFromTop * 3;
+            const stackStep = screenSize === 'mobile' ? 1.5 : 3;
+            posX = -layerFromTop * stackStep;
+            posY = -layerFromTop * stackStep;
             zIndex = idx + 10;
             scale = 1 - layerFromTop * 0.005;
             opacity = 1;
@@ -147,16 +166,17 @@ export function DiagonalCardStack({
             }
 
             const stepRatio = currentPos / unitStep;
-            posX = stepRatio * stepX;
-            posY = stepRatio * stepY;
+            posX = stepRatio * effStepX;
+            posY = stepRatio * effStepY;
 
             // zIndex ensures the lower-right cards overlap the upper-left ones
             zIndex = Math.round(100 + stepRatio * 10);
 
             // Subtle edge fade at boundaries
             const distFromCenter = Math.hypot(posX, posY);
-            if (distFromCenter > 480) {
-              opacity = Math.max(0, 1 - (distFromCenter - 480) / 120);
+            const fadeThreshold = screenSize === 'mobile' ? 220 : screenSize === 'tablet' ? 340 : 480;
+            if (distFromCenter > fadeThreshold) {
+              opacity = Math.max(0, 1 - (distFromCenter - fadeThreshold) / 100);
             }
           }
 
@@ -177,19 +197,19 @@ export function DiagonalCardStack({
                 mass: 0.85,
               }}
               style={{
-                width: cardWidth,
-                height: cardHeight,
+                width: effCardWidth,
+                height: effCardHeight,
                 zIndex,
                 position: 'absolute',
-                top: -cardHeight / 2,
-                left: -cardWidth / 2,
+                top: -effCardHeight / 2,
+                left: -effCardWidth / 2,
               }}
               className="pointer-events-auto"
               onClick={() => onCardClick && onCardClick(card, idx)}
             >
               {/* Card Surface - Pure Image */}
               <div
-                className="w-full h-full rounded-[24px] overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
+                className="w-full h-full rounded-[20px] sm:rounded-[24px] overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-[1.03]"
                 style={{
                   border: '1px solid rgba(255, 255, 255, 0.4)',
                   boxShadow: isStacked

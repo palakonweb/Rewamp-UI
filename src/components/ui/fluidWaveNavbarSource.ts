@@ -77,15 +77,26 @@ export default function FluidWaveNavbar({
     onChange?.(index);
   };
 
+  const navWidth = 360;
+  const innerWidth = navWidth - 16;
+  const slotWidth = innerWidth / items.length;
+
   return (
-    <div className={\`relative flex flex-col items-center select-none \${className}\`}>
-      {/* ── Main White Navbar Pill with Upward Scooped Notch ── */}
-      <div className="relative w-[340px] sm:w-[350px] h-[76px] bg-white rounded-[28px] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] flex items-center justify-between px-2 overflow-hidden border border-black/5 z-20">
+    <div className={\`relative flex flex-col items-center select-none w-full max-w-full \${className}\`}>
+      {/* ── Main Navbar Pill with Upward Scooped Notch ── */}
+      <div
+        className={\`relative w-full max-w-[320px] sm:max-w-[360px] h-[70px] sm:h-[74px] rounded-[28px] flex items-center justify-between px-2 overflow-hidden border transition-colors duration-200 z-20 \${
+          isDark
+            ? 'bg-[#1E1B28] border-white/12 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.65)]'
+            : 'bg-white border-black/[0.08] shadow-[0_20px_45px_-12px_rgba(0,0,0,0.14)]'
+        }\`}
+      >
         
         {/* ── The Gliding Liquid Notch Scoop at the Bottom ── */}
         <motion.div
           animate={{
-            x: activeIndex * (334 / 3) + (334 / 6) - 37,
+            left: \`\${(activeIndex + 0.5) * (100 / items.length)}%\`,
+            x: '-50%',
           }}
           transition={{
             type: 'spring',
@@ -101,22 +112,17 @@ export default function FluidWaveNavbar({
             initial={{ scale: 0.4, opacity: 0, y: 3 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ type: 'spring', stiffness: 450, damping: 20 }}
-            className="w-1.5 h-1.5 rounded-full bg-[#18181B] mb-1.5 shadow-sm"
+            className={\`w-1.5 h-1.5 rounded-full mb-1.5 shadow-sm \${
+              isDark ? 'bg-white' : 'bg-[#18181B]'
+            }\`}
           />
 
-          {/* Upward concave arch carved into bottom edge matching dark grey backdrop */}
+          {/* Upward concave arch carved into bottom edge matching stage backdrop */}
           <svg
             viewBox="0 0 74 20"
             className="w-full h-[18px]"
             preserveAspectRatio="none"
           >
-            <defs>
-              <linearGradient id="notchDarkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#2D2D33" />
-                <stop offset="50%" stopColor="#222227" />
-                <stop offset="100%" stopColor="#18181D" />
-              </linearGradient>
-            </defs>
             <path
               d="M 0 20
                  C 16 20, 22 2, 37 2

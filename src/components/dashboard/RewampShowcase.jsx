@@ -430,6 +430,15 @@ export default function RewampShowcase() {
   const [copiedPromptDrawer, setCopiedPromptDrawer] = useState(false);
   const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', usage: '', dependencies: [], loading: false });
   const [codeTab, setCodeTab] = useState('component'); // 'component' | 'css' | 'usage' | 'deps'
+  const [windowWidth, setWindowWidth] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 1200));
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isDesktop = windowWidth >= 1024;
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth < 768;
@@ -1019,8 +1028,8 @@ export default function RewampShowcase() {
       )}
 
       {/* ── 2. Main Content Area — Canvas + Side Panel Split ── */}
-      <div className="flex-1 h-full flex gap-2.5 overflow-hidden">
-        {/* Canvas Stage — shrinks when a panel is open */}
+      <div className="flex-1 h-full flex gap-2.5 overflow-hidden relative">
+        {/* Canvas Stage — shrinks on desktop when a panel is open, stays full width on mobile/tablet */}
         <motion.div
           layout
           transition={{ type: 'spring', stiffness: 350, damping: 32 }}
@@ -1028,7 +1037,7 @@ export default function RewampShowcase() {
             theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
           }`}
           style={{
-            flex: (codeDrawerOpen || promptDrawerOpen || descDrawerOpen) ? '1 1 50%' : '1 1 100%',
+            flex: isDesktop && (codeDrawerOpen || promptDrawerOpen || descDrawerOpen) ? '1 1 54%' : '1 1 100%',
             minWidth: 0,
             boxShadow: theme === 'light'
               ? 'inset 0 1px 2px rgba(0,0,0,0.04)'
@@ -1118,18 +1127,18 @@ export default function RewampShowcase() {
           </div>
 
           {/* ── Centered Showcase Stage ── */}
-          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-12 overflow-y-auto overflow-x-hidden no-scrollbar relative">
+          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-10 overflow-y-auto overflow-x-hidden no-scrollbar relative">
             <motion.div
               key={activeSlug}
               initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: panelOpen ? 0.65 : 1 }}
+              animate={{ opacity: 1, scale: panelOpen && isDesktop ? 0.76 : 1 }}
               transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-              className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] min-h-[300px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+              className="canvas-stage relative flex items-center justify-center w-full max-w-full sm:max-w-[1080px] min-h-[280px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
               style={{ transformOrigin: 'center center' }}
             >
               <ErrorBoundary key={activeSlug}>
                 <Suspense fallback={getComponentSkeleton(activeSlug)}>
-                  <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-2 sm:p-6 overflow-visible">
+                  <div className="animate-component-fade-in flex items-center justify-center w-full max-w-full h-full p-1 sm:p-4 overflow-visible">
                     {isFolder ? (
                       <CleanFolderComponent color={folderColor} />
                     ) : (
@@ -1148,7 +1157,7 @@ export default function RewampShowcase() {
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.24, ease: 'easeOut' }}
-                  className="absolute inset-0 z-20 pointer-events-none"
+                  className="absolute inset-0 z-20 pointer-events-none rounded-[22px] sm:rounded-[36px] overflow-hidden flex items-center justify-center"
                 >
                   <CanvasShimmerSkeleton theme={theme} />
                 </motion.div>
@@ -1208,15 +1217,36 @@ export default function RewampShowcase() {
           )}
         </motion.div>
 
-        {/* ── Side-by-Side Code Panel (slides in, canvas shrinks) ── */}
+        {/* ── Mobile/Tablet Backdrop for drawers ── */}
+        <AnimatePresence>
+          {!isDesktop && (codeDrawerOpen || promptDrawerOpen || descDrawerOpen) && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setCodeDrawerOpen(false);
+                setPromptDrawerOpen(false);
+                setDescDrawerOpen(false);
+              }}
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs lg:hidden"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* ── Side Code Panel ── */}
         <AnimatePresence>
           {codeDrawerOpen && (
             <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '50%', opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
+              initial={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
+              animate={{ width: isDesktop ? '46%' : undefined, x: 0, opacity: 1 }}
+              exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full rounded-[22px] sm:rounded-[24px] overflow-hidden flex flex-col shrink-0 border ${
+              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
+                isDesktop
+                  ? 'rounded-[22px] sm:rounded-[24px]'
+                  : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[500px] rounded-[22px] shadow-2xl'
+              } ${
                 theme === 'light'
                   ? 'bg-white border-neutral-200/80 text-neutral-900'
                   : 'bg-[#17151C] border-[#2B2732] text-white'
@@ -1418,15 +1448,19 @@ export default function RewampShowcase() {
           )}
         </AnimatePresence>
 
-        {/* ── Side-by-Side Prompt Panel (slides in, canvas shrinks) ── */}
+        {/* ── Side-by-Side Prompt Panel ── */}
         <AnimatePresence>
           {promptDrawerOpen && (
             <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '45%', opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
+              initial={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
+              animate={{ width: isDesktop ? '44%' : undefined, x: 0, opacity: 1 }}
+              exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full rounded-[22px] sm:rounded-[24px] overflow-hidden flex flex-col shrink-0 border ${
+              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
+                isDesktop
+                  ? 'rounded-[22px] sm:rounded-[24px]'
+                  : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[480px] rounded-[22px] shadow-2xl'
+              } ${
                 theme === 'light'
                   ? 'bg-white border-neutral-200/80 text-neutral-900'
                   : 'bg-[#17151C] border-[#2B2732] text-white'
@@ -1487,15 +1521,19 @@ export default function RewampShowcase() {
           )}
         </AnimatePresence>
 
-        {/* ── Side-by-Side Description Panel (slides in, canvas shrinks) ── */}
+        {/* ── Side-by-Side Description Panel ── */}
         <AnimatePresence>
           {descDrawerOpen && (
             <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '45%', opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
+              initial={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
+              animate={{ width: isDesktop ? '44%' : undefined, x: 0, opacity: 1 }}
+              exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full rounded-[22px] sm:rounded-[24px] overflow-hidden flex flex-col shrink-0 border ${
+              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
+                isDesktop
+                  ? 'rounded-[22px] sm:rounded-[24px]'
+                  : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[480px] rounded-[22px] shadow-2xl'
+              } ${
                 theme === 'light'
                   ? 'bg-white border-neutral-200/80 text-neutral-900'
                   : 'bg-[#17151C] border-[#2B2732] text-white'
