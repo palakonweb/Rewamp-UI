@@ -679,7 +679,7 @@ export default function RewampShowcase() {
                   className="w-full bg-[var(--elevated)] border border-[var(--border)] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-neutral-400 outline-none focus:border-[var(--brand-strong)] transition-colors"
                 />
                 {query && (
-                  <button 
+                  <button
                     onClick={() => setQuery('')}
                     className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-neutral-700"
                   >
@@ -687,6 +687,15 @@ export default function RewampShowcase() {
                   </button>
                 )}
               </div>
+
+              {/* Documentation */}
+              <button
+                onClick={() => navigate('/documentation')}
+                className="w-full flex items-center justify-center gap-1.5 mb-3 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5 text-neutral-400" />
+                <span>Documentation</span>
+              </button>
 
               {/* Flower Flightpath Tree */}
               <div 

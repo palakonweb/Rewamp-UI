@@ -55,7 +55,7 @@ export const categories = [
         name: 'Animated Backgrounds',
         icon: ImageIcon,
         size: 'lg',
-        description: 'Full-bleed animated backdrops — particles, gradients, grids, and warp effects.',
+        description: 'Full-bleed animated backdrops — particles, gradients, grids, and warp effects. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Liquid Cursor Gradient', 'liquid-cursor-gradient', () => import('./ui/LiquidCursorGradientShowcase'), 'LiquidCursorGradientShowcase'),
             makeLazy('Ascii Matrix Hover', 'ascii-matrix-hover', () => import('./ui/AsciiMatrixHoverShowcase'), 'AsciiMatrixHoverShowcase'),
@@ -84,7 +84,7 @@ export const categories = [
         name: 'Buttons',
         icon: MousePointerClick,
         size: 'sm',
-        description: 'Tactile, physically-animated buttons — press states, glows, and material effects.',
+        description: 'Tactile, physically-animated buttons — press states, glows, and material effects. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Googly Eyes Button', 'googly-eyes-button', () => import('./ui/GooglyEyesButtonShowcase'), 'GooglyEyesButtonShowcase'),
             makeLazy('Gloss Button', 'gloss-button', () => import('./ui/GlossButtonShowcase'), 'GlossButtonShowcase'),
@@ -102,7 +102,7 @@ export const categories = [
         name: 'Text Animations',
         icon: TypeIcon,
         size: 'sm',
-        description: 'Kinetic typography — reveals, scrambles, morphs, and counters.',
+        description: 'Kinetic typography — reveals, scrambles, morphs, and counters. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Kinetic Reel Text', 'kinetic-reel-text', () => import('./ui/KineticReelTextShowcase'), 'KineticReelTextShowcase'),
             makeLazy('Split Text Reveal', 'split-text-reveal', () => import('./ui/SplitTextRevealShowcase'), 'SplitTextRevealShowcase'),
@@ -120,7 +120,7 @@ export const categories = [
         name: 'Toggles',
         icon: ToggleLeft,
         size: 'sm',
-        description: 'Switches and toggles with elastic, skeuomorphic, and ambient motion.',
+        description: 'Switches and toggles with elastic, skeuomorphic, and ambient motion. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Day Night Sky Toggle', 'day-night-sky-toggle', () => import('./ui/DayNightSkyToggleShowcase'), 'DayNightSkyToggleShowcase'),
             makeLazy('Landscape Orb Toggle', 'landscape-orb-toggle', () => import('./ui/LandscapeOrbToggleShowcase'), 'LandscapeOrbToggleShowcase'),
@@ -132,7 +132,7 @@ export const categories = [
         name: 'Cursors',
         icon: MousePointer2,
         size: 'sm',
-        description: 'Custom cursor replacements — trails, lenses, and magnetic effects.',
+        description: 'Custom cursor replacements — trails, lenses, and magnetic effects. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Splash Cursor', 'splash-cursor', () => import('./ui/SplashCursorShowcase'), 'SplashCursorShowcase'),
             makeLazy('Pill Trail Cursor', 'pill-trail-cursor', () => import('./ui/PillTrailCursorShowcase'), 'PillTrailCursorShowcase'),
@@ -144,7 +144,7 @@ export const categories = [
         name: 'Navbars',
         icon: PanelTop,
         size: 'lg',
-        description: 'Floating, sticky, and responsive navigation bars with spring physics.',
+        description: 'Floating, sticky, and responsive navigation bars with spring physics. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Hero Morph Navbar', 'hero-morph-navbar', () => import('./ui/HeroMorphNavbarShowcase'), 'HeroMorphNavbarShowcase'),
             makeLazy('Pill Expand Navbar', 'pill-expand-navbar', () => import('./ui/PillExpandNavbarShowcase'), 'PillExpandNavbarShowcase'),
@@ -165,7 +165,7 @@ export const categories = [
         name: 'Search Bars',
         icon: SearchIcon,
         size: 'sm',
-        description: 'Search inputs with self-animating states, morphing icons, and expanding capsules.',
+        description: 'Search inputs with self-animating states, morphing icons, and expanding capsules. Includes a capsule search bar that morphs between an icon-only pill and a full expanded input with animated placeholder text, and an animated search demo showing live-typing suggestion states. Built with Framer Motion springs for the expand/collapse transition and Tailwind for layout. None of these designs are original — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Morph Search Capsule', 'morph-search-capsule', () => import('./ui/MorphSearchCapsuleShowcase'), 'MorphSearchCapsuleShowcase'),
             makeLazy('Animated Search Demo', 'animated-search-demo', () => import('./ui/AnimatedSearchDemo'), 'AnimatedSearchDemo'),
@@ -176,7 +176,7 @@ export const categories = [
         name: 'Sidebars',
         icon: PanelLeft,
         size: 'sm',
-        description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations.',
+        description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Kinetic Lens Sidebar', 'kinetic-lens-sidebar', () => import('./ui/KineticLensSidebarShowcase'), 'KineticLensSidebarShowcase'),
             makeLazy('Flightpath TOC', 'flightpath-toc', () => import('./ui/FlightpathTOCShowcase'), 'FlightpathTOCShowcase'),
@@ -189,7 +189,7 @@ export const categories = [
         name: 'Cards',
         icon: CreditCard,
         size: 'md',
-        description: 'Layered, interactive, and tactile card components with physical animations.',
+        description: 'Layered, interactive, and tactile card components with physical animations. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Diagonal Card Stack', 'diagonal-card-stack', () => import('./ui/DiagonalCardStackShowcase'), 'DiagonalCardStackShowcase'),
             makeLazy('Perspective Flip Deck', 'perspective-flip-deck', () => import('./ui/PerspectiveFlipDeckShowcase'), 'PerspectiveFlipDeckShowcase'),
@@ -204,7 +204,7 @@ export const categories = [
         name: 'UI for AI',
         icon: Bot,
         size: 'md',
-        description: 'Interactive AI interfaces, Claude-style reasoning streams, thinking indicators, and 3D assistant companions.',
+        description: 'Interactive AI interfaces, Claude-style reasoning streams, thinking indicators, and 3D assistant companions. Not original work — inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Marbled Fluid Orb', 'marbled-fluid-orb', () => import('./ui/MarbledFluidOrbShowcase'), 'MarbledFluidOrbShowcase'),
             makeLazy('Particle Dot Orb', 'particle-dot-orb', () => import('./ui/ParticleDotOrbShowcase'), 'ParticleDotOrbShowcase'),
