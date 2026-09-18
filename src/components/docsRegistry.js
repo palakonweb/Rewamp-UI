@@ -57,10 +57,10 @@ export const categories = [
         size: 'lg',
         description: 'Full-bleed animated backdrops — particles, gradients, grids, and warp effects.',
         components: [
+            makeLazy('Liquid Cursor Gradient', 'liquid-cursor-gradient', () => import('./ui/LiquidCursorGradientShowcase'), 'LiquidCursorGradientShowcase'),
             makeLazy('Ascii Matrix Hover', 'ascii-matrix-hover', () => import('./ui/AsciiMatrixHoverShowcase'), 'AsciiMatrixHoverShowcase'),
             makeLazy('Elastic Line Grid', 'elastic-line-grid', () => import('./ui/ElasticLineGridShowcase'), 'ElasticLineGridShowcase'),
             makeLazy('Spotlight Grid', 'spotlight-grid', () => import('./ui/SpotlightGridShowcase'), 'SpotlightGridShowcase'),
-            makeLazy('Liquid Cursor Gradient', 'liquid-cursor-gradient', () => import('./ui/LiquidCursorGradientShowcase'), 'LiquidCursorGradientShowcase'),
             makeLazy('Ripple Grid', 'ripple-grid', () => import('./ui/RippleGridShowcase'), 'RippleGridShowcase'),
             makeLazy('Shooting Stars', 'shooting-stars', () => import('./ui/ShootingStarsShowcase'), 'ShootingStarsShowcase'),
             makeLazy('Soft Aurora', 'soft-aurora', () => import('./ui/SoftAuroraShowcase'), 'SoftAuroraShowcase'),
@@ -148,6 +148,7 @@ export const categories = [
         size: 'lg',
         description: 'Floating, sticky, and responsive navigation bars with spring physics.',
         components: [
+            makeLazy('Hero Morph Navbar', 'hero-morph-navbar', () => import('./ui/HeroMorphNavbarShowcase'), 'HeroMorphNavbarShowcase'),
             makeLazy('Pill Expand Navbar', 'pill-expand-navbar', () => import('./ui/PillExpandNavbarShowcase'), 'PillExpandNavbarShowcase'),
             makeLazy('Pixel Dot Navbar', 'pixel-dot-navbar', () => import('./ui/PixelDotNavbarShowcase'), 'PixelDotNavbarShowcase'),
             makeLazy('Dark Mode Mobile Navbar', 'dark-mode-mobile-navbar', () => import('./ui/DarkModeMobileNavbarShowcase'), 'DarkModeMobileNavbarShowcase'),
@@ -199,6 +200,7 @@ export const categories = [
             makeLazy('Wallet Card Reveal', 'wallet-card-reveal', () => import('./ui/WalletCardRevealShowcase'), 'WalletCardRevealShowcase'),
             makeLazy('Arch Card Carousel', 'arch-card-carousel', () => import('./ui/ArchCardCarouselShowcase'), 'ArchCardCarouselShowcase'),
             makeLazy('Folder Tab Card', 'folder-tab-card', () => import('./ui/FolderTabCardShowcase'), 'FolderTabCardShowcase'),
+            makeLazy('Frosted Folder Card', 'frosted-folder-card', () => import('./ui/FrostedFolderCardShowcase'), 'FrostedFolderCardShowcase'),
         ],
     },
     {

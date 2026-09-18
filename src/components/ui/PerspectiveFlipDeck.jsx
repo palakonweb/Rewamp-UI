@@ -47,6 +47,7 @@ export function PerspectiveFlipDeck({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const isMobile = screenSize === 'mobile';
   const effWidth = screenSize === 'mobile' ? Math.min(cardWidth, 210) : screenSize === 'tablet' ? Math.min(cardWidth, 280) : cardWidth;
   const effHeight = screenSize === 'mobile' ? Math.min(cardHeight, 135) : screenSize === 'tablet' ? Math.min(cardHeight, 175) : cardHeight;
   const effStepX = screenSize === 'mobile' ? 24 : screenSize === 'tablet' ? 42 : 60;

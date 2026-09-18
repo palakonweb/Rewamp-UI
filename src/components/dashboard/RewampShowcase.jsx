@@ -202,169 +202,6 @@ function FlowerIcon({ className = "w-4 h-4" }) {
     </svg>
   );
 }
-
-// Photos revealed inside the folder — swap these for any images you like.
-const FOLDER_PHOTOS = [
-  '/cards/sky-curtain.png',
-  '/cards/rainbow-hill.png',
-  '/cards/airplane-sunset.png',
-  '/cards/kangaroo-planet.png',
-];
-
-// Target position for each photo once the folder opens — one to each side (top, right, bottom, left).
-const FOLDER_PHOTO_LAYOUT = [
-  { x: 0, y: -190, rotate: -2 },
-  { x: 168, y: -14, rotate: 4 },
-  { x: 0, y: 128, rotate: 3 },
-  { x: -168, y: -14, rotate: -4 },
-];
-
-// Clean Folder Component
-function CleanFolderComponent({ color = 'black' }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const themes = {
-    black: {
-      back: 'bg-[#121215]',
-      flap: 'bg-black/75 border-t border-white/20 backdrop-blur-xl',
-      border: 'border-white/10',
-      shadow: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)]',
-    },
-    white: {
-      back: 'bg-[#E5E5E5]',
-      flap: 'bg-white/80 border-t border-white/60 backdrop-blur-xl',
-      border: 'border-black/10',
-      shadow: 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)]',
-    },
-    blue: {
-      back: 'bg-[#0284C7]',
-      flap: 'bg-[#38BDF8]/80 border-t border-white/40 backdrop-blur-xl',
-      border: 'border-white/20',
-      shadow: 'shadow-[0_25px_50px_-12px_rgba(2,132,199,0.4)]',
-    },
-    lilac: {
-      back: 'bg-[#9C8EB8]',
-      flap: 'bg-[#D4CBE5]/85 border-t border-white/50 backdrop-blur-xl',
-      border: 'border-white/30',
-      shadow: 'shadow-[0_25px_50px_-12px_rgba(193,180,216,0.6)]',
-    }
-  };
-
-  const current = themes[color] || themes.black;
-
-  return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => !dialogOpen && setIsHovered(false)}
-      onClick={() => {
-        setIsHovered(true);
-        setTimeout(() => setDialogOpen(true), 380);
-      }}
-      className="relative w-[340px] sm:w-[390px] h-[260px] sm:h-[290px] flex items-end justify-center cursor-pointer select-none"
-      style={{ perspective: '1200px' }}
-    >
-      <motion.div
-        animate={{ y: isHovered ? -4 : 0 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-        className={`absolute inset-0 rounded-[32px] ${current.back} ${current.border} border shadow-2xl overflow-hidden`}
-      >
-        <div className={`absolute top-0 left-0 w-[42%] h-8 rounded-t-[18px] ${current.back} -translate-y-2`} />
-      </motion.div>
-
-      <div className="absolute inset-x-0 top-0 bottom-10 flex items-end justify-center pointer-events-none">
-        {FOLDER_PHOTOS.map((src, i) => {
-          const target = FOLDER_PHOTO_LAYOUT[i];
-          return (
-            <motion.div
-              key={src}
-              animate={
-                isHovered
-                  ? { x: target.x, y: target.y, rotate: target.rotate, scale: 1, opacity: 1 }
-                  : { x: 0, y: -16 - i * 3, rotate: target.rotate * 0.3, scale: 0.92, opacity: 1 }
-              }
-              transition={{ type: 'spring', stiffness: 260, damping: 24, delay: isHovered ? i * 0.03 : 0 }}
-              style={{ zIndex: isHovered ? 40 + i : 10 + i }}
-              className="absolute w-[104px] sm:w-[118px] h-[104px] sm:h-[118px] rounded-[18px] overflow-hidden bg-neutral-200 shadow-[0_10px_24px_rgba(0,0,0,0.25)] border border-black/5 origin-bottom-center"
-            >
-              <img src={src} alt="" draggable={false} className="w-full h-full object-cover select-none" />
-            </motion.div>
-          );
-        })}
-      </div>
-
-      <motion.div
-        animate={{
-          rotateX: isHovered ? -24 : -8,
-          y: isHovered ? 6 : 0,
-        }}
-        transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-        className="relative z-10 w-full h-[76%] rounded-[28px] overflow-hidden origin-bottom"
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <div 
-          className={`w-full h-full rounded-[28px] ${
-            color === 'black'
-              ? 'bg-gradient-to-b from-[#2B2B30]/90 to-[#101012]/95 border-t border-white/20 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.6)]'
-              : color === 'white'
-              ? 'bg-gradient-to-b from-white/90 to-[#EAEAEA]/95 border-t border-white/60 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.1)]'
-              : color === 'blue'
-              ? 'bg-gradient-to-b from-[#38BDF8]/90 to-[#0284C7]/95 border-t border-white/40 backdrop-blur-xl shadow-[0_20px_40px_rgba(2,132,199,0.3)]'
-              : 'bg-gradient-to-b from-[#D4CBE5]/95 to-[#C1B4D8]/95 border-t border-white/50 backdrop-blur-xl shadow-[0_20px_40px_rgba(193,180,216,0.4)]'
-          }`}
-        >
-          <div className="absolute top-0 inset-x-0 h-10 bg-gradient-to-b from-white/15 to-transparent pointer-events-none" />
-        </div>
-      </motion.div>
-
-      <AnimatePresence>
-        {dialogOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-6"
-            onClick={(e) => {
-              e.stopPropagation();
-              setDialogOpen(false);
-              setIsHovered(false);
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 10 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-              className="relative w-full max-w-2xl rounded-[28px] bg-[#141218] border border-white/10 shadow-2xl p-6 sm:p-8"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => {
-                  setDialogOpen(false);
-                  setIsHovered(false);
-                }}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
-                title="Close"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {FOLDER_PHOTOS.map((src, i) => (
-                  <div key={src} className="aspect-square rounded-2xl overflow-hidden bg-neutral-800">
-                    <img src={src} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" draggable={false} />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 // Single icon in the bottom liquid-glass dock: macOS-style magnify on hover + tooltip
 function DockIcon({ children, label, onClick, theme, accent = false, active = false }) {
   const [hovered, setHovered] = useState(false);
@@ -418,7 +255,7 @@ export default function RewampShowcase() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [activeSlug, setActiveSlug] = useState(slug || 'matte-folder-card');
+  const [activeSlug, setActiveSlug] = useState(slug || 'liquid-cursor-gradient');
   const [folderColor, setFolderColor] = useState('black');
   const [theme, setTheme] = useState(() => localStorage.getItem('rewamp-theme') || 'light');
   const [copiedPrompt, setCopiedPrompt] = useState(false);
@@ -461,6 +298,8 @@ export default function RewampShowcase() {
   useEffect(() => {
     if (slug) {
       setActiveSlug(slug);
+    } else {
+      setActiveSlug('liquid-cursor-gradient');
     }
   }, [slug]);
 
@@ -605,12 +444,10 @@ export default function RewampShowcase() {
 
   // Find active component for canvas
   const currentFound = useMemo(() => {
-    return findComponentBySlug(activeSlug) || findComponentBySlug('matte-folder-card') || {
-      entry: { title: 'Folder component', Component: CleanFolderComponent }
+    return findComponentBySlug(activeSlug) || findComponentBySlug('liquid-cursor-gradient') || {
+      entry: { title: 'Liquid Cursor Gradient', Component: () => null }
     };
   }, [activeSlug]);
-
-  const isFolder = activeSlug === 'matte-folder-card' || activeSlug === 'frosted-folder-card' || activeSlug === 'foldercomponent';
 
   // Load real source (+ any CSS + dependency list) for active component
   useEffect(() => {
@@ -1139,11 +976,7 @@ export default function RewampShowcase() {
               <ErrorBoundary key={activeSlug}>
                 <Suspense fallback={getComponentSkeleton(activeSlug)}>
                   <div className="animate-component-fade-in flex items-center justify-center w-full max-w-full h-full p-1 sm:p-4 overflow-visible">
-                    {isFolder ? (
-                      <CleanFolderComponent color={folderColor} />
-                    ) : (
-                      <currentFound.entry.Component />
-                    )}
+                    {currentFound?.entry?.Component && <currentFound.entry.Component />}
                   </div>
                 </Suspense>
               </ErrorBoundary>
@@ -1164,57 +997,6 @@ export default function RewampShowcase() {
               )}
             </AnimatePresence>
           </div>
-
-          {/* Bottom Floating Controls Pill (When Folder is selected) */}
-          {isFolder && (
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-md border border-neutral-200/80 dark:border-neutral-800"
-            >
-              <span className="text-neutral-400 text-xs font-mono pr-0.5 select-none opacity-60">:::</span>
-
-              <button
-                onClick={() => setFolderColor('black')}
-                className={`w-6 h-6 rounded-lg bg-[#111113] border transition-transform cursor-pointer ${
-                  folderColor === 'black'
-                    ? 'scale-110 border-neutral-900 ring-2 ring-neutral-400'
-                    : 'border-neutral-300 hover:scale-105'
-                }`}
-                title="Black"
-              />
-
-              <button
-                onClick={() => setFolderColor('white')}
-                className={`w-6 h-6 rounded-lg bg-white border transition-transform cursor-pointer ${
-                  folderColor === 'white'
-                    ? 'scale-110 border-neutral-900 ring-2 ring-neutral-400'
-                    : 'border-neutral-300 hover:scale-105'
-                }`}
-                title="White"
-              />
-
-              <button
-                onClick={() => setFolderColor('blue')}
-                className={`w-6 h-6 rounded-lg bg-[#38BDF8] border transition-transform cursor-pointer ${
-                  folderColor === 'blue'
-                    ? 'scale-110 border-sky-600 ring-2 ring-sky-300'
-                    : 'border-neutral-300 hover:scale-105'
-                }`}
-                title="Blue (Original)"
-              />
-
-              <button
-                onClick={() => setFolderColor('lilac')}
-                className={`w-6 h-6 rounded-lg bg-[#D4CBE5] border transition-transform cursor-pointer ${
-                  folderColor === 'lilac'
-                    ? 'scale-110 border-[#9C8EB8] ring-2 ring-[#C1B4D8]'
-                    : 'border-neutral-300 hover:scale-105'
-                }`}
-                title="Lilac (Brand)"
-              />
-            </motion.div>
-          )}
         </motion.div>
 
         {/* ── Mobile/Tablet Backdrop for drawers ── */}

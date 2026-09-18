@@ -406,6 +406,12 @@ export const componentPrompts = {
   // ──────────────────────────────────────────────────────────────────────────
   // 6. NAVBARS (navbars)
   // ──────────────────────────────────────────────────────────────────────────
+  "hero-morph-navbar": `Create a Dual-State Morphing Hero Navbar component in React:
+- Layout & Dynamics: Dual-state adaptive navbar that morphs between a full-bleed luxury hero header (unscrolled) and a compact floating frosted-glass capsule pill (scrolled).
+- Mechanics: Framer Motion spring physics with layout animations. Features brand mark + wordmark, interactive navigation tabs with sliding active pill indicator (layoutId), search shortcut trigger, theme switch toggle, mobile responsive sheet menu with animated hamburger icon, and primary CTA button.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
   "pill-expand-navbar": `Create a Compact Expanding Icon Pill Navbar in React:
 - Layout: Rounded-full dark container packed with 5 icon-only tabs (Home, Category, Cart, Save, Profile).
 - Expand Interaction: Hovering or selecting any tab smoothly expands its width via spring physics to reveal the text label beside the icon while non-hovered tabs stay collapsed.

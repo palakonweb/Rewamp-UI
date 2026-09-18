@@ -18,6 +18,9 @@ export function OrbitalCardArch({
   onCardClick = null,
 }) {
   const containerRef = useRef(null);
+  const lastTimeRef = useRef(null);
+  const animFrameRef = useRef(null);
+  const dragStartRef = useRef(null);
   const [scrollX, setScrollX] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);

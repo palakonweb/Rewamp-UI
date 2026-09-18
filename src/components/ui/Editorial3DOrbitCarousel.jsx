@@ -44,6 +44,7 @@ export function Editorial3DOrbitCarousel({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const isMobile = screenSize === 'mobile';
   const effWidth = screenSize === 'mobile' ? Math.min(cardWidth, 130) : screenSize === 'tablet' ? Math.min(cardWidth, 175) : cardWidth;
   const effHeight = screenSize === 'mobile' ? Math.min(cardHeight, 180) : screenSize === 'tablet' ? Math.min(cardHeight, 240) : cardHeight;
   const stepX = screenSize === 'mobile' ? 88 : screenSize === 'tablet' ? 140 : 195;

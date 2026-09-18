@@ -30,12 +30,12 @@ export default function WalletCardRevealShowcase() {
                 </div>
 
                 {/* The Interactive Wallet Component */}
-                <div className="mt-8 sm:mt-12">
+                <div className="w-full flex items-center justify-center my-auto py-2">
                     <WalletCardReveal />
                 </div>
 
                 {/* Subtext tip */}
-                <span className="text-[11px] font-medium text-black/35 tracking-wider uppercase mt-4 select-none">
+                <span className="text-[11px] font-medium text-black/35 dark:text-white/35 tracking-wider uppercase mt-4 select-none">
                     Click the eye icon to reveal cards & balance
                 </span>
             </div>
