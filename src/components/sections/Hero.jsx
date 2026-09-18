@@ -1,148 +1,81 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Star, Sparkles } from 'lucide-react';
-import { VerticalMarqueeShowcase } from './VerticalMarqueeShowcase';
+import { ArrowRight, Star } from 'lucide-react';
+import { HeroCardStage } from './HeroCardStage';
+
+function GithubIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11.1 11.1 0 0 1 2.89-.39c.98 0 1.97.13 2.89.39 2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.35.78 1.05.78 2.12 0 1.54-.01 2.77-.01 3.15 0 .3.2.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+    </svg>
+  );
+}
 
 export function Hero() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative w-full min-h-[100svh] flex flex-col justify-center bg-[#FAFAFA] dark:bg-[#0D0C10] text-[#171717] dark:text-white overflow-hidden transition-colors pt-24 pb-14 lg:py-0">
-      
-      {/* Subtle Background Glows */}
-      <div className="absolute top-1/4 right-1/4 w-[480px] h-[480px] bg-radial from-[#D4CBE5]/25 via-transparent to-transparent pointer-events-none rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-10 left-10 w-[360px] h-[360px] bg-radial from-[#C1B4D8]/20 via-transparent to-transparent pointer-events-none rounded-full blur-3xl -z-10" />
-
-      {/* ── Main Two-Column Hero Container ── */}
-      <div className="flex-1 max-w-[1440px] w-full mx-auto px-6 sm:px-10 lg:px-14 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 my-auto">
-        
-        {/* ─── LEFT COLUMN (Brand, Copy, CTAs, Social Proof) ─── */}
-        <div className="w-full lg:max-w-[44%] flex flex-col justify-center relative z-20">
-          
-          {/* Official Rewamp Handwritten Logo + SF Pro Semibold Wordmark */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-3.5 mb-8"
-          >
-            <img
-              src="/logo.svg"
-              alt="RewampUI Logo"
-              className="h-12 sm:h-14 lg:h-15 w-auto object-contain shrink-0 drop-shadow-xs"
-            />
-            <span className="text-3xl sm:text-4xl lg:text-[42px] font-semibold tracking-tight text-[#171717] dark:text-white font-sans">
+    <main className="bg-[var(--bg)] text-[var(--text-primary)] relative flex min-h-dvh flex-col overflow-hidden lg:h-dvh transition-colors">
+      {/* ─── Left: wordmark + copy + CTAs ─── */}
+      <section className="relative z-10 flex flex-col justify-center px-6 pt-20 pb-10 sm:px-12 lg:h-full lg:w-[44%] lg:min-w-105 lg:items-center lg:px-12 lg:pt-0 lg:pb-0">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="flex w-full max-w-md flex-col gap-7"
+        >
+          <h1 className="flex items-center gap-3">
+            <img src="/logo.svg" alt="" className="h-9 w-auto object-contain" />
+            <span className="text-[26px] font-semibold tracking-tight text-[var(--text-primary)] font-sans normal-case">
               RewampUI
             </span>
-          </motion.div>
+          </h1>
 
-          {/* Main Headline (Inspired by Reference Video) */}
-          <motion.h1
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-[#171717] dark:text-white leading-[1.08] mb-6 font-sans"
-          >
-            Tactile Motion <br />
-            <span className="bg-gradient-to-r from-[#171717] via-[#6B5B87] to-[#9C8EB8] dark:from-white dark:via-[#D4CBE5] dark:to-[#C1B4D8] bg-clip-text text-transparent">
-              For Modern UIs
-            </span>
-          </motion.h1>
+          <p className="text-[var(--text-secondary)] text-[15px] leading-relaxed">
+            Animated, interactive UI components for React. Built on Framer Motion, Three.js
+            shaders, and Tailwind CSS, styled for shadcn/ui — copy, paste, and ship exceptional
+            interfaces.
+          </p>
 
-          {/* Subtitle / Value Proposition */}
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-base sm:text-lg text-[#525252] dark:text-[#A8A8A8] leading-relaxed max-w-lg mb-9 font-normal"
-          >
-            Animated, interactive UI components for React. Built on Framer Motion, Three.js shaders, and Tailwind CSS — copy, paste, and ship exceptional interfaces.
-          </motion.p>
-
-          {/* Action Buttons Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-3.5 flex-wrap mb-10"
-          >
-            {/* Primary Action Button */}
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => navigate('/components')}
-              className="px-7 py-3.5 rounded-full bg-[#171717] hover:bg-black dark:bg-white dark:hover:bg-[#F5F5F5] text-white dark:text-[#171717] font-semibold text-sm flex items-center gap-2.5 shadow-[0_8px_20px_rgba(23,23,23,0.16)] transition-all cursor-pointer group active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--text-primary)] text-[var(--bg)] text-sm font-semibold transition-transform active:scale-95 cursor-pointer group"
             >
-              <span>Browse Components</span>
-              <ArrowRight
-                size={16}
-                className="transition-transform group-hover:translate-x-1"
-              />
+              Browse Components
+              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
             </button>
 
-            {/* GitHub Star Button */}
             <a
               href="https://github.com/palakonweb/rewampui"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3.5 rounded-full bg-white dark:bg-[#1A1824] hover:bg-[#F5F5F5] dark:hover:bg-[#262234] border border-[#E5E5E5] dark:border-white/10 text-[#171717] dark:text-white font-medium text-sm flex items-center gap-2 shadow-xs transition-colors cursor-pointer active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--border)] text-[var(--text-primary)] text-sm font-medium transition-colors hover:bg-[var(--elevated)] cursor-pointer"
             >
-              <Star size={15} className="text-[#9C8EB8] fill-[#9C8EB8]" />
-              <span>Star on GitHub</span>
-              <span className="ml-1 text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-[#FAFAFA] dark:bg-white/10 border border-[#E5E5E5] dark:border-white/10">
+              <GithubIcon />
+              Star on GitHub
+              <span className="text-[var(--text-subtle)] border-l border-[var(--border)] pl-1.5 font-mono text-xs tabular-nums">
                 2.1k
               </span>
             </a>
-          </motion.div>
+          </div>
+        </motion.div>
+      </section>
 
-          {/* ── Social Proof Cluster (as in Reference Video) ── */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.65, delay: 0.3 }}
-            className="flex items-center gap-4 pt-4 border-t border-[#E5E5E5] dark:border-white/10"
-          >
-            {/* Avatar Stack */}
-            <div className="flex items-center -space-x-2.5">
-              <div className="w-9 h-9 rounded-full bg-[#D4CBE5] border-2 border-white dark:border-[#0D0C10] flex items-center justify-center text-[11px] font-bold text-[#4A3E60] overflow-hidden shadow-xs">
-                <span>JD</span>
-              </div>
-              <div className="w-9 h-9 rounded-full bg-[#C1B4D8] border-2 border-white dark:border-[#0D0C10] flex items-center justify-center text-[11px] font-bold text-[#3B2E50] overflow-hidden shadow-xs">
-                <span>MK</span>
-              </div>
-              <div className="w-9 h-9 rounded-full bg-[#9C8EB8] border-2 border-white dark:border-[#0D0C10] flex items-center justify-center text-[11px] font-bold text-white overflow-hidden shadow-xs">
-                <span>AL</span>
-              </div>
-            </div>
-
-            {/* Stars & Trust Text */}
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1 text-[#FBBF24]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={13} className="fill-[#FBBF24]" />
-                ))}
-              </div>
-              <div className="text-xs text-[#525252] dark:text-[#A8A8A8] mt-0.5">
-                <strong className="text-[#171717] dark:text-white font-semibold">Trusted by 99+</strong> developers
-              </div>
-            </div>
-          </motion.div>
-
-        </div>
-
-        {/* ─── RIGHT COLUMN (Dual-Column Vertical Scrolling Component Marquee) ─── */}
-        <div className="w-full lg:max-w-[56%] relative flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full relative"
-          >
-            <VerticalMarqueeShowcase />
-          </motion.div>
-        </div>
-
+      {/* ─── Right: full-bleed animated component-card stage ─── */}
+      <div className="relative h-[56dvh] w-full lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[60%]">
+        <HeroCardStage className="absolute inset-0" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[var(--bg)] to-transparent lg:hidden"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/5 bg-gradient-to-r from-[var(--bg)] to-transparent lg:block"
+        />
       </div>
-    </section>
+    </main>
   );
 }
 
