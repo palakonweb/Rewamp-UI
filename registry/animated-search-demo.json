@@ -1,0 +1,15 @@
+{
+  "name": "animated-search-demo",
+  "category": "search-bars",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/AnimatedSearchDemo.jsx",
+      "target": "AnimatedSearchDemo.jsx"
+    }
+  ]
+}

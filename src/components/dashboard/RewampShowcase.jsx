@@ -29,6 +29,7 @@ import { categories, findComponentBySlug } from '../docsRegistry';
 import { getPromptForSlug } from '../componentPrompts';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
+import InstallSection from '../ui/InstallSection';
 import {
   GlowTextChipSkeleton,
   FolderCardSkeleton,
@@ -1097,6 +1098,16 @@ export default function RewampShowcase() {
                 theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
               }`}>
                 <button
+                  onClick={() => setCodeTab('install')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                    codeTab === 'install'
+                      ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                      : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
+                  }`}
+                >
+                  Install
+                </button>
+                <button
                   onClick={() => setCodeTab('component')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                     codeTab === 'component'
@@ -1150,6 +1161,17 @@ export default function RewampShowcase() {
                   <p className="text-neutral-400 font-mono text-xs">Loading source…</p>
                 ) : (
                   <>
+                    {/* Install Tab */}
+                    {codeTab === 'install' && (
+                      <InstallSection
+                        componentName={activeSlug}
+                        npmDependencies={sourceInfo.dependencies}
+                        sourceCode={sourceInfo.code}
+                        usageSnippet={sourceInfo.usage}
+                        theme={theme}
+                      />
+                    )}
+
                     {/* Component Code Tab */}
                     {codeTab === 'component' && (
                       <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${

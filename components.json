@@ -1,0 +1,11 @@
+{
+  "$schema": "./registry/schema.json",
+  "aliases": {
+    "components": "src/components/ui",
+    "utils": "src/lib"
+  },
+  "tailwind": {
+    "css": "src/index.css"
+  },
+  "registryUrl": "https://rewampui.dev/r"
+}

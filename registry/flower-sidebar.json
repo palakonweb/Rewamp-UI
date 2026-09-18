@@ -1,0 +1,15 @@
+{
+  "name": "flower-sidebar",
+  "category": "sidebars",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/FlowerSidebarShowcase.jsx",
+      "target": "FlowerSidebarShowcase.jsx"
+    }
+  ]
+}

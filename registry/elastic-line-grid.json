@@ -1,0 +1,14 @@
+{
+  "name": "elastic-line-grid",
+  "category": "bgs",
+  "npmDependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/ElasticLineGridShowcase.jsx",
+      "target": "ElasticLineGridShowcase.jsx"
+    }
+  ]
+}

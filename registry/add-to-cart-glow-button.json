@@ -1,0 +1,15 @@
+{
+  "name": "add-to-cart-glow-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/AddToCartGlowButtonShowcase.jsx",
+      "target": "AddToCartGlowButtonShowcase.jsx"
+    }
+  ]
+}

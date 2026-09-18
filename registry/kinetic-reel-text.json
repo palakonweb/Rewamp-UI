@@ -1,0 +1,14 @@
+{
+  "name": "kinetic-reel-text",
+  "category": "text",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/KineticReelText.jsx",
+      "target": "KineticReelText.jsx"
+    }
+  ]
+}

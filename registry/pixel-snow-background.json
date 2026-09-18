@@ -1,0 +1,12 @@
+{
+  "name": "pixel-snow-background",
+  "category": "bgs",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/PixelSnowBackgroundShowcase.jsx",
+      "target": "PixelSnowBackgroundShowcase.jsx"
+    }
+  ]
+}

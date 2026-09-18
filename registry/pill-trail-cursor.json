@@ -1,0 +1,12 @@
+{
+  "name": "pill-trail-cursor",
+  "category": "cursors",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/PillTrailCursor.tsx",
+      "target": "PillTrailCursor.tsx"
+    }
+  ]
+}

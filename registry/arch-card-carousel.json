@@ -1,0 +1,12 @@
+{
+  "name": "arch-card-carousel",
+  "category": "cards",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/ArchCardCarousel.tsx",
+      "target": "ArchCardCarousel.tsx"
+    }
+  ]
+}

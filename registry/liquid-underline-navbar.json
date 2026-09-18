@@ -1,0 +1,14 @@
+{
+  "name": "liquid-underline-navbar",
+  "category": "navbars",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/LiquidUnderlineNavbarShowcase.jsx",
+      "target": "LiquidUnderlineNavbarShowcase.jsx"
+    }
+  ]
+}

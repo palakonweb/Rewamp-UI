@@ -1,0 +1,15 @@
+{
+  "name": "landscape-orb-toggle",
+  "category": "toggles",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/LandscapeOrbToggleShowcase.jsx",
+      "target": "LandscapeOrbToggleShowcase.jsx"
+    }
+  ]
+}

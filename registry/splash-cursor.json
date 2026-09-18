@@ -1,0 +1,12 @@
+{
+  "name": "splash-cursor",
+  "category": "cursors",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/SplashCursor.jsx",
+      "target": "SplashCursor.jsx"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "wallet-card-reveal",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/WalletCardReveal.tsx",
+      "target": "WalletCardReveal.tsx"
+    }
+  ]
+}

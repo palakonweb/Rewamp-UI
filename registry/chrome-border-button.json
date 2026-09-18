@@ -1,0 +1,15 @@
+{
+  "name": "chrome-border-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/ChromeBorderButtonShowcase.jsx",
+      "target": "ChromeBorderButtonShowcase.jsx"
+    }
+  ]
+}

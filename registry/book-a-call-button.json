@@ -1,0 +1,15 @@
+{
+  "name": "book-a-call-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/BookACallButton.jsx",
+      "target": "BookACallButton.jsx"
+    }
+  ]
+}

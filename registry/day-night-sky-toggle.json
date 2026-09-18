@@ -1,0 +1,15 @@
+{
+  "name": "day-night-sky-toggle",
+  "category": "toggles",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/DayNightSkyToggleShowcase.jsx",
+      "target": "DayNightSkyToggleShowcase.jsx"
+    }
+  ]
+}

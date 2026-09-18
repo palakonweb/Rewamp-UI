@@ -1,0 +1,15 @@
+{
+  "name": "editorial-3-d-orbit-carousel",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/Editorial3DOrbitCarousel.jsx",
+      "target": "Editorial3DOrbitCarousel.jsx"
+    }
+  ]
+}

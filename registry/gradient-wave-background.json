@@ -1,0 +1,12 @@
+{
+  "name": "gradient-wave-background",
+  "category": "bgs",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/GradientWaveBackgroundShowcase.jsx",
+      "target": "GradientWaveBackgroundShowcase.jsx"
+    }
+  ]
+}

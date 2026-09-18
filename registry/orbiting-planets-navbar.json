@@ -1,0 +1,15 @@
+{
+  "name": "orbiting-planets-navbar",
+  "category": "navbars",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/OrbitingPlanetsNavbarShowcase.jsx",
+      "target": "OrbitingPlanetsNavbarShowcase.jsx"
+    }
+  ]
+}

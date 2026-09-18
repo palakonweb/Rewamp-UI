@@ -1,0 +1,15 @@
+{
+  "name": "gradient-reveal-text",
+  "category": "text",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/GradientRevealTextShowcase.jsx",
+      "target": "GradientRevealTextShowcase.jsx"
+    }
+  ]
+}

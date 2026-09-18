@@ -1,0 +1,15 @@
+{
+  "name": "sidebar",
+  "category": "sidebars",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/Sidebar.jsx",
+      "target": "Sidebar.jsx"
+    }
+  ]
+}

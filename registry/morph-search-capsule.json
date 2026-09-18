@@ -1,0 +1,14 @@
+{
+  "name": "morph-search-capsule",
+  "category": "search-bars",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/MorphSearchCapsule.jsx",
+      "target": "MorphSearchCapsule.jsx"
+    }
+  ]
+}

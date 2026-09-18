@@ -1,0 +1,15 @@
+{
+  "name": "pixel-cloud-background",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/PixelCloudBackgroundShowcase.jsx",
+      "target": "PixelCloudBackgroundShowcase.jsx"
+    }
+  ]
+}

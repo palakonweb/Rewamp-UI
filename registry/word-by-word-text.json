@@ -1,0 +1,15 @@
+{
+  "name": "word-by-word-text",
+  "category": "text",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/WordByWordTextShowcase.jsx",
+      "target": "WordByWordTextShowcase.jsx"
+    }
+  ]
+}

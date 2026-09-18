@@ -1,0 +1,14 @@
+{
+  "name": "kinetic-lens-sidebar",
+  "category": "sidebars",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/KineticLensSidebar.jsx",
+      "target": "KineticLensSidebar.jsx"
+    }
+  ]
+}

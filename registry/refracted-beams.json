@@ -1,0 +1,15 @@
+{
+  "name": "refracted-beams",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/RefractedBeamsShowcase.jsx",
+      "target": "RefractedBeamsShowcase.jsx"
+    }
+  ]
+}

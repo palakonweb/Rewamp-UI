@@ -1,0 +1,15 @@
+{
+  "name": "soft-aurora",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/SoftAuroraShowcase.jsx",
+      "target": "SoftAuroraShowcase.jsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "orbital-card-arch",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/OrbitalCardArch.jsx",
+      "target": "OrbitalCardArch.jsx"
+    }
+  ]
+}

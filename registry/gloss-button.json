@@ -1,0 +1,15 @@
+{
+  "name": "gloss-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/GlossButtonShowcase.jsx",
+      "target": "GlossButtonShowcase.jsx"
+    }
+  ]
+}

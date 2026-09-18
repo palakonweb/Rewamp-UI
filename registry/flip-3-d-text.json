@@ -1,0 +1,15 @@
+{
+  "name": "flip-3-d-text",
+  "category": "text",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/Flip3DTextShowcase.jsx",
+      "target": "Flip3DTextShowcase.jsx"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Preloader } from './components/ui/Preloader'
+import { PackageManagerProvider } from './components/ui/InstallSection'
 
 // perf: route-level code splitting. These three pages used to be imported
 // eagerly at the top of App.jsx, which meant visiting any one route (e.g.
@@ -37,7 +38,7 @@ function App() {
   }, [])
 
   return (
-    <>
+    <PackageManagerProvider>
       <Preloader />
       <Suspense fallback={null}>
         <Routes>
@@ -47,7 +48,7 @@ function App() {
           <Route path="/documentation" element={<DocumentationPage />} />
         </Routes>
       </Suspense>
-    </>
+    </PackageManagerProvider>
   )
 }
 

@@ -1,0 +1,14 @@
+{
+  "name": "glass-orb-toggle",
+  "category": "toggles",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/GlassOrbToggle.tsx",
+      "target": "GlassOrbToggle.tsx"
+    }
+  ]
+}

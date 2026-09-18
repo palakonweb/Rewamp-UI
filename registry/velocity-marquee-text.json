@@ -1,0 +1,15 @@
+{
+  "name": "velocity-marquee-text",
+  "category": "text",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/VelocityMarqueeTextShowcase.jsx",
+      "target": "VelocityMarqueeTextShowcase.jsx"
+    }
+  ]
+}

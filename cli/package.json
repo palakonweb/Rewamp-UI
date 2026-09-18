@@ -1,0 +1,16 @@
+{
+  "name": "rewampui",
+  "version": "0.1.0",
+  "description": "CLI to add RewampUI components' source code directly into your project.",
+  "type": "module",
+  "bin": {
+    "rewampui": "./bin/rewampui.js"
+  },
+  "files": ["bin", "src"],
+  "dependencies": {
+    "prompts": "^2.4.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "slide-to-confirm-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/SlideToConfirmButtonShowcase.jsx",
+      "target": "SlideToConfirmButtonShowcase.jsx"
+    }
+  ]
+}

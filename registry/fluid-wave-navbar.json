@@ -1,0 +1,15 @@
+{
+  "name": "fluid-wave-navbar",
+  "category": "navbars",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/FluidWaveNavbar.tsx",
+      "target": "FluidWaveNavbar.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "jelly-scoop-navbar",
+  "category": "navbars",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/JellyScoopNavbarShowcase.jsx",
+      "target": "JellyScoopNavbarShowcase.jsx"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "googly-eyes-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/GooglyEyesButtonShowcase.jsx",
+      "target": "GooglyEyesButtonShowcase.jsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "diagonal-card-stack",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/DiagonalCardStack.jsx",
+      "target": "DiagonalCardStack.jsx"
+    }
+  ]
+}

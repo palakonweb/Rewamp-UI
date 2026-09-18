@@ -1,0 +1,14 @@
+{
+  "name": "perspective-flip-deck",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/PerspectiveFlipDeck.jsx",
+      "target": "PerspectiveFlipDeck.jsx"
+    }
+  ]
+}

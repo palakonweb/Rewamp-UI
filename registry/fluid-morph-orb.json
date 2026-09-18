@@ -1,0 +1,14 @@
+{
+  "name": "fluid-morph-orb",
+  "category": "ai-ui",
+  "npmDependencies": [
+    "three"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/FluidMorphOrb.tsx",
+      "target": "FluidMorphOrb.tsx"
+    }
+  ]
+}

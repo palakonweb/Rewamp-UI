@@ -1,0 +1,12 @@
+{
+  "name": "halftone-dot-cursor",
+  "category": "cursors",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/HalftoneDotCursor.jsx",
+      "target": "HalftoneDotCursor.jsx"
+    }
+  ]
+}

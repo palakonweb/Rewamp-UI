@@ -1,0 +1,15 @@
+{
+  "name": "layered-paper-waves-background",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/LayeredPaperWavesBackgroundShowcase.jsx",
+      "target": "LayeredPaperWavesBackgroundShowcase.jsx"
+    }
+  ]
+}

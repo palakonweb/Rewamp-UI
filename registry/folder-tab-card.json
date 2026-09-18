@@ -1,0 +1,15 @@
+{
+  "name": "folder-tab-card",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/FolderTabCard.jsx",
+      "target": "FolderTabCard.jsx"
+    }
+  ]
+}

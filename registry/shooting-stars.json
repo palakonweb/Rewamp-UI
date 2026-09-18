@@ -1,0 +1,15 @@
+{
+  "name": "shooting-stars",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/ShootingStarsShowcase.jsx",
+      "target": "ShootingStarsShowcase.jsx"
+    }
+  ]
+}

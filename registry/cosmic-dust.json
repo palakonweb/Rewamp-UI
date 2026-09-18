@@ -1,0 +1,15 @@
+{
+  "name": "cosmic-dust",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/CosmicDustShowcase.jsx",
+      "target": "CosmicDustShowcase.jsx"
+    }
+  ]
+}

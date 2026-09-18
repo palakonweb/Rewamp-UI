@@ -1,0 +1,30 @@
+{
+  "$id": "https://rewampui.dev/schema/registry-item.json",
+  "type": "object",
+  "required": ["name", "category", "files"],
+  "properties": {
+    "name": { "type": "string", "description": "kebab-case component slug, matches the CLI 'add' argument" },
+    "category": { "type": "string" },
+    "npmDependencies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External packages to install into the consumer project"
+    },
+    "registryDependencies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Other registry item names (shared primitives) this component needs, copied first if missing"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target"],
+        "properties": {
+          "source": { "type": "string", "description": "Path relative to the registry package root" },
+          "target": { "type": "string", "description": "Path relative to the consumer's configured components dir" }
+        }
+      }
+    }
+  }
+}

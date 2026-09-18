@@ -1,0 +1,14 @@
+{
+  "name": "frosted-folder-card",
+  "category": "cards",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/FrostedFolderCard.tsx",
+      "target": "FrostedFolderCard.tsx"
+    }
+  ]
+}

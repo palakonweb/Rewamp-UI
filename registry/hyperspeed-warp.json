@@ -1,0 +1,15 @@
+{
+  "name": "hyperspeed-warp",
+  "category": "bgs",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/HyperspeedWarpShowcase.jsx",
+      "target": "HyperspeedWarpShowcase.jsx"
+    }
+  ]
+}

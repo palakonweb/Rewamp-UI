@@ -1,0 +1,14 @@
+{
+  "name": "magnetic-pill-navbar",
+  "category": "navbars",
+  "npmDependencies": [
+    "framer-motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/MagneticPillNavbarShowcase.jsx",
+      "target": "MagneticPillNavbarShowcase.jsx"
+    }
+  ]
+}

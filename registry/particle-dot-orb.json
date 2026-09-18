@@ -1,0 +1,14 @@
+{
+  "name": "particle-dot-orb",
+  "category": "ai-ui",
+  "npmDependencies": [
+    "three"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/ParticleDotOrb.tsx",
+      "target": "ParticleDotOrb.tsx"
+    }
+  ]
+}

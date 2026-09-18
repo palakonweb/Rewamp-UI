@@ -1,0 +1,15 @@
+{
+  "name": "rainbow-button",
+  "category": "buttons",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/RainbowButtonShowcase.jsx",
+      "target": "RainbowButtonShowcase.jsx"
+    }
+  ]
+}

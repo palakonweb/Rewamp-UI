@@ -1,0 +1,15 @@
+{
+  "name": "typewriter-text",
+  "category": "text",
+  "npmDependencies": [
+    "framer-motion",
+    "lucide-react"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/TypewriterTextShowcase.jsx",
+      "target": "TypewriterTextShowcase.jsx"
+    }
+  ]
+}

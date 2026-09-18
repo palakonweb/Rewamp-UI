@@ -1,0 +1,9 @@
+{
+  "name": "theme-toggle",
+  "category": "controls",
+  "npmDependencies": ["framer-motion", "lucide-react"],
+  "registryDependencies": [],
+  "files": [
+    { "source": "src/components/ui/ThemeToggle.jsx", "target": "ThemeToggle.jsx" }
+  ]
+}

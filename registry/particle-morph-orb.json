@@ -1,0 +1,14 @@
+{
+  "name": "particle-morph-orb",
+  "category": "ai-ui",
+  "npmDependencies": [
+    "three"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/ParticleMorphOrb.tsx",
+      "target": "ParticleMorphOrb.tsx"
+    }
+  ]
+}

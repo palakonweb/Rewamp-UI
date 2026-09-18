@@ -1,0 +1,9 @@
+{
+  "name": "skeleton",
+  "category": "shared",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    { "source": "src/components/ui/Skeleton.jsx", "target": "Skeleton.jsx" }
+  ]
+}
