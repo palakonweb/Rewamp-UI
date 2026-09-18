@@ -1,219 +1,121 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { motion, animate, cubicBezier, useReducedMotion } from 'framer-motion';
+import React, { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { animate, cubicBezier, motion, useReducedMotion } from 'framer-motion';
 import { FileCode2 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════
-   Lightweight, self-contained preview mocks — one per card.
-   Kept cheap (CSS + a few motion values) since ~24 render at once.
+   Real component previews — each card renders the actual
+   RewampUI showcase component (lazy-loaded, code-split) instead
+   of a mock, wrapped in .prompt-embed to hide its own copy-code
+   footer and keep its native demo background.
    ═══════════════════════════════════════════════════════════ */
 
-function GlowButtonPreview() {
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-[var(--elevated)]">
-      <motion.div
-        className="px-5 py-2.5 rounded-full bg-[var(--brand-strong)] text-white text-[11px] font-semibold font-sans"
-        animate={{ boxShadow: ['0 0 0px rgba(193,180,216,0)', '0 0 28px rgba(193,180,216,0.85)', '0 0 0px rgba(193,180,216,0)'] }}
-        transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        Get started
-      </motion.div>
-    </div>
-  );
-}
-
-function AuroraTextPreview() {
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-[var(--elevated)]">
-      <span
-        className="text-[22px] font-bold bg-clip-text text-transparent font-sans animate-text-shimmer"
-        style={{ backgroundImage: 'linear-gradient(90deg, var(--brand-strong), var(--text-primary), var(--brand-strong))', backgroundSize: '200% auto' }}
-      >
-        Aurora
-      </span>
-    </div>
-  );
-}
-
-function OrbPreview() {
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-[var(--elevated)]">
-      <motion.div
-        className="w-16 h-16 rounded-full"
-        style={{ background: 'radial-gradient(circle at 35% 30%, var(--brand-soft), var(--brand-strong) 70%)' }}
-        animate={{ scale: [1, 1.12, 1], rotate: [0, 20, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-      />
-    </div>
-  );
-}
-
-function NavbarPillPreview() {
-  const items = ['Home', 'Docs', 'Pricing'];
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-[var(--elevated)] p-4">
-      <div className="flex items-center gap-1 bg-[var(--surface)] border border-[var(--border)] rounded-full px-2 py-1.5 shadow-sm">
-        {items.map((it, i) => (
-          <span
-            key={it}
-            className={`px-2.5 py-1 rounded-full text-[9px] font-medium font-sans ${i === 1 ? 'bg-[var(--brand-soft)] text-[var(--brand-strong)]' : 'text-[var(--text-subtle)]'}`}
-          >
-            {it}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CardStackPreview() {
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-[var(--elevated)] relative">
-      {[0, 1, 2].map((i) => (
-        <motion.div
-          key={i}
-          className="absolute w-20 h-14 rounded-lg border border-[var(--border)] bg-[var(--surface)] shadow-md"
-          initial={{ y: 0, rotate: 0 }}
-          animate={{ y: -i * 3, rotate: (i - 1) * 6, x: (i - 1) * 10 }}
-          transition={{ duration: 0.6 }}
-          style={{ zIndex: 3 - i }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function MarqueeTextPreview() {
-  return (
-    <div className="w-full h-full flex items-center bg-[var(--elevated)] overflow-hidden">
-      <motion.div
-        className="flex gap-4 whitespace-nowrap text-[11px] font-semibold text-[var(--text-subtle)] font-sans"
-        animate={{ x: ['0%', '-50%'] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-      >
-        {Array(6).fill('MOTION · MOTION ·').map((t, i) => <span key={i}>{t}</span>)}
-      </motion.div>
-    </div>
-  );
-}
-
-function TogglePreview() {
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-[var(--elevated)]">
-      <motion.div
-        className="w-11 h-6 rounded-full p-1 flex"
-        animate={{ backgroundColor: ['var(--border)', 'var(--brand-strong)', 'var(--border)'] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <motion.div
-          className="w-4 h-4 rounded-full bg-white shadow"
-          animate={{ x: [0, 20, 0] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
-    </div>
-  );
-}
-
-function CarouselDotsPreview() {
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-[var(--elevated)]">
-      <div className="w-24 h-14 rounded-lg bg-[var(--surface)] border border-[var(--border)] shadow-sm" />
-      <div className="flex gap-1.5">
-        {[0, 1, 2].map((i) => (
-          <motion.span
-            key={i}
-            className="w-1.5 h-1.5 rounded-full"
-            animate={{ backgroundColor: i === 1 ? 'var(--brand-strong)' : 'var(--border)', scale: i === 1 ? 1.3 : 1 }}
-            transition={{ duration: 0.4 }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CursorTrailPreview() {
-  return (
-    <div className="w-full h-full relative bg-[var(--elevated)] overflow-hidden">
-      {[0, 1, 2, 3].map((i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2.5 h-2.5 rounded-full bg-[var(--brand-strong)]"
-          style={{ opacity: 1 - i * 0.22 }}
-          animate={{ left: ['20%', '75%', '20%'], top: ['30%', '65%', '30%'] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function CodeSnippetPreview({ label = 'export' }) {
-  return (
-    <div className="w-full h-full bg-[#171717] p-3 font-mono text-[9px] leading-[1.8] text-[#d4d4d4]">
-      <div><span className="text-[#c586c0]">import</span> {'{ '}<span className="text-[#dcdcaa]">{label}</span>{' }'}</div>
-      <div className="text-[#6a9955]">{'// animated & accessible'}</div>
-      <div>{'<'}<span className="text-[#4ec9b0]">{label}</span> <span className="text-[#9cdcfe]">variant</span>{'='}<span className="text-[#ce9178]">"glow"</span> {'/>'}</div>
-    </div>
-  );
-}
-
-const KIND_COMPONENTS = {
-  glow: GlowButtonPreview,
-  aurora: AuroraTextPreview,
-  orb: OrbPreview,
-  navbar: NavbarPillPreview,
-  stack: CardStackPreview,
-  marquee: MarqueeTextPreview,
-  toggle: TogglePreview,
-  carousel: CarouselDotsPreview,
-  cursor: CursorTrailPreview,
-  code: CodeSnippetPreview,
+const PREVIEW_COMPONENTS = {
+  'water-caustics-background': lazy(() => import('../ui/WaterCausticsBackgroundShowcase')),
+  'aurora-background': lazy(() => import('../ui/AuroraBackgroundShowcase')),
+  'gradient-wave-background': lazy(() => import('../ui/GradientWaveBackgroundShowcase')),
+  'silk-waves-background': lazy(() => import('../ui/SilkWavesBackgroundShowcase')),
+  'pixel-cloud-background': lazy(() => import('../ui/PixelCloudBackgroundShowcase')),
+  'pixel-snow-background': lazy(() => import('../ui/PixelSnowBackgroundShowcase')),
+  'layered-paper-waves-background': lazy(() => import('../ui/LayeredPaperWavesBackgroundShowcase')),
+  'googly-eyes-button': lazy(() => import('../ui/GooglyEyesButtonShowcase')),
+  'kinetic-reel-text': lazy(() => import('../ui/KineticReelTextShowcase')),
+  'kinetic-lens-sidebar': lazy(() => import('../ui/KineticLensSidebarShowcase')),
+  'flower-sidebar': lazy(() => import('../ui/FlowerSidebarShowcase')),
+  'morph-search-capsule': lazy(() => import('../ui/MorphSearchCapsuleShowcase')),
+  'animated-search-demo': lazy(() => import('../ui/AnimatedSearchDemo')),
+  'day-night-sky-toggle': lazy(() => import('../ui/DayNightSkyToggleShowcase')),
+  'cosmic-sparkle-toggle': lazy(() => import('../ui/CosmicSparkleToggleShowcase')),
+  'glass-orb-toggle': lazy(() => import('../ui/GlassOrbToggleShowcase')),
+  'landscape-orb-toggle': lazy(() => import('../ui/LandscapeOrbToggleShowcase')),
+  'gradient-reveal-text': lazy(() => import('../ui/GradientRevealTextShowcase')),
 };
+
+// Every card renders at this exact 16:9 size — no exceptions — so the camera
+// never has to reframe between differently-shaped slots.
+const CARD_W = 480;
+const CARD_H = 270;
+
+// Real showcase components each assume their own intrinsic size (a background
+// demo's fixed 500px-tall block, a small toggle's tiny footprint, etc). Rather
+// than crop the tall ones or stretch the small ones, every component renders
+// into this fixed 16:9 "design canvas" (generous enough to hold all of them
+// uncropped) and the whole canvas is scaled down uniformly to fit the card —
+// so every frame is identically sized and nothing is ever cut off.
+const PREVIEW_REF_W = 1040;
+const PREVIEW_REF_H = 585;
+const PREVIEW_SCALE = CARD_W / PREVIEW_REF_W;
+
+function PreviewFallback() {
+  return (
+    <div className="w-full h-full animate-pulse bg-[var(--elevated)]" />
+  );
+}
+
+function CardPreview({ id }) {
+  const Comp = PREVIEW_COMPONENTS[id];
+  if (!Comp) return null;
+  return (
+    <div className="prompt-embed preserve-bg relative w-full h-full overflow-hidden">
+      <div
+        className="absolute top-0 left-0 flex items-center justify-center"
+        style={{
+          width: PREVIEW_REF_W,
+          height: PREVIEW_REF_H,
+          transform: `scale(${PREVIEW_SCALE})`,
+          transformOrigin: 'top left',
+        }}
+      >
+        <Suspense fallback={<PreviewFallback />}>
+          <Comp />
+        </Suspense>
+      </div>
+    </div>
+  );
+}
 
 /* ═══════════════════════════════════════════════════════════
    Canvas layout — fixed slots, camera pans/zooms between them.
    ═══════════════════════════════════════════════════════════ */
 
-const CANVAS_W = 2760;
-const CANVAS_H = 1760;
-const COL_W = 470;
+const COL_W = 520;
+const ROW_H = 310;
+const CANVAS_W = 60 + 5 * COL_W;
+const CANVAS_H = 40 + 4 * ROW_H;
 
 const RAW_CARDS = [
-  { id: 'glow-button', kind: 'glow', col: 0, y: 30, w: 400, h: 260 },
-  { id: 'aurora-text', kind: 'aurora', col: 0, y: 320, w: 400, h: 240 },
-  { id: 'diagonal-card-stack', kind: 'stack', col: 0, y: 590, w: 400, h: 260 },
-  { id: 'pill-trail-cursor', kind: 'cursor', col: 0, y: 880, w: 400, h: 240 },
+  { id: 'water-caustics-background', col: 0, row: 0 },
+  { id: 'aurora-background', col: 0, row: 1 },
+  { id: 'gradient-wave-background', col: 0, row: 2 },
+  { id: 'silk-waves-background', col: 0, row: 3 },
 
-  { id: 'magnetic-pill-navbar', kind: 'navbar', col: 1, y: 90, w: 420, h: 240 },
-  { id: 'glow-button.tsx', kind: 'code', col: 1, y: 360, w: 420, h: 240 },
-  { id: 'aurora-toggle', kind: 'toggle', col: 1, y: 630, w: 420, h: 240 },
-  { id: 'orbital-card-arch', kind: 'carousel', col: 1, y: 900, w: 420, h: 260 },
+  { id: 'pixel-cloud-background', col: 1, row: 0 },
+  { id: 'pixel-snow-background', col: 1, row: 1 },
+  { id: 'layered-paper-waves-background', col: 1, row: 2 },
+  { id: 'googly-eyes-button', col: 1, row: 3 },
 
-  { id: 'particle-dot-orb', kind: 'orb', col: 2, y: 20, w: 400, h: 260 },
-  { id: 'velocity-marquee-text', kind: 'marquee', col: 2, y: 310, w: 400, h: 220 },
-  { id: 'shimmer-button', kind: 'glow', col: 2, y: 560, w: 400, h: 250 },
-  { id: 'aurora-text.tsx', kind: 'code', col: 2, y: 840, w: 400, h: 240 },
+  { id: 'kinetic-reel-text', col: 2, row: 0 },
+  { id: 'kinetic-lens-sidebar', col: 2, row: 1 },
+  { id: 'flower-sidebar', col: 2, row: 2 },
 
-  { id: 'frosted-folder-card', kind: 'stack', col: 3, y: 80, w: 420, h: 250 },
-  { id: 'wireframe-ring-orb', kind: 'orb', col: 3, y: 360, w: 420, h: 250 },
-  { id: 'day-night-sky-toggle', kind: 'toggle', col: 3, y: 640, w: 420, h: 240 },
-  { id: 'floating-dock-navbar', kind: 'navbar', col: 3, y: 910, w: 420, h: 250 },
+  { id: 'morph-search-capsule', col: 3, row: 0 },
+  { id: 'animated-search-demo', col: 3, row: 1 },
+  { id: 'day-night-sky-toggle', col: 3, row: 2 },
 
-  { id: 'confetti-button', kind: 'glow', col: 4, y: 10, w: 400, h: 250 },
-  { id: 'kinetic-reel-text', kind: 'aurora', col: 4, y: 290, w: 400, h: 230 },
-  { id: 'wallet-card-reveal', kind: 'stack', col: 4, y: 550, w: 400, h: 260 },
-  { id: 'halftone-dot-cursor', kind: 'cursor', col: 4, y: 840, w: 400, h: 240 },
-
-  { id: 'circular-radial-navbar', kind: 'navbar', col: 5, y: 60, w: 400, h: 250 },
-  { id: 'editorial-3d-orbit-carousel', kind: 'carousel', col: 5, y: 340, w: 400, h: 260 },
-  { id: 'toggle.tsx', kind: 'code', col: 5, y: 630, w: 400, h: 240 },
-  { id: 'archie-card-carousel', kind: 'orb', col: 5, y: 900, w: 400, h: 250 },
+  { id: 'cosmic-sparkle-toggle', col: 4, row: 0 },
+  { id: 'glass-orb-toggle', col: 4, row: 1 },
+  { id: 'landscape-orb-toggle', col: 4, row: 2 },
+  { id: 'gradient-reveal-text', col: 4, row: 3 },
 ];
 
-const CARDS = RAW_CARDS.map((c) => ({ ...c, x: 60 + c.col * COL_W }));
+const CARDS = RAW_CARDS.map((c) => ({
+  ...c,
+  x: 60 + c.col * COL_W,
+  y: 40 + c.row * ROW_H,
+  w: CARD_W,
+  h: CARD_H,
+}));
 
-const START_INDEX = CARDS.findIndex((c) => c.id === 'particle-dot-orb');
+const START_INDEX = CARDS.findIndex((c) => c.id === 'gradient-reveal-text');
 const FOCUS_INTERVAL_MS = 4200;
 // Never hop to a card bordering the current one — a focus change should read
 // as a real flight, not a shuffle to a neighbor.
@@ -264,12 +166,20 @@ function CardShell({ title, children }) {
 
 export function HeroCardStage({ className = '' }) {
   const viewportRef = useRef(null);
+  const canvasRef = useRef(null);
   const [viewport, setViewport] = useState({ w: 0, h: 0 });
   const [active, setActive] = useState(START_INDEX);
+  const [prevActive, setPrevActive] = useState(START_INDEX);
   const [hovered, setHovered] = useState(null);
   const [paused, setPaused] = useState(false);
+  // False until the first focus change: the camera must render already
+  // settled on load — any mount-time tween reads as the camera lurching in.
+  const [engaged, setEngaged] = useState(false);
   const queueRef = useRef([]);
   const lastPickRef = useRef(START_INDEX);
+  const shownRef = useRef(START_INDEX);
+  const flightRef = useRef(null);
+  const reducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const el = viewportRef.current;
@@ -282,40 +192,93 @@ export function HeroCardStage({ className = '' }) {
   }, []);
 
   useEffect(() => {
-    if (paused) return;
+    if (reducedMotion || paused) return;
     const timer = setInterval(() => {
       if (queueRef.current.length === 0) queueRef.current = shuffled(CARDS.length);
       const current = lastPickRef.current;
       let pickAt = queueRef.current.findIndex((i) => hopDistance(i, current) >= MIN_HOP_DISTANCE);
-      if (pickAt === -1) pickAt = 0;
+      if (pickAt === -1) {
+        pickAt = queueRef.current.reduce(
+          (best, i, k, queue) =>
+            hopDistance(i, current) > hopDistance(queue[best], current) ? k : best,
+          0,
+        );
+      }
       const next = queueRef.current.splice(pickAt, 1)[0];
+      setPrevActive(current);
       lastPickRef.current = next;
+      setEngaged(true);
       setActive(next);
     }, FOCUS_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [paused]);
+  }, [reducedMotion, paused]);
 
   const measured = viewport.w > 0 && viewport.h > 0;
-  const scale = measured ? clamp(0.55, Math.min(viewport.w / 900, viewport.h / 820), 0.85) : 0.65;
+  const scale = measured ? clamp(0.75, Math.min(viewport.w / 640, viewport.h / 400), 1.15) : 0.9;
   const focus = CARDS[active];
-  const targetX = focus.x + focus.w / 2;
-  const targetY = focus.y + focus.h / 2;
+  const prevFocus = CARDS[prevActive];
+  // Estimated flight length (used only for the card highlight delay below —
+  // the flight itself measures its true start from the live transform).
+  const estimatedDistance = Math.hypot(
+    (focus.x + focus.w / 2 - prevFocus.x - prevFocus.w / 2) * scale,
+    (focus.y + focus.h / 2 - prevFocus.y - prevFocus.h / 2) * scale,
+  );
+  // The incoming card lights up only as the camera descends onto it.
+  const focusDelay = !reducedMotion && engaged ? flightDurationFor(estimatedDistance) * 0.65 : 0;
+
+  useLayoutEffect(() => {
+    const el = canvasRef.current;
+    if (!el || !measured) return;
+    const setCamera = (lookX, lookY, s) => {
+      el.style.transform = `translate(${viewport.w / 2 - lookX * s}px, ${viewport.h / 2 - lookY * s}px) scale(${s})`;
+    };
+    const targetX = focus.x + focus.w / 2;
+    const targetY = focus.y + focus.h / 2;
+
+    flightRef.current?.stop();
+    if (!engaged || reducedMotion || shownRef.current === active) {
+      // First paint, reduced motion, or a viewport resize: settle instantly.
+      setCamera(targetX, targetY, scale);
+    } else {
+      // Recover the current camera from the live transform (matrix is
+      // [s 0 0 s tx ty] because translate is applied before scale).
+      const computed = getComputedStyle(el).transform;
+      const matrix = computed !== 'none' ? new DOMMatrix(computed) : null;
+      const fromScale = matrix ? matrix.a : scale;
+      const fromX = matrix ? (viewport.w / 2 - matrix.e) / fromScale : targetX;
+      const fromY = matrix ? (viewport.h / 2 - matrix.f) / fromScale : targetY;
+
+      const distance = Math.hypot((targetX - fromX) * scale, (targetY - fromY) * scale);
+      const duration = flightDurationFor(distance);
+      const zoomDepth = scale * (1 - flightZoomOutFor(distance));
+
+      flightRef.current = animate(0, 1, {
+        duration,
+        ease: 'linear',
+        onUpdate: (t) => {
+          const pan = flightPanEase(t);
+          const dip = Math.sin(Math.PI * t) ** 2;
+          setCamera(
+            fromX + (targetX - fromX) * pan,
+            fromY + (targetY - fromY) * pan,
+            fromScale + (scale - fromScale) * pan - zoomDepth * dip,
+          );
+        },
+      });
+    }
+    shownRef.current = active;
+  }, [active, focus, measured, scale, viewport.w, viewport.h, engaged, reducedMotion]);
 
   return (
     <div
       ref={viewportRef}
-      className={`relative overflow-hidden ${className}`}
+      className={`overflow-hidden ${className || 'relative'}`}
     >
       {measured && (
-        <motion.div
+        <div
+          ref={canvasRef}
           className="absolute top-0 left-0 will-change-transform"
           style={{ width: CANVAS_W, height: CANVAS_H, transformOrigin: '0 0' }}
-          animate={{
-            x: viewport.w / 2 - targetX * scale,
-            y: viewport.h / 2 - targetY * scale,
-            scale,
-          }}
-          transition={{ duration: 1.3, ease: [0.65, 0, 0.35, 1] }}
         >
           <div
             aria-hidden
@@ -323,8 +286,7 @@ export function HeroCardStage({ className = '' }) {
           />
           {CARDS.map((card, index) => {
             const isFocused = index === active;
-            const isLifted = isFocused || hovered === index;
-            const Preview = KIND_COMPONENTS[card.kind];
+            const isLifted = isFocused || (!reducedMotion && hovered === index);
             return (
               <motion.div
                 key={card.id}
@@ -339,8 +301,20 @@ export function HeroCardStage({ className = '' }) {
                     ? '0 30px 60px -15px rgba(0,0,0,0.25)'
                     : '0 4px 14px rgba(0,0,0,0.08)',
                 }}
-                animate={{ opacity: isLifted ? 1 : 0.3, scale: isFocused ? 1.06 : 1 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                initial={false}
+                animate={{
+                  opacity: reducedMotion || isLifted ? 1 : 0.3,
+                  scale: !reducedMotion && isFocused ? 1.06 : 1,
+                }}
+                transition={{
+                  opacity: { duration: 0.9, ease: 'easeInOut', delay: isFocused ? focusDelay : 0 },
+                  scale: {
+                    type: 'spring',
+                    stiffness: 170,
+                    damping: 26,
+                    delay: isFocused ? focusDelay : 0,
+                  },
+                }}
                 onPointerEnter={() => {
                   setHovered(index);
                   setPaused(true);
@@ -350,13 +324,13 @@ export function HeroCardStage({ className = '' }) {
                   setPaused(false);
                 }}
               >
-                <CardShell title={card.id.endsWith('.tsx') ? card.id : `${card.id}.tsx`}>
-                  <Preview label={card.id.split('-')[0]} />
+                <CardShell title={`${card.id}.tsx`}>
+                  <CardPreview id={card.id} />
                 </CardShell>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       )}
     </div>
   );

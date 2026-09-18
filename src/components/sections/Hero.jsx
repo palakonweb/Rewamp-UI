@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { HeroCardStage } from './HeroCardStage';
+import { GradientText } from '../ui/GradientRevealTextShowcase';
 
 function GithubIcon() {
   return (
@@ -17,50 +18,58 @@ export function Hero() {
 
   return (
     <main className="bg-[var(--bg)] text-[var(--text-primary)] relative flex min-h-dvh flex-col overflow-hidden lg:h-dvh transition-colors">
-      {/* ─── Left: wordmark + copy + CTAs ─── */}
+      {/* ─── Left: wordmark → headline → subtext → CTAs ─── */}
       <section className="relative z-10 flex flex-col justify-center px-6 pt-20 pb-10 sm:px-12 lg:h-full lg:w-[44%] lg:min-w-105 lg:items-center lg:px-12 lg:pt-0 lg:pb-0">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="flex w-full max-w-md flex-col gap-7"
-        >
-          <h1 className="flex items-center gap-3">
-            <img src="/logo.svg" alt="" className="h-9 w-auto object-contain" />
-            <span className="text-[26px] font-semibold tracking-tight text-[var(--text-primary)] font-sans normal-case">
-              RewampUI
-            </span>
-          </h1>
+        {/* Shared coordinate frame: logo and copy share this box's left edge —
+            logo pins to its top, copy centers vertically within it. */}
+        <div className="relative w-full max-w-md lg:h-full">
+          <motion.img
+            src="/logo-text.png"
+            alt="RewampUI"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="h-16 sm:h-20 w-auto object-contain -ml-2 lg:absolute lg:left-0 lg:top-10 mb-6 lg:mb-0"
+          />
 
-          <p className="text-[var(--text-secondary)] text-[15px] leading-relaxed">
-            Animated, interactive UI components for React. Built on Framer Motion, Three.js
-            shaders, and Tailwind CSS, styled for shadcn/ui — copy, paste, and ship exceptional
-            interfaces.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="flex w-full flex-col gap-8 lg:h-full lg:justify-center"
+          >
+            {/* Headline */}
+            <h1 className="text-[44px] sm:text-[52px] font-bold leading-[1.05] tracking-tight text-[var(--text-primary)] font-sans normal-case">
+              Components that <br />
+              <GradientText>feel alive.</GradientText>
+            </h1>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => navigate('/components')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--text-primary)] text-[var(--bg)] text-sm font-semibold transition-transform active:scale-95 cursor-pointer group"
-            >
-              Browse Components
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </button>
+            {/* Pill CTAs */}
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => navigate('/components')}
+                className="group inline-flex items-center gap-3 rounded-full bg-[var(--brand-strong)] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-white transition-transform active:scale-95 cursor-pointer"
+              >
+                Browse Components
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[var(--brand-strong)] transition-transform group-hover:translate-x-0.5">
+                  <ArrowRight size={15} />
+                </span>
+              </button>
 
-            <a
-              href="https://github.com/palakonweb/rewampui"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[var(--border)] text-[var(--text-primary)] text-sm font-medium transition-colors hover:bg-[var(--elevated)] cursor-pointer"
-            >
-              <GithubIcon />
-              Star on GitHub
-              <span className="text-[var(--text-subtle)] border-l border-[var(--border)] pl-1.5 font-mono text-xs tabular-nums">
-                2.1k
-              </span>
-            </a>
-          </div>
-        </motion.div>
+              <a
+                href="https://github.com/palakonweb/rewampui"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-3 rounded-full bg-[var(--text-primary)] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-[var(--bg)] transition-transform active:scale-95 cursor-pointer"
+              >
+                Star on GitHub
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--brand-strong)] text-white transition-transform group-hover:translate-x-0.5">
+                  <GithubIcon />
+                </span>
+              </a>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* ─── Right: full-bleed animated component-card stage ─── */}

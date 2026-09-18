@@ -11,22 +11,17 @@ import {
   X,
   Search,
   RotateCw,
-  Sparkles,
   Download,
   Sun,
   Moon,
   Menu,
   Home,
   FileText,
-  Info,
-  ExternalLink,
   Heart,
-  Star,
   Github
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { categories, findComponentBySlug } from '../docsRegistry';
-import { getPromptForSlug } from '../componentPrompts';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
 import InstallSection from '../ui/InstallSection';
@@ -259,13 +254,9 @@ export default function RewampShowcase() {
   const [activeSlug, setActiveSlug] = useState(slug || 'liquid-cursor-gradient');
   const [folderColor, setFolderColor] = useState('black');
   const [theme, setTheme] = useState(() => localStorage.getItem('rewamp-theme') || 'light');
-  const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [copiedInstall, setCopiedInstall] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [codeDrawerOpen, setCodeDrawerOpen] = useState(false);
-  const [promptDrawerOpen, setPromptDrawerOpen] = useState(false);
-  const [descDrawerOpen, setDescDrawerOpen] = useState(false);
-  const [copiedPromptDrawer, setCopiedPromptDrawer] = useState(false);
   const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', usage: '', dependencies: [], loading: false });
   const [codeTab, setCodeTab] = useState('component'); // 'component' | 'css' | 'usage' | 'deps'
   const [windowWidth, setWindowWidth] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 1200));
@@ -288,7 +279,7 @@ export default function RewampShowcase() {
   const scrollContainerRef = useRef(null);
 
   // Derived: is any side panel open? Used to scale down the canvas component.
-  const panelOpen = codeDrawerOpen || promptDrawerOpen || descDrawerOpen;
+  const panelOpen = codeDrawerOpen;
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -428,13 +419,6 @@ export default function RewampShowcase() {
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
       setSidebarCollapsed(true);
     }
-  };
-
-  const handleCopyPrompt = () => {
-    const promptText = getPromptForSlug(activeSlug, currentFound?.entry?.title);
-    navigator.clipboard.writeText(promptText);
-    setCopiedPrompt(true);
-    setTimeout(() => setCopiedPrompt(false), 2000);
   };
 
   const handleCopyInstall = () => {
@@ -875,7 +859,7 @@ export default function RewampShowcase() {
             theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
           }`}
           style={{
-            flex: isDesktop && (codeDrawerOpen || promptDrawerOpen || descDrawerOpen) ? '1 1 54%' : '1 1 100%',
+            flex: isDesktop && codeDrawerOpen ? '1 1 54%' : '1 1 100%',
             minWidth: 0,
             boxShadow: theme === 'light'
               ? 'inset 0 1px 2px rgba(0,0,0,0.04)'
@@ -905,43 +889,12 @@ export default function RewampShowcase() {
               </DockIcon>
 
               <DockIcon
-                label="Prompt"
-                onClick={() => {
-                  setCodeDrawerOpen(false);
-                  setDescDrawerOpen(false);
-                  setPromptDrawerOpen(prev => !prev);
-                }}
-                theme={theme}
-                accent
-                active={promptDrawerOpen}
-              >
-                <Sparkles className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-              </DockIcon>
-
-              <DockIcon
                 label="Code"
-                onClick={() => {
-                  setPromptDrawerOpen(false);
-                  setDescDrawerOpen(false);
-                  setCodeDrawerOpen(prev => !prev);
-                }}
+                onClick={() => setCodeDrawerOpen(prev => !prev)}
                 theme={theme}
                 active={codeDrawerOpen}
               >
                 <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-              </DockIcon>
-
-              <DockIcon
-                label="Description"
-                onClick={() => {
-                  setPromptDrawerOpen(false);
-                  setCodeDrawerOpen(false);
-                  setDescDrawerOpen(prev => !prev);
-                }}
-                theme={theme}
-                active={descDrawerOpen}
-              >
-                <Info className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </DockIcon>
 
               <DockIcon
@@ -1002,7 +955,7 @@ export default function RewampShowcase() {
 
         {/* ── Mobile/Tablet Backdrop for drawers ── */}
         <AnimatePresence>
-          {!isDesktop && (codeDrawerOpen || promptDrawerOpen || descDrawerOpen) && (
+          {!isDesktop && codeDrawerOpen && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1252,269 +1205,6 @@ export default function RewampShowcase() {
           )}
         </AnimatePresence>
 
-        {/* ── Side-by-Side Prompt Panel ── */}
-        <AnimatePresence>
-          {promptDrawerOpen && (
-            <motion.div
-              initial={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
-              animate={{ width: isDesktop ? '44%' : undefined, x: 0, opacity: 1 }}
-              exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
-                isDesktop
-                  ? 'rounded-[22px] sm:rounded-[24px]'
-                  : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[480px] rounded-[22px] shadow-2xl'
-              } ${
-                theme === 'light'
-                  ? 'bg-white border-neutral-200/80 text-neutral-900'
-                  : 'bg-[#17151C] border-[#2B2732] text-white'
-              }`}
-              style={{ minWidth: 0 }}
-            >
-              {/* Header */}
-              <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-              }`}>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-[#D4CBE5]">
-                    <Sparkles className="w-3 h-3 text-[#4A3D6A]" />
-                  </div>
-                  <span className={`font-semibold text-sm ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                    Prompt
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={() => setPromptDrawerOpen(false)}
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
-                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
-                    }`}
-                    title="Close"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Prompt content */}
-              <div className="flex-1 overflow-y-auto p-4">
-                <div className={`p-4 rounded-xl font-mono text-xs leading-relaxed ${
-                  theme === 'light' ? 'bg-neutral-50 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                }`}>
-                  <p className="whitespace-pre-wrap">{getPromptForSlug(activeSlug, currentFound?.entry?.title)}</p>
-                </div>
-              </div>
-
-              {/* Copy button at bottom */}
-              <div className={`px-4 py-3 border-t shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-              }`}>
-                <button
-                  onClick={() => {
-                    handleCopyPrompt();
-                    setCopiedPromptDrawer(true);
-                    setTimeout(() => setCopiedPromptDrawer(false), 2000);
-                  }}
-                  className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[#D4CBE5] hover:bg-[#C1B4D8] text-[#171717] transition-colors cursor-pointer"
-                >
-                  {copiedPromptDrawer ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedPromptDrawer ? 'Copied' : 'Copy prompt'}</span>
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* ── Side-by-Side Description Panel ── */}
-        <AnimatePresence>
-          {descDrawerOpen && (
-            <motion.div
-              initial={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
-              animate={{ width: isDesktop ? '44%' : undefined, x: 0, opacity: 1 }}
-              exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
-                isDesktop
-                  ? 'rounded-[22px] sm:rounded-[24px]'
-                  : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[480px] rounded-[22px] shadow-2xl'
-              } ${
-                theme === 'light'
-                  ? 'bg-white border-neutral-200/80 text-neutral-900'
-                  : 'bg-[#17151C] border-[#2B2732] text-white'
-              }`}
-              style={{ minWidth: 0 }}
-            >
-              {/* Header */}
-              <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-              }`}>
-                <div className="flex items-center gap-2">
-                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-                    theme === 'light' ? 'bg-neutral-100' : 'bg-[#24202C]'
-                  }`}>
-                    <Info className="w-3 h-3 text-[#9C8EB8]" />
-                  </div>
-                  <span className={`font-semibold text-sm ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-                    Description
-                  </span>
-                </div>
-                <button
-                  onClick={() => setDescDrawerOpen(false)}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
-                    theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
-                  }`}
-                  title="Close"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              {/* Scrollable Content */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {/* Component Title & Category */}
-                <div>
-                  <h2 className={`text-lg font-bold leading-tight ${
-                    theme === 'light' ? 'text-neutral-900' : 'text-white'
-                  }`}>
-                    {currentFound?.entry?.title || 'Component'}
-                  </h2>
-                  <span className={`text-xs font-medium mt-1 inline-block px-2 py-0.5 rounded-md ${
-                    theme === 'light' ? 'bg-[#D4CBE5]/30 text-[#6D5A8E]' : 'bg-[#D4CBE5]/15 text-[#C1B4D8]'
-                  }`}>
-                    {currentFound?.category?.name || 'Component'}
-                  </span>
-                </div>
-
-                {/* Description */}
-                <div className={`p-3.5 rounded-xl text-[13px] leading-relaxed ${
-                  theme === 'light' ? 'bg-neutral-50 text-neutral-700' : 'bg-[#24202C] text-neutral-300'
-                }`}>
-                  {getPromptForSlug(activeSlug, currentFound?.entry?.title)?.slice(0, 280) ||
-                    `A beautifully crafted ${currentFound?.entry?.title || 'component'} built with React, Framer Motion, and modern CSS.`}
-                  {(getPromptForSlug(activeSlug, currentFound?.entry?.title)?.length || 0) > 280 && '…'}
-                </div>
-
-                {/* Dependencies & Packages */}
-                {sourceInfo.dependencies.length > 0 && (
-                  <div>
-                    <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
-                      theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
-                    }`}>
-                      Dependencies & Packages
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {sourceInfo.dependencies.map((dep) => (
-                        <span
-                          key={dep}
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-mono ${
-                            theme === 'light'
-                              ? 'bg-neutral-100 text-neutral-700 border border-neutral-200'
-                              : 'bg-[#24202C] text-neutral-300 border border-[#2B2732]'
-                          }`}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#D4CBE5] shrink-0" />
-                          {dep}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Install Command */}
-                <div>
-                  <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
-                    theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
-                  }`}>
-                    Quick Install
-                  </h4>
-                  <div className={`p-2.5 rounded-xl font-mono text-xs flex items-center justify-between ${
-                    theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                  }`}>
-                    <code className="truncate">npx rewampui add {activeSlug}</code>
-                    <button
-                      onClick={handleCopyInstall}
-                      className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer shrink-0 ml-2"
-                    >
-                      {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Source Files Info */}
-                {sourceInfo.code && (
-                  <div>
-                    <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
-                      theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
-                    }`}>
-                      Source Files
-                    </h4>
-                    <div className="flex flex-col gap-1.5">
-                      <div className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs ${
-                        theme === 'light' ? 'bg-neutral-50 text-neutral-600' : 'bg-[#1E1A26] text-neutral-400'
-                      }`}>
-                        <Code2 className="w-3 h-3 text-[#9C8EB8]" />
-                        <span className="font-mono">{activeSlug}.jsx</span>
-                        <span className="ml-auto text-[10px] opacity-60">
-                          {Math.ceil((sourceInfo.code?.length || 0) / 40)} lines
-                        </span>
-                      </div>
-                      {sourceInfo.css && (
-                        <div className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs ${
-                          theme === 'light' ? 'bg-neutral-50 text-neutral-600' : 'bg-[#1E1A26] text-neutral-400'
-                        }`}>
-                          <Code2 className="w-3 h-3 text-[#F59E0B]" />
-                          <span className="font-mono">{activeSlug}.css</span>
-                          <span className="ml-auto text-[10px] opacity-60">
-                            {Math.ceil((sourceInfo.css?.length || 0) / 40)} lines
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Attribution Note Footer */}
-              <div className={`px-4 py-3 border-t shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-              }`}>
-                <div className={`p-3 rounded-xl text-[11px] leading-relaxed ${
-                  theme === 'light' ? 'bg-[#FAF6ED] text-neutral-600' : 'bg-[#1E1A26] text-neutral-400'
-                }`}>
-                  <p className="mb-2">
-                    I don't claim any of them as my original design. Took inspo from various platforms and recreated with my own taste.
-                  </p>
-                  <p className="flex items-center gap-1 flex-wrap">
-                    Made with love
-                    <span className="text-[#C1B4D8] text-sm">💜</span>
-                    by <span className={`font-semibold ${theme === 'light' ? 'text-neutral-800' : 'text-white'}`}>Palak</span> aka
-                    <a
-                      href="https://github.com/palakonweb"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-semibold text-[#9C8EB8] hover:text-[#D4CBE5] transition-colors inline-flex items-center gap-0.5"
-                    >
-                      palakonweb <ExternalLink className="w-2.5 h-2.5" />
-                    </a>
-                  </p>
-                  <a
-                    href="https://github.com/palakonweb/rewampui"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`mt-2.5 w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
-                      theme === 'light'
-                        ? 'bg-neutral-900 hover:bg-neutral-800 text-white'
-                        : 'bg-white hover:bg-neutral-100 text-neutral-900'
-                    }`}
-                  >
-                    <Star className="w-3 h-3" />
-                    <span>Leave a ⭐ on GitHub if you liked it!</span>
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );

@@ -4,12 +4,13 @@ import { Copy, Check } from 'lucide-react';
 
 const promptContent = `Gradient reveal text animation where large heading text uses an animated gradient as fill color, shifting through soft violet, cyan, and rose hues, smooth continuous loop, dark background, premium typography`;
 
-function GradientText({ children, className }) {
+export function GradientText({ children, className }) {
   return (
     <motion.span
       className={className}
       style={{
-        backgroundImage: 'linear-gradient(90deg, #7A6B94, #9C8EB8, #D4CBE5, #FAF8FD, #C1B4D8, #7A6B94)',
+        backgroundImage:
+          'linear-gradient(90deg, var(--text-primary), var(--brand-strong), var(--text-primary))',
         backgroundSize: '300% 100%',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',

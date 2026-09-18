@@ -547,11 +547,6 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
-  "frosted-folder-card": `Create an interactive Frosted Folder Card with Photo Collage Burst in React:
-- Visual Identity: Smoked obsidian acrylic folder card; hovering or clicking bursts interior photo files into a staggered collage with spring physics and macOS-style reveal.
-- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
   "matte-folder-card": `Create a tactile Matte Folder Card with Living Aurora Mesh Gradient in React:
 - Visual Identity: Inverted-fillet folder tab geometry on dark matte obsidian surface with continuous animated aurora mesh gradient drifting beneath.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.

@@ -200,7 +200,6 @@ export const categories = [
             makeLazy('Wallet Card Reveal', 'wallet-card-reveal', () => import('./ui/WalletCardRevealShowcase'), 'WalletCardRevealShowcase'),
             makeLazy('Arch Card Carousel', 'arch-card-carousel', () => import('./ui/ArchCardCarouselShowcase'), 'ArchCardCarouselShowcase'),
             makeLazy('Folder Tab Card', 'folder-tab-card', () => import('./ui/FolderTabCardShowcase'), 'FolderTabCardShowcase'),
-            makeLazy('Frosted Folder Card', 'frosted-folder-card', () => import('./ui/FrostedFolderCardShowcase'), 'FrostedFolderCardShowcase'),
         ],
     },
     {
