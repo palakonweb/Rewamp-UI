@@ -40,38 +40,120 @@ import {
 const RAW_JS_MODULES = import.meta.glob('../ui/**/*.{jsx,tsx,js,ts}', { query: '?raw', import: 'default' });
 const RAW_CSS_MODULES = import.meta.glob('../ui/**/*.css', { query: '?raw', import: 'default' });
 
-// Pulls the literal import() specifier back out of a `() => import('./ui/Foo')`
-// arrow function so we can resolve the matching raw-source glob entry.
-function extractImportPath(importFn) {
-  if (typeof importFn !== 'function') return null;
-  const match = importFn.toString().match(/import\(\s*['"]([^'"]+)['"]\s*\)/);
-  return match ? match[1] : null;
-}
+// Robust resolver for glob keys in Vite dev and production build
+function resolveRawPath(entry, slug) {
+  const allKeys = Object.keys(RAW_JS_MODULES);
+  if (!allKeys.length) return null;
 
-function resolveRawPath(importFn) {
-  const rel = extractImportPath(importFn);
-  if (!rel) return null;
-  const base = rel.replace(/^\.\//, '../').replace(/\.(jsx|tsx|js|ts)$/, '');
-  const candidates = [`${base}.jsx`, `${base}.tsx`, `${base}.js`, `${base}.ts`];
-  return candidates.find((p) => RAW_JS_MODULES[p]) || null;
+  // 1. Explicit fileName from docsRegistry entry (e.g. 'AsciiMatrixHoverShowcase')
+  if (entry?.fileName) {
+    const fn = entry.fileName.replace(/\.(jsx|tsx|js|ts)$/, '');
+    const directMatch = allKeys.find((k) =>
+      k.endsWith(`/${fn}.jsx`) || k.endsWith(`/${fn}.tsx`) || k.endsWith(`/${fn}.js`) || k.endsWith(`/${fn}.ts`)
+    );
+    if (directMatch) return directMatch;
+  }
+
+  // 2. Try parsing importFn if function
+  if (typeof entry?.importFn === 'function') {
+    const str = entry.importFn.toString();
+    const match = str.match(/['"]([^'"]*(?:ui\/|\/ui\/)[^'"]+)['"]/);
+    if (match) {
+      const clean = match[1].split('?')[0].replace(/\.(jsx|tsx|js|ts)$/, '');
+      const base = clean.slice(clean.lastIndexOf('/') + 1);
+      const matchKey = allKeys.find((k) =>
+        k.endsWith(`/${base}.jsx`) || k.endsWith(`/${base}.tsx`) || k.endsWith(`/${base}.js`) || k.endsWith(`/${base}.ts`)
+      );
+      if (matchKey) return matchKey;
+    }
+  }
+
+  // 3. Match by normalized slug (e.g. "ascii-matrix-hover" -> "asciimatrixhover")
+  const targetSlug = (slug || entry?.slug || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+  const targetTitle = (entry?.title || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+
+  // Special cases for folder components
+  if (targetSlug && (targetSlug.includes('folder') || targetTitle.includes('folder'))) {
+    const folderMatch = allKeys.find((k) => k.includes('FrostedFolderCardShowcase') || k.includes('FrostedFolderCard'));
+    if (folderMatch) return folderMatch;
+  }
+
+  if (targetSlug) {
+    for (const k of allKeys) {
+      const baseName = k.slice(k.lastIndexOf('/') + 1).replace(/\.(jsx|tsx|js|ts)$/, '');
+      const normBase = baseName.replace(/[^a-z0-9]/gi, '').toLowerCase();
+      const normWithoutShowcase = normBase.replace('showcase', '').replace('background', '');
+
+      if (
+        normBase === targetSlug ||
+        normBase === `${targetSlug}showcase` ||
+        normBase === `${targetSlug}backgroundshowcase` ||
+        normWithoutShowcase === targetSlug ||
+        (targetTitle && (normBase === targetTitle || normBase === `${targetTitle}showcase` || normWithoutShowcase === targetTitle))
+      ) {
+        return k;
+      }
+    }
+
+    // Substring fallback
+    for (const k of allKeys) {
+      const baseName = k.slice(k.lastIndexOf('/') + 1).replace(/\.(jsx|tsx|js|ts)$/, '');
+      const normBase = baseName.replace(/[^a-z0-9]/gi, '').toLowerCase();
+      if (normBase.includes(targetSlug) || (targetSlug.length > 4 && targetSlug.includes(normBase.replace('showcase', '')))) {
+        return k;
+      }
+    }
+  }
+
+  return null;
 }
 
 // Any additional local component file the showcase itself imports (e.g. a
 // Showcase wraps a separate `./ui/RealComponent`), so the code view isn't just
 // the thin showcase wrapper.
 function extractLocalImportPaths(source, currentPath) {
+  if (!source || typeof source !== 'string') return [];
   const dir = currentPath.slice(0, currentPath.lastIndexOf('/'));
   const matches = [...source.matchAll(/from\s+['"](\.\/[^'"]+)['"]/g)];
+  const ignoreList = ['Source', 'Prompt', 'BackgroundHeroOverlay', 'Skeleton', 'ErrorBoundary', 'Preloader', 'ThemeToggle', 'CanvasShimmerSkeleton'];
   const paths = matches
     .map((m) => m[1])
-    .filter((p) => !p.endsWith('Source') && !p.endsWith('Prompt'))
+    .filter((p) => !ignoreList.some((ign) => p.includes(ign)))
     .map((p) => `${dir}/${p.replace(/^\.\//, '')}`);
   return paths;
+}
+
+// Extract *Source file imports from a showcase file's raw text
+function extractSourceImportPaths(source, currentPath) {
+  if (!source || typeof source !== 'string') return [];
+  const dir = currentPath.slice(0, currentPath.lastIndexOf('/'));
+  const matches = [...source.matchAll(/from\s+['"](\.\/[^'"]+Source[^'"]*)['"]/g)];
+  return matches
+    .map((m) => m[1])
+    .map((p) => `${dir}/${p.replace(/^\.\//, '')}`);
+}
+
+// Parse exported template-literal strings (*Code, *Usage, *Prompt) from a raw Source file.
+// Source files export string constants as: export const fooCode = `...`;
+function parseSourceExports(rawText) {
+  const result = { code: '', usage: '', prompt: '' };
+  if (!rawText || typeof rawText !== 'string') return result;
+  const exportRegex = /export\s+const\s+(\w+(?:Code|Usage|Prompt))\s*=\s*`([\s\S]*?)`;/g;
+  let m;
+  while ((m = exportRegex.exec(rawText)) !== null) {
+    const name = m[1];
+    const value = m[2];
+    if (name.endsWith('Code')) result.code = value;
+    else if (name.endsWith('Usage')) result.usage = value;
+    else if (name.endsWith('Prompt')) result.prompt = value;
+  }
+  return result;
 }
 
 function extractDependencies(sources) {
   const deps = new Set();
   for (const src of sources) {
+    if (!src || typeof src !== 'string') continue;
     const matches = [...src.matchAll(/(?:^|\n)\s*import[^'"]*from\s+['"]([^'".][^'"]*)['"]/g)];
     for (const m of matches) {
       const pkg = m[1];
@@ -341,11 +423,13 @@ export default function RewampShowcase() {
   const [theme, setTheme] = useState(() => localStorage.getItem('rewamp-theme') || 'light');
   const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [copiedInstall, setCopiedInstall] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
   const [codeDrawerOpen, setCodeDrawerOpen] = useState(false);
   const [promptDrawerOpen, setPromptDrawerOpen] = useState(false);
   const [descDrawerOpen, setDescDrawerOpen] = useState(false);
   const [copiedPromptDrawer, setCopiedPromptDrawer] = useState(false);
-  const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', dependencies: [], loading: false });
+  const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', usage: '', dependencies: [], loading: false });
+  const [codeTab, setCodeTab] = useState('component'); // 'component' | 'css' | 'usage' | 'deps'
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.innerWidth < 768;
@@ -355,6 +439,9 @@ export default function RewampShowcase() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollContainerRef = useRef(null);
+
+  // Derived: is any side panel open? Used to scale down the canvas component.
+  const panelOpen = codeDrawerOpen || promptDrawerOpen || descDrawerOpen;
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -516,13 +603,21 @@ export default function RewampShowcase() {
 
   const isFolder = activeSlug === 'matte-folder-card' || activeSlug === 'frosted-folder-card' || activeSlug === 'foldercomponent';
 
-  // Load real source (+ any CSS + dependency list) only when the code drawer is open
+  // Load real source (+ any CSS + dependency list) for active component
   useEffect(() => {
-    if ((!codeDrawerOpen && !descDrawerOpen) || isFolder) return;
-    const importFn = currentFound?.entry?.importFn;
-    const mainPath = resolveRawPath(importFn);
+    const entry = currentFound?.entry;
+    const mainPath = resolveRawPath(entry, activeSlug);
     if (!mainPath) {
-      setSourceInfo({ code: '', css: '', dependencies: [], loading: false });
+      // Fallback usage
+      const title = entry?.title || 'Component';
+      const componentName = title.replace(/\s+/g, '');
+      setSourceInfo({
+        code: `// Source for ${title}\n// Please see documentation for full props and configuration.`,
+        css: '',
+        usage: `import ${componentName} from './${componentName}';\n\nexport default function Example() {\n  return (\n    <div className="w-full h-full flex items-center justify-center p-8">\n      <${componentName} />\n    </div>\n  );\n}`,
+        dependencies: ['lucide-react', 'framer-motion'],
+        loading: false,
+      });
       return;
     }
 
@@ -530,39 +625,97 @@ export default function RewampShowcase() {
     setSourceInfo((prev) => ({ ...prev, loading: true }));
 
     (async () => {
-      const mainSource = await RAW_JS_MODULES[mainPath]();
-      const localPaths = extractLocalImportPaths(mainSource, mainPath);
+      try {
+        const mainSource = await RAW_JS_MODULES[mainPath]();
+        const localPaths = extractLocalImportPaths(mainSource, mainPath);
+        const sourcePaths = extractSourceImportPaths(mainSource, mainPath);
 
-      const localSources = [];
-      for (const rawRel of localPaths) {
-        const candidates = [`${rawRel}.jsx`, `${rawRel}.tsx`, `${rawRel}.js`, `${rawRel}.ts`, rawRel];
-        const match = candidates.find((p) => RAW_JS_MODULES[p]);
-        if (match) localSources.push(await RAW_JS_MODULES[match]());
-      }
-
-      const cssCandidates = [mainPath, ...localPaths].map((p) => p.replace(/\.(jsx|tsx|js|ts)$/, '.css'));
-      let cssText = '';
-      for (const cssPath of cssCandidates) {
-        if (RAW_CSS_MODULES[cssPath]) {
-          cssText += await RAW_CSS_MODULES[cssPath]();
+        // 1. Load the actual reusable component files (not the Showcase wrapper)
+        const localSources = [];
+        for (const rawRel of localPaths) {
+          const candidates = [`${rawRel}.jsx`, `${rawRel}.tsx`, `${rawRel}.js`, `${rawRel}.ts`, rawRel];
+          const match = candidates.find((p) => RAW_JS_MODULES[p]);
+          if (match) localSources.push(await RAW_JS_MODULES[match]());
         }
-      }
 
-      const allSources = [mainSource, ...localSources];
-      const combinedCode = allSources.join('\n\n// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──\n\n');
+        // 2. Load *Source files and parse their *Code/*Usage exports
+        let sourceCode = '';
+        let sourceUsage = '';
+        for (const rawRel of sourcePaths) {
+          const candidates = [`${rawRel}.ts`, `${rawRel}.js`, `${rawRel}.tsx`, `${rawRel}.jsx`, rawRel];
+          const match = candidates.find((p) => RAW_JS_MODULES[p]);
+          if (match) {
+            const rawSourceText = await RAW_JS_MODULES[match]();
+            const parsed = parseSourceExports(rawSourceText);
+            if (parsed.code) sourceCode = parsed.code;
+            if (parsed.usage) sourceUsage = parsed.usage;
+          }
+        }
 
-      if (!cancelled) {
-        setSourceInfo({
-          code: combinedCode,
-          css: cssText,
-          dependencies: extractDependencies(allSources),
-          loading: false,
-        });
+        // 3. Load CSS files from both the showcase and component paths
+        const cssCandidates = [mainPath, ...localPaths].map((p) => p.replace(/\.(jsx|tsx|js|ts)$/, '.css'));
+        let cssText = '';
+        for (const cssPath of cssCandidates) {
+          if (RAW_CSS_MODULES[cssPath]) {
+            cssText += await RAW_CSS_MODULES[cssPath]();
+          }
+        }
+
+        // 4. Determine the best code to show:
+        let finalCode = '';
+        const allRawSources = [mainSource, ...localSources];
+        const isRealComponent = sourceCode && /(?:export\s+(?:default\s+)?)?(?:function|class|const\s+\w+\s*=\s*(?:\(|React))/.test(sourceCode);
+
+        if (sourceCode && isRealComponent) {
+          // Clean embedded component code
+          finalCode = sourceCode;
+        } else if (localSources.length > 0) {
+          // Show the actual component files
+          finalCode = localSources.join('\n\n// ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──\n\n');
+          if (sourceCode && !isRealComponent && !sourceUsage) {
+            sourceUsage = sourceCode;
+          }
+        } else {
+          // Self-contained showcase
+          finalCode = mainSource;
+        }
+
+        // 5. If no explicit usage was found, generate a clean usage snippet
+        const title = entry?.title || 'Component';
+        const componentName = title.replace(/\s+/g, '');
+        if (!sourceUsage) {
+          sourceUsage = `import ${componentName} from './${componentName}';\n\nexport default function Example() {\n  return (\n    <div className="w-full h-full flex items-center justify-center p-8">\n      <${componentName} />\n    </div>\n  );\n}`;
+        }
+
+        const deps = extractDependencies(allRawSources);
+        if (deps.length === 0) {
+          deps.push('lucide-react', 'framer-motion');
+        }
+
+        if (!cancelled) {
+          setSourceInfo({
+            code: finalCode,
+            css: cssText,
+            usage: sourceUsage,
+            dependencies: deps,
+            loading: false,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load source for component:', err);
+        if (!cancelled) {
+          setSourceInfo((prev) => ({ ...prev, loading: false }));
+        }
       }
     })();
 
     return () => { cancelled = true; };
-  }, [codeDrawerOpen, descDrawerOpen, activeSlug, isFolder, currentFound]);
+  }, [activeSlug, currentFound]);
+
+  // Reset code tab when switching components
+  useEffect(() => {
+    setCodeTab('component');
+  }, [activeSlug]);
 
   return (
     <div 
@@ -965,17 +1118,18 @@ export default function RewampShowcase() {
           </div>
 
           {/* ── Centered Showcase Stage ── */}
-          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-12 overflow-y-auto overflow-x-hidden relative">
+          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-12 overflow-y-auto overflow-x-hidden no-scrollbar relative">
             <motion.div
               key={activeSlug}
               initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: panelOpen ? 0.65 : 1 }}
               transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-              className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] min-h-[300px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible sm:overflow-hidden [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+              className="canvas-stage relative flex items-center justify-center w-full max-w-[1080px] min-h-[300px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+              style={{ transformOrigin: 'center center' }}
             >
               <ErrorBoundary key={activeSlug}>
                 <Suspense fallback={getComponentSkeleton(activeSlug)}>
-                  <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-2 sm:p-6 overflow-visible sm:overflow-hidden">
+                  <div className="animate-component-fade-in flex items-center justify-center w-full h-full p-2 sm:p-6 overflow-visible">
                     {isFolder ? (
                       <CleanFolderComponent color={folderColor} />
                     ) : (
@@ -1087,18 +1241,31 @@ export default function RewampShowcase() {
                         ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
                         : 'bg-[#24202C] hover:bg-[#302A3C] text-neutral-300'
                     }`}
+                    title="Copy npm install command"
                   >
                     {copiedInstall ? <Check className="w-3 h-3 text-emerald-500" /> : <Download className="w-3 h-3" />}
-                    <span>Install</span>
+                    <span>{copiedInstall ? 'Copied' : 'Install'}</span>
                   </button>
-                  {/* Fullscreen toggle placeholder */}
+                  {/* Copy current tab code */}
                   <button
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
-                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
+                    onClick={() => {
+                      const textToCopy = codeTab === 'css' ? sourceInfo.css
+                        : codeTab === 'usage' ? sourceInfo.usage
+                        : codeTab === 'deps' ? `npm install ${sourceInfo.dependencies.join(' ')}`
+                        : sourceInfo.code;
+                      navigator.clipboard.writeText(textToCopy || '');
+                      setCopiedCode(true);
+                      setTimeout(() => setCopiedCode(false), 2000);
+                    }}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                      theme === 'light'
+                        ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
+                        : 'bg-[#24202C] hover:bg-[#302A3C] text-neutral-300'
                     }`}
-                    title="Expand"
+                    title="Copy code"
                   >
-                    <Maximize2 className="w-3.5 h-3.5" />
+                    {copiedCode ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                    <span>{copiedCode ? 'Copied' : 'Copy'}</span>
                   </button>
                   {/* Close */}
                   <button
@@ -1110,61 +1277,143 @@ export default function RewampShowcase() {
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
-                  {/* Copy code */}
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(sourceInfo.code || '');
-                      setCopiedInstall(true);
-                      setTimeout(() => setCopiedInstall(false), 2000);
-                    }}
-                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
-                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
-                    }`}
-                    title="Copy code"
-                  >
-                    <Copy className="w-3.5 h-3.5" />
-                  </button>
                 </div>
               </div>
 
-              {/* Code content */}
+              {/* Code section tabs */}
+              <div className={`flex items-center gap-1 px-4 py-2 border-b shrink-0 ${
+                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              }`}>
+                <button
+                  onClick={() => setCodeTab('component')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                    codeTab === 'component'
+                      ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                      : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
+                  }`}
+                >
+                  Component
+                </button>
+                {sourceInfo.css && (
+                  <button
+                    onClick={() => setCodeTab('css')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                      codeTab === 'css'
+                        ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                        : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
+                    }`}
+                  >
+                    CSS
+                  </button>
+                )}
+                {sourceInfo.usage && (
+                  <button
+                    onClick={() => setCodeTab('usage')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                      codeTab === 'usage'
+                        ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                        : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
+                    }`}
+                  >
+                    Usage
+                  </button>
+                )}
+                {sourceInfo.dependencies.length > 0 && (
+                  <button
+                    onClick={() => setCodeTab('deps')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                      codeTab === 'deps'
+                        ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                        : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
+                    }`}
+                  >
+                    Dependencies
+                  </button>
+                )}
+              </div>
+
+              {/* Code content — tabbed sections */}
               <div className="flex-1 overflow-auto p-4">
                 {sourceInfo.loading ? (
                   <p className="text-neutral-400 font-mono text-xs">Loading source…</p>
                 ) : (
-                  <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                    theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                  }`}>{sourceInfo.code || '// Source unavailable for this component'}</pre>
-                )}
-                {sourceInfo.css && (
                   <>
-                    <div className={`my-4 border-t ${theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'}`} />
-                    <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                      theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                    }`}>{sourceInfo.css}</pre>
+                    {/* Component Code Tab */}
+                    {codeTab === 'component' && (
+                      <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                        theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                      }`}>{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                    )}
+
+                    {/* CSS Tab */}
+                    {codeTab === 'css' && sourceInfo.css && (
+                      <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                        theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                      }`}>{sourceInfo.css}</pre>
+                    )}
+
+                    {/* Usage Tab */}
+                    {codeTab === 'usage' && sourceInfo.usage && (
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
+                            theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                          }`}>Usage Example</h4>
+                          <pre className={`p-3 rounded-xl font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                            theme === 'light' ? 'bg-neutral-50 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                          }`}>{sourceInfo.usage}</pre>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Dependencies Tab */}
+                    {codeTab === 'deps' && sourceInfo.dependencies.length > 0 && (
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
+                            theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                          }`}>Install Dependencies</h4>
+                          <div className={`p-3 rounded-xl font-mono text-[12px] flex items-center justify-between ${
+                            theme === 'light' ? 'bg-neutral-50 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                          }`}>
+                            <code>npm install {sourceInfo.dependencies.join(' ')}</code>
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(`npm install ${sourceInfo.dependencies.join(' ')}`);
+                                setCopiedInstall(true);
+                                setTimeout(() => setCopiedInstall(false), 2000);
+                              }}
+                              className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer shrink-0 ml-2"
+                            >
+                              {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
+                            theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                          }`}>Required Packages</h4>
+                          <div className="flex flex-wrap gap-1.5">
+                            {sourceInfo.dependencies.map((dep) => (
+                              <code
+                                key={dep}
+                                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-mono ${
+                                  theme === 'light'
+                                    ? 'bg-neutral-100 text-neutral-700 border border-neutral-200'
+                                    : 'bg-[#24202C] text-neutral-300 border border-[#2B2732]'
+                                }`}
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#D4CBE5] shrink-0" />
+                                {dep}
+                              </code>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
-
-              {/* Bottom dock with color circles — matching reference screenshot */}
-              {sourceInfo.dependencies.length > 0 && (
-                <div className={`px-4 py-2.5 border-t shrink-0 ${
-                  theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
-                }`}>
-                  <div className="flex flex-wrap gap-1.5">
-                    {sourceInfo.dependencies.map((dep) => (
-                      <code
-                        key={dep}
-                        className={`px-2 py-0.5 rounded-md text-[10px] font-mono ${
-                          theme === 'light' ? 'bg-neutral-100 text-neutral-600' : 'bg-[#24202C] text-neutral-400'
-                        }`}
-                      >
-                        {dep}
-                      </code>
-                    ))}
-                  </div>
-                </div>
-              )}
             </motion.div>
           )}
         </AnimatePresence>

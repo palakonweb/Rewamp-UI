@@ -67,7 +67,7 @@ export default function AuroraTextShowcase() {
       />
 
       <div className="text-center relative z-10 w-full">
-        <AuroraText className="text-[52px] sm:text-[88px] leading-[1.05] tracking-tight">
+        <AuroraText className="text-[52px] sm:text-[88px] leading-[1.15] tracking-tight">
           Limitless Design
         </AuroraText>
       </div>
