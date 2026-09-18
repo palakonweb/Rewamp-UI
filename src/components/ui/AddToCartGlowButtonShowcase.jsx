@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Plus } from 'lucide-react';
 
-const promptContent = `"Add to Cart" button: a dark charcoal rounded-rectangle button reading "+ Add to cart", wrapped in a thin continuously rotating rainbow conic-gradient border — the same moving-border trick used on the Liquid Metal button. On click it swaps to a green-accented rotating border with "Added to cart" and a checkmark, then reverts after a moment.`;
+const promptContent = `"Add to Cart" button: a dark charcoal rounded-rectangle button reading "+ Add to cart", wrapped in a thin continuously rotating rainbow conic-gradient border - the same moving-border trick used on the Liquid Metal button. On click it swaps to a green-accented rotating border with "Added to cart" and a checkmark, then reverts after a moment.`;
 
 export default function AddToCartGlowButtonShowcase() {
     const [copied, setCopied] = useState(false);

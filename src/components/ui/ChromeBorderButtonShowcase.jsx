@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `"Chrome Border Button": fully rounded white pill button with a thin true-chrome outline — a rotating conic-gradient ring in shades of black, white, and gray (mimicking a polished metal reflection) with one small hint of red, clipped so it only ever shows as a thin sliver at the border, never washing over the white face. The centered text itself is rendered with a moving black/white/gray metallic gradient that shimmers left to right on a loop. Soft drop shadow.`;
+const promptContent = `"Chrome Border Button": fully rounded white pill button with a thin true-chrome outline - a rotating conic-gradient ring in shades of black, white, and gray (mimicking a polished metal reflection) with one small hint of red, clipped so it only ever shows as a thin sliver at the border, never washing over the white face. The centered text itself is rendered with a moving black/white/gray metallic gradient that shimmers left to right on a loop. Soft drop shadow.`;
 
 export default function ChromeBorderButtonShowcase() {
     const [copied, setCopied] = useState(false);
@@ -20,7 +20,7 @@ export default function ChromeBorderButtonShowcase() {
                     className="relative rounded-full p-[1.5px] overflow-hidden shadow-[0_10px_28px_rgba(0,0,0,0.1)]"
                     style={{ background: 'linear-gradient(135deg, #ffffff 0%, #d8d9dc 35%, #f4f4f5 55%, #c9cacd 80%, #ffffff 100%)' }}
                 >
-                    {/* traveling rainbow ring — only ever peeks through the thin border gap */}
+                    {/* traveling rainbow ring - only ever peeks through the thin border gap */}
                     <motion.span
                         className="absolute -inset-[45%] blur-[2px]"
                         style={{

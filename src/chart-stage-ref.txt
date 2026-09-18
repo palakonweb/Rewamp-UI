@@ -50,7 +50,7 @@ import { cn } from "@/lib/utils";
 const CANVAS_W = 3480;
 const CANVAS_H = 2520;
 
-// Every card keeps a fixed slot on the canvas — only the "camera" (the canvas
+// Every card keeps a fixed slot on the canvas - only the "camera" (the canvas
 // transform) ever moves, so focus changes read as pans, not reshuffles.
 type StageCard = {
   id: string;
@@ -115,7 +115,7 @@ const CARDS: StageCard[] = [
 
 const FOCUS_INTERVAL_MS = 4600;
 const START_INDEX = CARDS.findIndex((card) => card.id === "hatched-bar");
-// Never hop to a card bordering the current one — a focus change should be a
+// Never hop to a card bordering the current one - a focus change should be a
 // real flight (roughly two column/row pitches away or more).
 const MIN_HOP_DISTANCE = 1100;
 
@@ -131,11 +131,11 @@ const clamp = (min: number, value: number, max: number) => Math.min(max, Math.ma
 // The camera is (lookAt, zoom): the canvas point under the viewport center and
 // the scale it renders at. Every frame derives the css transform from those
 // two, so the look-at point travels a mathematically straight line while the
-// zoom breathes — animating translate and scale as separate channels instead
+// zoom breathes - animating translate and scale as separate channels instead
 // made the view veer sideways whenever the zoom dipped.
 //
 // GTA-character-switch profile: the look-at glides on one S-curve (slow, fast
-// middle, slow) while the zoom follows a sin² bell — zero velocity at both
+// middle, slow) while the zoom follows a sin² bell - zero velocity at both
 // ends, deepest exactly mid-flight.
 const flightPanEase = cubicBezier(0.65, 0, 0.35, 1);
 const flightDurationFor = (distance: number) => clamp(1.35, 0.95 + distance / 1050, 2.7);
@@ -175,7 +175,7 @@ export function ChartStage({ className }: { className?: string }) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
   // False until the first focus change: the camera must render already settled
-  // on page load — any mount-time tween reads as the camera lurching into place.
+  // on page load - any mount-time tween reads as the camera lurching into place.
   const [engaged, setEngaged] = useState(false);
   const queueRef = useRef<number[]>([]);
   const lastPickRef = useRef(START_INDEX);
@@ -223,7 +223,7 @@ export function ChartStage({ className }: { className?: string }) {
   const scale = measured ? clamp(0.5, Math.min(viewport.w / 1050, viewport.h / 950), 0.9) : 0.7;
   const focus = CARDS[active];
   const prevFocus = CARDS[prevActive];
-  // Estimated flight length (used only for the highlight timing below — the
+  // Estimated flight length (used only for the highlight timing below - the
   // flight itself measures its true start from the live transform).
   const estimatedDistance = Math.hypot(
     (focus.x + focus.w / 2 - prevFocus.x - prevFocus.w / 2) * scale,

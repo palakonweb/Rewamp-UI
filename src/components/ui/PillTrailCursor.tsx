@@ -161,7 +161,7 @@ export default function PillTrailCursor({
       const tailFade = Math.max(0.7, 1 - (i / trailLength) * 0.3);
       const pillOpacity = isInside.current ? tailFade.toFixed(3) : '0';
 
-      // Strictly horizontal (0° rotation) — centered exactly on (node.x, node.y)
+      // Strictly horizontal (0° rotation) - centered exactly on (node.x, node.y)
       el.style.transform = `translate3d(${node.x.toFixed(1)}px, ${node.y.toFixed(1)}px, 0) translate(-50%, -50%)`;
       el.style.opacity = pillOpacity;
     }
@@ -244,7 +244,7 @@ export default function PillTrailCursor({
     >
       {children}
 
-      {/* Trail overlay layer — pointer-events: none */}
+      {/* Trail overlay layer - pointer-events: none */}
       <div
         ref={overlayRef}
         aria-hidden="true"

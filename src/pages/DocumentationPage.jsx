@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Terminal, LayoutTemplate, Zap, Package, Compass, Heart, Github, Twitter } from 'lucide-react';
+import { ChevronLeft, Terminal, LayoutTemplate, Zap, Package, Compass, Heart, Github, Twitter, Wand2, Layers, Droplets } from 'lucide-react';
 import { SiteFooter } from '../components/sections/SiteFooter';
 
 export function DocumentationPage() {
@@ -155,6 +155,116 @@ export function DocumentationPage() {
 
             <hr className="border-[var(--border)] mb-16" />
 
+            <section id="cli" className="mb-16">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded bg-emerald-500/10 flex items-center justify-center">
+                  <Terminal size={18} className="text-emerald-500" />
+                </div>
+                <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">CLI Workflow</h2>
+              </div>
+              <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
+                Skip the manual copy-paste. The <code className="px-1 py-0.5 rounded text-[13px] font-mono bg-[var(--elevated)]">rewampui</code> CLI
+                drops a component's source file and its dependencies straight into your project with one command.
+              </p>
+
+              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800 mb-6">
+                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
+                  <Terminal size={14} className="text-gray-500 mr-2" />
+                  <span className="text-[11px] font-mono text-gray-400">Terminal</span>
+                </div>
+                <div className="p-4 text-[13px] font-mono text-gray-300 space-y-1.5">
+                  <div><span className="text-pink-400">npx</span> rewampui add theme-toggle</div>
+                  <div><span className="text-pink-400">npx</span> rewampui add arch-card-carousel theme-toggle</div>
+                  <div><span className="text-pink-400">npx</span> rewampui add --all</div>
+                </div>
+              </div>
+
+              <p className="text-[13px] text-[var(--text-2)] leading-relaxed">
+                <code className="px-1 py-0.5 rounded text-[12px] font-mono bg-[var(--elevated)]">add &lt;component...&gt;</code> accepts one or
+                more slugs from the registry; <code className="px-1 py-0.5 rounded text-[12px] font-mono bg-[var(--elevated)]">--all</code> installs
+                every component at once. Requires Node 18+.
+              </p>
+            </section>
+
+            <hr className="border-[var(--border)] mb-16" />
+
+            <section id="framer-motion" className="mb-16">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded bg-purple-500/10 flex items-center justify-center">
+                  <Wand2 size={18} className="text-purple-500" />
+                </div>
+                <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">Framer Motion</h2>
+              </div>
+              <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
+                Every interactive component in Rewamp UI is driven by Framer Motion springs rather than CSS transitions.
+                Spring physics (stiffness, damping, mass) react naturally to interruption — dragging, re-hovering, or
+                toggling mid-animation never snaps or resets, it just retargets from the current velocity.
+              </p>
+              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800">
+                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
+                  <span className="text-[11px] font-mono text-gray-400">example.jsx</span>
+                </div>
+                <div className="p-4 text-[13px] font-mono text-gray-300 whitespace-pre">
+<span className="text-purple-400">import</span> {'{ motion }'} <span className="text-purple-400">from</span> <span className="text-green-400">"framer-motion"</span>;{'\n\n'}
+<span className="text-blue-400">&lt;motion.div</span>{'\n'}
+{'  '}layout{'\n'}
+{'  '}transition={'{{'} type: <span className="text-green-400">"spring"</span>, stiffness: <span className="text-orange-300">350</span>, damping: <span className="text-orange-300">32</span> {'}}'}{'\n'}
+<span className="text-blue-400">/&gt;</span>
+                </div>
+              </div>
+            </section>
+
+            <hr className="border-[var(--border)] mb-16" />
+
+            <section id="tailwind" className="mb-16">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded bg-sky-500/10 flex items-center justify-center">
+                  <Layers size={18} className="text-sky-500" />
+                </div>
+                <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">Tailwind CSS</h2>
+              </div>
+              <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
+                Styling is utility-first with Tailwind CSS 4 — no separate stylesheet per component. Every reusable
+                token (background, surface, border, text, accent) is exposed as a CSS variable in <code className="px-1 py-0.5 rounded text-[13px] font-mono bg-[var(--elevated)]">index.css</code>,
+                so components read <code className="px-1 py-0.5 rounded text-[13px] font-mono bg-[var(--elevated)]">bg-[var(--surface)]</code> instead
+                of a hardcoded color, which is what lets the entire library switch between light and dark mode instantly.
+              </p>
+              <p className="text-[13px] text-[var(--text-2)] leading-relaxed">
+                Class strings are merged with the <code className="px-1 py-0.5 rounded text-[12px] font-mono bg-[var(--elevated)]">cn()</code> utility
+                (see Installation above) so conditional and override classes never collide.
+              </p>
+            </section>
+
+            <hr className="border-[var(--border)] mb-16" />
+
+            <section id="glassmorphism" className="mb-16">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-8 rounded bg-cyan-500/10 flex items-center justify-center">
+                  <Droplets size={18} className="text-cyan-500" />
+                </div>
+                <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">Glassmorphism</h2>
+              </div>
+              <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
+                The frosted-glass look used across docks, panels, and floating navbars comes from layering a translucent
+                background, a backdrop blur, and a soft inner highlight border — never a flat semi-transparent fill on
+                its own, which reads muddy against busy backgrounds.
+              </p>
+              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800">
+                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
+                  <span className="text-[11px] font-mono text-gray-400">glass.css</span>
+                </div>
+                <div className="p-4 text-[13px] font-mono text-gray-300 whitespace-pre">
+<span className="text-blue-400">.glass</span> {'{'}{'\n'}
+{'  '}background: <span className="text-green-400">linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4))</span>;{'\n'}
+{'  '}backdrop-filter: <span className="text-green-400">blur(24px)</span>;{'\n'}
+{'  '}border: <span className="text-orange-300">1px</span> solid <span className="text-green-400">rgba(255,255,255,0.6)</span>;{'\n'}
+{'}'}
+                </div>
+              </div>
+            </section>
+
+            <hr className="border-[var(--border)] mb-16" />
+
             <section id="credits" className="mb-16">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-8 rounded bg-pink-500/10 flex items-center justify-center">
@@ -163,7 +273,7 @@ export function DocumentationPage() {
                 <h2 className="text-2xl font-semibold tracking-tight text-[var(--text)]">Credits & Attribution</h2>
               </div>
               <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
-                Every component in this library is a study, remix, or homage — none of it is claimed as original work.
+                Every component in this library is a study, remix, or homage - none of it is claimed as original work.
                 Rewamp UI exists because of the incredible open-source design work already out there from the goats of the
                 internet. This project simply collects, adapts, and re-implements those ideas in one place for convenience.
               </p>

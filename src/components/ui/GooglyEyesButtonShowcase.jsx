@@ -62,7 +62,7 @@ function Eye({ smirk = false, side = 'left' }) {
                 transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 className="w-[14px] h-[14px] rounded-full absolute"
             />
-            {/* Angled evil brow/eyelid — slants inward toward the center like a furrowed glare */}
+            {/* Angled evil brow/eyelid - slants inward toward the center like a furrowed glare */}
             <motion.div
                 initial={false}
                 animate={{

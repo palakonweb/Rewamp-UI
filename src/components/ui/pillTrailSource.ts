@@ -3,7 +3,7 @@ The canvas is pure white with a minimalist 5-column editorial layout: top naviga
 As the user's cursor moves across the canvas:
 - Generate an overlapping ribbon trail of ~16 compact, colorful biotech pills (words: "biotech", "health", "science", "innovation", "research", "dna", "cells", "genetics", "biology", "future").
 - The trail follows the cursor with an elastic inverse-kinematics spring chain with distance constraints.
-- Pills remain strictly 0° horizontal at all times — they never rotate or tilt along curve vectors.
+- Pills remain strictly 0° horizontal at all times - they never rotate or tilt along curve vectors.
 - Newer pills render on top of older pills (descending z-index down the chain).
 - Spacing is velocity-responsive: expanding smoothly on fast movement and clustering tightly with overlap on deceleration or idle.
 - Vibrant organic biotech color palette (royal blue, deep magenta, neon lime, soft lavender, indigo, warm gold, magenta-pink, cyan, deep violet) with high-contrast readable text.

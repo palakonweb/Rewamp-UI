@@ -3,7 +3,7 @@ import { animate, cubicBezier, motion, useReducedMotion } from 'framer-motion';
 import { FileCode2 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════
-   Real component previews — each card renders the actual
+   Real component previews - each card renders the actual
    RewampUI showcase component (lazy-loaded, code-split) instead
    of a mock, wrapped in .prompt-embed to hide its own copy-code
    footer and keep its native demo background.
@@ -30,7 +30,7 @@ const PREVIEW_COMPONENTS = {
   'gradient-reveal-text': lazy(() => import('../ui/GradientRevealTextShowcase')),
 };
 
-// Every card renders at this exact 16:9 size — no exceptions — so the camera
+// Every card renders at this exact 16:9 size - no exceptions - so the camera
 // never has to reframe between differently-shaped slots.
 const CARD_W = 480;
 const CARD_H = 270;
@@ -39,7 +39,7 @@ const CARD_H = 270;
 // demo's fixed 500px-tall block, a small toggle's tiny footprint, etc). Rather
 // than crop the tall ones or stretch the small ones, every component renders
 // into this fixed 16:9 "design canvas" (generous enough to hold all of them
-// uncropped) and the whole canvas is scaled down uniformly to fit the card —
+// uncropped) and the whole canvas is scaled down uniformly to fit the card  - 
 // so every frame is identically sized and nothing is ever cut off.
 const PREVIEW_REF_W = 1040;
 const PREVIEW_REF_H = 585;
@@ -74,7 +74,7 @@ function CardPreview({ id }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   Canvas layout — fixed slots, camera pans/zooms between them.
+   Canvas layout - fixed slots, camera pans/zooms between them.
    ═══════════════════════════════════════════════════════════ */
 
 const COL_W = 520;
@@ -117,7 +117,7 @@ const CARDS = RAW_CARDS.map((c) => ({
 
 const START_INDEX = CARDS.findIndex((c) => c.id === 'gradient-reveal-text');
 const FOCUS_INTERVAL_MS = 4200;
-// Never hop to a card bordering the current one — a focus change should read
+// Never hop to a card bordering the current one - a focus change should read
 // as a real flight, not a shuffle to a neighbor.
 const MIN_HOP_DISTANCE = 700;
 
@@ -132,7 +132,7 @@ const clamp = (min, value, max) => Math.min(max, Math.max(min, value));
 // ── Camera model ─────────────────────────────────────────────────────────
 // The camera is (lookAt, zoom): the canvas point under the viewport center
 // and the scale it renders at. Every frame derives the transform from those
-// two so the look-at point travels a straight line while the zoom breathes —
+// two so the look-at point travels a straight line while the zoom breathes  - 
 // GTA-character-switch profile: the look-at glides on one S-curve (slow, fast
 // middle, slow) while the zoom follows a sin² bell, deepest mid-flight.
 const flightPanEase = cubicBezier(0.65, 0, 0.35, 1);
@@ -173,7 +173,7 @@ export function HeroCardStage({ className = '' }) {
   const [hovered, setHovered] = useState(null);
   const [paused, setPaused] = useState(false);
   // False until the first focus change: the camera must render already
-  // settled on load — any mount-time tween reads as the camera lurching in.
+  // settled on load - any mount-time tween reads as the camera lurching in.
   const [engaged, setEngaged] = useState(false);
   const queueRef = useRef([]);
   const lastPickRef = useRef(START_INDEX);
@@ -217,7 +217,7 @@ export function HeroCardStage({ className = '' }) {
   const scale = measured ? clamp(0.75, Math.min(viewport.w / 640, viewport.h / 400), 1.15) : 0.9;
   const focus = CARDS[active];
   const prevFocus = CARDS[prevActive];
-  // Estimated flight length (used only for the card highlight delay below —
+  // Estimated flight length (used only for the card highlight delay below  - 
   // the flight itself measures its true start from the live transform).
   const estimatedDistance = Math.hypot(
     (focus.x + focus.w / 2 - prevFocus.x - prevFocus.w / 2) * scale,

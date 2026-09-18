@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Hero } from '../components/sections/Hero'
 
-// The landing page is designed for light mode only — it should never pick up
+// The landing page is designed for light mode only - it should never pick up
 // a dark theme left set by the dashboard's own theme toggle.
 export function LandingPage() {
   useEffect(() => {

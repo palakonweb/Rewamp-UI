@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `"Rainbow Button": near-white rounded-rectangle pill with a thin static iridescent pastel-spectrum border and medium-weight dark text. No hover animation — a clean, static, minimal button.`;
+const promptContent = `"Rainbow Button": near-white rounded-rectangle pill with a thin static iridescent pastel-spectrum border and medium-weight dark text. No hover animation - a clean, static, minimal button.`;
 
 export default function RainbowButtonShowcase() {
     const [copied, setCopied] = useState(false);

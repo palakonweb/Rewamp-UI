@@ -23,7 +23,7 @@ export const DEFAULT_LENS_ITEMS = REWAMP_SIDEBAR_ITEMS;
  * KineticLensSidebar
  * Exact recreation of Recording 2026-09-15 155640.mp4:
  * - Left-aligned vertical kinetic lens rolodex list
- * - Active / focal item features an em-dash prefix "— " and enlarges in bold high-contrast text
+ * - Active / focal item features an em-dash prefix " -  " and enlarges in bold high-contrast text
  * - Surrounding items recede into deep indigo/slate with reduced opacity and scale
  * - Interactive via hover tracking, mouse wheel scrolling with momentum, touch/pointer drag,
  *   and smooth automated cycling.

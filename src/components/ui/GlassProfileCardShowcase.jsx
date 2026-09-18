@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, MessageCircle, UserPlus, Link2, MapPin, Star, Users, FolderOpen } from 'lucide-react';
 
 /*
- * GlassProfileCard — frosted-glass floating profile card with ambient aurora blob background
+ * GlassProfileCard - frosted-glass floating profile card with ambient aurora blob background
  * Three palette variants: Dark · Light · Accent
  */
 
-const promptContent = `glassmorphism profile card — frosted glass with backdrop-blur floating above soft blurred aurora blob background, circular avatar, stats row with hover lift, pill action buttons, ambient grain texture`;
+const promptContent = `glassmorphism profile card - frosted glass with backdrop-blur floating above soft blurred aurora blob background, circular avatar, stats row with hover lift, pill action buttons, ambient grain texture`;
 
 const VARIANTS = {
   dark:   { label: 'Dark',   bg: '#06060f', b1: '#1e0a5ecc', b2: '#0a2a6ecc', b3: '#1a0e60cc', card: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.10)', shadow: '0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)', tp: '#fff', ts: 'rgba(255,255,255,0.42)', statBg: 'rgba(255,255,255,0.06)', statBorder: 'rgba(255,255,255,0.08)', btn: 'rgba(255,255,255,0.07)', btnB: 'rgba(255,255,255,0.10)', btnT: 'rgba(255,255,255,0.72)', accent: '#a78bfa', avatarRing: 'rgba(255,255,255,0.14)' },

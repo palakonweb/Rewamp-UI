@@ -26,7 +26,7 @@ void main() {
 // density sample toward the sun), then pixelated: fragCoord is snapped to
 // a chunky grid before any sampling, and both the density field and its
 // self-shadow occlusion are quantized into flat steps instead of smooth
-// gradients — together that turns the soft photographic clouds into
+// gradients - together that turns the soft photographic clouds into
 // flat-shaded, blocky pixel-art ones while keeping the original cloud
 // silhouettes and drift.
 const fragmentShader = `
@@ -101,7 +101,7 @@ float cloudDensity(vec2 p, vec2 c, vec2 r, float seed, float t) {
   return env + (detail - 0.62) * 0.62;
 }
 
-// shades one cloud and blends it over the current color — quantized into
+// shades one cloud and blends it over the current color - quantized into
 // flat density/occlusion steps so the shading reads as posterized bands.
 vec3 shadeCloud(vec3 color, vec3 sky, vec2 p, vec2 c, vec2 r, float seed, float t, float dist) {
   float d = cloudDensity(p, c, r, seed, t);
@@ -132,7 +132,7 @@ vec3 cloudPass(vec3 color, vec3 sky, vec2 p, float aspect, float t,
 
 void main() {
   // Snap to a chunky pixel grid FIRST so every downstream sample stays
-  // blocky — this is what turns the original shader's smooth clouds into
+  // blocky - this is what turns the original shader's smooth clouds into
   // pixel art instead of soft photographic ones.
   vec2 pixelCoord = floor(gl_FragCoord.xy / uPixelSize) * uPixelSize;
   vec2 uv = pixelCoord / uResolution;

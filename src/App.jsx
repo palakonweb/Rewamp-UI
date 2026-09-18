@@ -7,7 +7,7 @@ import { PackageManagerProvider } from './components/ui/InstallSection'
 // perf: route-level code splitting. These three pages used to be imported
 // eagerly at the top of App.jsx, which meant visiting any one route (e.g.
 // /components) still forced the browser to download and parse every other
-// route's bundle too — including the landing page's ~8 heavy marketing
+// route's bundle too - including the landing page's ~8 heavy marketing
 // sections (Hero, InfiniteBelt, FeaturesBento, LiveProductDemo,
 // InfiniteSpiralGallery, DomeGalleryCTA, RewampUIReveal, SplashCursor) and
 // the whole documentation page, before the requested route could render.

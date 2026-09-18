@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { Copy, Check, ArrowUpRight, Sparkles, Zap, BarChart3 } from 'lucide-react';
 
 /*
- * AI Copilot Bento — Dark violet neural network grid
+ * AI Copilot Bento - Dark violet neural network grid
  * Palette: slate #0f1117, soft violet #8b7ec8, warm white #f0ede8
  */
 

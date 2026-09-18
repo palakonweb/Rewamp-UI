@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Users } from 'lucide-react';
 
-// Free, no-signup hit-counter API — increments once per page load and
+// Free, no-signup hit-counter API - increments once per page load and
 // returns the running total across every visitor. Powers the small badge
 // shown in the corner of the showcase; @vercel/analytics itself has no
 // public API for a live number, so this is a separate, lightweight source.
@@ -22,7 +22,7 @@ export function VisitorCounter({ theme = 'light', className = '' }) {
         }
       })
       .catch(() => {
-        // Counter API unreachable (offline, blocked, rate-limited) — fail silently.
+        // Counter API unreachable (offline, blocked, rate-limited) - fail silently.
       });
     return () => {
       cancelled = true;

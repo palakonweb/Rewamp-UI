@@ -20,7 +20,7 @@ export function Hero() {
     <main className="bg-[var(--bg)] text-[var(--text-primary)] relative flex min-h-dvh flex-col overflow-hidden lg:h-dvh transition-colors">
       {/* ─── Left: wordmark → headline → subtext → CTAs ─── */}
       <section className="relative z-10 flex flex-col justify-center px-6 pt-20 pb-10 sm:px-12 lg:h-full lg:w-[44%] lg:min-w-105 lg:items-center lg:px-12 lg:pt-0 lg:pb-0">
-        {/* Shared coordinate frame: logo and copy share this box's left edge —
+        {/* Shared coordinate frame: logo and copy share this box's left edge  - 
             logo pins to its top, copy centers vertically within it. */}
         <div className="relative w-full max-w-md lg:h-full">
           <motion.img

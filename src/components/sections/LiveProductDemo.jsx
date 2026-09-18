@@ -99,16 +99,16 @@ export function LiveProductDemo() {
             From prompt to <span className="italic font-serif" style={{ color: CHERRY }}>production.</span>
           </h2>
           <p className="font-sans text-gray-400 mt-3 text-base max-w-lg mx-auto">
-            Paste a description. Watch a full component materialise — live.
+            Paste a description. Watch a full component materialise - live.
           </p>
         </motion.div>
 
         {/* Frames container */}
         <div className="relative w-full max-w-[1200px] mx-auto px-4 md:px-8 flex-1 min-h-0" style={{ perspective: 1200 }}>
 
-          {/* ═══ FRAME 1 — Prompt Being Typed (scroll-driven) ═══ */}
+          {/* ═══ FRAME 1 - Prompt Being Typed (scroll-driven) ═══ */}
           <motion.div style={{ opacity: f1O, y: f1Y }} className="absolute inset-x-4 md:inset-x-8 top-0 will-change-transform">
-            <EditorShell title="rewamp-agent — Chat">
+            <EditorShell title="rewamp-agent - Chat">
               <div className="flex min-h-[420px] md:min-h-[480px]">
                 <Sidebar activeIdx={0} />
                 <div className="flex-1 p-6 md:p-8">
@@ -133,9 +133,9 @@ export function LiveProductDemo() {
             </EditorShell>
           </motion.div>
 
-          {/* ═══ FRAME 2 — Generating (scroll-driven progress) ═══ */}
+          {/* ═══ FRAME 2 - Generating (scroll-driven progress) ═══ */}
           <motion.div style={{ opacity: f2O, y: f2Y }} className="absolute inset-x-4 md:inset-x-8 top-0 will-change-transform">
-            <EditorShell title="rewamp-agent — Generating…">
+            <EditorShell title="rewamp-agent - Generating…">
               <div className="flex min-h-[420px] md:min-h-[480px]">
                 <Sidebar activeIdx={1} />
                 <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-10">
@@ -175,7 +175,7 @@ export function LiveProductDemo() {
             </EditorShell>
           </motion.div>
 
-          {/* ═══ FRAME 3 — Result with Floating Panels ═══ */}
+          {/* ═══ FRAME 3 - Result with Floating Panels ═══ */}
           <motion.div style={{ opacity: f3O, y: f3Y, scale: f3S }} className="absolute inset-x-4 md:inset-x-8 top-0 will-change-transform">
             {/* Browser frame */}
             <div className="relative rounded-2xl border border-gray-200 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.18)] will-change-transform" style={{ maxHeight: 'calc(100vh - 130px)' }}>

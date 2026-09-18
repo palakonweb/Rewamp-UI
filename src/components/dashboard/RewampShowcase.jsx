@@ -33,7 +33,7 @@ import {
   CardSkeleton
 } from '../ui/Skeleton';
 
-// Raw source text for every showcase/component file — lazily fetched per-file
+// Raw source text for every showcase/component file - lazily fetched per-file
 // only when the code drawer actually opens (Vite code-splits each glob entry).
 const RAW_JS_MODULES = import.meta.glob('../ui/**/*.{jsx,tsx,js,ts}', { query: '?raw', import: 'default' });
 const RAW_CSS_MODULES = import.meta.glob('../ui/**/*.css', { query: '?raw', import: 'default' });
@@ -133,6 +133,10 @@ function extractSourceImportPaths(source, currentPath) {
 
 // Parse exported template-literal strings (*Code, *Usage, *Prompt) from a raw Source file.
 // Source files export string constants as: export const fooCode = `...`;
+// Most Showcase files instead declare an unexported `const promptContent = \`...\`;`
+// right at the top — that's the component's one-line design description, so
+// it's treated as the prompt too even though it's neither exported nor
+// suffixed "Prompt".
 function parseSourceExports(rawText) {
   const result = { code: '', usage: '', prompt: '' };
   if (!rawText || typeof rawText !== 'string') return result;
@@ -145,6 +149,13 @@ function parseSourceExports(rawText) {
     else if (name.endsWith('Usage')) result.usage = value;
     else if (name.endsWith('Prompt')) result.prompt = value;
   }
+
+  if (!result.prompt) {
+    const localPromptRegex = /const\s+(\w*[Pp]rompt\w*)\s*=\s*`([\s\S]*?)`;/;
+    const localMatch = localPromptRegex.exec(rawText);
+    if (localMatch) result.prompt = localMatch[2];
+  }
+
   return result;
 }
 
@@ -892,9 +903,9 @@ export default function RewampShowcase() {
         </button>
       )}
 
-      {/* ── 2. Main Content Area — Canvas + Side Panel Split ── */}
+      {/* ── 2. Main Content Area - Canvas + Side Panel Split ── */}
       <div className="flex-1 h-full flex gap-2.5 overflow-hidden relative">
-        {/* Canvas Stage — shrinks on desktop when a panel is open, stays full width on mobile/tablet */}
+        {/* Canvas Stage - shrinks on desktop when a panel is open, stays full width on mobile/tablet */}
         <motion.div
           layout
           transition={{ type: 'spring', stiffness: 350, damping: 32 }}
@@ -1147,7 +1158,7 @@ export default function RewampShowcase() {
                 )}
               </div>
 
-              {/* Code content — tabbed sections */}
+              {/* Code content - tabbed sections */}
               <div className="flex-1 overflow-auto p-4">
                 {sourceInfo.loading ? (
                   <p className="text-neutral-400 font-mono text-xs">Loading source…</p>

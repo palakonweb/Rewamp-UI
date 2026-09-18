@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `minimalist white navbar where each link is preceded by a tiny pixel-grid icon (info circle, magnifier, briefcase — replicating real Hugeicons glyphs as a 5x5 dot matrix), dots are light gray at idle and snap to dark charcoal with a slight scale pop on hover/active, staggered spring per dot`;
+const promptContent = `minimalist white navbar where each link is preceded by a tiny pixel-grid icon (info circle, magnifier, briefcase - replicating real Hugeicons glyphs as a 5x5 dot matrix), dots are light gray at idle and snap to dark charcoal with a slight scale pop on hover/active, staggered spring per dot`;
 
 // 7x7 dot-matrix glyphs, hand-mapped to resemble real Hugeicons line icons
 const ICONS = {

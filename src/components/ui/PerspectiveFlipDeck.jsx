@@ -42,7 +42,7 @@ export function PerspectiveFlipDeck({
   const containerRef = useRef(null);
 
   // Measure the component's own container (not window.innerWidth) so sizing
-  // reacts continuously to the actual available width — including when a side
+  // reacts continuously to the actual available width - including when a side
   // panel shrinks the stage without the window itself resizing.
   useEffect(() => {
     const el = containerRef.current;

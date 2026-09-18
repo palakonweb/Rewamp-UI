@@ -481,7 +481,7 @@ export const componentPrompts = {
   // ──────────────────────────────────────────────────────────────────────────
   "kinetic-lens-sidebar": `Create a vertical Kinetic Lens Rolodex Sidebar Menu in React:
 - Visual Identity: Pitch-black canvas (#000000) with vector typography service items.
-- Mechanics: Active center item is pure white (#FFFFFF), larger scale, semibold, with preceding horizontal dash "— ". Peripheral items are deep indigo (#282D52) fading toward edges. Continuous mouse wheel scrubbing with inertia, touch drag, and snap physics.
+- Mechanics: Active center item is pure white (#FFFFFF), larger scale, semibold, with preceding horizontal dash " -  ". Peripheral items are deep indigo (#282D52) fading toward edges. Continuous mouse wheel scrubbing with inertia, touch drag, and snap physics.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 

@@ -51,7 +51,7 @@ function FlipCard() {
         className="relative w-full aspect-[4/5] will-change-transform"
         style={{ transformStyle: 'preserve-3d' }}
       >
-        {/* ── FRONT — Prompt ── */}
+        {/* ── FRONT - Prompt ── */}
         <div
           className="absolute inset-0 rounded-2xl border border-black/[0.06] bg-[#f5f5f7] p-6 flex flex-col overflow-hidden shadow-lg"
           style={{ backfaceVisibility: 'hidden' }}
@@ -80,7 +80,7 @@ function FlipCard() {
           </div>
         </div>
 
-        {/* ── BACK — Googly Eyes Button ── */}
+        {/* ── BACK - Googly Eyes Button ── */}
         <div
           className="absolute inset-0 rounded-2xl border border-black/[0.06] bg-[#f5f5f7] p-6 flex flex-col overflow-hidden shadow-lg"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -153,7 +153,7 @@ export function DomeGalleryCTA() {
           transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="font-serif italic text-[var(--text-2)] text-base md:text-lg max-w-sm mb-10 leading-relaxed"
         >
-          Describe what you need. Watch it generate, animate, and ship — all in one flow.
+          Describe what you need. Watch it generate, animate, and ship - all in one flow.
         </motion.p>
 
         <motion.div
@@ -185,7 +185,7 @@ export function DomeGalleryCTA() {
         </div>
       </motion.div>
 
-      {/* Bottom gradient — soft merge with PURRFORM section */}
+      {/* Bottom gradient - soft merge with PURRFORM section */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-white z-20 pointer-events-none" />
     </section>
   );

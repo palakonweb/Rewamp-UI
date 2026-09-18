@@ -11,7 +11,7 @@ export const folderTabCardPrompt = `A tactile modern UI card with an asymmetrica
 - Bottom metrics row displaying prominent "04 Tags" counter and "1012 Shots" badge.
 - Interactive 3D mouse tilt physics and fluid multi-blob gradient mesh animation.
 - Seamless Dark Mode (obsidian card with luminous lavender aurora) and Light Mode (crisp ceramic surface with pastel lavender-peach glow).
-- Clicking the diagonal arrow button opens a full gallery grid of the design's shots with a scale+fade transition — header, close button, and a staggered-in tile grid — then can be closed to return to the card.`;
+- Clicking the diagonal arrow button opens a full gallery grid of the design's shots with a scale+fade transition - header, close button, and a staggered-in tile grid - then can be closed to return to the card.`;
 
 const SHOTS = [
   { label: 'Hero Section', gradient: 'linear-gradient(135deg, #C1B4D8 0%, #9C8EB8 100%)' },
@@ -92,7 +92,7 @@ export default function FolderTabCardShowcase() {
                     Designs
                   </h3>
                   <p className={`text-[11px] sm:text-xs font-medium mt-1 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                    Web & App Designs — 1012 Shots
+                    Web & App Designs - 1012 Shots
                   </p>
                 </div>
               </div>

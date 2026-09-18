@@ -94,7 +94,7 @@ export function TextHoverEffect({ text, duration }) {
       >
         {text}
       </motion.text>
-      {/* Gradient reveal — auto-sweeps + responds to hover */}
+      {/* Gradient reveal - auto-sweeps + responds to hover */}
       <text
         x="50%"
         y="50%"

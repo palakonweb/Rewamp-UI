@@ -87,7 +87,7 @@ function ScrollColumn({ column, index }) {
             <PreviewCard key={`a-${i}`} item={item} />
           ))}
         </div>
-        {/* Set 2 — duplicate for seamless loop */}
+        {/* Set 2 - duplicate for seamless loop */}
         <div className="vcol-set">
           {column.items.map((item, i) => (
             <PreviewCard key={`b-${i}`} item={item} />

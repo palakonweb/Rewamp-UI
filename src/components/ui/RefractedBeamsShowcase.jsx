@@ -3,7 +3,7 @@ import BackgroundHeroOverlay from './BackgroundHeroOverlay';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-const promptContent = `brand-lilac meteor streaks — bright falling heads trailing a tapered luminous tail across a dark canvas`;
+const promptContent = `brand-lilac meteor streaks - bright falling heads trailing a tapered luminous tail across a dark canvas`;
 
 // Brand lilac palette (from index.css --lilac-*) used for the meteor heads/tails.
 const METEOR_COLORS = ['212,203,229', '193,180,216', '228,221,240'];
