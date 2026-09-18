@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import skyCurtain from '../../assets/cards/sky-curtain.webp';
+import airplaneSunset from '../../assets/cards/airplane-sunset.webp';
+import rainbowHill from '../../assets/cards/rainbow-hill.webp';
+import trainWindow from '../../assets/cards/train-window.webp';
+import kangarooPlanet from '../../assets/cards/kangaroo-planet.webp';
 
 /**
  * DiagonalCardStack
@@ -21,41 +26,45 @@ export function DiagonalCardStack({
   const [offset, setOffset] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [screenSize, setScreenSize] = useState('desktop');
+  const [containerWidth, setContainerWidth] = useState(900);
   const animFrameRef = useRef(null);
   const lastTimeRef = useRef(null);
   const dragStartRef = useRef({ x: 0, y: 0, startOffset: 0 });
 
-  // Responsive screen detection
+  // Measure the component's own container (not window.innerWidth) so sizing
+  // reacts continuously to the actual available width — including when a side
+  // panel shrinks the stage without the window itself resizing.
   useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth;
-      if (w < 480) setScreenSize('mobile');
-      else if (w < 820) setScreenSize('tablet');
-      else setScreenSize('desktop');
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const el = containerRef.current;
+    if (!el) return;
+    setContainerWidth(el.getBoundingClientRect().width);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) setContainerWidth(entry.contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  const effCardWidth = screenSize === 'mobile' ? Math.min(cardWidth, 140) : screenSize === 'tablet' ? Math.min(cardWidth, 180) : cardWidth;
-  const effCardHeight = screenSize === 'mobile' ? Math.min(cardHeight, 140) : screenSize === 'tablet' ? Math.min(cardHeight, 180) : cardHeight;
-  const effStepX = screenSize === 'mobile' ? Math.round(stepX * 0.58) : screenSize === 'tablet' ? Math.round(stepX * 0.76) : stepX;
-  const effStepY = screenSize === 'mobile' ? Math.round(stepY * 0.58) : screenSize === 'tablet' ? Math.round(stepY * 0.76) : stepY;
+  const REFERENCE_WIDTH = 900;
+  const geomScale = Math.min(1, Math.max(0.45, containerWidth / REFERENCE_WIDTH));
+  const screenSize = containerWidth < 480 ? 'mobile' : containerWidth < 820 ? 'tablet' : 'desktop';
+  const effCardWidth = Math.round(Math.min(cardWidth, 220) * geomScale);
+  const effCardHeight = Math.round(Math.min(cardHeight, 220) * geomScale);
+  const effStepX = Math.round(stepX * geomScale);
+  const effStepY = Math.round(stepY * geomScale);
 
   // Default cards matching the exact video design with surreal art imagery
   const defaultCards = [
-    { id: '1', title: 'Stack 01', brand: 'rico.', image: '/cards/sky-curtain.png' },
-    { id: '2', title: 'Stack 02', brand: 'rico.', image: '/cards/airplane-sunset.png' },
-    { id: '3', title: 'Stack 03', brand: 'rico.', image: '/cards/rainbow-hill.png' },
-    { id: '4', title: 'Stack 04', brand: 'rico.', image: '/cards/train-window.jpg' },
-    { id: '5', title: 'Stack 05', brand: 'rico.', image: '/cards/kangaroo-planet.png' },
-    { id: '6', title: 'Stack 06', brand: 'rico.', image: '/cards/sky-curtain.png' },
-    { id: '7', title: 'Stack 07', brand: 'rico.', image: '/cards/airplane-sunset.png' },
-    { id: '8', title: 'Stack 08', brand: 'rico.', image: '/cards/rainbow-hill.png' },
-    { id: '9', title: 'Stack 09', brand: 'rico.', image: '/cards/train-window.jpg' },
-    { id: '10', title: 'Stack 10', brand: 'rico.', image: '/cards/kangaroo-planet.png' },
+    { id: '1', title: 'Stack 01', brand: 'rico.', image: skyCurtain },
+    { id: '2', title: 'Stack 02', brand: 'rico.', image: airplaneSunset },
+    { id: '3', title: 'Stack 03', brand: 'rico.', image: rainbowHill },
+    { id: '4', title: 'Stack 04', brand: 'rico.', image: trainWindow },
+    { id: '5', title: 'Stack 05', brand: 'rico.', image: kangarooPlanet },
+    { id: '6', title: 'Stack 06', brand: 'rico.', image: skyCurtain },
+    { id: '7', title: 'Stack 07', brand: 'rico.', image: airplaneSunset },
+    { id: '8', title: 'Stack 08', brand: 'rico.', image: rainbowHill },
+    { id: '9', title: 'Stack 09', brand: 'rico.', image: trainWindow },
+    { id: '10', title: 'Stack 10', brand: 'rico.', image: kangarooPlanet },
   ];
 
   const cardList = cards || defaultCards;
@@ -221,6 +230,8 @@ export function DiagonalCardStack({
                   src={card.image}
                   alt={card.title}
                   className="w-full h-full object-cover select-none pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
                   draggable={false}
                 />
               </div>

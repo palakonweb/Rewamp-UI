@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Play, Pause, ChevronRight, ChevronLeft } from 'lucide-react';
+import skyCurtain from '../../assets/cards/sky-curtain.webp';
+import airplaneSunset from '../../assets/cards/airplane-sunset.webp';
+import rainbowHill from '../../assets/cards/rainbow-hill.webp';
+import trainWindow from '../../assets/cards/train-window.webp';
+import kangarooPlanet from '../../assets/cards/kangaroo-planet.webp';
 
 /**
  * Editorial3DOrbitCarousel
@@ -19,8 +24,8 @@ export function Editorial3DOrbitCarousel({
   autoRotate = true,
   speed = 1.0,
   tickInterval = 1800,
-  cardWidth = 210,
-  cardHeight = 290,
+  cardWidth = 130,
+  cardHeight = 180,
   pauseOnHover = false,
   className = '',
 }) {
@@ -29,26 +34,34 @@ export function Editorial3DOrbitCarousel({
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
-  const [screenSize, setScreenSize] = useState('desktop');
+  const [containerWidth, setContainerWidth] = useState(900);
   const dragStartRef = useRef({ x: 0, y: 0, initialStep: 0 });
 
+  // Measure the component's own container (not window.innerWidth) so sizing
+  // reacts continuously to the actual available width — including when a side
+  // panel shrinks the stage without the window itself resizing.
   useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth;
-      if (w < 480) setScreenSize('mobile');
-      else if (w < 820) setScreenSize('tablet');
-      else setScreenSize('desktop');
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const el = containerRef.current;
+    if (!el) return;
+    setContainerWidth(el.getBoundingClientRect().width);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) setContainerWidth(entry.contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  const isMobile = screenSize === 'mobile';
-  const effWidth = screenSize === 'mobile' ? Math.min(cardWidth, 130) : screenSize === 'tablet' ? Math.min(cardWidth, 175) : cardWidth;
-  const effHeight = screenSize === 'mobile' ? Math.min(cardHeight, 180) : screenSize === 'tablet' ? Math.min(cardHeight, 240) : cardHeight;
-  const stepX = screenSize === 'mobile' ? 88 : screenSize === 'tablet' ? 140 : 195;
-  const stepY = screenSize === 'mobile' ? 52 : screenSize === 'tablet' ? 82 : 115;
+  // Continuous scale (not discrete breakpoints) so the fanned cards always
+  // fit the real container width, whatever caused it to shrink. The base
+  // card size/stride is kept compact (see cardWidth/cardHeight defaults
+  // above) so the deck comfortably fits even a narrowed stage.
+  const REFERENCE_WIDTH = 480;
+  const geomScale = Math.min(1, Math.max(0.5, containerWidth / REFERENCE_WIDTH));
+  const isMobile = containerWidth < 480;
+  const effWidth = Math.round(cardWidth * geomScale);
+  const effHeight = Math.round(cardHeight * geomScale);
+  const stepX = Math.round(80 * geomScale);
+  const stepY = Math.round(48 * geomScale);
 
   // Effective ticking interval factoring in speed
   const effectiveInterval = Math.round(tickInterval / (speed || 1.0));
@@ -56,11 +69,11 @@ export function Editorial3DOrbitCarousel({
 
   // Pure surreal art images
   const defaultItems = [
-    { id: '1', image: '/cards/sky-curtain.png' },
-    { id: '2', image: '/cards/airplane-sunset.png' },
-    { id: '3', image: '/cards/rainbow-hill.png' },
-    { id: '4', image: '/cards/train-window.jpg' },
-    { id: '5', image: '/cards/kangaroo-planet.png' },
+    { id: '1', image: skyCurtain },
+    { id: '2', image: airplaneSunset },
+    { id: '3', image: rainbowHill },
+    { id: '4', image: trainWindow },
+    { id: '5', image: kangarooPlanet },
   ];
 
   const cards = items || defaultItems;
@@ -142,7 +155,7 @@ export function Editorial3DOrbitCarousel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full max-w-full h-[460px] sm:h-[600px] md:h-[660px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[20px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] shadow-xl flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-full h-[340px] sm:h-[400px] md:h-[440px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[20px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] shadow-xl flex items-center justify-center ${className}`}
       style={{
         perspective: 1400,
       }}
@@ -253,6 +266,8 @@ export function Editorial3DOrbitCarousel({
                   src={card.image}
                   alt="Artwork"
                   className="w-full h-full object-cover select-none pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
                   draggable={false}
                 />
               </div>

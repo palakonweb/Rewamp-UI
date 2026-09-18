@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
+import { setSiteTheme } from '../../lib/siteTheme';
 
 const promptContent = `Day/Night sky toggle: a wide glass pill containing a miniature illustrated sky. Night shows a starfield, crescent moon, drifting clouds and a glowing orb on the right. Toggling smoothly morphs the whole scene to day — navy fades to sky blue, the orb glides right-to-left, the moon rotates into a sun, stars fade out as tiny birds fade in. One continuous 900-1200ms transition, spring easing, no hard cuts.`;
 
@@ -27,7 +28,11 @@ export default function DayNightSkyToggleShowcase() {
                 </span>
 
                 <motion.button
-                    onClick={() => setIsDay((v) => !v)}
+                    onClick={() => setIsDay((v) => {
+                        const next = !v;
+                        setSiteTheme(next ? 'light' : 'dark');
+                        return next;
+                    })}
                     className="relative w-[280px] h-[92px] rounded-full overflow-hidden border border-white/25 select-none"
                     animate={{
                         background: isDay

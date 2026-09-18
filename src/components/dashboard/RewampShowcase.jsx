@@ -18,10 +18,12 @@ import {
   Home,
   FileText,
   Heart,
-  Github
+  Github,
+  Info
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { categories, findComponentBySlug } from '../docsRegistry';
+import { getSiteTheme, setSiteTheme, SITE_THEME_EVENT } from '../../lib/siteTheme';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
 import InstallSection from '../ui/InstallSection';
@@ -253,11 +255,12 @@ export default function RewampShowcase() {
 
   const [activeSlug, setActiveSlug] = useState(slug || 'liquid-cursor-gradient');
   const [folderColor, setFolderColor] = useState('black');
-  const [theme, setTheme] = useState(() => localStorage.getItem('rewamp-theme') || 'light');
+  const [theme, setTheme] = useState(() => getSiteTheme());
   const [copiedInstall, setCopiedInstall] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [codeDrawerOpen, setCodeDrawerOpen] = useState(false);
-  const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', usage: '', dependencies: [], loading: false });
+  const [descDrawerOpen, setDescDrawerOpen] = useState(false);
+  const [sourceInfo, setSourceInfo] = useState({ code: '', css: '', usage: '', prompt: '', dependencies: [], loading: false });
   const [codeTab, setCodeTab] = useState('component'); // 'component' | 'css' | 'usage' | 'deps'
   const [windowWidth, setWindowWidth] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 1200));
 
@@ -279,13 +282,18 @@ export default function RewampShowcase() {
   const scrollContainerRef = useRef(null);
 
   // Derived: is any side panel open? Used to scale down the canvas component.
-  const panelOpen = codeDrawerOpen;
+  const panelOpen = codeDrawerOpen || descDrawerOpen;
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    localStorage.setItem('rewamp-theme', theme);
+    setSiteTheme(theme);
   }, [theme]);
+
+  // Stay in sync when some other control (e.g. a Toggle showcase demo) changes the theme
+  useEffect(() => {
+    const handleExternalChange = (e) => setTheme(e.detail.theme);
+    window.addEventListener(SITE_THEME_EVENT, handleExternalChange);
+    return () => window.removeEventListener(SITE_THEME_EVENT, handleExternalChange);
+  }, []);
 
   useEffect(() => {
     if (slug) {
@@ -427,6 +435,22 @@ export default function RewampShowcase() {
     setTimeout(() => setCopiedInstall(false), 2000);
   };
 
+  const handleOpenInstall = () => {
+    setDescDrawerOpen(false);
+    setCodeDrawerOpen(true);
+    setCodeTab('install');
+  };
+
+  const handleToggleCode = () => {
+    setDescDrawerOpen(false);
+    setCodeDrawerOpen((prev) => !prev);
+  };
+
+  const handleToggleDescription = () => {
+    setCodeDrawerOpen(false);
+    setDescDrawerOpen((prev) => !prev);
+  };
+
   // Find active component for canvas
   const currentFound = useMemo(() => {
     return findComponentBySlug(activeSlug) || findComponentBySlug('liquid-cursor-gradient') || {
@@ -446,6 +470,7 @@ export default function RewampShowcase() {
         code: `// Source for ${title}\n// Please see documentation for full props and configuration.`,
         css: '',
         usage: `import ${componentName} from './${componentName}';\n\nexport default function Example() {\n  return (\n    <div className="w-full h-full flex items-center justify-center p-8">\n      <${componentName} />\n    </div>\n  );\n}`,
+        prompt: '',
         dependencies: ['lucide-react', 'framer-motion'],
         loading: false,
       });
@@ -469,9 +494,10 @@ export default function RewampShowcase() {
           if (match) localSources.push(await RAW_JS_MODULES[match]());
         }
 
-        // 2. Load *Source files and parse their *Code/*Usage exports
+        // 2. Load *Source files and parse their *Code/*Usage/*Prompt exports
         let sourceCode = '';
         let sourceUsage = '';
+        let sourcePrompt = '';
         for (const rawRel of sourcePaths) {
           const candidates = [`${rawRel}.ts`, `${rawRel}.js`, `${rawRel}.tsx`, `${rawRel}.jsx`, rawRel];
           const match = candidates.find((p) => RAW_JS_MODULES[p]);
@@ -480,7 +506,14 @@ export default function RewampShowcase() {
             const parsed = parseSourceExports(rawSourceText);
             if (parsed.code) sourceCode = parsed.code;
             if (parsed.usage) sourceUsage = parsed.usage;
+            if (parsed.prompt) sourcePrompt = parsed.prompt;
           }
+        }
+
+        // The Showcase file itself may inline-export a `*Prompt` constant
+        if (!sourcePrompt) {
+          const mainParsed = parseSourceExports(mainSource);
+          if (mainParsed.prompt) sourcePrompt = mainParsed.prompt;
         }
 
         // 3. Load CSS files from both the showcase and component paths
@@ -528,6 +561,7 @@ export default function RewampShowcase() {
             code: finalCode,
             css: cssText,
             usage: sourceUsage,
+            prompt: sourcePrompt,
             dependencies: deps,
             loading: false,
           });
@@ -859,7 +893,7 @@ export default function RewampShowcase() {
             theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
           }`}
           style={{
-            flex: isDesktop && codeDrawerOpen ? '1 1 54%' : '1 1 100%',
+            flex: isDesktop && panelOpen ? '1 1 54%' : '1 1 100%',
             minWidth: 0,
             boxShadow: theme === 'light'
               ? 'inset 0 1px 2px rgba(0,0,0,0.04)'
@@ -882,19 +916,29 @@ export default function RewampShowcase() {
             >
               <DockIcon
                 label="Install"
-                onClick={handleCopyInstall}
+                onClick={handleOpenInstall}
                 theme={theme}
+                active={codeDrawerOpen && codeTab === 'install'}
               >
-                {copiedInstall ? <Check className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
+                <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </DockIcon>
 
               <DockIcon
                 label="Code"
-                onClick={() => setCodeDrawerOpen(prev => !prev)}
+                onClick={handleToggleCode}
                 theme={theme}
                 active={codeDrawerOpen}
               >
                 <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+              </DockIcon>
+
+              <DockIcon
+                label="Description"
+                onClick={handleToggleDescription}
+                theme={theme}
+                active={descDrawerOpen}
+              >
+                <Info className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
               </DockIcon>
 
               <DockIcon
@@ -955,14 +999,13 @@ export default function RewampShowcase() {
 
         {/* ── Mobile/Tablet Backdrop for drawers ── */}
         <AnimatePresence>
-          {!isDesktop && codeDrawerOpen && (
+          {!isDesktop && panelOpen && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => {
                 setCodeDrawerOpen(false);
-                setPromptDrawerOpen(false);
                 setDescDrawerOpen(false);
               }}
               className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs lg:hidden"
@@ -999,19 +1042,6 @@ export default function RewampShowcase() {
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  {/* Install pill */}
-                  <button
-                    onClick={handleCopyInstall}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                      theme === 'light'
-                        ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-                        : 'bg-[#24202C] hover:bg-[#302A3C] text-neutral-300'
-                    }`}
-                    title="Copy npm install command"
-                  >
-                    {copiedInstall ? <Check className="w-3 h-3 text-emerald-500" /> : <Download className="w-3 h-3" />}
-                    <span>{copiedInstall ? 'Copied' : 'Install'}</span>
-                  </button>
                   {/* Copy current tab code */}
                   <button
                     onClick={() => {
@@ -1199,6 +1229,146 @@ export default function RewampShowcase() {
                       </div>
                     )}
                   </>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ── Side Description Panel ── */}
+        <AnimatePresence>
+          {descDrawerOpen && (
+            <motion.div
+              initial={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
+              animate={{ width: isDesktop ? '46%' : undefined, x: 0, opacity: 1 }}
+              exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 32 }}
+              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
+                isDesktop
+                  ? 'rounded-[22px] sm:rounded-[24px]'
+                  : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[500px] rounded-[22px] shadow-2xl'
+              } ${
+                theme === 'light'
+                  ? 'bg-white border-neutral-200/80 text-neutral-900'
+                  : 'bg-[#17151C] border-[#2B2732] text-white'
+              }`}
+              style={{ minWidth: 0 }}
+            >
+              {/* Header bar */}
+              <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
+                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+              }`}>
+                <div className="flex items-center gap-2">
+                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${
+                    theme === 'light' ? 'bg-neutral-100 text-neutral-500' : 'bg-[#24202C] text-neutral-400'
+                  }`}>
+                    <Info className="w-3.5 h-3.5" />
+                  </div>
+                  <span className={`font-semibold text-sm ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+                    Description
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {sourceInfo.prompt && (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(sourceInfo.prompt || '');
+                        setCopiedCode(true);
+                        setTimeout(() => setCopiedCode(false), 2000);
+                      }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                        theme === 'light'
+                          ? 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
+                          : 'bg-[#24202C] hover:bg-[#302A3C] text-neutral-300'
+                      }`}
+                      title="Copy description"
+                    >
+                      {copiedCode ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedCode ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setDescDrawerOpen(false)}
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${
+                      theme === 'light' ? 'hover:bg-neutral-100 text-neutral-500' : 'hover:bg-[#24202C] text-neutral-400'
+                    }`}
+                    title="Close"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Description content */}
+              <div className="flex-1 overflow-auto p-5">
+                {sourceInfo.loading ? (
+                  <div className="flex items-center gap-2 text-neutral-400 font-mono text-xs">
+                    <RotateCw className="w-3.5 h-3.5 animate-spin" />
+                    Loading description…
+                  </div>
+                ) : sourceInfo.prompt ? (
+                  <div className="space-y-3">
+                    <div className={`flex items-center gap-2 pb-1 mb-1 border-b ${
+                      theme === 'light' ? 'border-neutral-100' : 'border-[#24202C]'
+                    }`}>
+                      <span className={`text-[10px] font-mono uppercase tracking-widest font-semibold ${
+                        theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                      }`}>
+                        {currentFound?.entry?.title || 'Component'}
+                      </span>
+                    </div>
+                    {sourceInfo.prompt.split('\n').filter(Boolean).map((line, i) => {
+                      const trimmed = line.trim();
+                      const isBullet = trimmed.startsWith('-');
+                      const isSubBullet = /^\s{2,}-/.test(line);
+                      const text = isBullet ? trimmed.replace(/^-+\s*/, '') : trimmed;
+
+                      if (isBullet) {
+                        return (
+                          <div key={i} className={`flex items-start gap-2.5 ${isSubBullet ? 'ml-4' : ''}`}>
+                            <span className={`mt-[7px] w-1.5 h-1.5 rounded-full shrink-0 ${
+                              isSubBullet
+                                ? (theme === 'light' ? 'bg-neutral-300' : 'bg-neutral-600')
+                                : 'bg-[#C1B4D8]'
+                            }`} />
+                            <p className={`text-[13px] leading-relaxed ${
+                              theme === 'light' ? 'text-neutral-700' : 'text-neutral-300'
+                            }`}>
+                              {text.split(/(`[^`]+`)/g).map((part, j) =>
+                                part.startsWith('`') && part.endsWith('`') ? (
+                                  <code
+                                    key={j}
+                                    className={`px-1 py-0.5 rounded font-mono text-[11.5px] ${
+                                      theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                                    }`}
+                                  >
+                                    {part.slice(1, -1)}
+                                  </code>
+                                ) : (
+                                  <React.Fragment key={j}>{part}</React.Fragment>
+                                )
+                              )}
+                            </p>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <p key={i} className={`text-[14px] leading-relaxed font-medium ${
+                          theme === 'light' ? 'text-neutral-900' : 'text-neutral-100'
+                        }`}>{text}</p>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center gap-2 h-full text-center py-16">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      theme === 'light' ? 'bg-neutral-100 text-neutral-400' : 'bg-[#24202C] text-neutral-500'
+                    }`}>
+                      <Info className="w-5 h-5" />
+                    </div>
+                    <p className="text-neutral-400 font-mono text-xs">No description available for this component yet.</p>
+                  </div>
                 )}
               </div>
             </motion.div>

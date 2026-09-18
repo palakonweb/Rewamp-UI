@@ -324,12 +324,6 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
-  "aurora-text": `Create an Aurora Borealis Typography Reveal component in React:
-- Visual Identity: Ultra-premium dark theme typography masked over overlapping CSS radial gradients and SVG turbulence filters.
-- Fluid Text Fill: Colors blend organically inside character glyphs with proper descender line-height (leading-[1.15]) preventing character descender clipping on letters like "g", "j", "p", "y".
-- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
   "spotlight-text": `Create an interactive Spotlight Text Reveal component in React:
 - Visual Identity: Pitch-black container where text is initially concealed.
 - Mask Interaction: Cursor acts as a saturated gradient spotlight, revealing the high-contrast typography underneath using CSS mask-image and Framer Motion spring coordinates.
@@ -529,12 +523,6 @@ export const componentPrompts = {
   "editorial-3-d-orbit-carousel": `Create a 3D Tilted Elliptical Carousel of Editorial Poster Cards in React:
 - Visual Identity: Six distinct artistic poster cards revolving smoothly in a 3D orbit with depth scaling, bank angles, draggable rotation, and click-to-center spring physics.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
-  "wallet-card-reveal": `Create an interactive Layered Fintech Wallet Card Reveal in React:
-- Visual Identity: Soft mint-sage background with a matte black leather wallet (#121212) containing 3 branded payment cards (Stripe, Wise, PayPal).
-- Interactive Reveal: Clicking the eye toggle slides cards up in neat tiers, unmasks balances with smooth count-up typography ($32,495, $45,654, $345,865 -> Total $424,014), and illuminates a glowing green eye.
-- Tech Stack: React, TypeScript, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
   "arch-card-carousel": `Create an animated Curved Arch Card Carousel with Pendulum Gliding in React:

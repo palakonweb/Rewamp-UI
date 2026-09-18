@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import skyCurtain from '../../assets/cards/sky-curtain.webp';
+import airplaneSunset from '../../assets/cards/airplane-sunset.webp';
+import rainbowHill from '../../assets/cards/rainbow-hill.webp';
+import trainWindow from '../../assets/cards/train-window.webp';
+import kangarooPlanet from '../../assets/cards/kangaroo-planet.webp';
 
 /**
  * PerspectiveFlipDeck
@@ -14,17 +19,17 @@ export function PerspectiveFlipDeck({
   items = null,
   autoPlay = true,
   interval = 2800,
-  cardWidth = 360,
-  cardHeight = 220,
+  cardWidth = 260,
+  cardHeight = 160,
   className = '',
 }) {
   // Pure surreal art images provided by the user
   const defaultCards = [
-    { id: '1', image: '/cards/sky-curtain.png' },
-    { id: '2', image: '/cards/airplane-sunset.png' },
-    { id: '3', image: '/cards/rainbow-hill.png' },
-    { id: '4', image: '/cards/train-window.jpg' },
-    { id: '5', image: '/cards/kangaroo-planet.png' },
+    { id: '1', image: skyCurtain },
+    { id: '2', image: airplaneSunset },
+    { id: '3', image: rainbowHill },
+    { id: '4', image: trainWindow },
+    { id: '5', image: kangarooPlanet },
   ];
 
   const cardList = items || defaultCards;
@@ -33,25 +38,34 @@ export function PerspectiveFlipDeck({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [screenSize, setScreenSize] = useState('desktop');
+  const [containerWidth, setContainerWidth] = useState(900);
+  const containerRef = useRef(null);
 
+  // Measure the component's own container (not window.innerWidth) so sizing
+  // reacts continuously to the actual available width — including when a side
+  // panel shrinks the stage without the window itself resizing.
   useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth;
-      if (w < 480) setScreenSize('mobile');
-      else if (w < 820) setScreenSize('tablet');
-      else setScreenSize('desktop');
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const el = containerRef.current;
+    if (!el) return;
+    setContainerWidth(el.getBoundingClientRect().width);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) setContainerWidth(entry.contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  const isMobile = screenSize === 'mobile';
-  const effWidth = screenSize === 'mobile' ? Math.min(cardWidth, 210) : screenSize === 'tablet' ? Math.min(cardWidth, 280) : cardWidth;
-  const effHeight = screenSize === 'mobile' ? Math.min(cardHeight, 135) : screenSize === 'tablet' ? Math.min(cardHeight, 175) : cardHeight;
-  const effStepX = screenSize === 'mobile' ? 24 : screenSize === 'tablet' ? 42 : 60;
-  const effBaseX = screenSize === 'mobile' ? 0 : screenSize === 'tablet' ? 10 : 20;
+  // Continuous scale (not discrete breakpoints) so the fanned deck always
+  // fits the real container width, whatever caused it to shrink. The base
+  // deck size is kept compact (see cardWidth/cardHeight defaults above) so
+  // it comfortably fits even the narrowed stage when a side panel is open.
+  const REFERENCE_WIDTH = 380;
+  const geomScale = Math.min(1, Math.max(0.5, containerWidth / REFERENCE_WIDTH));
+  const isMobile = containerWidth < 480;
+  const effWidth = Math.round(cardWidth * geomScale);
+  const effHeight = Math.round(cardHeight * geomScale);
+  const effStepX = Math.round(45 * geomScale);
+  const effBaseX = Math.round(15 * geomScale);
 
   // Trigger the 3D swinging flip
   const triggerFlip = () => {
@@ -75,9 +89,10 @@ export function PerspectiveFlipDeck({
 
   return (
     <div
+      ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className={`relative w-full max-w-full h-[380px] sm:h-[480px] md:h-[530px] overflow-hidden select-none flex items-center justify-center rounded-2xl ${className}`}
+      className={`relative w-full max-w-full h-[280px] sm:h-[340px] md:h-[380px] overflow-hidden select-none flex items-center justify-center rounded-2xl ${className}`}
     >
       {/* 3D Isometric Deck Stage */}
       <div
@@ -164,6 +179,8 @@ export function PerspectiveFlipDeck({
                   src={card.image}
                   alt="Card Art"
                   className="w-full h-full object-cover select-none pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
                   draggable={false}
                 />
               </div>

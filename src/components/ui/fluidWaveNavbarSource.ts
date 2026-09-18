@@ -77,10 +77,6 @@ export default function FluidWaveNavbar({
     onChange?.(index);
   };
 
-  const navWidth = 360;
-  const innerWidth = navWidth - 16;
-  const slotWidth = innerWidth / items.length;
-
   return (
     <div className={\`relative flex flex-col items-center select-none \${className}\`}>
       {/* ── Main Navbar Pill with Upward Scooped Notch ── */}
@@ -95,7 +91,7 @@ export default function FluidWaveNavbar({
         {/* ── The Gliding Liquid Notch Scoop at the Bottom ── */}
         <motion.div
           animate={{
-            left: \`\${(activeIndex + 0.5) * (100 / items.length)}%\`,
+            left: \`calc(0.5rem + (100% - 1rem) * \${(activeIndex + 0.5) / items.length})\`,
             x: '-50%',
           }}
           transition={{

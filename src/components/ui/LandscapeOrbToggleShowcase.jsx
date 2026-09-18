@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
+import { setSiteTheme } from '../../lib/siteTheme';
 
 const promptContent = `Circular light/dark toggle styled as a landscape orb: a ~90px circle with a white ring border, a flat sky fill on top and a two-layer wavy dune/cloud silhouette across the lower 40%. Dark mode shows an indigo sky with a white crescent moon; light mode shows a warm gold sky with a glowing white sun. Clicking cross-fades every color (sky, dune layers, ambient glow, page background) over ~400ms ease-in-out, and the moon/sun swaps with a scale+fade transition.`;
 
@@ -125,7 +126,11 @@ export default function LandscapeOrbToggleShowcase() {
             <motion.div
                 className="relative flex flex-col items-center justify-center gap-5"
             >
-                <LandscapeOrb theme={theme} onToggle={() => setTheme((v) => (v === 'dark' ? 'light' : 'dark'))} />
+                <LandscapeOrb theme={theme} onToggle={() => setTheme((v) => {
+                    const next = v === 'dark' ? 'light' : 'dark';
+                    setSiteTheme(next);
+                    return next;
+                })} />
                 <span className="text-[11px] font-semibold tracking-[0.25em] uppercase select-none text-black/40">
                     {t.label} Mode
                 </span>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -38,6 +38,22 @@ export default function FolderTabCard({
   }, []);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const cardRef = useRef(null);
+  const [isCompact, setIsCompact] = useState(false);
+
+  // Measure the card's own rendered width (not the viewport) so the type
+  // scale shrinks correctly on real mobile AND when a side panel narrows it.
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const applyWidth = (w) => setIsCompact(w < 190);
+    applyWidth(el.getBoundingClientRect().width);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) applyWidth(entry.contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -53,13 +69,15 @@ export default function FolderTabCard({
   return (
     <div className="flex items-center justify-center p-2 w-full max-w-full">
       <div
+        ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-full max-w-[320px] sm:max-w-[380px] h-[390px] sm:h-[450px] rounded-[32px] sm:rounded-[38px] p-2.5 overflow-hidden select-none transition-colors duration-300 ${
-          isDark 
-            ? "bg-[#0c0b10] border border-white/10 shadow-[0_28px_60px_-15px_rgba(0,0,0,0.65)]" 
+        className={`relative w-full max-w-[320px] sm:max-w-[380px] rounded-[32px] sm:rounded-[38px] p-2.5 overflow-hidden select-none transition-colors duration-300 ${
+          isDark
+            ? "bg-[#0c0b10] border border-white/10 shadow-[0_28px_60px_-15px_rgba(0,0,0,0.65)]"
             : "bg-[#FFFFFF] border border-black/8 shadow-[0_24px_50px_-12px_rgba(156,142,184,0.22)]"
         } ${className}`}
+        style={{ aspectRatio: '4 / 5' }}
       >
         {/* Inner Card Canvas with Rounded Corners */}
         <div className="relative w-full h-full rounded-[30px] overflow-hidden">
@@ -181,25 +199,27 @@ export default function FolderTabCard({
           </div>
 
           {/* ── 2. Top Glass Action Button (Diagonal Arrow ↗) ── */}
-          <div className="absolute top-5 right-5 z-20">
+          <div className={`absolute z-20 ${isCompact ? 'top-3 right-3' : 'top-5 right-5'}`}>
             <motion.button
               whileHover={{ scale: 1.1, rotate: 6 }}
               whileTap={{ scale: 0.94 }}
               onClick={onAction}
-              className={`w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-xl transition-colors duration-200 cursor-pointer shadow-sm ${
+              className={`rounded-full flex items-center justify-center backdrop-blur-xl transition-colors duration-200 cursor-pointer shadow-sm ${
+                isCompact ? 'w-8 h-8' : 'w-11 h-11'
+              } ${
                 isDark
                   ? "bg-white/25 hover:bg-white/35 text-white border border-white/30 shadow-black/20"
                   : "bg-white/75 hover:bg-white/95 text-neutral-800 border border-black/8 shadow-black/5"
               }`}
               title="Explore Design"
             >
-              <ArrowUpRight className="w-5 h-5 transition-transform duration-200" />
+              <ArrowUpRight className={`transition-transform duration-200 ${isCompact ? 'w-4 h-4' : 'w-5 h-5'}`} />
             </motion.button>
           </div>
 
           {/* ── 3. Asymmetrical Folder-Tab Cutout Sheet ── */}
           <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end">
-            <div className="relative w-full h-[240px]">
+            <div className="relative w-full h-[60%]">
               {/* SVG Cutout Silhouette Path matching Video Geometry exactly */}
               <svg
                 viewBox="0 0 380 240"
@@ -226,15 +246,21 @@ export default function FolderTabCard({
               </svg>
 
               {/* Foreground Typography & Metrics inside the Folder Flap */}
-              <div className="relative z-20 w-full h-full flex flex-col justify-between p-7 sm:p-8 pointer-events-auto">
+              <div className={`relative z-20 w-full h-full flex flex-col justify-between pointer-events-auto ${
+                isCompact ? 'p-4' : 'p-7 sm:p-8'
+              }`}>
                 {/* Upper Left Tab Content */}
                 <div className="pt-1">
-                  <h3 className={`text-2xl sm:text-[28px] font-bold tracking-tight leading-none ${
+                  <h3 className={`font-bold tracking-tight leading-none ${
+                    isCompact ? 'text-base' : 'text-2xl sm:text-[28px]'
+                  } ${
                     isDark ? "text-white" : "text-neutral-900"
                   }`}>
                     {title}
                   </h3>
-                  <p className={`text-xs sm:text-[13px] font-medium mt-2 tracking-normal ${
+                  <p className={`font-medium mt-2 tracking-normal ${
+                    isCompact ? 'text-[10px]' : 'text-xs sm:text-[13px]'
+                  } ${
                     isDark ? "text-neutral-400" : "text-neutral-500"
                   }`}>
                     {subtitle}
@@ -245,12 +271,16 @@ export default function FolderTabCard({
                 <div className="flex items-end justify-between pb-1">
                   {/* Left: 04 Tags */}
                   <div className="flex items-baseline gap-2">
-                    <span className={`text-3xl sm:text-[38px] font-black tracking-tight leading-none ${
+                    <span className={`font-black tracking-tight leading-none ${
+                      isCompact ? 'text-xl' : 'text-3xl sm:text-[38px]'
+                    } ${
                       isDark ? "text-white" : "text-neutral-900"
                     }`}>
                       {tagsCount}
                     </span>
-                    <span className={`text-xs sm:text-[13px] font-semibold ${
+                    <span className={`font-semibold ${
+                      isCompact ? 'text-[10px]' : 'text-xs sm:text-[13px]'
+                    } ${
                       isDark ? "text-neutral-400" : "text-neutral-500"
                     }`}>
                       {tagsLabel}
@@ -258,7 +288,9 @@ export default function FolderTabCard({
                   </div>
 
                   {/* Right: 1012 Shots */}
-                  <div className={`text-xs sm:text-[13px] font-medium tracking-normal ${
+                  <div className={`font-medium tracking-normal ${
+                    isCompact ? 'text-[10px]' : 'text-xs sm:text-[13px]'
+                  } ${
                     isDark ? "text-neutral-400" : "text-neutral-500"
                   }`}>
                     {shotsCount}

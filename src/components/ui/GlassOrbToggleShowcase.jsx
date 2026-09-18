@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import GlassOrbToggle from './GlassOrbToggle';
 import { glassOrbTogglePrompt } from './glassOrbToggleSource';
+import { setSiteTheme } from '../../lib/siteTheme';
 
 export default function GlassOrbToggleShowcase() {
     const [copied, setCopied] = useState(false);
@@ -27,7 +28,10 @@ export default function GlassOrbToggleShowcase() {
                 {/* The 3D Glass Orb Toggle */}
                 <div className="relative z-10 my-auto py-6">
                     <GlassOrbToggle
-                        onChange={(isLight) => setMode(isLight ? 'Light' : 'Dark')}
+                        onChange={(isLight) => {
+                            setMode(isLight ? 'Light' : 'Dark');
+                            setSiteTheme(isLight ? 'light' : 'dark');
+                        }}
                     />
                 </div>
 

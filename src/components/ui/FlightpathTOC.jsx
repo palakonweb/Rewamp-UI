@@ -106,7 +106,7 @@ export function FlightpathTOC({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative w-[270px] sm:w-[285px] rounded-2xl bg-[#FFFDF2] border border-[#E8E2D5] p-5 select-none shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06),0_2px_6px_rgba(0,0,0,0.03)] overflow-hidden ${className}`}
+      className={`relative w-full max-w-[300px] sm:max-w-[320px] rounded-2xl bg-[#FFFDF2] border border-[#E8E2D5] p-4 sm:p-5 select-none shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06),0_2px_6px_rgba(0,0,0,0.03)] overflow-hidden ${className}`}
     >
       {/* Header: Purrform UI */}
       <div className="flex items-center gap-2 pb-3 mb-1 border-b border-[#EAE4D8]">
@@ -196,11 +196,11 @@ export function FlightpathTOC({
                   top: node.y - 11,
                   left: textLeft,
                   height: 22,
-                  right: 0,
+                  right: 8,
                 }}
               >
                 <span
-                  className={`text-[12.5px] tracking-tight whitespace-nowrap transition-colors duration-150 ${
+                  className={`block max-w-full overflow-hidden text-ellipsis text-[12.5px] tracking-tight whitespace-nowrap transition-colors duration-150 ${
                     isActive
                       ? 'font-bold text-neutral-950'
                       : node.level === 0

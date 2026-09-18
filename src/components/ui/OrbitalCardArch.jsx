@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import skyCurtain from '../../assets/cards/sky-curtain.webp';
+import airplaneSunset from '../../assets/cards/airplane-sunset.webp';
+import rainbowHill from '../../assets/cards/rainbow-hill.webp';
+import trainWindow from '../../assets/cards/train-window.webp';
+import kangarooPlanet from '../../assets/cards/kangaroo-planet.webp';
 
 /**
  * OrbitalCardArch
@@ -24,31 +29,36 @@ export function OrbitalCardArch({
   const [scrollX, setScrollX] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [screenSize, setScreenSize] = useState('desktop');
+  const [containerWidth, setContainerWidth] = useState(900);
 
+  // Measure the component's own container (not window.innerWidth) so sizing
+  // reacts continuously to the actual available width — including when a side
+  // panel shrinks the stage without the window itself resizing.
   useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth;
-      if (w < 480) setScreenSize('mobile');
-      else if (w < 820) setScreenSize('tablet');
-      else setScreenSize('desktop');
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const el = containerRef.current;
+    if (!el) return;
+    setContainerWidth(el.getBoundingClientRect().width);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) setContainerWidth(entry.contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  const effCardWidth = screenSize === 'mobile' ? Math.min(cardWidth, 130) : screenSize === 'tablet' ? Math.min(cardWidth, 175) : cardWidth;
-  const effCardHeight = screenSize === 'mobile' ? Math.min(cardHeight, 130) : screenSize === 'tablet' ? Math.min(cardHeight, 175) : cardHeight;
-  const stepDistance = screenSize === 'mobile' ? 145 : screenSize === 'tablet' ? 205 : 270;
+  const REFERENCE_WIDTH = 900;
+  const geomScale = Math.min(1, Math.max(0.4, containerWidth / REFERENCE_WIDTH));
+  const screenSize = containerWidth < 480 ? 'mobile' : containerWidth < 820 ? 'tablet' : 'desktop';
+  const effCardWidth = Math.round(Math.min(cardWidth, 220) * geomScale);
+  const effCardHeight = Math.round(Math.min(cardHeight, 220) * geomScale);
+  const stepDistance = Math.round(270 * geomScale);
 
   // Default cards with the surreal art images
   const defaultCards = [
-    { id: '1', title: 'Orbit 7-01', brand: 'rico.', image: '/cards/sky-curtain.png' },
-    { id: '2', title: 'Orbit 7-02', brand: 'rico.', image: '/cards/airplane-sunset.png' },
-    { id: '3', title: 'Orbit 7-03', brand: 'rico.', image: '/cards/rainbow-hill.png' },
-    { id: '4', title: 'Orbit 7-04', brand: 'rico.', image: '/cards/train-window.jpg' },
-    { id: '5', title: 'Orbit 7-05', brand: 'rico.', image: '/cards/kangaroo-planet.png' },
+    { id: '1', title: 'Orbit 7-01', brand: 'rico.', image: skyCurtain },
+    { id: '2', title: 'Orbit 7-02', brand: 'rico.', image: airplaneSunset },
+    { id: '3', title: 'Orbit 7-03', brand: 'rico.', image: rainbowHill },
+    { id: '4', title: 'Orbit 7-04', brand: 'rico.', image: trainWindow },
+    { id: '5', title: 'Orbit 7-05', brand: 'rico.', image: kangarooPlanet },
   ];
 
   const cardList = cards || defaultCards;
@@ -221,6 +231,8 @@ export function OrbitalCardArch({
                   src={card.image}
                   alt={card.title}
                   className="w-full h-full object-cover select-none pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
                   draggable={false}
                 />
               </div>

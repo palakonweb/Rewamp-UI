@@ -37,19 +37,20 @@ export default function CurtainRevealNavbarShowcase() {
             </AnimatePresence>
 
             {/* 🎯 THE NAVBAR HEADER */}
-            <header className="relative z-20 w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-black/90 dark:bg-black/95 backdrop-blur-xl border-b border-white/10">
-                <span className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-white">
+            <header className="relative z-20 w-full px-3 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-2 bg-black/90 dark:bg-black/95 backdrop-blur-xl border-b border-white/10">
+                <span className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-white shrink-0">
                     <img src="/logo.svg" alt="RewampUI" className="w-6 h-6 object-contain shrink-0" />
-                    RewampUI
+                    <span className="hidden sm:inline">RewampUI</span>
                 </span>
 
-                <nav className="flex gap-4 sm:gap-7">
+                <nav className="flex gap-2 sm:gap-7 overflow-x-auto no-scrollbar min-w-0">
                     {links.map((link) => (
                         <button
                             key={link.id}
                             onMouseEnter={() => setActiveCurtain(link.id)}
                             onMouseLeave={() => setActiveCurtain(null)}
-                            className={`relative text-[11px] sm:text-[12px] font-semibold tracking-[0.18em] uppercase flex items-center gap-1 transition-colors duration-300 cursor-pointer ${
+                            onClick={() => setActiveCurtain((prev) => (prev === link.id ? null : link.id))}
+                            className={`relative shrink-0 text-[10px] sm:text-[12px] font-semibold tracking-[0.12em] sm:tracking-[0.18em] uppercase flex items-center gap-1 transition-colors duration-300 cursor-pointer whitespace-nowrap ${
                                 activeCurtain === link.id ? 'text-white' : 'text-white/60 hover:text-white'
                             }`}
                         >
