@@ -133,7 +133,7 @@ export function DocumentationPage() {
                 To use Rewamp UI components, you need a React environment with Tailwind CSS and Framer Motion installed.
               </p>
 
-              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800 mb-8">
+              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08] mb-8">
                 <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
                   <Terminal size={14} className="text-gray-500 mr-2" />
                   <span className="text-[11px] font-mono text-gray-400">Terminal</span>
@@ -148,7 +148,7 @@ export function DocumentationPage() {
                 Many of our advanced components use a `cn` utility to merge Tailwind classes cleanly. Create a `utils.js` file in your `lib` folder:
               </p>
 
-              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800">
+              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08]">
                 <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
                   <span className="text-[11px] font-mono text-gray-400">lib/utils.js</span>
                 </div>
@@ -176,7 +176,7 @@ export function DocumentationPage() {
                 drops a component's source file and its dependencies straight into your project with one command.
               </p>
 
-              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800 mb-6">
+              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08] mb-6">
                 <div className="flex items-center justify-between px-4 py-2 bg-[#252526] border-b border-gray-800">
                   <div className="flex items-center">
                     <Terminal size={14} className="text-gray-500 mr-2" />
@@ -224,7 +224,7 @@ export function DocumentationPage() {
                 Spring physics (stiffness, damping, mass) react naturally to interruption — dragging, re-hovering, or
                 toggling mid-animation never snaps or resets, it just retargets from the current velocity.
               </p>
-              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800">
+              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08]">
                 <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
                   <span className="text-[11px] font-mono text-gray-400">example.jsx</span>
                 </div>
@@ -273,7 +273,7 @@ export function DocumentationPage() {
                 background, a backdrop blur, and a soft inner highlight border — never a flat semi-transparent fill on
                 its own, which reads muddy against busy backgrounds.
               </p>
-              <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800">
+              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08]">
                 <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
                   <span className="text-[11px] font-mono text-gray-400">glass.css</span>
                 </div>

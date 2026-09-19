@@ -1159,7 +1159,7 @@ export default function RewampShowcase() {
               </div>
 
               {/* Code content - tabbed sections */}
-              <div className="flex-1 overflow-auto p-4">
+              <div className="flex-1 overflow-y-auto overflow-x-hidden p-4">
                 {sourceInfo.loading ? (
                   <p className="text-neutral-400 font-mono text-xs">Loading source…</p>
                 ) : (
@@ -1177,16 +1177,24 @@ export default function RewampShowcase() {
 
                     {/* Component Code Tab */}
                     {codeTab === 'component' && (
-                      <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                        theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                      }`}>{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                      <div className={`rounded-xl border overflow-x-auto ${
+                        theme === 'light' ? 'bg-neutral-50 border-neutral-200' : 'bg-[#1a1720] border-white/[0.06]'
+                      }`}>
+                        <pre className={`p-4 font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                          theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                        }`}>{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                      </div>
                     )}
 
                     {/* CSS Tab */}
                     {codeTab === 'css' && sourceInfo.css && (
-                      <pre className={`font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                        theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                      }`}>{sourceInfo.css}</pre>
+                      <div className={`rounded-xl border overflow-x-auto ${
+                        theme === 'light' ? 'bg-neutral-50 border-neutral-200' : 'bg-[#1a1720] border-white/[0.06]'
+                      }`}>
+                        <pre className={`p-4 font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                          theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                        }`}>{sourceInfo.css}</pre>
+                      </div>
                     )}
 
                     {/* Usage Tab */}
@@ -1196,9 +1204,13 @@ export default function RewampShowcase() {
                           <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
                             theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
                           }`}>Usage Example</h4>
-                          <pre className={`p-3 rounded-xl font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                            theme === 'light' ? 'bg-neutral-50 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
-                          }`}>{sourceInfo.usage}</pre>
+                          <div className={`rounded-xl border overflow-x-auto ${
+                            theme === 'light' ? 'bg-neutral-50 border-neutral-200' : 'bg-[#1a1720] border-white/[0.06]'
+                          }`}>
+                            <pre className={`p-4 font-mono text-[12px] leading-[1.7] whitespace-pre ${
+                              theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
+                            }`}>{sourceInfo.usage}</pre>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -1210,8 +1222,8 @@ export default function RewampShowcase() {
                           <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
                             theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
                           }`}>Install Dependencies</h4>
-                          <div className={`p-3 rounded-xl font-mono text-[12px] flex items-center justify-between ${
-                            theme === 'light' ? 'bg-neutral-50 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                          <div className={`p-4 rounded-xl border font-mono text-[12px] flex items-center justify-between overflow-x-auto ${
+                            theme === 'light' ? 'bg-neutral-50 border-neutral-200 text-neutral-800' : 'bg-[#1a1720] border-white/[0.06] text-neutral-200'
                           }`}>
                             <code>npm install {sourceInfo.dependencies.join(' ')}</code>
                             <button
