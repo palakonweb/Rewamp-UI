@@ -26,7 +26,8 @@ import { categories, findComponentBySlug } from '../docsRegistry';
 import { getSiteTheme, setSiteTheme, SITE_THEME_EVENT } from '../../lib/siteTheme';
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
-import InstallSection from '../ui/InstallSection';
+import InstallSection, { CopyButton } from '../ui/InstallSection';
+import { highlightCode } from '../ui/CodeHighlight';
 import {
   GlowTextChipSkeleton,
   FolderCardSkeleton,
@@ -1041,20 +1042,27 @@ export default function RewampShowcase() {
               animate={{ width: isDesktop ? '46%' : undefined, x: 0, opacity: 1 }}
               exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
+              className={`h-full overflow-hidden flex flex-col shrink-0 border backdrop-blur-2xl ${
                 isDesktop
                   ? 'rounded-[22px] sm:rounded-[24px]'
                   : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[500px] rounded-[22px] shadow-2xl'
               } ${
-                theme === 'light'
-                  ? 'bg-white border-neutral-200/80 text-neutral-900'
-                  : 'bg-[#17151C] border-[#2B2732] text-white'
+                theme === 'light' ? 'text-neutral-900' : 'text-white'
               }`}
-              style={{ minWidth: 0 }}
+              style={{
+                minWidth: 0,
+                background: theme === 'light'
+                  ? 'linear-gradient(165deg, rgba(255,255,255,0.85) 0%, rgba(212,203,229,0.15) 100%)'
+                  : 'linear-gradient(165deg, rgba(36,32,44,0.85) 0%, rgba(196,180,224,0.08) 100%)',
+                borderColor: theme === 'light' ? 'rgba(193,180,216,0.35)' : 'rgba(193,180,216,0.18)',
+                boxShadow: theme === 'light'
+                  ? '0 24px 60px -20px rgba(193,180,216,0.35), inset 0 1px 1px rgba(255,255,255,0.9)'
+                  : '0 24px 60px -20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.06)',
+              }}
             >
               {/* Header bar with Install, Expand, Close, Copy */}
               <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+                theme === 'light' ? 'border-[#C1B4D8]/20' : 'border-[#C1B4D8]/10'
               }`}>
                 <div className="flex items-center gap-2">
                   <span className={`font-semibold text-sm ${theme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
@@ -1098,13 +1106,13 @@ export default function RewampShowcase() {
 
               {/* Code section tabs */}
               <div className={`flex items-center gap-1 px-4 py-2 border-b shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+                theme === 'light' ? 'border-[#C1B4D8]/20' : 'border-[#C1B4D8]/10'
               }`}>
                 <button
                   onClick={() => setCodeTab('install')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                     codeTab === 'install'
-                      ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                      ? 'bg-gradient-to-br from-[#D4CBE5] to-[#B8A8D4] text-neutral-900 shadow-sm'
                       : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
                   }`}
                 >
@@ -1114,7 +1122,7 @@ export default function RewampShowcase() {
                   onClick={() => setCodeTab('component')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                     codeTab === 'component'
-                      ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                      ? 'bg-gradient-to-br from-[#D4CBE5] to-[#B8A8D4] text-neutral-900 shadow-sm'
                       : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
                   }`}
                 >
@@ -1125,7 +1133,7 @@ export default function RewampShowcase() {
                     onClick={() => setCodeTab('css')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                       codeTab === 'css'
-                        ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                        ? 'bg-gradient-to-br from-[#D4CBE5] to-[#B8A8D4] text-neutral-900 shadow-sm'
                         : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
                     }`}
                   >
@@ -1137,7 +1145,7 @@ export default function RewampShowcase() {
                     onClick={() => setCodeTab('usage')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                       codeTab === 'usage'
-                        ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                        ? 'bg-gradient-to-br from-[#D4CBE5] to-[#B8A8D4] text-neutral-900 shadow-sm'
                         : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
                     }`}
                   >
@@ -1149,7 +1157,7 @@ export default function RewampShowcase() {
                     onClick={() => setCodeTab('deps')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                       codeTab === 'deps'
-                        ? (theme === 'light' ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-900')
+                        ? 'bg-gradient-to-br from-[#D4CBE5] to-[#B8A8D4] text-neutral-900 shadow-sm'
                         : (theme === 'light' ? 'text-neutral-500 hover:bg-neutral-100' : 'text-neutral-400 hover:bg-[#24202C]')
                     }`}
                   >
@@ -1159,7 +1167,7 @@ export default function RewampShowcase() {
               </div>
 
               {/* Code content - tabbed sections */}
-              <div className="flex-1 overflow-y-auto overflow-x-hidden p-4">
+              <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 no-scrollbar">
                 {sourceInfo.loading ? (
                   <p className="text-neutral-400 font-mono text-xs">Loading source…</p>
                 ) : (
@@ -1177,23 +1185,31 @@ export default function RewampShowcase() {
 
                     {/* Component Code Tab */}
                     {codeTab === 'component' && (
-                      <div className={`rounded-xl border overflow-x-auto ${
-                        theme === 'light' ? 'bg-neutral-50 border-neutral-200' : 'bg-[#1a1720] border-white/[0.06]'
-                      }`}>
-                        <pre className={`p-4 font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                          theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                        }`}>{sourceInfo.code || '// Source unavailable for this component'}</pre>
+                      <div className={`rounded-[26px] p-2 pb-0 shadow-sm ${theme === 'light' ? 'bg-neutral-200' : 'bg-[#0D0B12]'}`}>
+                        <div className={`rounded-2xl overflow-x-auto no-scrollbar ${theme === 'light' ? 'bg-white' : 'bg-[#1A1720]'}`}>
+                          <pre className="p-4 font-mono text-[12px] leading-[1.7] whitespace-pre">
+                            {sourceInfo.code ? highlightCode(sourceInfo.code, theme) : (
+                              <span className={theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'}>// Source unavailable for this component</span>
+                            )}
+                          </pre>
+                        </div>
+                        <div className="flex items-center justify-between px-3 py-3">
+                          <span className={`text-[11px] font-mono ${theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>Component</span>
+                          <CopyButton text={sourceInfo.code || ''} highlighted />
+                        </div>
                       </div>
                     )}
 
                     {/* CSS Tab */}
                     {codeTab === 'css' && sourceInfo.css && (
-                      <div className={`rounded-xl border overflow-x-auto ${
-                        theme === 'light' ? 'bg-neutral-50 border-neutral-200' : 'bg-[#1a1720] border-white/[0.06]'
-                      }`}>
-                        <pre className={`p-4 font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                          theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                        }`}>{sourceInfo.css}</pre>
+                      <div className={`rounded-[26px] p-2 pb-0 shadow-sm ${theme === 'light' ? 'bg-neutral-200' : 'bg-[#0D0B12]'}`}>
+                        <div className={`rounded-2xl overflow-x-auto no-scrollbar ${theme === 'light' ? 'bg-white' : 'bg-[#1A1720]'}`}>
+                          <pre className="p-4 font-mono text-[12px] leading-[1.7] whitespace-pre">{highlightCode(sourceInfo.css, theme)}</pre>
+                        </div>
+                        <div className="flex items-center justify-between px-3 py-3">
+                          <span className={`text-[11px] font-mono ${theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>styles.css</span>
+                          <CopyButton text={sourceInfo.css} highlighted />
+                        </div>
                       </div>
                     )}
 
@@ -1204,12 +1220,14 @@ export default function RewampShowcase() {
                           <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
                             theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
                           }`}>Usage Example</h4>
-                          <div className={`rounded-xl border overflow-x-auto ${
-                            theme === 'light' ? 'bg-neutral-50 border-neutral-200' : 'bg-[#1a1720] border-white/[0.06]'
-                          }`}>
-                            <pre className={`p-4 font-mono text-[12px] leading-[1.7] whitespace-pre ${
-                              theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'
-                            }`}>{sourceInfo.usage}</pre>
+                          <div className={`rounded-[26px] p-2 pb-0 shadow-sm ${theme === 'light' ? 'bg-neutral-200' : 'bg-[#0D0B12]'}`}>
+                            <div className={`rounded-2xl overflow-x-auto no-scrollbar ${theme === 'light' ? 'bg-white' : 'bg-[#1A1720]'}`}>
+                              <pre className="p-4 font-mono text-[12px] leading-[1.7] whitespace-pre">{highlightCode(sourceInfo.usage, theme)}</pre>
+                            </div>
+                            <div className="flex items-center justify-between px-3 py-3">
+                              <span className={`text-[11px] font-mono ${theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>Usage</span>
+                              <CopyButton text={sourceInfo.usage} highlighted />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1222,20 +1240,14 @@ export default function RewampShowcase() {
                           <h4 className={`text-xs font-mono uppercase tracking-wider mb-2 ${
                             theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
                           }`}>Install Dependencies</h4>
-                          <div className={`p-4 rounded-xl border font-mono text-[12px] flex items-center justify-between overflow-x-auto ${
-                            theme === 'light' ? 'bg-neutral-50 border-neutral-200 text-neutral-800' : 'bg-[#1a1720] border-white/[0.06] text-neutral-200'
-                          }`}>
-                            <code>npm install {sourceInfo.dependencies.join(' ')}</code>
-                            <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(`npm install ${sourceInfo.dependencies.join(' ')}`);
-                                setCopiedInstall(true);
-                                setTimeout(() => setCopiedInstall(false), 2000);
-                              }}
-                              className="text-neutral-400 hover:text-neutral-800 dark:hover:text-white cursor-pointer shrink-0 ml-2"
-                            >
-                              {copiedInstall ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                            </button>
+                          <div className={`rounded-[26px] p-2 pb-0 shadow-sm ${theme === 'light' ? 'bg-neutral-200' : 'bg-[#0D0B12]'}`}>
+                            <div className={`rounded-2xl px-4 py-3 font-mono text-[12px] overflow-x-auto no-scrollbar ${theme === 'light' ? 'bg-white' : 'bg-[#1A1720]'}`}>
+                              <code>{highlightCode(`npm install ${sourceInfo.dependencies.join(' ')}`, theme)}</code>
+                            </div>
+                            <div className="flex items-center justify-between px-3 py-3">
+                              <span className={`text-[11px] font-mono ${theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>Terminal</span>
+                              <CopyButton text={`npm install ${sourceInfo.dependencies.join(' ')}`} highlighted />
+                            </div>
                           </div>
                         </div>
                         <div>
@@ -1275,20 +1287,27 @@ export default function RewampShowcase() {
               animate={{ width: isDesktop ? '46%' : undefined, x: 0, opacity: 1 }}
               exit={{ width: isDesktop ? 0 : undefined, x: isDesktop ? 0 : 40, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-              className={`h-full overflow-hidden flex flex-col shrink-0 border ${
+              className={`h-full overflow-hidden flex flex-col shrink-0 border backdrop-blur-2xl ${
                 isDesktop
                   ? 'rounded-[22px] sm:rounded-[24px]'
                   : 'fixed inset-y-2 right-2 z-50 w-[calc(100%-16px)] sm:w-[500px] rounded-[22px] shadow-2xl'
               } ${
-                theme === 'light'
-                  ? 'bg-white border-neutral-200/80 text-neutral-900'
-                  : 'bg-[#17151C] border-[#2B2732] text-white'
+                theme === 'light' ? 'text-neutral-900' : 'text-white'
               }`}
-              style={{ minWidth: 0 }}
+              style={{
+                minWidth: 0,
+                background: theme === 'light'
+                  ? 'linear-gradient(165deg, rgba(255,255,255,0.85) 0%, rgba(212,203,229,0.15) 100%)'
+                  : 'linear-gradient(165deg, rgba(36,32,44,0.85) 0%, rgba(196,180,224,0.08) 100%)',
+                borderColor: theme === 'light' ? 'rgba(193,180,216,0.35)' : 'rgba(193,180,216,0.18)',
+                boxShadow: theme === 'light'
+                  ? '0 24px 60px -20px rgba(193,180,216,0.35), inset 0 1px 1px rgba(255,255,255,0.9)'
+                  : '0 24px 60px -20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.06)',
+              }}
             >
               {/* Header bar */}
               <div className={`flex items-center justify-between px-4 py-3 border-b shrink-0 ${
-                theme === 'light' ? 'border-neutral-200' : 'border-[#2B2732]'
+                theme === 'light' ? 'border-[#C1B4D8]/20' : 'border-[#C1B4D8]/10'
               }`}>
                 <div className="flex items-center gap-2">
                   <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${

@@ -1,8 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Terminal, LayoutTemplate, Zap, Package, Compass, Heart, Github, Twitter, Wand2, Layers, Droplets } from 'lucide-react';
 import { SiteFooter } from '../components/sections/SiteFooter';
+import { highlightCode } from '../components/ui/CodeHighlight';
+import { CopyButton } from '../components/ui/InstallSection';
+import { getSiteTheme, SITE_THEME_EVENT } from '../lib/siteTheme';
+
+/** Tracks the site-wide light/dark theme so this page's cards can match it. */
+function useSiteTheme() {
+  const [theme, setTheme] = useState(getSiteTheme());
+  useEffect(() => {
+    const onChange = (e) => setTheme(e.detail?.theme || getSiteTheme());
+    window.addEventListener(SITE_THEME_EVENT, onChange);
+    return () => window.removeEventListener(SITE_THEME_EVENT, onChange);
+  }, []);
+  return theme;
+}
+
+// "Dip" card: a tray sits behind everything; the code pane is inset with an
+// even margin on top/left/right but no margin at the bottom, so the tray
+// peeks out only below as a thick rounded footer reveal carrying the
+// filename + a highlighted Copy action. Adapts to the site's light/dark mode.
+function CodeCard({ label, footerRight, copyText, className = '', children }) {
+  const theme = useSiteTheme();
+  const isLight = theme !== 'dark';
+  return (
+    <div className={`rounded-[26px] p-2 pb-0 shadow-sm ${isLight ? 'bg-neutral-200' : 'bg-[#0D0B12]'} ${className}`}>
+      <div className={`rounded-2xl p-4 overflow-x-auto no-scrollbar ${isLight ? 'bg-white' : 'bg-[#1A1720]'}`}>
+        {children}
+      </div>
+      <div className="flex items-center justify-between gap-3 px-3 py-3">
+        <span className={`text-[11px] font-mono ${isLight ? 'text-neutral-500' : 'text-neutral-400'}`}>{label}</span>
+        <div className="flex items-center gap-2">
+          {footerRight}
+          {copyText && <CopyButton text={copyText} highlighted />}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const CLI_RUNNERS = [
   { id: 'npm', label: 'npm', runner: 'npx' },
@@ -133,33 +170,31 @@ export function DocumentationPage() {
                 To use Rewamp UI components, you need a React environment with Tailwind CSS and Framer Motion installed.
               </p>
 
-              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08] mb-8">
-                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
-                  <Terminal size={14} className="text-gray-500 mr-2" />
-                  <span className="text-[11px] font-mono text-gray-400">Terminal</span>
-                </div>
-                <div className="p-4 text-[13px] font-mono text-gray-300">
-                  <span className="text-pink-400">npm</span> install framer-motion lucide-react clsx tailwind-merge
-                </div>
-              </div>
+              <CodeCard
+                label="Terminal"
+                className="mb-8"
+                copyText="npm install framer-motion lucide-react clsx tailwind-merge"
+              >
+                <pre className="text-[13px] font-mono whitespace-pre">{highlightCode('npm install framer-motion lucide-react clsx tailwind-merge', 'light')}</pre>
+              </CodeCard>
 
               <h3 className="text-base font-semibold mb-3 text-[var(--text)]">Utility Setup</h3>
               <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-4">
                 Many of our advanced components use a `cn` utility to merge Tailwind classes cleanly. Create a `utils.js` file in your `lib` folder:
               </p>
 
-              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08]">
-                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
-                  <span className="text-[11px] font-mono text-gray-400">lib/utils.js</span>
-                </div>
-                <div className="p-4 text-[13px] font-mono text-gray-300 whitespace-pre">
-<span className="text-purple-400">import</span> {'{ clsx }'} <span className="text-purple-400">from</span> <span className="text-green-400">"clsx"</span>;{'\n'}
-<span className="text-purple-400">import</span> {'{ twMerge }'} <span className="text-purple-400">from</span> <span className="text-green-400">"tailwind-merge"</span>;{'\n\n'}
-<span className="text-purple-400">export function</span> <span className="text-blue-400">cn</span>(...inputs) {'{'}{'\n'}
-{'  '}<span className="text-purple-400">return</span> <span className="text-blue-400">twMerge</span>(<span className="text-blue-400">clsx</span>(inputs));{'\n'}
-{'}'}
-                </div>
-              </div>
+              <CodeCard
+                label="lib/utils.js"
+                copyText={`import { clsx } from "clsx";\nimport { twMerge } from "tailwind-merge";\n\nexport function cn(...inputs) {\n  return twMerge(clsx(inputs));\n}`}
+              >
+                <pre className="text-[13px] font-mono leading-[1.7] whitespace-pre">{highlightCode(
+`import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}`, 'light')}</pre>
+              </CodeCard>
             </section>
 
             <hr className="border-[var(--border)] mb-16" />
@@ -176,32 +211,32 @@ export function DocumentationPage() {
                 drops a component's source file and its dependencies straight into your project with one command.
               </p>
 
-              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08] mb-6">
-                <div className="flex items-center justify-between px-4 py-2 bg-[#252526] border-b border-gray-800">
-                  <div className="flex items-center">
-                    <Terminal size={14} className="text-gray-500 mr-2" />
-                    <span className="text-[11px] font-mono text-gray-400">Terminal</span>
-                  </div>
+              <CodeCard
+                label="Terminal"
+                className="mb-6"
+                copyText={`${activeCliRunner} rewampui add theme-toggle\n${activeCliRunner} rewampui add arch-card-carousel theme-toggle\n${activeCliRunner} rewampui add --all`}
+                footerRight={
                   <div className="flex items-center gap-1">
                     {CLI_RUNNERS.map((p) => (
                       <button
                         key={p.id}
                         onClick={() => setCliPm(p.id)}
                         className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
-                          cliPm === p.id ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'
+                          cliPm === p.id ? 'text-white' : 'text-neutral-500 hover:text-neutral-700'
                         }`}
+                        style={cliPm === p.id ? { background: '#9B7FC7' } : undefined}
                       >
                         {p.label}
                       </button>
                     ))}
                   </div>
-                </div>
-                <div className="p-4 text-[13px] font-mono text-gray-300 space-y-1.5">
-                  <div><span className="text-pink-400">{activeCliRunner}</span> rewampui add theme-toggle</div>
-                  <div><span className="text-pink-400">{activeCliRunner}</span> rewampui add arch-card-carousel theme-toggle</div>
-                  <div><span className="text-pink-400">{activeCliRunner}</span> rewampui add --all</div>
-                </div>
-              </div>
+                }
+              >
+                <pre className="text-[13px] font-mono leading-[1.9] whitespace-pre">{highlightCode(
+`${activeCliRunner} rewampui add theme-toggle
+${activeCliRunner} rewampui add arch-card-carousel theme-toggle
+${activeCliRunner} rewampui add --all`, 'light')}</pre>
+              </CodeCard>
 
               <p className="text-[13px] text-[var(--text-2)] leading-relaxed">
                 <code className="px-1 py-0.5 rounded text-[12px] font-mono bg-[var(--elevated)]">add &lt;component...&gt;</code> accepts one or
@@ -224,18 +259,18 @@ export function DocumentationPage() {
                 Spring physics (stiffness, damping, mass) react naturally to interruption — dragging, re-hovering, or
                 toggling mid-animation never snaps or resets, it just retargets from the current velocity.
               </p>
-              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08]">
-                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
-                  <span className="text-[11px] font-mono text-gray-400">example.jsx</span>
-                </div>
-                <div className="p-4 text-[13px] font-mono text-gray-300 whitespace-pre">
-<span className="text-purple-400">import</span> {'{ motion }'} <span className="text-purple-400">from</span> <span className="text-green-400">"framer-motion"</span>;{'\n\n'}
-<span className="text-blue-400">&lt;motion.div</span>{'\n'}
-{'  '}layout{'\n'}
-{'  '}transition={'{{'} type: <span className="text-green-400">"spring"</span>, stiffness: <span className="text-orange-300">350</span>, damping: <span className="text-orange-300">32</span> {'}}'}{'\n'}
-<span className="text-blue-400">/&gt;</span>
-                </div>
-              </div>
+              <CodeCard
+                label="example.jsx"
+                copyText={`import { motion } from "framer-motion";\n\n<motion.div\n  layout\n  transition={{ type: "spring", stiffness: 350, damping: 32 }}\n/>`}
+              >
+                <pre className="text-[13px] font-mono leading-[1.7] whitespace-pre">{highlightCode(
+`import { motion } from "framer-motion";
+
+<motion.div
+  layout
+  transition={{ type: "spring", stiffness: 350, damping: 32 }}
+/>`, 'light')}</pre>
+              </CodeCard>
             </section>
 
             <hr className="border-[var(--border)] mb-16" />
@@ -273,18 +308,17 @@ export function DocumentationPage() {
                 background, a backdrop blur, and a soft inner highlight border — never a flat semi-transparent fill on
                 its own, which reads muddy against busy backgrounds.
               </p>
-              <div className="bg-[#1a1a1e] rounded-xl overflow-hidden border border-white/[0.08]">
-                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
-                  <span className="text-[11px] font-mono text-gray-400">glass.css</span>
-                </div>
-                <div className="p-4 text-[13px] font-mono text-gray-300 whitespace-pre">
-<span className="text-blue-400">.glass</span> {'{'}{'\n'}
-{'  '}background: <span className="text-green-400">linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4))</span>;{'\n'}
-{'  '}backdrop-filter: <span className="text-green-400">blur(24px)</span>;{'\n'}
-{'  '}border: <span className="text-orange-300">1px</span> solid <span className="text-green-400">rgba(255,255,255,0.6)</span>;{'\n'}
-{'}'}
-                </div>
-              </div>
+              <CodeCard
+                label="glass.css"
+                copyText={`.glass {\n  background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));\n  backdrop-filter: blur(24px);\n  border: 1px solid rgba(255,255,255,0.6);\n}`}
+              >
+                <pre className="text-[13px] font-mono leading-[1.7] whitespace-pre">{highlightCode(
+`.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.6);
+}`, 'light')}</pre>
+              </CodeCard>
             </section>
 
             <hr className="border-[var(--border)] mb-16" />

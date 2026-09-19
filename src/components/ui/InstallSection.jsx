@@ -1,6 +1,7 @@
 import React, { useState, createContext, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
+import { highlightCode } from './CodeHighlight';
 
 const SPRING = { type: 'spring', stiffness: 500, damping: 32, mass: 0.9 };
 
@@ -31,13 +32,43 @@ function usePackageManager() {
   return ctx || { pm: localPm, setPm: setLocalPm };
 }
 
-function CopyButton({ text, theme }) {
+export function CopyButton({ text, theme, highlighted = false }) {
   const [copied, setCopied] = useState(false);
   const onCopy = () => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };
+
+  if (highlighted) {
+    // Solid pill button (like the reference's "Send" action) so Copy reads
+    // as the primary action in the footer, not a quiet icon-only button.
+    return (
+      <button
+        onClick={onCopy}
+        title="Copy"
+        className="flex items-center gap-1.5 pl-3 pr-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-colors text-white"
+        style={{ background: '#9B7FC7' }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = '#8A6BB8')}
+        onMouseLeave={(e) => (e.currentTarget.style.background = '#9B7FC7')}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {copied ? (
+            <motion.span key="check" className="flex items-center gap-1.5" initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }}>
+              <Check className="w-3.5 h-3.5" />
+              <span>Copied</span>
+            </motion.span>
+          ) : (
+            <motion.span key="copy" className="flex items-center gap-1.5" initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }}>
+              <Copy className="w-3.5 h-3.5" />
+              <span>Copy</span>
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={onCopy}
@@ -62,8 +93,9 @@ function CopyButton({ text, theme }) {
 }
 
 /** Pill-shaped switch with a spring-animated sliding active background, matching ThemeToggle's physics. */
-function SlidingPillTabs({ options, value, onChange, theme, size = 'md' }) {
+function SlidingPillTabs({ options, value, onChange, theme, size = 'md', accent = 'default' }) {
   const padding = size === 'sm' ? 'px-2.5 py-1 text-[11px]' : 'px-3.5 py-1.5 text-xs';
+  const isPurple = accent === 'purple';
   return (
     <div
       className={`relative inline-flex items-center rounded-full p-1 gap-0.5 ${
@@ -78,7 +110,7 @@ function SlidingPillTabs({ options, value, onChange, theme, size = 'md' }) {
             onClick={() => onChange(opt.id)}
             className={`relative z-10 rounded-full font-medium cursor-pointer transition-colors ${padding} ${
               active
-                ? (theme === 'light' ? 'text-white' : 'text-neutral-900')
+                ? 'text-white'
                 : (theme === 'light' ? 'text-neutral-500 hover:text-neutral-700' : 'text-neutral-400 hover:text-neutral-200')
             }`}
           >
@@ -86,10 +118,11 @@ function SlidingPillTabs({ options, value, onChange, theme, size = 'md' }) {
               <motion.span
                 layoutId={`pill-${theme}-${options.map((o) => o.id).join('-')}`}
                 transition={SPRING}
-                className={`absolute inset-0 rounded-full ${theme === 'light' ? 'bg-neutral-900' : 'bg-white'}`}
+                className="absolute inset-0 rounded-full"
+                style={{ background: isPurple ? '#9B7FC7' : (theme === 'light' ? '#171717' : '#ffffff') }}
               />
             )}
-            <span className="relative">{opt.label}</span>
+            <span className="relative" style={active && !isPurple && theme !== 'light' ? { color: '#171717' } : undefined}>{opt.label}</span>
           </button>
         );
       })}
@@ -97,27 +130,27 @@ function SlidingPillTabs({ options, value, onChange, theme, size = 'md' }) {
   );
 }
 
+// "Dip" card: a grey rounded shell sits behind everything; the white code
+// pane is inset with an even margin on top/left/right but no margin at the
+// bottom, so the grey shell peeks out only below as a thick rounded footer
+// reveal — like a card resting inside a deeper tray, not a bordered header.
 function CodeBlock({ lines, theme, copyText }) {
+  const isLight = theme === 'light';
   return (
-    <div
-      className="rounded-xl overflow-hidden border"
-      style={{
-        background: '#0a0a0f',
-        borderColor: theme === 'light' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.08)',
-      }}
-    >
-      <div className="flex items-center justify-end px-3 py-2 border-b border-white/[0.06]">
-        <CopyButton text={copyText} theme="dark" />
-      </div>
-      <div className="px-4 py-3 overflow-x-auto">
+    <div className={`rounded-[26px] p-2 pb-0 shadow-sm ${isLight ? 'bg-neutral-200' : 'bg-[#0D0B12]'}`}>
+      <div className={`rounded-2xl px-4 py-3 overflow-x-auto no-scrollbar ${isLight ? 'bg-white' : 'bg-[#1A1720]'}`}>
         <pre className="text-[12.5px] leading-[1.8]" style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
           {lines.map((line, i) => (
             <div key={i} className="flex">
-              <span className="select-none w-6 shrink-0 text-right pr-3 text-neutral-600">{i + 1}</span>
-              <span className="text-neutral-200">{line}</span>
+              <span className={`select-none w-6 shrink-0 text-right pr-3 ${isLight ? 'text-neutral-400' : 'text-neutral-600'}`}>{i + 1}</span>
+              <span>{highlightCode(line, isLight ? 'light' : 'dark')}</span>
             </div>
           ))}
         </pre>
+      </div>
+      <div className="flex items-center justify-between px-3 py-3">
+        <span className={`text-[11px] font-mono ${isLight ? 'text-neutral-500' : 'text-neutral-400'}`}>Terminal</span>
+        <CopyButton text={copyText} highlighted />
       </div>
     </div>
   );
@@ -172,6 +205,7 @@ export default function InstallSection({
                 value={pm}
                 onChange={setPm}
                 theme={theme}
+                accent="purple"
                 size="sm"
               />
             </div>
