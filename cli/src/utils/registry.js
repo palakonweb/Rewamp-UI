@@ -40,12 +40,17 @@ export function listAllRegistryNames() {
 }
 
 /** Resolves a file's raw source, either from local disk (monorepo dev) or over HTTP. */
-export async function readSourceFile(source) {
+export async function readSourceFile(source, config) {
   const localPath = path.resolve(LOCAL_REGISTRY_DIR, '..', source);
   if (fs.existsSync(localPath)) {
     return fs.readFileSync(localPath, 'utf8');
   }
-  const res = await fetch(source);
-  if (!res.ok) throw new Error(`Could not fetch source file: ${source}`);
+
+  // Outside the monorepo (a real published install) there's no local registry/
+  // folder — fall back to fetching the file straight from the public GitHub repo.
+  const base = config?.repoRawUrl || config?.registryUrl?.replace(/\/registry\/?$/, '');
+  const url = base ? `${base.replace(/\/$/, '')}/${source}` : source;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Could not fetch source file: ${url}`);
   return res.text();
 }

@@ -48,7 +48,7 @@ export async function runAdd(args) {
         console.log(`- skip  ${file.target} (already exists)`);
         continue;
       }
-      const source = await readSourceFile(file.source);
+      const source = await readSourceFile(file.source, config);
       fs.mkdirSync(path.dirname(targetPath), { recursive: true });
       fs.writeFileSync(targetPath, source, 'utf8');
       console.log(`+ added ${file.target}`);

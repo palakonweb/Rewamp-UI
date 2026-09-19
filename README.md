@@ -25,6 +25,14 @@ npx rewampui add arch-card-carousel theme-toggle
 npx rewampui add --all
 ```
 
+Or with another package manager's dlx runner:
+
+```bash
+pnpm dlx rewampui add theme-toggle
+bunx rewampui add theme-toggle
+yarn dlx rewampui add theme-toggle
+```
+
 The CLI lives in [`cli/`](cli) — see `cli/package.json` for details. Requires Node 18+.
 
 ## Stack

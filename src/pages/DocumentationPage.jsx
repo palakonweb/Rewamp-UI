@@ -4,8 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Terminal, LayoutTemplate, Zap, Package, Compass, Heart, Github, Twitter, Wand2, Layers, Droplets } from 'lucide-react';
 import { SiteFooter } from '../components/sections/SiteFooter';
 
+const CLI_RUNNERS = [
+  { id: 'npm', label: 'npm', runner: 'npx' },
+  { id: 'pnpm', label: 'pnpm', runner: 'pnpm dlx' },
+  { id: 'bun', label: 'bun', runner: 'bunx' },
+  { id: 'yarn', label: 'yarn', runner: 'yarn dlx' },
+];
+
 export function DocumentationPage() {
   const navigate = useNavigate();
+  const [cliPm, setCliPm] = React.useState('npm');
+  const activeCliRunner = CLI_RUNNERS.find((p) => p.id === cliPm).runner;
 
   return (
     <div className="min-h-screen bg-[var(--bg)] flex flex-col font-sans">
@@ -168,14 +177,29 @@ export function DocumentationPage() {
               </p>
 
               <div className="bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg border border-gray-800 mb-6">
-                <div className="flex items-center px-4 py-2 bg-[#252526] border-b border-gray-800">
-                  <Terminal size={14} className="text-gray-500 mr-2" />
-                  <span className="text-[11px] font-mono text-gray-400">Terminal</span>
+                <div className="flex items-center justify-between px-4 py-2 bg-[#252526] border-b border-gray-800">
+                  <div className="flex items-center">
+                    <Terminal size={14} className="text-gray-500 mr-2" />
+                    <span className="text-[11px] font-mono text-gray-400">Terminal</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {CLI_RUNNERS.map((p) => (
+                      <button
+                        key={p.id}
+                        onClick={() => setCliPm(p.id)}
+                        className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
+                          cliPm === p.id ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div className="p-4 text-[13px] font-mono text-gray-300 space-y-1.5">
-                  <div><span className="text-pink-400">npx</span> rewampui add theme-toggle</div>
-                  <div><span className="text-pink-400">npx</span> rewampui add arch-card-carousel theme-toggle</div>
-                  <div><span className="text-pink-400">npx</span> rewampui add --all</div>
+                  <div><span className="text-pink-400">{activeCliRunner}</span> rewampui add theme-toggle</div>
+                  <div><span className="text-pink-400">{activeCliRunner}</span> rewampui add arch-card-carousel theme-toggle</div>
+                  <div><span className="text-pink-400">{activeCliRunner}</span> rewampui add --all</div>
                 </div>
               </div>
 
