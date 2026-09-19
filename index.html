@@ -23,6 +23,21 @@
 </head>
 
 <body>
+  <script>
+    // Apply the persisted theme before first paint so a fresh load/navigation
+    // never flashes light mode (or renders dark-mode components against
+    // light CSS variables) while React is still hydrating. Kept in sync with
+    // the logic in src/lib/siteTheme.js — same storage key, same attribute.
+    (function () {
+      try {
+        var stored = localStorage.getItem('rewamp-theme');
+        if (stored === 'dark' || stored === 'light') {
+          document.documentElement.setAttribute('data-theme', stored);
+          document.documentElement.classList.toggle('dark', stored === 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

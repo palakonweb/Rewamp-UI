@@ -66,10 +66,10 @@ export function SiteFooter() {
           src="/ascii-art.mp4"
           className="w-full h-full object-cover"
         />
-        {/* White overlay */}
-        <div className="absolute inset-0 bg-white/85" />
+        {/* Theme-aware overlay */}
+        <div className="absolute inset-0 bg-[var(--bg)]/85" />
         {/* Top gradient fade - merges softly with section above */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent z-[1] pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[var(--bg)] to-transparent z-[1] pointer-events-none" />
       </div>
 
       {/* ── Footer Content ── */}
@@ -81,10 +81,10 @@ export function SiteFooter() {
           {/* Brand */}
           <div className="lg:w-[280px] shrink-0">
             <div className="flex items-center gap-2.5 mb-4">
-              <img src="/logo.svg" alt="RewampUI Logo" className="h-10 w-auto object-contain" />
-              <span className="font-display font-bold text-xl tracking-wide text-gray-900 uppercase">RewampUI</span>
+              <img src="/logo.svg" alt="Rewamp UI Logo" className="h-10 w-auto object-contain" />
+              <span className="font-display font-bold text-xl tracking-wide text-[var(--text)] uppercase">Rewamp UI</span>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-[240px] mb-6">
+            <p className="text-sm text-[var(--text-2)] leading-relaxed max-w-[240px] mb-6">
               AI-powered component library. Design from a sentence, ship in seconds.
             </p>
             <Link
@@ -99,11 +99,11 @@ export function SiteFooter() {
           <div className="flex-1 grid grid-cols-2 md:grid-cols-3 gap-10 lg:gap-8">
             {NAV_LINKS.map((group) => (
               <div key={group.title}>
-                <h4 className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-5">{group.title}</h4>
+                <h4 className="text-[11px] font-bold text-[var(--text)] uppercase tracking-widest mb-5">{group.title}</h4>
                 <ul className="space-y-3">
                   {group.links.map((link) => (
                     <li key={link.name}>
-                      <Link to={link.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{link.name}</Link>
+                      <Link to={link.href} className="text-sm text-[var(--text-2)] hover:text-[var(--text)] transition-colors">{link.name}</Link>
                     </li>
                   ))}
                 </ul>
@@ -113,14 +113,14 @@ export function SiteFooter() {
 
           {/* Socials */}
           <div className="lg:w-[180px] shrink-0">
-            <h4 className="text-[11px] font-bold text-gray-900 uppercase tracking-widest mb-5">Connect</h4>
+            <h4 className="text-[11px] font-bold text-[var(--text)] uppercase tracking-widest mb-5">Connect</h4>
             <div className="flex gap-3">
               {SOCIALS.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
                   aria-label={social.name}
-                  className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-all"
+                  className="w-10 h-10 rounded-full bg-[var(--elevated)] hover:bg-[var(--border)] flex items-center justify-center text-[var(--text-2)] hover:text-[var(--text)] transition-all"
                 >
                   {social.icon}
                 </a>
@@ -131,17 +131,17 @@ export function SiteFooter() {
         </div>
 
         {/* Divider */}
-        <div className="w-full h-px bg-gray-200 mb-8" />
+        <div className="w-full h-px bg-[var(--border)] mb-8" />
 
         {/* Bottom: Copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-[var(--text-3)]">
             © {new Date().getFullYear()} Rewamp UI. All rights reserved.
           </p>
-          <div className="flex items-center gap-6 text-xs text-gray-400">
-            <a href="#" className="hover:text-gray-600 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-gray-600 transition-colors">Terms</a>
-            <a href="#" className="hover:text-gray-600 transition-colors">Cookies</a>
+          <div className="flex items-center gap-6 text-xs text-[var(--text-3)]">
+            <a href="#" className="hover:text-[var(--text-2)] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[var(--text-2)] transition-colors">Terms</a>
+            <a href="#" className="hover:text-[var(--text-2)] transition-colors">Cookies</a>
           </div>
         </div>
       </div>

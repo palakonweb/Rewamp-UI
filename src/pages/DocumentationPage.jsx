@@ -30,9 +30,9 @@ function CodeCard({ label, footerRight, copyText, className = '', children }) {
       <div className={`rounded-2xl p-4 overflow-x-auto no-scrollbar ${isLight ? 'bg-white' : 'bg-[#1A1720]'}`}>
         {children}
       </div>
-      <div className="flex items-center justify-between gap-3 px-3 py-3">
+      <div className="flex items-center justify-between flex-wrap gap-y-2 gap-x-3 px-3 py-3">
         <span className={`text-[11px] font-mono ${isLight ? 'text-neutral-500' : 'text-neutral-400'}`}>{label}</span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {footerRight}
           {copyText && <CopyButton text={copyText} highlighted />}
         </div>
@@ -82,7 +82,7 @@ export function DocumentationPage() {
         </div>
       </nav>
 
-      <div className="flex-1 flex w-full max-w-[1400px] mx-auto">
+      <div className="flex-1 flex w-full max-w-[1400px] mx-auto min-w-0">
 
         {/* Sidebar */}
         <aside className="hidden lg:flex flex-col w-[280px] shrink-0 border-r border-[var(--border)] sticky top-16" style={{ height: 'calc(100vh - 64px)' }}>
@@ -109,7 +109,7 @@ export function DocumentationPage() {
         </aside>
 
         {/* Content */}
-        <main className="flex-1 max-w-[800px] p-4 sm:p-8 md:p-12 lg:p-16">
+        <main className="flex-1 min-w-0 max-w-[800px] p-4 sm:p-8 md:p-12 lg:p-16 overflow-x-hidden">
           {/* Mobile section quick jump */}
           <div className="lg:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-4 border-b border-[var(--border)]">
             <a href="#introduction" className="shrink-0 px-3 py-1.5 text-xs bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] rounded-lg text-[var(--text)] font-medium">Intro</a>
