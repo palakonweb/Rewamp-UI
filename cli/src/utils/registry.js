@@ -24,7 +24,12 @@ export async function fetchRegistryItem(name, config) {
   }
 
   const url = `${config.registryUrl.replace(/\/$/, '')}/${name}.json`;
-  const res = await fetch(url);
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (err) {
+    throw new Error(`Network request failed fetching ${url}: ${err.message}`, { cause: err.cause || err });
+  }
   if (!res.ok) {
     throw new Error(`Component "${name}" not found in registry (${url})`);
   }
@@ -50,7 +55,12 @@ export async function readSourceFile(source, config) {
   // folder — fall back to fetching the file straight from the public GitHub repo.
   const base = config?.repoRawUrl || config?.registryUrl?.replace(/\/registry\/?$/, '');
   const url = base ? `${base.replace(/\/$/, '')}/${source}` : source;
-  const res = await fetch(url);
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (err) {
+    throw new Error(`Network request failed fetching ${url}: ${err.message}`, { cause: err.cause || err });
+  }
   if (!res.ok) throw new Error(`Could not fetch source file: ${url}`);
   return res.text();
 }

@@ -36,5 +36,11 @@ Examples:
 
 main().catch((err) => {
   console.error(`✖ ${err.message}`);
+  // Node's fetch() wraps the real reason (DNS failure, TLS interception,
+  // proxy refusal, etc.) in `.cause` and reports only the generic "fetch
+  // failed" as the top-level message — surface it so this is debuggable.
+  if (err.cause) {
+    console.error(`  cause: ${err.cause.message || err.cause}`);
+  }
   process.exit(1);
 });
