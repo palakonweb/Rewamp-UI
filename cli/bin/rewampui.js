@@ -42,5 +42,11 @@ main().catch((err) => {
   if (err.cause) {
     console.error(`  cause: ${err.cause.message || err.cause}`);
   }
+  if (/fetch/i.test(err.message)) {
+    const proxyVars = ['HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy', 'NO_PROXY', 'no_proxy', 'NODE_EXTRA_CA_CERTS'];
+    const setProxyVars = proxyVars.filter((k) => process.env[k]);
+    console.error(`  node: ${process.version}`);
+    console.error(`  proxy env vars set: ${setProxyVars.length ? setProxyVars.map((k) => `${k}=${process.env[k]}`).join(', ') : 'none'}`);
+  }
   process.exit(1);
 });
