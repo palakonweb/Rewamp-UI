@@ -1,5 +1,5 @@
 {
-  "$schema": "./registry/schema.json",
+  "$schema": "https://raw.githubusercontent.com/palakonweb/Rewamp-UI/main/registry/schema.json",
   "aliases": {
     "components": "src/components/ui",
     "utils": "src/lib"
@@ -7,5 +7,6 @@
   "tailwind": {
     "css": "src/index.css"
   },
-  "registryUrl": "https://rewampui.dev/r"
+  "registryUrl": "https://raw.githubusercontent.com/palakonweb/Rewamp-UI/main/registry",
+  "repoRawUrl": "https://raw.githubusercontent.com/palakonweb/Rewamp-UI/main"
 }

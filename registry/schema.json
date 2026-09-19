@@ -1,5 +1,5 @@
 {
-  "$id": "https://rewampui.dev/schema/registry-item.json",
+  "$id": "https://raw.githubusercontent.com/palakonweb/Rewamp-UI/main/registry/schema.json",
   "type": "object",
   "required": ["name", "category", "files"],
   "properties": {
