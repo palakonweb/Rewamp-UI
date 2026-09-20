@@ -86,8 +86,11 @@ export default function PillTrailCursor({
 
   // Mouse target coordinates
   const mouse = useRef({ x: -500, y: -500 });
+  const lastMouse = useRef({ x: -500, y: -500 });
   const isInside = useRef(false);
   const fadeOpacity = useRef(0);
+
+  const effectiveSpacing = spacing || 26;
 
   // Physical nodes representing each pill in the chain
   const nodes = useRef<NodePos[]>(
@@ -118,12 +121,26 @@ export default function PillTrailCursor({
     const currentNodes = nodes.current;
     if (currentNodes.length === 0) return;
 
-    // 1. Head node (index 0) smoothly tracks the mouse
-    const head = currentNodes[0];
-    head.x += (mouse.current.x - head.x) * 0.45;
-    head.y += (mouse.current.y - head.y) * 0.45;
+    // 1. Smooth fade in / out of container (never instant snap)
+    const targetFade = isInside.current ? 1 : 0;
+    fadeOpacity.current += (targetFade - fadeOpacity.current) * (isInside.current ? 0.14 : 0.075);
+    if (fadeOpacity.current < 0.002 && !isInside.current) {
+      fadeOpacity.current = 0;
+    }
 
-    // 2. Each subsequent node follows the previous node with distance constraint
+    // 2. Velocity-responsive dynamic spacing
+    const mouseSpeed = Math.hypot(mouse.current.x - lastMouse.current.x, mouse.current.y - lastMouse.current.y);
+    lastMouse.current = { ...mouse.current };
+    const dynamicSpacing = Math.min(effectiveSpacing + 12, effectiveSpacing + mouseSpeed * 0.35);
+
+    // 3. Head node (index 0) smoothly tracks the mouse
+    const head = currentNodes[0];
+    if (isInside.current || fadeOpacity.current > 0.01) {
+      head.x += (mouse.current.x - head.x) * 0.45;
+      head.y += (mouse.current.y - head.y) * 0.45;
+    }
+
+    // 4. Each subsequent node follows the previous node with distance constraint
     for (let i = 1; i < trailLength; i++) {
       const prev = currentNodes[i - 1];
       const curr = currentNodes[i];
@@ -134,40 +151,34 @@ export default function PillTrailCursor({
 
       if (dist > 0.1) {
         const angle = Math.atan2(dy, dx);
-        // Desired position at `spacing` distance behind previous node along current angle
-        const targetX = prev.x - Math.cos(angle) * spacing;
-        const targetY = prev.y - Math.sin(angle) * spacing;
+        const targetX = prev.x - Math.cos(angle) * dynamicSpacing;
+        const targetY = prev.y - Math.sin(angle) * dynamicSpacing;
 
-        // Smoothly ease toward target position
         curr.x += (targetX - curr.x) * followEase;
         curr.y += (targetY - curr.y) * followEase;
       }
     }
 
-    // 3. Smooth fade in / out of container
-    const targetFade = isInside.current ? 1 : 0;
-    fadeOpacity.current += (targetFade - fadeOpacity.current) * 0.15;
-    if (overlayRef.current) {
-      overlayRef.current.style.opacity = fadeOpacity.current.toFixed(3);
-    }
-
-    // 4. Update DOM transforms directly (zero React re-renders)
+    // 5. Update DOM transforms directly (zero React re-renders)
     for (let i = 0; i < trailLength; i++) {
       const el = pillEls.current[i];
       const node = currentNodes[i];
       if (!el || !node) continue;
 
-      // Subtle tail fade for depth (from 1.0 down to ~0.7 at the tail)
-      const tailFade = Math.max(0.7, 1 - (i / trailLength) * 0.3);
-      const pillOpacity = isInside.current ? tailFade.toFixed(3) : '0';
+      const tailFade = Math.max(0.65, 1 - (i / trailLength) * 0.35);
+      const pillOpacity = Math.max(0, fadeOpacity.current * tailFade);
 
-      // Strictly horizontal (0° rotation) - centered exactly on (node.x, node.y)
+      if (pillOpacity <= 0.001) {
+        el.style.opacity = '0';
+        continue;
+      }
+
+      el.style.opacity = pillOpacity.toFixed(3);
       el.style.transform = `translate3d(${node.x.toFixed(1)}px, ${node.y.toFixed(1)}px, 0) translate(-50%, -50%)`;
-      el.style.opacity = pillOpacity;
     }
 
     rafId.current = requestAnimationFrame(tick);
-  }, [trailLength, spacing, followEase]);
+  }, [trailLength, effectiveSpacing, followEase]);
 
   // Start / stop loop
   useEffect(() => {
@@ -178,50 +189,53 @@ export default function PillTrailCursor({
     };
   }, [tick, isTouchOnly]);
 
-  // Mouse event listeners
+  // Mouse event listeners with window boundary detection to avoid corner popping
   useEffect(() => {
     if (isTouchOnly) return;
     const el = containerRef.current;
     if (!el) return;
 
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top - 10;
-      mouse.current = { x, y };
-      isInside.current = true;
-    };
-
-    const onEnter = (e: MouseEvent) => {
+    const onMouseMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top - 10;
       mouse.current = { x, y };
 
-      // Initialize all nodes in a relaxed vertical-ish chain behind cursor
-      const currentNodes = nodes.current;
-      for (let i = 0; i < trailLength; i++) {
-        currentNodes[i] = {
-          x: x - Math.sin(i * 0.3) * 6,
-          y: y + i * spacing,
-        };
+      const isInBounds =
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+
+      if (isInBounds) {
+        if (!isInside.current && fadeOpacity.current < 0.05) {
+          // Entering fresh from completely hidden state: align chain behind cursor
+          const currentNodes = nodes.current;
+          for (let i = 0; i < trailLength; i++) {
+            currentNodes[i] = {
+              x: x - Math.sin(i * 0.3) * 6,
+              y: y + i * effectiveSpacing,
+            };
+          }
+        }
+        isInside.current = true;
+      } else {
+        isInside.current = false;
       }
-      isInside.current = true;
     };
 
-    const onLeave = () => {
+    const onMouseLeave = () => {
       isInside.current = false;
     };
 
-    el.addEventListener('mousemove', onMove);
-    el.addEventListener('mouseenter', onEnter);
-    el.addEventListener('mouseleave', onLeave);
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    el.addEventListener('mouseleave', onMouseLeave);
+
     return () => {
-      el.removeEventListener('mousemove', onMove);
-      el.removeEventListener('mouseenter', onEnter);
-      el.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('mousemove', onMouseMove);
+      el.removeEventListener('mouseleave', onMouseLeave);
     };
-  }, [containerRef, isTouchOnly, trailLength, spacing]);
+  }, [containerRef, isTouchOnly, trailLength, effectiveSpacing]);
 
   if (isTouchOnly) {
     return (

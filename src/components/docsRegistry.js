@@ -211,6 +211,7 @@ export const categories = [
             makeLazy('Fluid Morph Orb', 'fluid-morph-orb', () => import('./ui/FluidMorphOrbShowcase'), 'FluidMorphOrbShowcase'),
             makeLazy('Wireframe Ring Orb', 'wireframe-ring-orb', () => import('./ui/WireframeRingOrbShowcase'), 'WireframeRingOrbShowcase'),
             makeLazy('Particle Morph Orb', 'particle-morph-orb', () => import('./ui/ParticleMorphOrbShowcase'), 'ParticleMorphOrbShowcase'),
+            makeLazy('Gooey Metaball Ring', 'gooey-metaball-ring', () => import('./ui/GooeyMetaballRingShowcase'), 'GooeyMetaballRingShowcase'),
         ],
     },
 ];
