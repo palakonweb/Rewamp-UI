@@ -76,6 +76,7 @@ export const categories = [
             makeLazy('Gradient Wave Background', 'gradient-wave-background', () => import('./ui/GradientWaveBackgroundShowcase'), 'GradientWaveBackgroundShowcase'),
             makeLazy('Pixel Cloud Background', 'pixel-cloud-background', () => import('./ui/PixelCloudBackgroundShowcase'), 'PixelCloudBackgroundShowcase'),
             makeLazy('Silk Waves Background', 'silk-waves-background', () => import('./ui/SilkWavesBackgroundShowcase'), 'SilkWavesBackgroundShowcase'),
+            makeLazy('Singularity Flare Background', 'singularity-flare-background', () => import('./ui/SingularityFlareBackgroundShowcase'), 'SingularityFlareBackgroundShowcase'),
             makeLazy('Layered Paper Waves Background', 'layered-paper-waves-background', () => import('./ui/LayeredPaperWavesBackgroundShowcase'), 'LayeredPaperWavesBackgroundShowcase'),
         ],
     },
@@ -211,7 +212,6 @@ export const categories = [
             makeLazy('Fluid Morph Orb', 'fluid-morph-orb', () => import('./ui/FluidMorphOrbShowcase'), 'FluidMorphOrbShowcase'),
             makeLazy('Wireframe Ring Orb', 'wireframe-ring-orb', () => import('./ui/WireframeRingOrbShowcase'), 'WireframeRingOrbShowcase'),
             makeLazy('Particle Morph Orb', 'particle-morph-orb', () => import('./ui/ParticleMorphOrbShowcase'), 'ParticleMorphOrbShowcase'),
-            makeLazy('Gooey Metaball Ring', 'gooey-metaball-ring', () => import('./ui/GooeyMetaballRingShowcase'), 'GooeyMetaballRingShowcase'),
         ],
     },
 ];

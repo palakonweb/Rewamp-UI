@@ -3,10 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * MorphSearchCapsule
- * Faithful recreation of Recording 2026-09-15 204056.mp4:
- * Sleek grey pill capsule with click ripple physics and an animated search icon
- * that turns and morphs smoothly from a magnifying glass into a single blinking vertical input caret.
- * Supports both Light Mode Grey and Dark Mode Grey.
+ * Sleek, tactile search pill capsule with click ripple physics and a buttery-smooth
+ * fluid SVG morph transition between the magnifying glass search icon and an animated vertical text cursor.
  */
 export function MorphSearchCapsule({
   placeholder = 'Type anything to search...',
@@ -65,7 +63,7 @@ export function MorphSearchCapsule({
     if (!isActive) {
       setIsActive(true);
     }
-    setTimeout(() => inputRef.current?.focus(), 120);
+    setTimeout(() => inputRef.current?.focus(), 80);
   };
 
   const handleBlur = (e) => {
@@ -78,7 +76,6 @@ export function MorphSearchCapsule({
   const activeMode = mode || detectedMode;
   const isDark = activeMode === 'dark';
 
-  // Refined theme palettes for both Light and Dark mode
   const theme = {
     capsule: isDark
       ? 'bg-[#1E1B24] border-white/12 text-white'
@@ -93,8 +90,10 @@ export function MorphSearchCapsule({
     rippleColor: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.08)',
     inputColor: isDark ? 'text-white' : 'text-[#18181B]',
     placeholderColor: isDark ? 'placeholder:text-white/40' : 'placeholder:text-neutral-400',
-    ambientGlow: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+    ambientGlow: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
   };
+
+  const isMorphedToCaret = isActive && !query;
 
   return (
     <div
@@ -114,10 +113,10 @@ export function MorphSearchCapsule({
       <motion.div
         onClick={handleClick}
         animate={{
-          scale: isActive ? 1.015 : 1,
+          scale: isActive ? 1.018 : 1,
         }}
         transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-        className={`relative h-[52px] sm:h-[56px] w-[270px] sm:w-[310px] rounded-full overflow-hidden flex items-center pl-5 pr-4 cursor-pointer z-10 border transition-colors duration-200 ${theme.capsule}`}
+        className={`relative h-[52px] sm:h-[56px] w-[270px] sm:w-[320px] rounded-full overflow-hidden flex items-center pl-4 pr-4 cursor-pointer z-10 border transition-colors duration-200 ${theme.capsule}`}
         style={{
           boxShadow: theme.shadow,
         }}
@@ -128,7 +127,7 @@ export function MorphSearchCapsule({
           style={{ boxShadow: theme.innerGlow }}
         />
 
-        {/* Dynamic Click Ripple from Video Frame 0 */}
+        {/* Dynamic Click Ripple */}
         {ripples.map((r) => (
           <motion.span
             key={r.id}
@@ -146,94 +145,105 @@ export function MorphSearchCapsule({
           />
         ))}
 
-        {/* Morphing Icon: Magnifying Glass -> Blinking Text Caret '|' */}
-        <div className="relative w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2.5">
+        {/* ── Seamless Fluid SVG Search Icon ↔ Cursor Morph ── */}
+        <div className="relative w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2">
           <svg
             viewBox="0 0 24 24"
             className="w-6 h-6 overflow-visible"
             fill="none"
-            stroke={theme.iconColor}
-            strokeWidth="2.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
           >
-            {/* Circle lens that turns, squishes horizontally and straightens into a vertical caret */}
+            {/* Morphing Lens Ring to Vertical Caret Line */}
             <motion.g
-              style={{ transformOrigin: '10.5px 10.5px' }}
+              style={{ transformOrigin: '11px 11px' }}
               animate={
-                isActive && !query
+                isMorphedToCaret
                   ? {
-                      scaleX: [1, 0.5, 0.05, 0.05],
-                      scaleY: [1, 0.85, 1.15, 1.15],
-                      rotate: [0, -45, -90, -90],
+                      rotate: -45,
+                      scaleX: 0.08,
+                      scaleY: 1.35,
+                      x: -0.5,
+                      y: 0,
                     }
                   : {
+                      rotate: 0,
                       scaleX: 1,
                       scaleY: 1,
-                      rotate: 0,
+                      x: 0,
+                      y: 0,
                     }
               }
               transition={{
-                duration: 0.38,
-                times: [0, 0.35, 0.8, 1],
-                ease: [0.16, 1, 0.3, 1],
+                type: 'spring',
+                stiffness: 380,
+                damping: 26,
+                mass: 0.8,
               }}
             >
+              {/* Luminous Pulsing Caret / Glass Lens */}
               <motion.circle
-                cx="10.5"
-                cy="10.5"
+                cx="11"
+                cy="11"
                 r="6.5"
+                stroke={theme.iconColor}
+                strokeWidth="2.4"
+                strokeLinecap="round"
                 animate={
-                  isActive && !query
+                  isMorphedToCaret
                     ? {
-                        opacity: [1, 1, 1, 0, 1],
+                        opacity: [1, 1, 0, 0, 1],
                       }
-                    : { opacity: 1 }
+                    : {
+                        opacity: 1,
+                      }
                 }
                 transition={
-                  isActive && !query
+                  isMorphedToCaret
                     ? {
                         opacity: {
                           repeat: Infinity,
-                          duration: 0.9,
-                          delay: 0.45,
-                          ease: 'linear',
+                          duration: 1.0,
+                          delay: 0.35,
+                          ease: 'easeInOut',
                           times: [0, 0.45, 0.5, 0.95, 1],
                         },
                       }
-                    : { duration: 0.2 }
+                    : { duration: 0.15 }
                 }
               />
             </motion.g>
 
-            {/* Handle that retracts into the lens and fades out */}
+            {/* Magnifier Diagonal Stem Handle (Retracts smoothly into lens) */}
             <motion.line
+              stroke={theme.iconColor}
+              strokeWidth="2.4"
+              strokeLinecap="round"
               animate={
-                isActive && !query
+                isMorphedToCaret
                   ? {
-                      x1: 15,
-                      y1: 15,
-                      x2: 15,
-                      y2: 15,
+                      x1: 15.5,
+                      y1: 15.5,
+                      x2: 15.5,
+                      y2: 15.5,
                       opacity: 0,
                     }
                   : {
-                      x1: 15,
-                      y1: 15,
-                      x2: 20.5,
-                      y2: 20.5,
+                      x1: 15.8,
+                      y1: 15.8,
+                      x2: 20.8,
+                      y2: 20.8,
                       opacity: 1,
                     }
               }
               transition={{
-                duration: 0.2,
-                ease: 'easeInOut',
+                type: 'spring',
+                stiffness: 420,
+                damping: 28,
               }}
             />
           </svg>
         </div>
 
-        {/* Real Interactive Text Input with hidden native caret when !query so there is ONLY ONE cursor */}
+        {/* Real Interactive Text Input */}
         <div className="flex-1 relative flex items-center h-full">
           <input
             ref={inputRef}
@@ -249,7 +259,7 @@ export function MorphSearchCapsule({
             style={{
               caretColor: query ? (isDark ? '#FFFFFF' : '#18181B') : 'transparent',
             }}
-            className={`w-full bg-transparent font-medium outline-none text-[15px] tracking-normal cursor-text ${theme.inputColor} ${theme.placeholderColor}`}
+            className={`w-full bg-transparent font-medium outline-none text-[15px] tracking-normal cursor-text transition-all duration-200 ${theme.inputColor} ${theme.placeholderColor}`}
           />
         </div>
 
@@ -258,13 +268,14 @@ export function MorphSearchCapsule({
           <motion.button
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
             onClick={(e) => {
               e.stopPropagation();
               setQuery('');
               onSearch?.('');
               inputRef.current?.focus();
             }}
-            className={`w-5 h-5 rounded-full flex items-center justify-center text-xs opacity-60 hover:opacity-100 transition-opacity ${
+            className={`w-5 h-5 rounded-full flex items-center justify-center text-xs opacity-60 hover:opacity-100 transition-opacity cursor-pointer ${
               isDark ? 'bg-white/10 text-white' : 'bg-black/10 text-black'
             }`}
           >

@@ -590,17 +590,15 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
+  "singularity-flare-background": `Create a dynamic WebGL Singularity Flare Background with flowing chromatic gradient motion in React:
+- Visual Identity: Exponential trumpet/funnel horn flare on a deep obsidian canvas tapering into an ultra-sharp glowing laser beam along the horizon. Features flowing iridescent violet/magenta, oceanic azure, electric cyan plasma waves, incandescent white-hot core, and twinkling stardust rim particles.
+- Interactive Mechanics: Real-time GPU fluid wave motion, traveling laser solitons, interactive mouse parallax / gravitational lensing, and customizable color themes/speed.
+- Tech Stack: React, Three.js, WebGL GLSL Shaders, Tailwind CSS.
+- Dependencies: npm install three lucide-react clsx tailwind-merge`,
+
   "data-viz-bento": `Create a Dark Analytics Dashboard Bento Grid in React:
 - Visual Identity: Dark analytics dashboard bento grid with animated SVG sparkline drawing, animated donut chart, spring-up bar charts, and eased number counters.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
-  "gooey-metaball-ring": `Create an organic Gooey Metaball Ring component in React:
-- Visual Identity: Organic liquid metaball droplets orbiting an elliptical ring path matching Recording 2026-09-20 182252.mp4.
-- Fluid Fusion: As droplets approach each other along the ring, they form liquid bridges, fuse into larger fluid masses, and stretch and snap apart dynamically with surface tension.
-- SVG Filter: Uses high-threshold feGaussianBlur + feColorMatrix for seamless fluid fusion.
-- Interactive Mechanics: Real-time mouse gravity repulsion and harmonic speed modulations.
-- Tech Stack: React, SVG Filters, Tailwind CSS, Framer Motion.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 };
 

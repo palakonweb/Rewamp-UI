@@ -155,33 +155,12 @@ export function Editorial3DOrbitCarousel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full max-w-full h-[340px] sm:h-[400px] md:h-[440px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[20px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-full h-[340px] sm:h-[400px] md:h-[440px] overflow-visible select-none cursor-grab active:cursor-grabbing bg-transparent flex items-center justify-center ${className}`}
       style={{
         perspective: 1400,
         isolation: 'isolate',
       }}
     >
-      {/* Top Header Controls */}
-      <div className="absolute top-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800 dark:text-neutral-200">
-        <button
-          onClick={() => setCurrentStep((prev) => prev - 1)}
-          className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
-          title="Previous tick"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </button>
-        <span className="font-mono text-xs tracking-widest uppercase font-semibold opacity-70">
-          SHOWCASE 11
-        </span>
-        <button
-          onClick={() => setIsPaused((prev) => !prev)}
-          className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors pointer-events-auto cursor-pointer"
-          title={isPaused ? 'Resume ticking' : 'Pause ticking'}
-        >
-          {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-        </button>
-      </div>
-
       {/* Cards Engine Anchor */}
       <div className="relative w-0 h-0 flex items-center justify-center pointer-events-none">
         {cards.map((card, idx) => {
@@ -275,38 +254,6 @@ export function Editorial3DOrbitCarousel({
             </motion.div>
           );
         })}
-      </div>
-
-      {/* Bottom Footer Navigation */}
-      <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between pointer-events-none z-20 text-neutral-800 dark:text-neutral-200 text-xs">
-        <button
-          onClick={() => setCurrentStep((prev) => prev - 1)}
-          className="flex items-center gap-1 hover:opacity-100 opacity-70 transition-opacity pointer-events-auto cursor-pointer"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          <span className="font-mono text-[11px] hidden sm:inline">Prev</span>
-        </button>
-        <div className="flex gap-1.5 pointer-events-auto">
-          {cards.map((_, i) => {
-            const activeIdx = ((currentStep % numCards) + numCards) % numCards;
-            return (
-              <button
-                key={i}
-                onClick={() => setCurrentStep(i)}
-                className={`h-1 rounded-full transition-all cursor-pointer ${
-                  activeIdx === i ? 'w-6 bg-neutral-900 dark:bg-white' : 'w-2 bg-neutral-300 dark:bg-neutral-700'
-                }`}
-              />
-            );
-          })}
-        </div>
-        <button
-          onClick={() => setCurrentStep((prev) => prev + 1)}
-          className="flex items-center gap-1 hover:opacity-100 opacity-70 transition-opacity pointer-events-auto cursor-pointer"
-        >
-          <span className="font-mono text-[11px] hidden sm:inline">Next</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
       </div>
     </div>
   );

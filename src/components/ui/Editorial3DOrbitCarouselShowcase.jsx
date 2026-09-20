@@ -6,8 +6,8 @@ export default function Editorial3DOrbitCarouselShowcase() {
   const [speed] = useState(1.0);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-6">
-      <div className="w-full max-w-5xl relative overflow-hidden">
+    <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-6 select-none">
+      <div className="w-full max-w-5xl relative overflow-visible flex items-center justify-center">
         <Editorial3DOrbitCarousel
           autoRotate={autoRotate}
           autoTick={true}

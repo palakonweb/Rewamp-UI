@@ -212,21 +212,23 @@ function FlowerIcon({ className = "w-4 h-4" }) {
     </svg>
   );
 }
-// Single icon in the bottom liquid-glass dock: macOS-style magnify on hover + tooltip
+// Single icon in the right-side vertical liquid-glass dock: macOS-style magnify on hover + tooltip
 function DockIcon({ children, label, onClick, theme, accent = false, active = false }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div className="relative flex items-center justify-center">
       <AnimatePresence>
         {hovered && (
           <motion.span
-            initial={{ opacity: 0, y: 4, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 4, scale: 0.9 }}
+            initial={{ opacity: 0, x: 6, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 6, scale: 0.9 }}
             transition={{ duration: 0.15 }}
-            className={`absolute -top-9 px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap pointer-events-none ${
-              theme === 'light' ? 'bg-black/85 text-white' : 'bg-white/90 text-black'
+            className={`absolute right-full mr-3 px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap pointer-events-none z-50 backdrop-blur-md ${
+              theme === 'light'
+                ? 'bg-white/95 text-neutral-900 border border-black/10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]'
+                : 'bg-[#1C1A22]/95 text-white border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.45)]'
             }`}
           >
             {label}
@@ -241,7 +243,7 @@ function DockIcon({ children, label, onClick, theme, accent = false, active = fa
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        whileHover={{ scale: 1.08, y: -2 }}
+        whileHover={{ scale: 1.10, x: -2 }}
         whileTap={{ scale: 0.94 }}
         transition={{ type: 'spring', stiffness: 340, damping: 26 }}
         title={label}
@@ -955,13 +957,13 @@ export default function RewampShowcase() {
               : 'inset 0 1px 2px rgba(255,255,255,0.04)'
           }}
         >
-          {/* Bottom-Center Liquid Glass Dock: Install, Prompt, Code, Theme */}
-          <div className="absolute bottom-3 sm:bottom-5 inset-x-0 z-30 flex items-center justify-center pointer-events-none px-2">
+          {/* Vertical Right-Side Liquid Glass Dock: Install, Code, Info, Theme */}
+          <div className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center justify-center pointer-events-none">
             <div
-              className="pointer-events-auto flex items-end gap-2 sm:gap-4 rounded-[22px] sm:rounded-[26px] px-2.5 sm:px-4 py-1.5 sm:py-2 backdrop-blur-2xl border max-w-[calc(100vw-20px)]"
+              className="pointer-events-auto flex flex-col items-center gap-2 sm:gap-3 rounded-[22px] sm:rounded-[26px] px-1.5 sm:px-2 py-2.5 sm:py-3.5 backdrop-blur-2xl border"
               style={{
                 background: theme === 'light'
-                  ? 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%)'
+                  ? 'linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)'
                   : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
                 borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
                 boxShadow: theme === 'light'
@@ -1017,7 +1019,7 @@ export default function RewampShowcase() {
           </div>
 
           {/* ── Centered Showcase Stage ── */}
-          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-20 sm:p-6 sm:pb-24 lg:p-10 overflow-y-auto overflow-x-hidden no-scrollbar relative">
+          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-14 pr-16 sm:p-6 sm:pr-20 lg:p-10 lg:pr-24 overflow-y-auto overflow-x-hidden no-scrollbar relative">
             <motion.div
               key={activeSlug}
               initial={{ opacity: 0, scale: 0.98 }}
