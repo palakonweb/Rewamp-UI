@@ -42,7 +42,7 @@ export default function FolderTabCardShowcase() {
   }, []);
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden">
+    <div className="relative w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 overflow-visible">
       <motion.div
         className="w-full flex items-center justify-center"
         animate={{ opacity: galleryOpen ? 0 : 1, scale: galleryOpen ? 0.94 : 1 }}
@@ -50,11 +50,11 @@ export default function FolderTabCardShowcase() {
         style={{ pointerEvents: galleryOpen ? 'none' : 'auto' }}
       >
         <FolderTabCard
-          title="Designs"
-          subtitle="Web & App Designs"
-          tagsCount="04"
-          tagsLabel="Tags"
-          shotsCount="1012 Shots"
+          title="Components"
+          subtitle="Modern UI Library"
+          tagsCount="48"
+          tagsLabel="Items"
+          shotsCount="100% Free"
           onAction={() => setGalleryOpen(true)}
         />
       </motion.div>
@@ -89,10 +89,10 @@ export default function FolderTabCardShowcase() {
                 </button>
                 <div>
                   <h3 className={`text-base sm:text-lg font-bold tracking-tight leading-none ${isDark ? 'text-white' : 'text-neutral-900'}`}>
-                    Designs
+                    Components
                   </h3>
                   <p className={`text-[11px] sm:text-xs font-medium mt-1 ${isDark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                    Web & App Designs - 1012 Shots
+                    Modern UI Library - 48 Items · 100% Free
                   </p>
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default function FolderTabCardShowcase() {
       </AnimatePresence>
 
       {!galleryOpen && (
-        <p className="mt-8 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
+        <p className="mt-3 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500 select-none">
           Click arrow to explore design
         </p>
       )}

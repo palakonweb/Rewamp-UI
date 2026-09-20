@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User } from "lucide-react";
 
@@ -7,6 +7,23 @@ const fade = { duration: 0.2, ease: [0.22, 1, 0.36, 1] };
 
 export default function BookACallButton({ onBook }) {
   const [phase, setPhase] = useState("idle"); // 'idle' | 'hover' | 'active'
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark');
+    }
+    return true;
+  });
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+
   const showCircles = phase !== "idle";
   const isActive = phase === "active";
 
@@ -22,14 +39,16 @@ export default function BookACallButton({ onBook }) {
         }}
         style={{
           width: 200,
-          background:
-            "linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.35) 100%)",
-          boxShadow:
-            "0 1px 1px rgba(255,255,255,0.9) inset, 0 -6px 10px rgba(255,255,255,0.5) inset, 0 8px 20px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)",
+          background: isDark
+            ? "linear-gradient(180deg, rgba(24, 24, 28, 0.95) 0%, rgba(10, 10, 14, 0.98) 100%)"
+            : "linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.35) 100%)",
+          boxShadow: isDark
+            ? "0 1px 1px rgba(255, 255, 255, 0.15) inset, 0 -6px 12px rgba(0, 0, 0, 0.6) inset, 0 12px 28px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3)"
+            : "0 1px 1px rgba(255, 255, 255, 0.9) inset, 0 -6px 10px rgba(255, 255, 255, 0.5) inset, 0 8px 20px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06)",
         }}
-        className={`relative h-14 rounded-full backdrop-blur-xl backdrop-saturate-150 border border-white/70 flex items-center overflow-hidden select-none cursor-pointer ${
-          isActive ? "justify-start pl-2 pr-5" : "justify-center"
-        }`}
+        className={`relative h-14 rounded-full backdrop-blur-xl border transition-colors duration-200 flex items-center overflow-hidden select-none cursor-pointer ${
+          isDark ? "border-white/15" : "border-white/70"
+        } ${isActive ? "justify-start pl-2 pr-5" : "justify-center"}`}
       >
         <AnimatePresence>
           {phase === "idle" && (
@@ -39,7 +58,9 @@ export default function BookACallButton({ onBook }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={fade}
-              className="absolute text-gray-900 text-sm font-semibold tracking-wide"
+              className={`absolute text-sm font-semibold tracking-wide ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
             >
               BOOK A CALL
             </motion.span>
@@ -61,7 +82,11 @@ export default function BookACallButton({ onBook }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -24 }}
                 transition={smooth}
-                className="relative w-9 h-9 flex-shrink-0 rounded-full overflow-hidden bg-gray-400 grayscale flex items-center justify-center ring-2 ring-white/80 shadow-sm z-0"
+                className={`relative w-9 h-9 flex-shrink-0 rounded-full overflow-hidden flex items-center justify-center shadow-sm z-0 ${
+                  isDark
+                    ? "bg-neutral-800 ring-2 ring-white/20"
+                    : "bg-gray-400 grayscale ring-2 ring-white/80"
+                }`}
               >
                 <User size={18} className="text-white" strokeWidth={1.8} />
               </motion.span>
@@ -74,7 +99,9 @@ export default function BookACallButton({ onBook }) {
                     animate={{ opacity: 1, width: "auto" }}
                     exit={{ opacity: 0, width: 0 }}
                     transition={fade}
-                    className="text-gray-700 text-sm font-medium overflow-hidden"
+                    className={`text-sm font-medium overflow-hidden ${
+                      isDark ? "text-white/70" : "text-gray-700"
+                    }`}
                   >
                     +
                   </motion.span>
@@ -87,8 +114,16 @@ export default function BookACallButton({ onBook }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 24 }}
                 transition={smooth}
-                className={`relative w-9 h-9 flex-shrink-0 rounded-full bg-white flex items-center justify-center text-black text-[10px] font-bold tracking-wide shadow-sm z-10 ${
-                  isActive ? "-ml-4 ring-2 ring-white/80" : ""
+                className={`relative w-9 h-9 flex-shrink-0 rounded-full flex items-center justify-center text-[10px] font-bold tracking-wide shadow-sm z-10 ${
+                  isDark
+                    ? "bg-white text-black"
+                    : "bg-white text-black"
+                } ${
+                  isActive
+                    ? isDark
+                      ? "-ml-4 ring-2 ring-white/30"
+                      : "-ml-4 ring-2 ring-white/80"
+                    : ""
                 }`}
               >
                 YOU
@@ -105,7 +140,9 @@ export default function BookACallButton({ onBook }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -6 }}
               transition={{ ...fade, delay: 0.05 }}
-              className="ml-3 text-gray-900 text-sm font-semibold whitespace-nowrap"
+              className={`ml-3 text-sm font-semibold whitespace-nowrap ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
             >
               Let&apos;s talk!
             </motion.span>

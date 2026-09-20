@@ -531,7 +531,7 @@ export const componentPrompts = {
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
   "folder-tab-card": `Create a tactile Folder-Tab Card with Living Aurora Mesh Gradient in React:
-- Visual Identity: Asymmetrical folder-tab cutout sheet, living aurora mesh gradient in brand lavender palette, frosted glass action button, category heading "Designs", and metrics row ("04 Tags", "1012 Shots").
+- Visual Identity: Asymmetrical folder-tab cutout sheet, living aurora mesh gradient in brand lavender palette, frosted glass action button, category heading "Components", subtitle "Modern UI Library", and metrics row ("48 Items", "100% Free").
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 

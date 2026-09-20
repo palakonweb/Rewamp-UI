@@ -4,19 +4,18 @@ import { ArrowUpRight } from 'lucide-react';
 
 /**
  * FolderTabCard
- * Recreation of Recording 2026-09-17 221637.mp4:
  * A modern tactile UI card featuring an ethereal animated mesh aurora gradient header,
  * circular diagonal glass arrow action button, and an asymmetrical folder-tab cutout sheet
  * housing category metadata and dynamic metrics.
  * 
- * Supports both dark and light modes with the brand lilac/lavender palette.
+ * Supports both dark and light modes with responsive text sizing and layout.
  */
 export default function FolderTabCard({
-  title = "Designs",
-  subtitle = "Web & App Designs",
-  tagsCount = "04",
-  tagsLabel = "Tags",
-  shotsCount = "1012 Shots",
+  title = "Components",
+  subtitle = "Modern UI Library",
+  tagsCount = "48",
+  tagsLabel = "Items",
+  shotsCount = "100% Free",
   onAction = null,
   className = "",
 }) {
@@ -41,12 +40,10 @@ export default function FolderTabCard({
   const cardRef = useRef(null);
   const [isCompact, setIsCompact] = useState(false);
 
-  // Measure the card's own rendered width (not the viewport) so the type
-  // scale shrinks correctly on real mobile AND when a side panel narrows it.
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
-    const applyWidth = (w) => setIsCompact(w < 190);
+    const applyWidth = (w) => setIsCompact(w < 220);
     applyWidth(el.getBoundingClientRect().width);
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) applyWidth(entry.contentRect.width);
@@ -67,22 +64,21 @@ export default function FolderTabCard({
   };
 
   return (
-    <div className="flex items-center justify-center p-2 w-full max-w-full">
+    <div className="flex items-center justify-center w-full max-w-full h-full max-h-full p-1 select-none">
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`relative w-full max-w-[320px] sm:max-w-[380px] rounded-[32px] sm:rounded-[38px] p-2.5 overflow-hidden select-none transition-colors duration-300 ${
+        className={`relative w-full max-w-[310px] sm:max-w-[330px] aspect-[4/5] max-h-[min(410px,100%)] rounded-[28px] sm:rounded-[32px] p-2 sm:p-2.5 overflow-hidden transition-colors duration-300 ${
           isDark
-            ? "bg-[#0c0b10] border border-white/10 shadow-[0_28px_60px_-15px_rgba(0,0,0,0.65)]"
-            : "bg-[#FFFFFF] border border-black/8 shadow-[0_24px_50px_-12px_rgba(156,142,184,0.22)]"
+            ? "bg-[#0c0b10] border border-white/10 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.65)]"
+            : "bg-[#FFFFFF] border border-black/8 shadow-[0_20px_45px_-12px_rgba(156,142,184,0.22)]"
         } ${className}`}
-        style={{ aspectRatio: '4 / 5' }}
       >
         {/* Inner Card Canvas with Rounded Corners */}
-        <div className="relative w-full h-full rounded-[30px] overflow-hidden">
+        <div className="relative w-full h-full rounded-[24px] sm:rounded-[26px] overflow-hidden">
 
-          {/* ── 1. Background Animated Mesh Gradient (Rewamp Brand Lilac Palette) ── */}
+          {/* ── 1. Background Animated Mesh Gradient (Brand Lilac Palette) ── */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {/* Base Background Tint */}
             <div 
@@ -105,7 +101,7 @@ export default function FolderTabCard({
               }}
               className="absolute -top-[35%] -left-[35%] w-[170%] h-[170%] pointer-events-none"
             >
-              {/* Blob 1: Rewamp Strong Brand Lilac (#9C8EB8 / #C1B4D8) */}
+              {/* Blob 1: Strong Brand Lilac (#9C8EB8 / #C1B4D8) */}
               <motion.div
                 animate={{
                   x: [-55, 50, -35, -55],
@@ -147,7 +143,7 @@ export default function FolderTabCard({
                 }}
               />
 
-              {/* Blob 3: Soft Ethereal Sky/Cyan Accent from video */}
+              {/* Blob 3: Soft Ethereal Sky/Cyan Accent */}
               <motion.div
                 animate={{
                   x: [40, -35, 45, 40],
@@ -163,7 +159,7 @@ export default function FolderTabCard({
                 }}
               />
 
-              {/* Blob 4: Warm Peach-Dawn Accent Surge from video */}
+              {/* Blob 4: Warm Peach-Dawn Accent */}
               <motion.div
                 animate={{
                   x: [-45, 40, -25, -45],
@@ -180,7 +176,7 @@ export default function FolderTabCard({
               />
             </motion.div>
 
-            {/* Subtle Vignette & Depth Mask */}
+            {/* Vignette */}
             <div 
               className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${
                 isDark 
@@ -188,24 +184,16 @@ export default function FolderTabCard({
                   : "bg-gradient-to-t from-white/20 via-transparent to-transparent"
               }`}
             />
-
-            {/* Subtle Fine Noise Texture for Editorial Quality */}
-            <div 
-              className="absolute inset-0 opacity-[0.035] pointer-events-none mix-blend-overlay"
-              style={{
-                backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E")',
-              }}
-            />
           </div>
 
           {/* ── 2. Top Glass Action Button (Diagonal Arrow ↗) ── */}
-          <div className={`absolute z-20 ${isCompact ? 'top-3 right-3' : 'top-5 right-5'}`}>
+          <div className="absolute z-20 top-3 right-3 sm:top-3.5 sm:right-3.5">
             <motion.button
               whileHover={{ scale: 1.1, rotate: 6 }}
               whileTap={{ scale: 0.94 }}
               onClick={onAction}
               className={`rounded-full flex items-center justify-center backdrop-blur-xl transition-colors duration-200 cursor-pointer shadow-sm ${
-                isCompact ? 'w-8 h-8' : 'w-11 h-11'
+                isCompact ? 'w-8 h-8' : 'w-9 h-9 sm:w-10 sm:h-10'
               } ${
                 isDark
                   ? "bg-white/25 hover:bg-white/35 text-white border border-white/30 shadow-black/20"
@@ -213,25 +201,25 @@ export default function FolderTabCard({
               }`}
               title="Explore Design"
             >
-              <ArrowUpRight className={`transition-transform duration-200 ${isCompact ? 'w-4 h-4' : 'w-5 h-5'}`} />
+              <ArrowUpRight className={`transition-transform duration-200 ${isCompact ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-4.5 sm:h-4.5'}`} />
             </motion.button>
           </div>
 
           {/* ── 3. Asymmetrical Folder-Tab Cutout Sheet ── */}
           <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end">
             <div className="relative w-full h-[60%]">
-              {/* SVG Cutout Silhouette Path matching Video Geometry exactly */}
+              {/* SVG Cutout Silhouette Path matching Video Geometry with generous tab width */}
               <svg
                 viewBox="0 0 380 240"
                 preserveAspectRatio="none"
-                className="absolute inset-0 w-full h-full filter drop-shadow-[0_-12px_24px_rgba(0,0,0,0.18)]"
+                className="absolute inset-0 w-full h-full filter drop-shadow-[0_-10px_20px_rgba(0,0,0,0.16)]"
               >
                 <path
                   d="M 0 28
                      A 28 28 0 0 1 28 0
-                     L 155 0
-                     A 24 24 0 0 1 179 24
-                     A 24 24 0 0 0 203 44
+                     L 180 0
+                     A 22 22 0 0 1 202 22
+                     A 22 22 0 0 0 224 44
                      L 352 44
                      A 28 28 0 0 1 380 72
                      L 380 212
@@ -247,19 +235,19 @@ export default function FolderTabCard({
 
               {/* Foreground Typography & Metrics inside the Folder Flap */}
               <div className={`relative z-20 w-full h-full flex flex-col justify-between pointer-events-auto ${
-                isCompact ? 'p-4' : 'p-7 sm:p-8'
+                isCompact ? 'p-3' : 'p-4 sm:p-5'
               }`}>
-                {/* Upper Left Tab Content */}
-                <div className="pt-1">
-                  <h3 className={`font-bold tracking-tight leading-none ${
-                    isCompact ? 'text-base' : 'text-2xl sm:text-[28px]'
+                {/* Upper Left Tab Content: strictly bounded within the 48% tab width */}
+                <div className="pt-0.5 max-w-[48%]">
+                  <h3 className={`font-bold tracking-tight leading-tight normal-case ${
+                    isCompact ? 'text-[13px]' : 'text-[15px] sm:text-[17px]'
                   } ${
                     isDark ? "text-white" : "text-neutral-900"
                   }`}>
                     {title}
                   </h3>
-                  <p className={`font-medium mt-2 tracking-normal ${
-                    isCompact ? 'text-[10px]' : 'text-xs sm:text-[13px]'
+                  <p className={`font-medium mt-0.5 tracking-normal leading-tight ${
+                    isCompact ? 'text-[9px]' : 'text-[10px] sm:text-[11px]'
                   } ${
                     isDark ? "text-neutral-400" : "text-neutral-500"
                   }`}>
@@ -268,18 +256,18 @@ export default function FolderTabCard({
                 </div>
 
                 {/* Lower Footer Metrics Row */}
-                <div className="flex items-end justify-between pb-1">
-                  {/* Left: 04 Tags */}
-                  <div className="flex items-baseline gap-2">
+                <div className="flex items-end justify-between pb-0.5">
+                  {/* Left: 48 Items */}
+                  <div className="flex items-baseline gap-1.5">
                     <span className={`font-black tracking-tight leading-none ${
-                      isCompact ? 'text-xl' : 'text-3xl sm:text-[38px]'
+                      isCompact ? 'text-lg' : 'text-xl sm:text-2xl'
                     } ${
                       isDark ? "text-white" : "text-neutral-900"
                     }`}>
                       {tagsCount}
                     </span>
                     <span className={`font-semibold ${
-                      isCompact ? 'text-[10px]' : 'text-xs sm:text-[13px]'
+                      isCompact ? 'text-[9px]' : 'text-[10px] sm:text-[11px]'
                     } ${
                       isDark ? "text-neutral-400" : "text-neutral-500"
                     }`}>
@@ -287,9 +275,9 @@ export default function FolderTabCard({
                     </span>
                   </div>
 
-                  {/* Right: 1012 Shots */}
+                  {/* Right: 100% Free */}
                   <div className={`font-medium tracking-normal ${
-                    isCompact ? 'text-[10px]' : 'text-xs sm:text-[13px]'
+                    isCompact ? 'text-[9px]' : 'text-[10px] sm:text-[11px]'
                   } ${
                     isDark ? "text-neutral-400" : "text-neutral-500"
                   }`}>
