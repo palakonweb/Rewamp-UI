@@ -48,10 +48,11 @@ export function Hero() {
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => navigate('/components')}
-                className="group inline-flex items-center gap-3 rounded-full bg-[var(--brand-strong)] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-white transition-transform active:scale-95 cursor-pointer"
+                className="group inline-flex items-center gap-3 rounded-full py-1.5 pl-6 pr-1.5 text-sm font-semibold text-white transition-transform active:scale-95 cursor-pointer"
+                style={{ background: '#6B4F94' }}
               >
                 Browse Components
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[var(--brand-strong)] transition-transform group-hover:translate-x-0.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-0.5" style={{ color: '#6B4F94' }}>
                   <ArrowRight size={15} />
                 </span>
               </button>
@@ -63,7 +64,7 @@ export function Hero() {
                 className="group inline-flex items-center gap-3 rounded-full bg-[var(--text-primary)] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-[var(--bg)] transition-transform active:scale-95 cursor-pointer"
               >
                 Star on GitHub
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--brand-strong)] text-white transition-transform group-hover:translate-x-0.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white transition-transform group-hover:translate-x-0.5" style={{ background: '#6B4F94' }}>
                   <GithubIcon />
                 </span>
               </a>

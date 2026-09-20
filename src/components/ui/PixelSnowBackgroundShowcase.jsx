@@ -4,9 +4,9 @@ import PixelSnow from './backgrounds/PixelSnow';
 
 export default function PixelSnowBackgroundShowcase() {
   return (
-    <div className="w-full flex flex-col items-center justify-center max-w-4xl mx-auto">
+    <div className="w-full h-full flex flex-col items-center justify-center max-w-4xl mx-auto">
       {/* PREVIEW SECTION - Real organic snowfall */}
-      <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-white/10 bg-[#05060C] shadow-2xl flex items-center justify-center p-8">
+      <div className="relative w-full flex-1 min-h-0 rounded-[24px] overflow-hidden border border-white/10 bg-[#05060C] shadow-2xl flex items-center justify-center p-8">
         <div className="absolute inset-0 z-0">
           <PixelSnow
             color="#ffffff"

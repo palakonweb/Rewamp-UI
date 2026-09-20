@@ -33,12 +33,12 @@ export default function SpotlightGridShowcase() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
+    <div className="w-full h-full flex flex-col gap-6 max-w-4xl mx-auto">
       <div 
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative w-full rounded-[24px] overflow-hidden border border-white/10 p-16 flex flex-col items-center justify-center min-h-[500px] bg-[#050505] group"
+        className="relative w-full rounded-[24px] overflow-hidden border border-white/10 p-16 flex flex-col items-center justify-center flex-1 min-h-0 bg-[#050505] group"
       >
         
         {/* Base dark layer with very faint grid so it's not totally pitch black */}

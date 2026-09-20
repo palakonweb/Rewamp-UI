@@ -94,9 +94,9 @@ export default function ParticleWaveShowcase() {
     };
 
     return (
-        <div ref={containerRef} className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
+        <div ref={containerRef} className="w-full h-full flex flex-col gap-6 max-w-4xl mx-auto">
             {/* PREVIEW SECTION */}
-            <div className="relative w-full h-[500px] rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#050508] shadow-2xl flex items-center justify-center p-8 group">
+            <div className="relative w-full flex-1 min-h-0 rounded-[24px] overflow-hidden border border-black/5 dark:border-white/10 bg-[#050508] shadow-2xl flex items-center justify-center p-8 group">
                 <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full" />
                 
                 <BackgroundHeroOverlay />

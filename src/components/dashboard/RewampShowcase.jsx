@@ -617,7 +617,7 @@ export default function RewampShowcase() {
               initial={{ width: 0, opacity: 0, x: -20 }}
               animate={{ width: 280, opacity: 1, x: 0 }}
               exit={{ width: 0, opacity: 0, x: -20 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              transition={{ duration: 0.26, ease: [0.4, 0, 0.2, 1] }}
               className="fixed md:relative inset-y-0 left-0 z-50 md:z-20 h-full w-[280px] shrink-0 flex flex-col justify-between py-3 pl-3 pr-2 overflow-hidden shadow-2xl md:shadow-none border-r md:border-r-0 border-[var(--border)]"
               style={{
                 backgroundColor: theme === 'light' ? '#FAFAFA' : '#0D0C10'
@@ -627,8 +627,10 @@ export default function RewampShowcase() {
               {/* Top Row: Sidebar Toggle on Left & RewampUI Brand */}
               <div className="flex items-center justify-between gap-2 pb-3">
                 <div className="flex items-center gap-2">
-                  <button
+                  <motion.button
+                    layoutId="sidebar-toggle-btn"
                     onClick={() => setSidebarCollapsed(true)}
+                    transition={{ type: 'spring', stiffness: 500, damping: 40 }}
                     className="hidden md:flex w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer shrink-0"
                     title="Collapse sidebar"
                   >
@@ -636,11 +638,17 @@ export default function RewampShowcase() {
                       <rect width="18" height="18" x="3" y="3" rx="2" />
                       <path d="M9 3v18" />
                     </svg>
+                  </motion.button>
+                  <button
+                    onClick={() => navigate('/')}
+                    className="flex items-center gap-2 cursor-pointer"
+                    title="Back to landing page"
+                  >
+                    <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
+                    <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
+                      RewampUI
+                    </span>
                   </button>
-                  <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
-                  <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
-                    RewampUI
-                  </span>
                   <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
                     {totalComponentCount}
                   </span>
@@ -891,18 +899,23 @@ export default function RewampShowcase() {
       </header>
 
       {/* Floating Re-Open Button when sidebar is collapsed (Desktop only) */}
-      {sidebarCollapsed && (
-        <button
-          onClick={() => setSidebarCollapsed(false)}
-          className="hidden md:flex absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors shadow-md cursor-pointer"
-          title="Open sidebar"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect width="18" height="18" x="3" y="3" rx="2" />
-            <path d="M9 3v18" />
-          </svg>
-        </button>
-      )}
+      <AnimatePresence>
+        {sidebarCollapsed && (
+          <motion.button
+            key="reopen-sidebar"
+            layoutId="sidebar-toggle-btn"
+            transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+            onClick={() => setSidebarCollapsed(false)}
+            className="hidden md:flex absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors shadow-md cursor-pointer"
+            title="Open sidebar"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="M9 3v18" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* ── 2. Main Content Area - Canvas + Side Panel Split ── */}
       <div className="flex-1 h-full flex gap-2.5 overflow-hidden relative">

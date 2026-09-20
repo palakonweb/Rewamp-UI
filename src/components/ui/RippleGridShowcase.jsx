@@ -110,8 +110,8 @@ export default function RippleGridShowcase() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-6 max-w-4xl mx-auto">
-      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/10 min-h-[500px] bg-[#050507]">
+    <div className="w-full h-full flex flex-col gap-6 max-w-4xl mx-auto">
+      <div className="relative w-full rounded-[24px] overflow-hidden border border-white/10 flex-1 min-h-0 bg-[#050507]">
         
         {/* The interactive canvas */}
         <canvas 
