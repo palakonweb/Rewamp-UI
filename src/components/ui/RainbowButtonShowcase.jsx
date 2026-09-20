@@ -17,11 +17,13 @@ export default function RainbowButtonShowcase() {
         <div className="w-full h-full flex flex-col gap-6">
             <div className="relative w-full h-full flex items-center justify-center p-8">
                 <div
-                    className="relative p-[2px] rounded-xl"
-                    style={{ background: 'linear-gradient(100deg, #f7c6d9, #cfe3fb, #d8f5da, #fdf1c7, #e6d3f8)' }}
+                    className="relative p-[2.5px] rounded-xl shadow-md transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                    style={{
+                        background: 'linear-gradient(135deg, #FF0055 0%, #FF5A00 15%, #FFB800 30%, #10B981 46%, #06B6D4 62%, #3B82F6 76%, #8B5CF6 88%, #EC4899 100%)',
+                    }}
                 >
-                    <button className="relative z-10 px-10 py-4 min-w-[220px] flex items-center justify-center rounded-[10px] bg-[#f4f2ee] select-none">
-                        <span className="relative z-10 text-[16px] font-semibold text-[#1B1717]">Rainbow Button</span>
+                    <button className="relative z-10 px-10 py-4 min-w-[220px] flex items-center justify-center rounded-[10px] bg-[#fdfdfc] dark:bg-[#121118] text-[#1B1717] dark:text-[#F3F4F6] select-none cursor-pointer transition-colors shadow-xs font-semibold text-[16px]">
+                        <span className="relative z-10 tracking-tight">Rainbow Button</span>
                     </button>
                 </div>
             </div>

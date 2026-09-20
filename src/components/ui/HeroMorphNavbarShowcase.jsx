@@ -133,7 +133,7 @@ export default function HeroMorphNavbarShowcase() {
           {/* Logo & Wordmark */}
           <div className="flex items-center gap-2 shrink-0 cursor-pointer">
             <img
-              src="/logo.svg"
+              src="/logos/logo.svg"
               alt="Logo"
               className={`transition-all duration-300 w-auto object-contain ${scrolled ? 'h-6 sm:h-7' : 'h-8'}`}
             />

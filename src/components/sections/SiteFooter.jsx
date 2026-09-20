@@ -81,7 +81,7 @@ export function SiteFooter() {
           {/* Brand */}
           <div className="lg:w-[280px] shrink-0">
             <div className="flex items-center gap-2.5 mb-4">
-              <img src="/logo.svg" alt="Rewamp UI Logo" className="h-10 w-auto object-contain" />
+              <img src="/logos/logo.svg" alt="Rewamp UI Logo" className="h-10 w-auto object-contain" />
               <span className="font-display font-bold text-xl tracking-wide text-[var(--text)] uppercase">Rewamp UI</span>
             </div>
             <p className="text-sm text-[var(--text-2)] leading-relaxed max-w-[240px] mb-6">

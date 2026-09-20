@@ -44,7 +44,7 @@ export function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 shrink-0 pr-2 sm:pr-4">
           <img
-            src="/logo.svg"
+            src="/logos/logo.svg"
             alt="Rewamp UI Logo"
             className={`transition-all duration-500 w-auto object-contain ${scrolled ? 'h-7 sm:h-8' : 'h-8 sm:h-9'}`}
           />

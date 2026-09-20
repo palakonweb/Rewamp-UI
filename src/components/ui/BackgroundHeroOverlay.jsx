@@ -47,7 +47,7 @@ export default function BackgroundHeroOverlay({
                             }`}>
                                 {/* Brand Logo + Name with official /logo.svg */}
                                 <div className="flex items-center gap-2">
-                                    <img src="/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
+                                    <img src="/logos/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
                                     <span className={`font-bold text-[13px] tracking-tight ${isLight ? 'text-neutral-900' : 'text-white'}`}>{brandName}</span>
                                 </div>
 

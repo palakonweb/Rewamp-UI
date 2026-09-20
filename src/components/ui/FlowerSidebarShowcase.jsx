@@ -124,7 +124,7 @@ export default function FlowerSidebarShowcase() {
         {/* Top Header with Brand Mark */}
         <div>
           <div className="flex items-center gap-2.5 pb-3.5 border-b border-black/5 dark:border-white/5">
-            <img src="/logo.svg" alt="RewampUI" className="w-7 h-7 object-contain shrink-0" />
+            <img src="/logos/logo.svg" alt="RewampUI" className="w-7 h-7 object-contain shrink-0" />
             <div>
               <h4 className="text-sm font-bold text-neutral-900 dark:text-white tracking-tight">
                 RewampUI

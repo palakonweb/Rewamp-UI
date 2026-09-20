@@ -155,14 +155,10 @@ export function Editorial3DOrbitCarousel({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full max-w-full h-[340px] sm:h-[400px] md:h-[440px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[20px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] shadow-xl flex items-center justify-center ${className}`}
+      className={`relative w-full max-w-full h-[340px] sm:h-[400px] md:h-[440px] overflow-hidden select-none cursor-grab active:cursor-grabbing rounded-[20px] sm:rounded-[32px] border border-black/5 dark:border-white/10 bg-[#f7f5f2] dark:bg-[#100e16] flex items-center justify-center ${className}`}
       style={{
         perspective: 1400,
-        // overflow-hidden alone doesn't reliably clip content inside a 3D
-        // perspective context in Chromium — it leaks a shadow triangle at
-        // the rounded corners. clip-path is enforced regardless of the 3D
-        // compositing context, so pair it with the same radius as a backstop.
-        clipPath: 'inset(0 round 20px)',
+        isolation: 'isolate',
       }}
     >
       {/* Top Header Controls */}

@@ -594,6 +594,240 @@ export default function RewampShowcase() {
     setCodeTab('component');
   }, [activeSlug]);
 
+  const renderSidebarInner = (isMobile = false) => (
+    <div className="w-[280px] h-full flex flex-col justify-between py-3 pl-3 pr-2 shrink-0 overflow-hidden">
+      {/* Top Row: Sidebar Toggle on Left & RewampUI Brand */}
+      <div className="flex items-center justify-between gap-2 pb-3">
+        <div className="flex items-center gap-2">
+          {!isMobile && (
+            <button
+              onClick={() => setSidebarCollapsed(true)}
+              className="w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer shrink-0"
+              title="Collapse sidebar"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="M9 3v18" />
+              </svg>
+            </button>
+          )}
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 cursor-pointer"
+            title="Back to landing page"
+          >
+            <img src="/logos/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
+            <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
+              RewampUI
+            </span>
+          </button>
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
+            {totalComponentCount}
+          </span>
+        </div>
+
+        {/* Mobile close button */}
+        {isMobile && (
+          <button
+            onClick={() => setSidebarCollapsed(true)}
+            className="w-8 h-8 rounded-xl bg-[var(--elevated)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
+            title="Close navigation"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+
+      {/* Mobile Quick Nav Bar (Home & Docs) */}
+      {isMobile && (
+        <div className="flex items-center gap-2 pb-3">
+          <button
+            onClick={() => {
+              navigate('/');
+              setSidebarCollapsed(true);
+            }}
+            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+          >
+            <Home className="w-3.5 h-3.5 text-neutral-400" />
+            <span>Home</span>
+          </button>
+          <button
+            onClick={() => {
+              navigate('/documentation');
+              setSidebarCollapsed(true);
+            }}
+            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+          >
+            <FileText className="w-3.5 h-3.5 text-neutral-400" />
+            <span>Docs</span>
+          </button>
+        </div>
+      )}
+
+      {/* Instant Search Bar */}
+      <div className="relative mb-3">
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 pointer-events-none" />
+        <input
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder={`Search ${totalComponentCount} components...`}
+          className="w-full bg-[var(--elevated)] border border-[var(--border)] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-neutral-400 outline-none focus:border-[var(--brand-strong)] transition-colors"
+        />
+        {query && (
+          <button
+            onClick={() => setQuery('')}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-neutral-700"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+
+      {/* Documentation */}
+      <button
+        onClick={() => navigate('/documentation')}
+        className="w-full flex items-center justify-center gap-1.5 mb-3 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+      >
+        <FileText className="w-3.5 h-3.5 text-neutral-400" />
+        <span>Documentation</span>
+      </button>
+
+      {/* Flower Flightpath Tree */}
+      <div 
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto no-scrollbar relative pr-1"
+        style={{ height: 'calc(100% - 100px)' }}
+      >
+        <div className="relative" style={{ height: Math.max(nodes.length * itemHeight + 30, 400) }}>
+          {/* Organic Curved SVG Rail Path */}
+          <svg
+            className="absolute top-0 left-0 w-full h-full pointer-events-none"
+            style={{ overflow: 'visible' }}
+          >
+            {/* 1. Base / Uncovered Path (Subtle light grey dashed) */}
+            <path
+              d={railPath}
+              fill="none"
+              stroke={theme === 'light' ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)'}
+              strokeWidth={1.5}
+              strokeDasharray="2 3"
+            />
+
+            {/* 2. Covered Path (Darker shade of grey as requested!) */}
+            {coveredRailPath && (
+              <path
+                d={coveredRailPath}
+                fill="none"
+                stroke={theme === 'light' ? '#404040' : '#A8A8A8'}
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            )}
+
+            {/* Node Dots on the Rail */}
+            {nodes.map(node => {
+              const isActive = node.id === activeSlug;
+              const isCovered = node.index <= activeNode.index;
+
+              return (
+                <circle
+                  key={`dot-${node.id}`}
+                  cx={node.x}
+                  cy={node.y}
+                  r={isActive ? 0 : node.level === 0 ? 3.2 : 2}
+                  fill={
+                    node.level === 0
+                      ? (isCovered ? '#C1B4D8' : '#D4CBE5')
+                      : isCovered
+                      ? (theme === 'light' ? '#404040' : '#A8A8A8')
+                      : (theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)')
+                  }
+                />
+              );
+            })}
+          </svg>
+
+          {/* Blooming Lilac Flower Indicator Gliding Along Rail */}
+          <motion.div
+            className="absolute z-20 pointer-events-none flex items-center justify-center"
+            animate={{
+              x: activeNode.x - 9,
+              y: activeNode.y - 9,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 360,
+              damping: 26,
+              mass: 0.75,
+            }}
+            style={{ width: 18, height: 18 }}
+          >
+            <motion.div
+              animate={{ rotate: [0, 8, -8, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              className="flex items-center justify-center"
+            >
+              <FlowerIcon className="w-4 h-4 drop-shadow-[0_2px_6px_rgba(193,180,216,0.6)]" />
+            </motion.div>
+          </motion.div>
+
+          {/* Interactive Tree Labels */}
+          {nodes.map(node => {
+            const isActive = node.id === activeSlug;
+            const textLeft = node.level === 0 ? 32 : 46;
+
+            if (node.isCategory) {
+              return (
+                <div
+                  key={node.id}
+                  className="absolute flex items-center select-none"
+                  style={{
+                    top: node.y - 9,
+                    left: textLeft,
+                    height: 18,
+                    right: 0,
+                  }}
+                >
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500">
+                    {node.label}
+                  </span>
+                </div>
+              );
+            }
+
+            return (
+              <button
+                key={node.id}
+                onClick={() => handleSelectComponent(node)}
+                className={`absolute flex items-center cursor-pointer transition-colors text-left group truncate ${
+                  isActive
+                    ? theme === 'light'
+                      ? 'font-bold text-[#171717]'
+                      : 'font-bold text-[#FAFAFA]'
+                    : theme === 'light'
+                    ? 'font-normal text-neutral-400 hover:text-neutral-800'
+                    : 'font-normal text-neutral-400 hover:text-neutral-100'
+                }`}
+                style={{
+                  top: node.y - 10,
+                  left: textLeft,
+                  height: 20,
+                  right: 0,
+                }}
+              >
+                <span className="text-[12.5px] truncate">
+                  {node.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div 
       className={`h-[100dvh] w-full overflow-hidden p-1.5 sm:p-2.5 flex gap-2.5 font-sans select-none transition-colors duration-250 ${
@@ -601,10 +835,10 @@ export default function RewampShowcase() {
       }`}
     >
       {/* ── 1. Airplane Flightpath Sidebar (All 74 Components) ── */}
-      <AnimatePresence initial={false}>
+      {/* Mobile Drawer */}
+      <AnimatePresence>
         {!sidebarCollapsed && (
           <>
-            {/* Mobile Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -614,252 +848,39 @@ export default function RewampShowcase() {
               className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 md:hidden"
             />
             <motion.aside
-              initial={{ width: 0, opacity: 0, x: -20 }}
-              animate={{ width: 280, opacity: 1, x: 0 }}
-              exit={{ width: 0, opacity: 0, x: -20 }}
-              transition={{ duration: 0.26, ease: [0.4, 0, 0.2, 1] }}
-              className="fixed md:relative inset-y-0 left-0 z-50 md:z-20 h-full w-[280px] shrink-0 flex flex-col justify-between py-3 pl-3 pr-2 overflow-hidden shadow-2xl md:shadow-none border-r md:border-r-0 border-[var(--border)]"
+              initial={{ x: -280 }}
+              animate={{ x: 0 }}
+              exit={{ x: -280 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-y-0 left-0 z-50 h-full w-[280px] overflow-hidden shadow-2xl border-r border-[var(--border)] md:hidden flex flex-col justify-between"
               style={{
                 backgroundColor: theme === 'light' ? '#FAFAFA' : '#0D0C10'
               }}
             >
-            <div className="flex flex-col h-full overflow-hidden">
-              {/* Top Row: Sidebar Toggle on Left & RewampUI Brand */}
-              <div className="flex items-center justify-between gap-2 pb-3">
-                <div className="flex items-center gap-2">
-                  <motion.button
-                    layoutId="sidebar-toggle-btn"
-                    onClick={() => setSidebarCollapsed(true)}
-                    transition={{ type: 'spring', stiffness: 500, damping: 40 }}
-                    className="hidden md:flex w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-2xs cursor-pointer shrink-0"
-                    title="Collapse sidebar"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="18" height="18" x="3" y="3" rx="2" />
-                      <path d="M9 3v18" />
-                    </svg>
-                  </motion.button>
-                  <button
-                    onClick={() => navigate('/')}
-                    className="flex items-center gap-2 cursor-pointer"
-                    title="Back to landing page"
-                  >
-                    <img src="/logo.svg" alt="RewampUI" className="w-8 h-8 shrink-0 object-contain" />
-                    <span className="font-bold text-[16px] tracking-tight text-[var(--text-primary)]">
-                      RewampUI
-                    </span>
-                  </button>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
-                    {totalComponentCount}
-                  </span>
-                </div>
-
-                {/* Mobile close button */}
-                <button
-                  onClick={() => setSidebarCollapsed(true)}
-                  className="md:hidden w-8 h-8 rounded-xl bg-[var(--elevated)] border border-[var(--border)] flex items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
-                  title="Close navigation"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Mobile Quick Nav Bar (Home & Docs) */}
-              <div className="flex items-center gap-2 pb-3 md:hidden">
-                <button
-                  onClick={() => {
-                    navigate('/');
-                    setSidebarCollapsed(true);
-                  }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
-                >
-                  <Home className="w-3.5 h-3.5 text-neutral-400" />
-                  <span>Home</span>
-                </button>
-                <button
-                  onClick={() => {
-                    navigate('/documentation');
-                    setSidebarCollapsed(true);
-                  }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
-                >
-                  <FileText className="w-3.5 h-3.5 text-neutral-400" />
-                  <span>Docs</span>
-                </button>
-              </div>
-
-              {/* Instant Search Bar */}
-              <div className="relative mb-3">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 pointer-events-none" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  placeholder={`Search ${totalComponentCount} components...`}
-                  className="w-full bg-[var(--elevated)] border border-[var(--border)] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-neutral-400 outline-none focus:border-[var(--brand-strong)] transition-colors"
-                />
-                {query && (
-                  <button
-                    onClick={() => setQuery('')}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-neutral-700"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-
-              {/* Documentation */}
-              <button
-                onClick={() => navigate('/documentation')}
-                className="w-full flex items-center justify-center gap-1.5 mb-3 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
-              >
-                <FileText className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Documentation</span>
-              </button>
-
-              {/* Flower Flightpath Tree */}
-              <div 
-                ref={scrollContainerRef}
-                className="flex-1 overflow-y-auto no-scrollbar relative pr-1"
-                style={{ height: 'calc(100% - 100px)' }}
-              >
-                <div className="relative" style={{ height: Math.max(nodes.length * itemHeight + 30, 400) }}>
-                  {/* Organic Curved SVG Rail Path */}
-                  <svg
-                    className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                    style={{ overflow: 'visible' }}
-                  >
-                    {/* 1. Base / Uncovered Path (Subtle light grey dashed) */}
-                    <path
-                      d={railPath}
-                      fill="none"
-                      stroke={theme === 'light' ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)'}
-                      strokeWidth={1.5}
-                      strokeDasharray="2 3"
-                    />
-
-                    {/* 2. Covered Path (Darker shade of grey as requested!) */}
-                    {coveredRailPath && (
-                      <path
-                        d={coveredRailPath}
-                        fill="none"
-                        stroke={theme === 'light' ? '#404040' : '#A8A8A8'}
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    )}
-
-                    {/* Node Dots on the Rail */}
-                    {nodes.map(node => {
-                      const isActive = node.id === activeSlug;
-                      const isCovered = node.index <= activeNode.index;
-
-                      return (
-                        <circle
-                          key={`dot-${node.id}`}
-                          cx={node.x}
-                          cy={node.y}
-                          r={isActive ? 0 : node.level === 0 ? 3.2 : 2}
-                          fill={
-                            node.level === 0
-                              ? (isCovered ? '#C1B4D8' : '#D4CBE5')
-                              : isCovered
-                              ? (theme === 'light' ? '#404040' : '#A8A8A8')
-                              : (theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)')
-                          }
-                        />
-                      );
-                    })}
-                  </svg>
-
-                  {/* Blooming Lilac Flower Indicator Gliding Along Rail */}
-                  <motion.div
-                    className="absolute z-20 pointer-events-none flex items-center justify-center"
-                    animate={{
-                      x: activeNode.x - 9,
-                      y: activeNode.y - 9,
-                    }}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 360,
-                      damping: 26,
-                      mass: 0.75,
-                    }}
-                    style={{ width: 18, height: 18 }}
-                  >
-                    <motion.div
-                      animate={{ rotate: [0, 8, -8, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                      className="flex items-center justify-center"
-                    >
-                      <FlowerIcon className="w-4 h-4 drop-shadow-[0_2px_6px_rgba(193,180,216,0.6)]" />
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Interactive Tree Labels */}
-                  {nodes.map(node => {
-                    const isActive = node.id === activeSlug;
-                    const textLeft = node.level === 0 ? 32 : 46;
-
-                    if (node.isCategory) {
-                      return (
-                        <div
-                          key={node.id}
-                          className="absolute flex items-center select-none"
-                          style={{
-                            top: node.y - 9,
-                            left: textLeft,
-                            height: 18,
-                            right: 0,
-                          }}
-                        >
-                          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500">
-                            {node.label}
-                          </span>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <button
-                        key={node.id}
-                        onClick={() => handleSelectComponent(node)}
-                        className={`absolute flex items-center cursor-pointer transition-colors text-left group truncate ${
-                          isActive
-                            ? theme === 'light'
-                              ? 'font-bold text-[#171717]'
-                              : 'font-bold text-[#FAFAFA]'
-                            : theme === 'light'
-                            ? 'font-normal text-neutral-400 hover:text-neutral-800'
-                            : 'font-normal text-neutral-400 hover:text-neutral-100'
-                        }`}
-                        style={{
-                          top: node.y - 10,
-                          left: textLeft,
-                          height: 20,
-                          right: 0,
-                        }}
-                      >
-                        <span className="text-[12.5px] truncate">
-                          {node.label}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </motion.aside>
-        </>
-      )}
+              {renderSidebarInner(true)}
+            </motion.aside>
+          </>
+        )}
       </AnimatePresence>
+
+      {/* Desktop Persistent Sidebar (Zero remounts, 60fps CSS transition) */}
+      <aside
+        className="hidden md:flex flex-col h-full shrink-0 overflow-hidden border-r md:border-r-0 border-[var(--border)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{
+          width: sidebarCollapsed ? 0 : 280,
+          opacity: sidebarCollapsed ? 0 : 1,
+          pointerEvents: sidebarCollapsed ? 'none' : 'auto',
+          backgroundColor: theme === 'light' ? '#FAFAFA' : '#0D0C10'
+        }}
+      >
+        {renderSidebarInner(false)}
+      </aside>
 
       {/* ── Mobile Burger Nav Bar ── */}
       <header className="md:hidden absolute top-3 inset-x-3 z-30 flex items-center justify-between pointer-events-none">
         {/* Brand & Active Component Badge */}
         <div className="pointer-events-auto flex items-center gap-2 bg-[var(--surface)]/95 backdrop-blur-xl border border-[var(--border)] px-3 py-1.5 rounded-2xl shadow-md">
-          <img src="/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
+          <img src="/logos/logo.svg" alt="RewampUI" className="w-5 h-5 object-contain shrink-0" />
           <div className="flex flex-col">
             <span className="font-bold text-[11px] tracking-tight text-[var(--text-primary)] leading-tight">
               RewampUI
@@ -903,10 +924,12 @@ export default function RewampShowcase() {
         {sidebarCollapsed && (
           <motion.button
             key="reopen-sidebar"
-            layoutId="sidebar-toggle-btn"
-            transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+            initial={{ opacity: 0, scale: 0.85, x: -6 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.85, x: -6 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
             onClick={() => setSidebarCollapsed(false)}
-            className="hidden md:flex absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors shadow-md cursor-pointer"
+            className="hidden md:flex absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-md cursor-pointer"
             title="Open sidebar"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -920,10 +943,8 @@ export default function RewampShowcase() {
       {/* ── 2. Main Content Area - Canvas + Side Panel Split ── */}
       <div className="flex-1 h-full flex gap-2.5 overflow-hidden relative">
         {/* Canvas Stage - shrinks on desktop when a panel is open, stays full width on mobile/tablet */}
-        <motion.div
-          layout
-          transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-          className={`h-full rounded-[22px] sm:rounded-[36px] relative overflow-hidden flex items-center justify-center transition-colors duration-250 ${
+        <div
+          className={`h-full rounded-[22px] sm:rounded-[36px] relative overflow-hidden flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             theme === 'light' ? 'bg-[#EAEAEA]' : 'bg-[#141218]'
           }`}
           style={{
@@ -1029,7 +1050,7 @@ export default function RewampShowcase() {
               )}
             </AnimatePresence>
           </div>
-        </motion.div>
+        </div>
 
         {/* ── Mobile/Tablet Backdrop for drawers ── */}
         <AnimatePresence>

@@ -1,9 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { HeroCardStage } from './HeroCardStage';
 import { GradientText } from '../ui/GradientRevealTextShowcase';
+import { getSiteTheme, SITE_THEME_EVENT } from '../../lib/siteTheme';
 
 function GithubIcon() {
   return (
@@ -15,6 +16,27 @@ function GithubIcon() {
 
 export function Hero() {
   const navigate = useNavigate();
+  const [theme, setTheme] = useState(getSiteTheme);
+
+  useEffect(() => {
+    const handleThemeChange = (e) => {
+      setTheme(e.detail?.theme || getSiteTheme());
+    };
+    window.addEventListener(SITE_THEME_EVENT, handleThemeChange);
+
+    const observer = new MutationObserver(() => {
+      setTheme(getSiteTheme());
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+
+    return () => {
+      window.removeEventListener(SITE_THEME_EVENT, handleThemeChange);
+      observer.disconnect();
+    };
+  }, []);
+
+  const isDark = theme === 'dark';
+  const logoSrc = isDark ? '/logos/darkmodelogo.png' : '/logos/logo-text.png';
 
   return (
     <main className="bg-[var(--bg)] text-[var(--text-primary)] relative flex min-h-dvh flex-col overflow-hidden lg:h-dvh transition-colors">
@@ -23,14 +45,17 @@ export function Hero() {
         {/* Shared coordinate frame: logo and copy share this box's left edge  - 
             logo pins to its top, copy centers vertically within it. */}
         <div className="relative w-full max-w-md lg:h-full">
-          <motion.img
-            src="/logo-text.png"
-            alt="RewampUI"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="h-16 sm:h-20 w-auto object-contain -ml-2 lg:absolute lg:left-0 lg:top-10 mb-6 lg:mb-0"
-          />
+          <div className="h-16 sm:h-20 w-auto -ml-2 lg:absolute lg:left-0 lg:top-10 mb-6 lg:mb-0 relative flex items-center">
+            <motion.img
+              key={logoSrc}
+              src={logoSrc}
+              alt="RewampUI"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="h-16 sm:h-20 w-auto object-contain"
+            />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 14 }}

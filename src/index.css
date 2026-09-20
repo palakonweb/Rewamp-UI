@@ -164,7 +164,9 @@
      "prompt" footer (label + <code> + copy button). The dashboard shows the
      prompt in the card's Prompt tab instead, so hide the component's own
      footer wherever it's embedded there. */
-  .prompt-embed div:has(> div > code):has(> button) {
+  .prompt-embed div:has(> div > code):has(> button),
+  .prompt-embed p:has(> code),
+  .prompt-embed p.select-none {
     display: none !important;
   }
 

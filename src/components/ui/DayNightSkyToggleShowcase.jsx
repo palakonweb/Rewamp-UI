@@ -1,134 +1,170 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check } from 'lucide-react';
-import { setSiteTheme } from '../../lib/siteTheme';
+import { getSiteTheme, setSiteTheme, SITE_THEME_EVENT } from '../../lib/siteTheme';
 
 const promptContent = `Day/Night sky toggle: a wide glass pill containing a miniature illustrated sky. Night shows a starfield, crescent moon, drifting clouds and a glowing orb on the right. Toggling smoothly morphs the whole scene to day - navy fades to sky blue, the orb glides right-to-left, the moon rotates into a sun, stars fade out as tiny birds fade in. One continuous 900-1200ms transition, spring easing, no hard cuts.`;
 
 const STARS = [
-    { x: 18, y: 18 }, { x: 34, y: 12 }, { x: 52, y: 22 }, { x: 70, y: 14 },
-    { x: 26, y: 34 }, { x: 60, y: 30 }, { x: 44, y: 44 },
+    { x: 18, y: 18, delay: 0 },
+    { x: 34, y: 14, delay: 0.3 },
+    { x: 52, y: 22, delay: 0.6 },
+    { x: 70, y: 16, delay: 0.2 },
+    { x: 26, y: 34, delay: 0.5 },
+    { x: 60, y: 30, delay: 0.4 },
+    { x: 44, y: 44, delay: 0.7 },
 ];
 
 export default function DayNightSkyToggleShowcase() {
-    const [copied, setCopied] = useState(false);
-    const [isDay, setIsDay] = useState(false);
+    const [isDay, setIsDay] = useState(() => getSiteTheme() !== 'dark');
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(promptContent);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+    useEffect(() => {
+        const handleThemeChange = (e) => {
+            const currentTheme = e.detail?.theme || getSiteTheme();
+            setIsDay(currentTheme !== 'dark');
+        };
+        window.addEventListener(SITE_THEME_EVENT, handleThemeChange);
+        const observer = new MutationObserver(() => {
+            setIsDay(getSiteTheme() !== 'dark');
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+
+        return () => {
+            window.removeEventListener(SITE_THEME_EVENT, handleThemeChange);
+            observer.disconnect();
+        };
+    }, []);
+
+    const handleToggle = () => {
+        const next = !isDay;
+        setIsDay(next);
+        setSiteTheme(next ? 'light' : 'dark');
     };
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12">
             <div className="relative w-full h-full flex flex-col items-center justify-center gap-6 p-8">
-                <span className="text-[12px] font-semibold tracking-[0.25em] text-white/70 uppercase select-none">
+                <span className="text-[12px] font-semibold tracking-[0.25em] text-[var(--text-subtle)] uppercase select-none transition-colors duration-300">
                     {isDay ? 'Day Mode' : 'Night Mode'}
                 </span>
 
                 <motion.button
-                    onClick={() => setIsDay((v) => {
-                        const next = !v;
-                        setSiteTheme(next ? 'light' : 'dark');
-                        return next;
-                    })}
-                    className="relative w-[280px] h-[92px] rounded-full overflow-hidden border border-white/25 select-none"
-                    animate={{
-                        background: isDay
-                            ? 'linear-gradient(180deg, #6fa3d8, #a9c9e8)'
-                            : 'linear-gradient(180deg, #0a1330, #131c42)',
-                    }}
-                    transition={{ duration: 1, ease: 'easeInOut' }}
-                    style={{ boxShadow: 'inset 0 2px 6px rgba(255,255,255,0.15), inset 0 -6px 16px rgba(0,0,0,0.35), 0 10px 30px -10px rgba(0,0,0,0.6)' }}
+                    onClick={handleToggle}
+                    className="relative w-[280px] h-[92px] rounded-full overflow-hidden border border-white/25 select-none cursor-pointer shadow-[inset_0_2px_6px_rgba(255,255,255,0.15),_inset_0_-6px_16px_rgba(0,0,0,0.35),_0_10px_30px_-10px_rgba(0,0,0,0.6)]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                 >
-                    {/* stars */}
-                    <AnimatePresence>
-                        {!isDay && STARS.map((s, i) => (
-                            <motion.span
-                                key={i}
-                                className="absolute w-[3px] h-[3px] rounded-full bg-white"
-                                style={{ left: `${s.x}%`, top: `${s.y}%` }}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: [0.2, 1, 0.2] }}
-                                exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                                transition={{ duration: 1.6 + i * 0.2, repeat: Infinity }}
-                            />
-                        ))}
-                    </AnimatePresence>
-
-                    {/* birds */}
-                    <AnimatePresence>
-                        {isDay && [0, 1].map((i) => (
-                            <motion.span
-                                key={i}
-                                className="absolute text-white/70 text-[10px]"
-                                style={{ left: `${45 + i * 12}%`, top: `${20 + i * 8}%` }}
-                                initial={{ opacity: 0, x: -6 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ delay: 0.5 + i * 0.15, duration: 0.4 }}
-                            >
-                                ⌃⌃
-                            </motion.span>
-                        ))}
-                    </AnimatePresence>
-
-                    {/* moon / sun icon, left side */}
-                    <motion.div
-                        className="absolute left-[26px] top-1/2 -translate-y-1/2 w-6 h-6 rounded-full"
-                        animate={{
-                            rotate: isDay ? 180 : 0,
-                            background: isDay ? '#ffd35c' : '#f4f1e6',
-                            boxShadow: isDay ? '0 0 14px 4px rgba(255,211,92,0.55)' : '0 0 10px 2px rgba(244,241,230,0.35)',
-                        }}
-                        transition={{ duration: 0.9, ease: 'easeInOut' }}
-                        style={!isDay ? { clipPath: 'inset(0 0 0 40%)', WebkitClipPath: 'inset(0 0 0 40%)' } : {}}
+                    {/* Sky Background: Night Layer */}
+                    <div 
+                        className="absolute inset-0 bg-gradient-to-b from-[#0a1330] to-[#131c42]"
                     />
 
-                    {/* clouds */}
-                    <div className="absolute inset-x-0 bottom-3 h-6 flex items-end justify-center gap-2 px-8">
-                        {[0, 1, 2].map((i) => (
+                    {/* Sky Background: Day Layer (Crossfades smoothly over night layer) */}
+                    <motion.div
+                        className="absolute inset-0 bg-gradient-to-b from-[#6fa3d8] to-[#a9c9e8]"
+                        animate={{ opacity: isDay ? 1 : 0 }}
+                        transition={{ duration: 0.7, ease: 'easeInOut' }}
+                    />
+
+                    {/* Starfield Layer */}
+                    <motion.div
+                        className="absolute inset-0 pointer-events-none"
+                        animate={{ opacity: isDay ? 0 : 1 }}
+                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    >
+                        {STARS.map((s, i) => (
+                            <motion.span
+                                key={i}
+                                className="absolute w-[3px] h-[3px] rounded-full bg-white shadow-[0_0_4px_white]"
+                                style={{ left: `${s.x}%`, top: `${s.y}%` }}
+                                animate={{ opacity: [0.3, 1, 0.3] }}
+                                transition={{ duration: 2, repeat: Infinity, delay: s.delay, ease: 'easeInOut' }}
+                            />
+                        ))}
+                    </motion.div>
+
+                    {/* Birds Layer (Day only) */}
+                    <motion.div
+                        className="absolute inset-0 pointer-events-none"
+                        animate={{ opacity: isDay ? 1 : 0, y: isDay ? 0 : 6 }}
+                        transition={{ duration: 0.5, delay: isDay ? 0.2 : 0 }}
+                    >
+                        {[0, 1].map((i) => (
+                            <span
+                                key={i}
+                                className="absolute text-white/80 text-[11px] font-bold"
+                                style={{ left: `${46 + i * 14}%`, top: `${22 + i * 8}%` }}
+                            >
+                                ⌃⌃
+                            </span>
+                        ))}
+                    </motion.div>
+
+                    {/* Left Icon: Golden Sun (Day Mode on Left - matching default website ThemeToggle) */}
+                    <motion.div
+                        className="absolute left-[24px] top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center pointer-events-none"
+                        animate={{
+                            rotate: isDay ? 0 : 180,
+                            scale: isDay ? 1 : 0.6,
+                            opacity: isDay ? 1 : 0.25,
+                        }}
+                        transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    >
+                        <div className="w-5 h-5 rounded-full bg-[#ffd35c] shadow-[0_0_14px_4px_rgba(255,211,92,0.7)]" />
+                    </motion.div>
+
+                    {/* Right Icon: Crescent Moon (Night Mode on Right - matching default website ThemeToggle) */}
+                    <motion.div
+                        className="absolute right-[24px] top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center pointer-events-none"
+                        animate={{
+                            rotate: isDay ? -180 : 0,
+                            scale: isDay ? 0.6 : 1,
+                            opacity: isDay ? 0.25 : 0.95,
+                        }}
+                        transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    >
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-[#f4f1e6] drop-shadow-[0_0_8px_rgba(244,241,230,0.6)]">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" />
+                        </svg>
+                    </motion.div>
+
+                    {/* Drifting Clouds */}
+                    <div className="absolute inset-x-0 bottom-3 h-6 flex items-end justify-center gap-2 px-8 pointer-events-none">
+                        {[
+                            { w: 36, h: 14, xRange: [0, 8, 0], dur: 6 },
+                            { w: 48, h: 16, xRange: [0, -10, 0], dur: 7 },
+                            { w: 32, h: 12, xRange: [0, 6, 0], dur: 5 },
+                        ].map((c, i) => (
                             <motion.div
                                 key={i}
                                 className="rounded-full"
+                                style={{ width: c.w, height: c.h }}
                                 animate={{
-                                    x: [0, 10, 0],
-                                    background: isDay ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.55)',
-                                    width: 30 + i * 10,
-                                    height: 12 + i * 2,
+                                    x: c.xRange,
+                                    backgroundColor: isDay ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.45)',
                                 }}
-                                transition={{ x: { duration: 6 + i, repeat: Infinity, ease: 'easeInOut' }, background: { duration: 0.9 } }}
+                                transition={{
+                                    x: { duration: c.dur, repeat: Infinity, ease: 'easeInOut' },
+                                    backgroundColor: { duration: 0.7, ease: 'easeInOut' },
+                                }}
                             />
                         ))}
                     </div>
 
-                    {/* big orb thumb */}
+                    {/* Big Glowing Orb Thumb (Slides Left for Day, Right for Night) */}
                     <motion.div
-                        className="absolute top-1/2 -translate-y-1/2 w-[62px] h-[62px] rounded-full"
+                        className="absolute top-1/2 -translate-y-1/2 w-[62px] h-[62px] rounded-full pointer-events-none"
                         animate={{
-                            left: isDay ? 14 : 204,
-                            background: 'radial-gradient(circle at 35% 30%, #ffffff, #eef3fb 60%, #d8e4f4)',
+                            x: isDay ? 14 : 204,
                             boxShadow: isDay
-                                ? '0 0 24px 8px rgba(255,255,255,0.55)'
-                                : '0 0 30px 10px rgba(180,205,255,0.5)',
+                                ? '0 0 24px 8px rgba(255,255,255,0.65), inset 0 2px 4px rgba(255,255,255,0.8)'
+                                : '0 0 28px 10px rgba(180,205,255,0.5), inset 0 2px 4px rgba(255,255,255,0.6)',
                         }}
-                        transition={{ type: 'spring', stiffness: 120, damping: 16 }}
+                        transition={{ type: 'spring', stiffness: 220, damping: 22, mass: 0.8 }}
+                        style={{
+                            left: 0,
+                            background: 'radial-gradient(circle at 35% 30%, #ffffff, #eef3fb 60%, #d8e4f4)',
+                        }}
                     />
-
-                    {/* small sun, right side, day only */}
-                    <AnimatePresence>
-                        {isDay && (
-                            <motion.div
-                                className="absolute right-[26px] top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#ffd35c]"
-                                style={{ boxShadow: '0 0 12px 3px rgba(255,211,92,0.6)' }}
-                                initial={{ opacity: 0, scale: 0.5 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.5 }}
-                                transition={{ duration: 0.5, delay: 0.3 }}
-                            />
-                        )}
-                    </AnimatePresence>
                 </motion.button>
             </div>
 

@@ -48,7 +48,7 @@ export default function CanvasShimmerSkeleton({ theme = 'dark', className = '' }
 
       {/* Minimal Elegant Floating Indicator (Zero clumsy white template boxes) */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/10 dark:bg-white/10 backdrop-blur-md border border-black/5 dark:border-white/10 shadow-xs">
-        <img src="/logo.svg" alt="RewampUI" className="w-3.5 h-3.5 object-contain animate-pulse opacity-85" />
+        <img src="/logos/logo.svg" alt="RewampUI" className="w-3.5 h-3.5 object-contain animate-pulse opacity-85" />
         <span className="text-[11px] font-mono tracking-wider uppercase text-neutral-600 dark:text-neutral-300 font-semibold">
           Loading...
         </span>

@@ -15,7 +15,7 @@ export const glassOrbTogglePrompt = `Create an interactive Dark/Light mode toggl
 - Interaction: Smooth spring-driven sliding on click or drag with dynamic ambient background glow.`;
 
 export const glassOrbToggleCode = `import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export interface GlassOrbToggleProps {
   initialIsLight?: boolean;
@@ -45,7 +45,7 @@ export default function GlassOrbToggle({
           opacity: isLight ? 0.32 : 0.05,
           scale: isLight ? 1.25 : 0.85,
         }}
-        transition={{ duration: 0.55, ease: 'easeInOut' }}
+        transition={{ duration: 0.45, ease: 'easeInOut' }}
         className="absolute w-[320px] h-[180px] rounded-full filter blur-[50px] pointer-events-none"
         style={{
           background: isLight
@@ -61,16 +61,15 @@ export default function GlassOrbToggle({
         onMouseLeave={() => setIsHovered(false)}
         whileHover={{ scale: 1.015 }}
         whileTap={{ scale: 0.985 }}
-        className="relative w-[248px] h-[78px] rounded-full cursor-pointer flex items-center justify-between overflow-visible transition-colors duration-450"
-        style={{
+        animate={{
           backgroundColor: isLight ? '#56565E' : '#18181B',
+          borderColor: isLight ? 'rgba(255, 255, 255, 0.22)' : 'rgba(255, 255, 255, 0.08)',
           boxShadow: isLight
             ? 'inset 0 3px 8px rgba(0,0,0,0.35), inset 0 -1px 2px rgba(255,255,255,0.2), 0 16px 36px -10px rgba(0,0,0,0.5)'
             : 'inset 0 3px 8px rgba(0,0,0,0.8), inset 0 -1px 2px rgba(255,255,255,0.06), 0 16px 36px -10px rgba(0,0,0,0.6)',
-          border: isLight
-            ? '1px solid rgba(255, 255, 255, 0.18)'
-            : '1px solid rgba(255, 255, 255, 0.07)',
         }}
+        transition={{ duration: 0.4, ease: 'easeInOut' }}
+        className="relative w-[248px] h-[78px] rounded-full cursor-pointer flex items-center justify-between overflow-visible border"
       >
         {/* Track Label: "Dark" on the left half */}
         <div className="w-[124px] h-full flex items-center justify-center pl-3">
@@ -79,7 +78,7 @@ export default function GlassOrbToggle({
               opacity: isLight ? 0.95 : 0,
               scale: isLight ? 1 : 0.9,
             }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="text-[17.5px] font-medium text-white tracking-normal font-sans"
           >
             Dark
@@ -93,7 +92,7 @@ export default function GlassOrbToggle({
               opacity: isLight ? 0 : 0.95,
               scale: isLight ? 0.9 : 1,
             }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="text-[17.5px] font-medium text-white tracking-normal font-sans"
           >
             Light
@@ -107,8 +106,8 @@ export default function GlassOrbToggle({
           }}
           transition={{
             type: 'spring',
-            stiffness: 260,
-            damping: 23,
+            stiffness: 240,
+            damping: 24,
             mass: 0.85,
           }}
           className="absolute -top-[13px] left-0 w-[104px] h-[104px] rounded-full pointer-events-none z-30 flex items-center justify-center"
@@ -153,66 +152,66 @@ export default function GlassOrbToggle({
               }}
             />
 
-            {/* Inner Glowing Celestial Icon (Moon or Sun) */}
+            {/* Inner Glowing Celestial Icon (Moon or Sun - smooth simultaneous crossfade) */}
             <div className="absolute inset-0 flex items-center justify-center z-10">
-              <AnimatePresence mode="wait">
-                {!isLight ? (
-                  <motion.div
-                    key="moon"
-                    initial={{ scale: 0.45, opacity: 0, rotate: -30 }}
-                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                    exit={{ scale: 0.45, opacity: 0, rotate: 30 }}
-                    transition={{ duration: 0.26, ease: 'easeOut' }}
-                    className="relative flex items-center justify-center"
-                  >
-                    {/* Moon Glow Aura */}
-                    <div className="absolute w-9 h-9 rounded-full bg-white/20 filter blur-[7px]" />
+              {/* Moon */}
+              <motion.div
+                animate={{
+                  opacity: !isLight ? 1 : 0,
+                  scale: !isLight ? 1 : 0.4,
+                  rotate: !isLight ? 0 : 30,
+                }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                {/* Moon Glow Aura */}
+                <div className="absolute w-9 h-9 rounded-full bg-white/20 filter blur-[7px]" />
 
-                    {/* Waxing Crescent Moon matching video: back on left, horns point right */}
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="w-[30px] h-[30px] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.95)]"
-                      fill="currentColor"
-                      style={{ transform: 'rotate(-38deg)' }}
-                    >
-                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    </svg>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="sun"
-                    initial={{ scale: 0.45, opacity: 0, rotate: 45 }}
-                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                    exit={{ scale: 0.45, opacity: 0, rotate: -45 }}
-                    transition={{ duration: 0.26, ease: 'easeOut' }}
-                    className="relative flex items-center justify-center"
-                  >
-                    {/* Sun Glow Aura */}
-                    <div className="absolute w-11 h-11 rounded-full bg-white/25 filter blur-[8px]" />
+                {/* Waxing Crescent Moon */}
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-[30px] h-[30px] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.95)]"
+                  fill="currentColor"
+                  style={{ transform: 'rotate(-38deg)' }}
+                >
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              </motion.div>
 
-                    {/* Radiant Sun matching video: central disc + 8 rounded pill beams */}
-                    <svg
-                      viewBox="0 0 40 40"
-                      className="w-[36px] h-[36px] text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.95)]"
-                      fill="currentColor"
-                    >
-                      {/* Sun Central Disc */}
-                      <circle cx="20" cy="20" r="8" />
+              {/* Sun */}
+              <motion.div
+                animate={{
+                  opacity: isLight ? 1 : 0,
+                  scale: isLight ? 1 : 0.4,
+                  rotate: isLight ? 0 : -45,
+                }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                {/* Sun Glow Aura */}
+                <div className="absolute w-11 h-11 rounded-full bg-white/25 filter blur-[8px]" />
 
-                      {/* 8 Radiating Beams with rounded caps */}
-                      <line x1="20" y1="4" x2="20" y2="7.5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="20" y1="32.5" x2="20" y2="36" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="4" y1="20" x2="7.5" y2="20" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="32.5" y1="20" x2="36" y2="20" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      
-                      <line x1="8.7" y1="8.7" x2="11.2" y2="11.2" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="28.8" y1="28.8" x2="31.3" y2="31.3" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="8.7" y1="31.3" x2="11.2" y2="28.8" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                      <line x1="28.8" y1="11.2" x2="31.3" y2="8.7" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                    </svg>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                {/* Radiant Sun */}
+                <svg
+                  viewBox="0 0 40 40"
+                  className="w-[36px] h-[36px] text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.95)]"
+                  fill="currentColor"
+                >
+                  {/* Sun Central Disc */}
+                  <circle cx="20" cy="20" r="8" />
+
+                  {/* 8 Radiating Beams */}
+                  <line x1="20" y1="4" x2="20" y2="7.5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  <line x1="20" y1="32.5" x2="20" y2="36" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  <line x1="4" y1="20" x2="7.5" y2="20" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  <line x1="32.5" y1="20" x2="36" y2="20" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  
+                  <line x1="8.7" y1="8.7" x2="11.2" y2="11.2" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  <line x1="28.8" y1="28.8" x2="31.3" y2="31.3" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  <line x1="8.7" y1="31.3" x2="11.2" y2="28.8" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                  <line x1="28.8" y1="11.2" x2="31.3" y2="8.7" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+                </svg>
+              </motion.div>
             </div>
 
           </div>

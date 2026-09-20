@@ -30,20 +30,18 @@ const PREVIEW_COMPONENTS = {
   'gradient-reveal-text': lazy(() => import('../ui/GradientRevealTextShowcase')),
 };
 
-// Every card renders at this exact 16:9 size - no exceptions - so the camera
-// never has to reframe between differently-shaped slots.
+// Every card renders at this exact size so the camera never has to reframe
+// between differently-shaped slots.
 const CARD_W = 480;
 const CARD_H = 270;
 
-// Real showcase components each assume their own intrinsic size (a background
-// demo's fixed 500px-tall block, a small toggle's tiny footprint, etc). Rather
-// than crop the tall ones or stretch the small ones, every component renders
-// into this fixed 16:9 "design canvas" (generous enough to hold all of them
-// uncropped) and the whole canvas is scaled down uniformly to fit the card  - 
-// so every frame is identically sized and nothing is ever cut off.
-const PREVIEW_REF_W = 1040;
-const PREVIEW_REF_H = 585;
-const PREVIEW_SCALE = CARD_W / PREVIEW_REF_W;
+// CardShell has p-1 (4px padding), header h-7 (28px), and 1px border.
+// Inner preview viewport: 470px x 232px.
+// We render into a 2x reference canvas (940 x 464) and scale down uniformly (0.5x),
+// centered perfectly so nothing is ever cut off from the bottom or edges.
+const PREVIEW_REF_W = 940;
+const PREVIEW_REF_H = 464;
+const PREVIEW_SCALE = 470 / PREVIEW_REF_W;
 
 function PreviewFallback() {
   return (
@@ -55,14 +53,14 @@ function CardPreview({ id }) {
   const Comp = PREVIEW_COMPONENTS[id];
   if (!Comp) return null;
   return (
-    <div className="prompt-embed preserve-bg relative w-full h-full overflow-hidden">
+    <div className="prompt-embed preserve-bg relative w-full h-full overflow-hidden flex items-center justify-center">
       <div
-        className="absolute top-0 left-0 flex items-center justify-center"
+        className="flex items-center justify-center shrink-0"
         style={{
           width: PREVIEW_REF_W,
           height: PREVIEW_REF_H,
           transform: `scale(${PREVIEW_SCALE})`,
-          transformOrigin: 'top left',
+          transformOrigin: 'center center',
         }}
       >
         <Suspense fallback={<PreviewFallback />}>
