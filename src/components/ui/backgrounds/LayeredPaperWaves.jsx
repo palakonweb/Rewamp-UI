@@ -143,6 +143,7 @@ export default function LayeredPaperWaves({
 
     const w = container.offsetWidth;
     const h = container.offsetHeight;
+    if (w === 0 || h === 0) return;
     const pr = Math.min(window.devicePixelRatio, 2);
     renderer.setPixelRatio(pr);
     renderer.setSize(w, h);
@@ -202,6 +203,8 @@ export default function LayeredPaperWaves({
     scene.add(mesh);
 
     window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
 
     const startTime = performance.now();
     const animate = () => {
@@ -216,6 +219,7 @@ export default function LayeredPaperWaves({
     return () => {
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       geometry.dispose();
       material.dispose();
       if (container.contains(renderer.domElement)) {

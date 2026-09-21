@@ -251,12 +251,6 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
-  "add-to-cart-glow-button": `Create an interactive Add to Cart Glow Button component in React:
-- Visual Identity: Dark charcoal rounded pill (bg-[#18181B], text-white) reading "+ Add to cart", wrapped in a continuous rotating rainbow conic-gradient border.
-- State Transition: On click, border swaps to emerald green with rotating sheen, label transitions to "Added to cart" with an animated checkmark, then reverts gracefully after 2 seconds.
-- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
   "rainbow-button": `Create a clean minimalist Rainbow Border Button component in React:
 - Visual Identity: Pristine near-white rounded-rectangle pill (bg-white/95 dark:bg-[#18181B]) wrapped in a static, delicate pastel iridescent rainbow border ring.
 - Micro-Interactions: Subtle lift on hover (-1.5px) and spring compression on active press with crisp typography.
@@ -380,12 +374,6 @@ export const componentPrompts = {
   // ──────────────────────────────────────────────────────────────────────────
   // 5. CURSORS (cursors)
   // ──────────────────────────────────────────────────────────────────────────
-  "splash-cursor": `Create a high-performance WebGL Fluid Splash Cursor in React:
-- Simulation: Fullscreen WebGL fluid simulation with Navier-Stokes velocity advection, pressure Poisson solver, and vorticity confinement.
-- Aesthetics: Mouse movement injects radiant lavender / violet fluid dyes with velocity-responsive bloom, realistic dissipation decay, and light/dark theme adaptability.
-- Tech Stack: React, WebGL, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install lucide-react clsx tailwind-merge`,
-
   "pill-trail-cursor": `Create a Custom Animated Cursor Trail of Biotech Pill Tags in React:
 - Mechanics: Cursor leaves an overlapping ribbon trail of ~16 compact biotech pills ("biotech", "health", "science", "dna", "cells", "future") following an elastic inverse-kinematics spring chain.
 - Constraints: Pills remain strictly 0° horizontal (never tilt), newer pills render above older pills, velocity expands/clusters spacing, executed at locked 60fps.

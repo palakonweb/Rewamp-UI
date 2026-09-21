@@ -27,6 +27,7 @@ import { getSiteTheme, setSiteTheme, SITE_THEME_EVENT } from '../../lib/siteThem
 import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
 import InstallSection, { CopyButton } from '../ui/InstallSection';
+import DocumentationContent from '../ui/DocumentationContent';
 import { highlightCode } from '../ui/CodeHighlight';
 import {
   GlowTextChipSkeleton,
@@ -225,7 +226,7 @@ function DockIcon({ children, label, onClick, theme, accent = false, active = fa
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 6, scale: 0.9 }}
             transition={{ duration: 0.15 }}
-            className={`absolute right-full mr-3 px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap pointer-events-none z-50 backdrop-blur-md ${
+            className={`absolute bottom-full mb-3 left-1/2 -translate-x-1/2 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:right-full sm:mr-3 px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap pointer-events-none z-50 backdrop-blur-md ${
               theme === 'light'
                 ? 'bg-white/95 text-neutral-900 border border-black/10 shadow-[0_4px_16px_rgba(0,0,0,0.08)]'
                 : 'bg-[#1C1A22]/95 text-white border border-white/12 shadow-[0_4px_16px_rgba(0,0,0,0.45)]'
@@ -453,27 +454,47 @@ export default function RewampShowcase() {
     setDescDrawerOpen(false);
     setCodeDrawerOpen(true);
     setCodeTab('install');
+    if (!isDesktop) {
+      setSidebarCollapsed(true);
+    }
   };
 
   const handleToggleCode = () => {
     setDescDrawerOpen(false);
     setCodeDrawerOpen((prev) => !prev);
+    if (!isDesktop) {
+      setSidebarCollapsed(true);
+    }
   };
 
   const handleToggleDescription = () => {
     setCodeDrawerOpen(false);
     setDescDrawerOpen((prev) => !prev);
+    if (!isDesktop) {
+      setSidebarCollapsed(true);
+    }
   };
+
+  // "documentation" is a pseudo-slug: it renders the docs prose in the canvas
+  // instead of a live component, using the same shell/sidebar/dock as everything else.
+  const isDocsView = activeSlug === 'documentation';
 
   // Find active component for canvas
   const currentFound = useMemo(() => {
+    if (isDocsView) {
+      return { entry: { title: 'Documentation', Component: null } };
+    }
     return findComponentBySlug(activeSlug) || findComponentBySlug('liquid-cursor-gradient') || {
       entry: { title: 'Liquid Cursor Gradient', Component: () => null }
     };
-  }, [activeSlug]);
+  }, [activeSlug, isDocsView]);
 
   // Load real source (+ any CSS + dependency list) for active component
   useEffect(() => {
+    if (isDocsView) {
+      setSourceInfo({ code: '', css: '', usage: '', prompt: '', dependencies: [], loading: false });
+      return;
+    }
     const entry = currentFound?.entry;
     const mainPath = resolveRawPath(entry, activeSlug);
     if (!mainPath) {
@@ -589,7 +610,7 @@ export default function RewampShowcase() {
     })();
 
     return () => { cancelled = true; };
-  }, [activeSlug, currentFound]);
+  }, [activeSlug, currentFound, isDocsView]);
 
   // Reset code tab when switching components
   useEffect(() => {
@@ -623,9 +644,6 @@ export default function RewampShowcase() {
               RewampUI
             </span>
           </button>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-[var(--elevated)] text-[var(--text-subtle)] border border-[var(--border)]">
-            {totalComponentCount}
-          </span>
         </div>
 
         {/* Mobile close button */}
@@ -655,7 +673,8 @@ export default function RewampShowcase() {
           </button>
           <button
             onClick={() => {
-              navigate('/documentation');
+              setActiveSlug('documentation');
+              navigate('/components/documentation');
               setSidebarCollapsed(true);
             }}
             className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
@@ -666,173 +685,203 @@ export default function RewampShowcase() {
         </div>
       )}
 
-      {/* Instant Search Bar */}
-      <div className="relative mb-3">
-        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 pointer-events-none" />
-        <input
-          type="text"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          placeholder={`Search ${totalComponentCount} components...`}
-          className="w-full bg-[var(--elevated)] border border-[var(--border)] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-neutral-400 outline-none focus:border-[var(--brand-strong)] transition-colors"
-        />
-        {query && (
-          <button
-            onClick={() => setQuery('')}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-neutral-700"
-          >
-            ✕
-          </button>
-        )}
-      </div>
+      {isDocsView ? (
+        /* Documentation Section Nav (swapped in for the component rail while viewing docs) */
+        <div className="flex-1 overflow-y-auto no-scrollbar pr-1 pt-4">
+          <h4 className="text-[10px] font-bold tracking-[0.15em] text-neutral-400 dark:text-neutral-500 uppercase mb-2 px-1">Getting Started</h4>
+          <div className="flex flex-col gap-1 mb-5">
+            <a href="#introduction" className="px-3 py-2 text-[13px] text-[var(--text-primary)] bg-[var(--elevated)] font-medium rounded-lg">Introduction</a>
+            <a href="#installation" className="px-3 py-2 text-[13px] text-neutral-400 hover:text-[var(--text-primary)] hover:bg-[var(--elevated)] rounded-lg transition-colors">Installation</a>
+            <a href="#cli" className="px-3 py-2 text-[13px] text-neutral-400 hover:text-[var(--text-primary)] hover:bg-[var(--elevated)] rounded-lg transition-colors">CLI Workflow</a>
+          </div>
 
-      {/* Documentation */}
-      <button
-        onClick={() => navigate('/documentation')}
-        className="w-full flex items-center justify-center gap-1.5 mb-3 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
-      >
-        <FileText className="w-3.5 h-3.5 text-neutral-400" />
-        <span>Documentation</span>
-      </button>
+          <h4 className="text-[10px] font-bold tracking-[0.15em] text-neutral-400 dark:text-neutral-500 uppercase mb-2 px-1">Architecture</h4>
+          <div className="flex flex-col gap-1 mb-5">
+            <a href="#framer-motion" className="px-3 py-2 text-[13px] text-neutral-400 hover:text-[var(--text-primary)] hover:bg-[var(--elevated)] rounded-lg transition-colors">Framer Motion</a>
+            <a href="#tailwind" className="px-3 py-2 text-[13px] text-neutral-400 hover:text-[var(--text-primary)] hover:bg-[var(--elevated)] rounded-lg transition-colors">Tailwind CSS</a>
+            <a href="#glassmorphism" className="px-3 py-2 text-[13px] text-neutral-400 hover:text-[var(--text-primary)] hover:bg-[var(--elevated)] rounded-lg transition-colors">Glassmorphism</a>
+          </div>
 
-      {/* Flower Flightpath Tree */}
-      <div 
-        ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto no-scrollbar relative pr-1"
-        style={{ height: 'calc(100% - 100px)' }}
-      >
-        <div className="relative" style={{ height: Math.max(nodes.length * itemHeight + 30, 400) }}>
-          {/* Organic Curved SVG Rail Path */}
-          <svg
-            className="absolute top-0 left-0 w-full h-full pointer-events-none"
-            style={{ overflow: 'visible' }}
-          >
-            {/* 1. Base / Uncovered Path (Subtle light grey dashed) */}
-            <path
-              d={railPath}
-              fill="none"
-              stroke={theme === 'light' ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)'}
-              strokeWidth={1.5}
-              strokeDasharray="2 3"
-            />
-
-            {/* 2. Covered Path (Darker shade of grey as requested!) */}
-            {coveredRailPath && (
-              <path
-                d={coveredRailPath}
-                fill="none"
-                stroke={theme === 'light' ? '#404040' : '#A8A8A8'}
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            )}
-
-            {/* Node Dots on the Rail */}
-            {nodes.map(node => {
-              const isActive = node.id === activeSlug;
-              const isCovered = node.index <= activeNode.index;
-
-              return (
-                <circle
-                  key={`dot-${node.id}`}
-                  cx={node.x}
-                  cy={node.y}
-                  r={isActive ? 0 : node.level === 0 ? 3.2 : 2}
-                  fill={
-                    node.level === 0
-                      ? (isCovered ? '#C1B4D8' : '#D4CBE5')
-                      : isCovered
-                      ? (theme === 'light' ? '#404040' : '#A8A8A8')
-                      : (theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)')
-                  }
-                />
-              );
-            })}
-          </svg>
-
-          {/* Blooming Lilac Flower Indicator Gliding Along Rail */}
-          <motion.div
-            className="absolute z-20 pointer-events-none flex items-center justify-center"
-            animate={{
-              x: activeNode.x - 9,
-              y: activeNode.y - 9,
-            }}
-            transition={{
-              type: 'spring',
-              stiffness: 360,
-              damping: 26,
-              mass: 0.75,
-            }}
-            style={{ width: 18, height: 18 }}
-          >
-            <motion.div
-              animate={{ rotate: [0, 8, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="flex items-center justify-center"
-            >
-              <FlowerIcon className="w-4 h-4 drop-shadow-[0_2px_6px_rgba(193,180,216,0.6)]" />
-            </motion.div>
-          </motion.div>
-
-          {/* Interactive Tree Labels */}
-          {nodes.map(node => {
-            const isActive = node.id === activeSlug;
-            const textLeft = node.level === 0 ? 32 : 46;
-
-            if (node.isCategory) {
-              return (
-                <div
-                  key={node.id}
-                  className="absolute flex items-center select-none"
-                  style={{
-                    top: node.y - 9,
-                    left: textLeft,
-                    height: 18,
-                    right: 0,
-                  }}
-                >
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500">
-                    {node.label}
-                  </span>
-                </div>
-              );
-            }
-
-            return (
-              <button
-                key={node.id}
-                onClick={() => handleSelectComponent(node)}
-                className={`absolute flex items-center cursor-pointer transition-colors text-left group truncate ${
-                  isActive
-                    ? theme === 'light'
-                      ? 'font-bold text-[#171717]'
-                      : 'font-bold text-[#FAFAFA]'
-                    : theme === 'light'
-                    ? 'font-normal text-neutral-400 hover:text-neutral-800'
-                    : 'font-normal text-neutral-400 hover:text-neutral-100'
-                }`}
-                style={{
-                  top: node.y - 10,
-                  left: textLeft,
-                  height: 20,
-                  right: 0,
-                }}
-              >
-                <span className="text-[12.5px] truncate">
-                  {node.label}
-                </span>
-              </button>
-            );
-          })}
+          <h4 className="text-[10px] font-bold tracking-[0.15em] text-neutral-400 dark:text-neutral-500 uppercase mb-2 px-1">About</h4>
+          <div className="flex flex-col gap-1">
+            <a href="#credits" className="px-3 py-2 text-[13px] text-neutral-400 hover:text-[var(--text-primary)] hover:bg-[var(--elevated)] rounded-lg transition-colors">Credits & Attribution</a>
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* Instant Search Bar */}
+          <div className="relative mb-3">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 pointer-events-none" />
+            <input
+              type="text"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder={`Search ${totalComponentCount} components...`}
+              className="w-full bg-[var(--elevated)] border border-[var(--border)] rounded-xl pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-neutral-400 outline-none focus:border-[var(--brand-strong)] transition-colors"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-neutral-700"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Documentation */}
+          <button
+            onClick={() => {
+              setActiveSlug('documentation');
+              navigate('/components/documentation');
+              if (isMobile) setSidebarCollapsed(true);
+            }}
+            className="w-full flex items-center justify-center gap-1.5 mb-3 py-1.5 px-2.5 rounded-xl bg-[var(--elevated)] hover:bg-[var(--surface)] border border-[var(--border)] text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer"
+          >
+            <FileText className="w-3.5 h-3.5 text-neutral-400" />
+            <span>Documentation</span>
+          </button>
+
+          {/* Flower Flightpath Tree */}
+          <div
+            ref={scrollContainerRef}
+            className="flex-1 overflow-y-auto no-scrollbar relative pr-1"
+            style={{ height: 'calc(100% - 100px)' }}
+          >
+            <div className="relative" style={{ height: Math.max(nodes.length * itemHeight + 30, 400) }}>
+              {/* Organic Curved SVG Rail Path */}
+              <svg
+                className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                style={{ overflow: 'visible' }}
+              >
+                {/* 1. Base / Uncovered Path (Subtle light grey dashed) */}
+                <path
+                  d={railPath}
+                  fill="none"
+                  stroke={theme === 'light' ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)'}
+                  strokeWidth={1.5}
+                  strokeDasharray="2 3"
+                />
+
+                {/* 2. Covered Path (Darker shade of grey as requested!) */}
+                {coveredRailPath && (
+                  <path
+                    d={coveredRailPath}
+                    fill="none"
+                    stroke={theme === 'light' ? '#404040' : '#A8A8A8'}
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                )}
+
+                {/* Node Dots on the Rail */}
+                {nodes.map(node => {
+                  const isActive = node.id === activeSlug;
+                  const isCovered = !isDocsView && node.index <= activeNode.index;
+
+                  return (
+                    <circle
+                      key={`dot-${node.id}`}
+                      cx={node.x}
+                      cy={node.y}
+                      r={isActive ? 0 : node.level === 0 ? 3.2 : 2}
+                      fill={
+                        node.level === 0
+                          ? (isCovered ? '#C1B4D8' : '#D4CBE5')
+                          : isCovered
+                          ? (theme === 'light' ? '#404040' : '#A8A8A8')
+                          : (theme === 'light' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)')
+                      }
+                    />
+                  );
+                })}
+              </svg>
+
+              {/* Blooming Lilac Flower Indicator Gliding Along Rail */}
+              <motion.div
+                className="absolute z-20 pointer-events-none flex items-center justify-center"
+                animate={{
+                  x: activeNode.x - 9,
+                  y: activeNode.y - 9,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 360,
+                  damping: 26,
+                  mass: 0.75,
+                }}
+                style={{ width: 18, height: 18 }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 8, -8, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="flex items-center justify-center"
+                >
+                  <FlowerIcon className="w-4 h-4" />
+                </motion.div>
+              </motion.div>
+
+              {/* Interactive Tree Labels */}
+              {nodes.map(node => {
+                const isActive = node.id === activeSlug;
+                const textLeft = node.level === 0 ? 32 : 46;
+
+                if (node.isCategory) {
+                  return (
+                    <div
+                      key={node.id}
+                      className="absolute flex items-center select-none"
+                      style={{
+                        top: node.y - 9,
+                        left: textLeft,
+                        height: 18,
+                        right: 0,
+                      }}
+                    >
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-neutral-400 dark:text-neutral-500">
+                        {node.label}
+                      </span>
+                    </div>
+                  );
+                }
+
+                return (
+                  <button
+                    key={node.id}
+                    onClick={() => handleSelectComponent(node)}
+                    className={`absolute flex items-center cursor-pointer transition-colors text-left group truncate ${
+                      isActive
+                        ? theme === 'light'
+                          ? 'font-bold text-[#171717]'
+                          : 'font-bold text-[#FAFAFA]'
+                        : theme === 'light'
+                        ? 'font-normal text-neutral-400 hover:text-neutral-800'
+                        : 'font-normal text-neutral-400 hover:text-neutral-100'
+                    }`}
+                    style={{
+                      top: node.y - 10,
+                      left: textLeft,
+                      height: 20,
+                      right: 0,
+                    }}
+                  >
+                    <span className="text-[12.5px] truncate">
+                      {node.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 
   return (
     <div 
-      className={`h-[100dvh] w-full overflow-hidden p-1.5 sm:p-2.5 flex gap-2.5 font-sans select-none transition-colors duration-250 ${
+      className={`relative h-[100dvh] w-full overflow-hidden p-1.5 sm:p-2.5 flex gap-2.5 font-sans select-none transition-colors duration-250 ${
         theme === 'light' ? 'bg-[#FAFAFA]' : 'bg-[#0D0C10]'
       }`}
     >
@@ -896,7 +945,11 @@ export default function RewampShowcase() {
         {/* Animated 3-Bar Burger Nav Button */}
         <button
           type="button"
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          onClick={() => {
+            setSidebarCollapsed(!sidebarCollapsed);
+            setCodeDrawerOpen(false);
+            setDescDrawerOpen(false);
+          }}
           className="pointer-events-auto w-9 h-9 rounded-2xl bg-[var(--surface)]/95 backdrop-blur-xl border border-[var(--border)] shadow-md flex items-center justify-center text-[var(--text-primary)] hover:bg-[var(--elevated)] active:scale-95 transition-all cursor-pointer shrink-0"
           aria-label={sidebarCollapsed ? "Open burger menu" : "Close burger menu"}
           title={sidebarCollapsed ? "Open navigation" : "Close navigation"}
@@ -931,7 +984,7 @@ export default function RewampShowcase() {
             exit={{ opacity: 0, scale: 0.85, x: -6 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
             onClick={() => setSidebarCollapsed(false)}
-            className="hidden md:flex absolute top-5 left-5 z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-md cursor-pointer"
+            className="hidden md:flex absolute top-[39px] left-[39px] z-30 w-8 h-8 rounded-lg bg-[var(--surface)] border border-[var(--border)] items-center justify-center text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors shadow-md cursor-pointer"
             title="Open sidebar"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -957,101 +1010,116 @@ export default function RewampShowcase() {
               : 'inset 0 1px 2px rgba(255,255,255,0.04)'
           }}
         >
-          {/* Vertical Right-Side Liquid Glass Dock: Install, Code, Info, Theme */}
-          <div className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center justify-center pointer-events-none">
-            <div
-              className="pointer-events-auto flex flex-col items-center gap-2 sm:gap-3 rounded-[22px] sm:rounded-[26px] px-1.5 sm:px-2 py-2.5 sm:py-3.5 backdrop-blur-2xl border"
-              style={{
-                background: theme === 'light'
-                  ? 'linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)'
-                  : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
-                borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
-                boxShadow: theme === 'light'
-                  ? '0 12px 32px rgba(0,0,0,0.10), inset 0 1px 1px rgba(255,255,255,0.8)'
-                  : '0 12px 32px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.12)',
-              }}
-            >
-              <DockIcon
-                label="Install"
-                onClick={handleOpenInstall}
-                theme={theme}
-                active={codeDrawerOpen && codeTab === 'install'}
+          {/* Liquid Glass Dock: horizontal bottom-center on mobile, vertical right rail from sm+ (not shown in Documentation view) */}
+          {!isDocsView && (
+            <div className="absolute z-30 flex items-center justify-center pointer-events-none inset-x-0 bottom-[max(0.75rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:bottom-auto sm:right-3 md:right-5 sm:top-1/2 sm:-translate-y-1/2">
+              <div
+                className="pointer-events-auto flex flex-row sm:flex-col items-center gap-2 sm:gap-3 rounded-[22px] sm:rounded-[26px] px-2.5 py-1.5 sm:px-2 sm:py-3.5 backdrop-blur-2xl border"
+                style={{
+                  background: theme === 'light'
+                    ? 'linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.45) 100%)'
+                    : 'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
+                  borderColor: theme === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.14)',
+                  boxShadow: theme === 'light'
+                    ? '0 12px 32px rgba(0,0,0,0.10), inset 0 1px 1px rgba(255,255,255,0.8)'
+                    : '0 12px 32px rgba(0,0,0,0.45), inset 0 1px 1px rgba(255,255,255,0.12)',
+                }}
               >
-                <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-              </DockIcon>
+                <DockIcon
+                  label="Install"
+                  onClick={handleOpenInstall}
+                  theme={theme}
+                  active={codeDrawerOpen && codeTab === 'install'}
+                >
+                  <Download className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                </DockIcon>
 
-              <DockIcon
-                label="Code"
-                onClick={handleToggleCode}
-                theme={theme}
-                active={codeDrawerOpen}
-              >
-                <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-              </DockIcon>
+                <DockIcon
+                  label="Code"
+                  onClick={handleToggleCode}
+                  theme={theme}
+                  active={codeDrawerOpen}
+                >
+                  <Code2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                </DockIcon>
 
-              <DockIcon
-                label="Description"
-                onClick={handleToggleDescription}
-                theme={theme}
-                active={descDrawerOpen}
-              >
-                <Info className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-              </DockIcon>
+                <DockIcon
+                  label="Description"
+                  onClick={handleToggleDescription}
+                  theme={theme}
+                  active={descDrawerOpen}
+                >
+                  <Info className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                </DockIcon>
 
-              <DockIcon
-                label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                theme={theme}
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  {theme === 'dark' ? (
-                    <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-                    </motion.span>
-                  ) : (
-                    <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                      <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </DockIcon>
+                <DockIcon
+                  label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  theme={theme}
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    {theme === 'dark' ? (
+                      <motion.span key="sun" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                        <Sun className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                      </motion.span>
+                    ) : (
+                      <motion.span key="moon" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                        <Moon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </DockIcon>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* ── Centered Showcase Stage ── */}
-          <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-14 pr-16 sm:p-6 sm:pr-20 lg:p-10 lg:pr-24 overflow-y-auto overflow-x-hidden no-scrollbar relative">
-            <motion.div
-              key={activeSlug}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: panelOpen && isDesktop ? 0.76 : 1 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 26 }}
-              className="canvas-stage relative flex items-center justify-center w-full max-w-full sm:max-w-[1080px] min-h-[280px] sm:min-h-0 sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
-              style={{ transformOrigin: 'center center' }}
+          {isDocsView ? (
+            <div
+              className={`w-full h-full overflow-y-auto no-scrollbar rounded-[20px] sm:rounded-[24px] p-6 pt-16 pb-16 sm:p-10 sm:pt-10 lg:p-14 ${
+                theme === 'light' ? 'bg-white text-neutral-900' : 'bg-[#18151E] text-white'
+              }`}
+              style={{ '--text': theme === 'light' ? '#171717' : '#FAFAFA', '--text-2': theme === 'light' ? '#737373' : '#A3A3A3', '--border': theme === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)', '--surface': theme === 'light' ? '#F5F5F5' : '#221E2B', '--elevated': theme === 'light' ? '#EDEDED' : '#2A2533', '--accent': '#C1B4D8' }}
             >
-              <ErrorBoundary key={activeSlug}>
-                <Suspense fallback={getComponentSkeleton(activeSlug)}>
-                  <div className="animate-component-fade-in flex items-center justify-center w-full max-w-full h-full p-1 sm:p-4 overflow-visible">
-                    {currentFound?.entry?.Component && <currentFound.entry.Component />}
-                  </div>
-                </Suspense>
-              </ErrorBoundary>
-            </motion.div>
+              <div className="max-w-[720px] mx-auto">
+                <DocumentationContent />
+              </div>
+            </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center p-2 pt-14 pb-32 sm:p-6 sm:pr-20 sm:pb-6 lg:p-10 lg:pr-24 overflow-y-auto overflow-x-hidden no-scrollbar relative">
+              <motion.div
+                key={activeSlug}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: panelOpen && isDesktop ? 0.76 : 1 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 26 }}
+                className="canvas-stage relative flex items-center justify-center w-full max-w-full sm:max-w-[1080px] h-full max-h-[360px] sm:h-auto sm:aspect-[16/10] sm:max-h-[640px] rounded-[20px] sm:rounded-[24px] overflow-visible [&_.blur-3xl]:hidden [&_.shadow-sm:has(code)]:hidden"
+                style={{ transformOrigin: 'center center' }}
+              >
+                <ErrorBoundary key={activeSlug}>
+                  <Suspense fallback={getComponentSkeleton(activeSlug)}>
+                    <div className="animate-component-fade-in flex items-center justify-center w-full max-w-full h-full p-1 sm:p-4 overflow-visible">
+                      {currentFound?.entry?.Component && <currentFound.entry.Component />}
+                    </div>
+                  </Suspense>
+                </ErrorBoundary>
+              </motion.div>
 
-            {/* Sweeping Chromatic Shimmer Skeleton */}
-            <AnimatePresence>
-              {isLoading && (
-                <motion.div
-                  key="shimmer-canvas"
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.24, ease: 'easeOut' }}
-                  className="absolute inset-0 z-20 pointer-events-none rounded-[22px] sm:rounded-[36px] overflow-hidden flex items-center justify-center"
-                >
-                  <CanvasShimmerSkeleton theme={theme} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+              {/* Sweeping Chromatic Shimmer Skeleton */}
+              <AnimatePresence>
+                {isLoading && (
+                  <motion.div
+                    key="shimmer-canvas"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.24, ease: 'easeOut' }}
+                    className="absolute inset-0 z-20 pointer-events-none rounded-[22px] sm:rounded-[36px] overflow-hidden flex items-center justify-center"
+                  >
+                    <CanvasShimmerSkeleton theme={theme} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
 
         {/* ── Mobile/Tablet Backdrop for drawers ── */}

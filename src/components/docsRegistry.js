@@ -90,7 +90,6 @@ export const categories = [
             makeLazy('Googly Eyes Button', 'googly-eyes-button', () => import('./ui/GooglyEyesButtonShowcase'), 'GooglyEyesButtonShowcase'),
             makeLazy('Gloss Button', 'gloss-button', () => import('./ui/GlossButtonShowcase'), 'GlossButtonShowcase'),
             makeLazy('Neumorphic Download Button', 'neumorphic-download-button', () => import('./ui/NeumorphicDownloadButtonShowcase'), 'NeumorphicDownloadButtonShowcase'),
-            makeLazy('Add To Cart Glow Button', 'add-to-cart-glow-button', () => import('./ui/AddToCartGlowButtonShowcase'), 'AddToCartGlowButtonShowcase'),
             makeLazy('Rainbow Button', 'rainbow-button', () => import('./ui/RainbowButtonShowcase'), 'RainbowButtonShowcase'),
             makeLazy('Slide To Confirm Button', 'slide-to-confirm-button', () => import('./ui/SlideToConfirmButtonShowcase'), 'SlideToConfirmButtonShowcase'),
             makeLazy('Chrome Border Button', 'chrome-border-button', () => import('./ui/ChromeBorderButtonShowcase'), 'ChromeBorderButtonShowcase'),
@@ -135,7 +134,6 @@ export const categories = [
         size: 'sm',
         description: 'Custom cursor replacements - trails, lenses, and magnetic effects. Not original work - inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
-            makeLazy('Splash Cursor', 'splash-cursor', () => import('./ui/SplashCursorShowcase'), 'SplashCursorShowcase'),
             makeLazy('Pill Trail Cursor', 'pill-trail-cursor', () => import('./ui/PillTrailCursorShowcase'), 'PillTrailCursorShowcase'),
             makeLazy('Halftone Dot Cursor', 'halftone-dot-cursor', () => import('./ui/HalftoneDotCursorShowcase'), 'HalftoneDotCursorShowcase'),
         ],

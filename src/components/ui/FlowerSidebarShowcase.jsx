@@ -190,7 +190,7 @@ export default function FlowerSidebarShowcase() {
               transition={{ type: 'spring', stiffness: 420, damping: 30 }}
               className="absolute z-20 pointer-events-none"
             >
-              <LilacFlowerIcon className="w-4 h-4 drop-shadow-[0_2px_8px_rgba(212,203,229,0.7)]" />
+              <LilacFlowerIcon className="w-4 h-4" />
             </motion.div>
 
             {/* Nav Labels with generous spacing from the rail line */}

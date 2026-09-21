@@ -36,7 +36,7 @@ export default function BackgroundHeroOverlay({
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.98 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="absolute inset-0 z-10 flex flex-col justify-between p-5 sm:p-7 pointer-events-none select-none"
+                        className="absolute inset-0 z-10 flex flex-col justify-between p-5 pb-12 sm:p-7 pointer-events-none select-none"
                     >
                         {/* Top Floating Glass Navbar */}
                         <div className="w-full flex justify-center pointer-events-auto">
@@ -69,9 +69,9 @@ export default function BackgroundHeroOverlay({
                         </div>
 
                         {/* Center Hero Content */}
-                        <div className="flex-1 flex flex-col items-center justify-center text-center my-auto px-4">
+                        <div className="flex-1 flex flex-col items-center justify-center text-center my-auto px-4 min-h-0 overflow-hidden">
                             {/* Pill Badge */}
-                            <div className={`inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full backdrop-blur-md mb-4 shadow-sm ${
+                            <div className={`inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full backdrop-blur-md mb-2 sm:mb-4 shadow-sm shrink-0 ${
                                 isLight ? 'bg-black/5 border border-black/10' : 'bg-white/10 border border-white/10'
                             }`}>
                                 <span className={`px-1.5 py-0.5 rounded-full font-bold text-[8.5px] tracking-wider uppercase ${
@@ -87,10 +87,10 @@ export default function BackgroundHeroOverlay({
                             </div>
 
                             {/* Headline */}
-                            <h1 className={`font-sans normal-case text-xl sm:text-2xl md:text-[30px] font-bold tracking-tight leading-[1.2] max-w-md ${
-                                isLight 
-                                    ? 'text-neutral-950 drop-shadow-[0_1px_8px_rgba(255,255,255,0.7)]' 
-                                    : 'text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]'
+                            <h1 className={`font-sans normal-case text-xl sm:text-2xl md:text-[30px] font-semibold tracking-[-0.015em] leading-[1.25] max-w-md bg-clip-text text-transparent ${
+                                isLight
+                                    ? 'bg-gradient-to-b from-neutral-950 to-neutral-700 drop-shadow-[0_1px_10px_rgba(255,255,255,0.55)]'
+                                    : 'bg-gradient-to-b from-white to-white/75 drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)]'
                             }`}>
                                 {renderTitle()}
                             </h1>
@@ -130,14 +130,14 @@ export default function BackgroundHeroOverlay({
                         setShowDemo(!showDemo);
                     }
                 }}
-                className="absolute bottom-4 right-4 z-30 flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white/80 hover:text-white text-[11px] font-medium shadow-lg select-none cursor-pointer transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4DDF0]"
+                className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 z-30 flex items-center gap-0 sm:gap-2.5 px-1.5 py-1.5 sm:px-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white/80 hover:text-white text-[11px] font-medium shadow-lg select-none cursor-pointer transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4DDF0]"
                 title="Toggle hero UI demo overlay"
             >
-                <span>Demo Content</span>
-                <div className={`w-9 h-5 rounded-full transition-colors relative p-0.5 flex items-center ${showDemo ? 'bg-[#D4CBE5]' : 'bg-white/20'}`}>
+                <span className="hidden sm:inline">Demo Content</span>
+                <div className={`w-7 h-4 sm:w-9 sm:h-5 rounded-full transition-colors relative p-0.5 flex items-center ${showDemo ? 'bg-[#D4CBE5]' : 'bg-white/20'}`}>
                     <motion.div
-                        className={`w-4 h-4 rounded-full shadow-sm transition-colors ${showDemo ? 'bg-[#171717]' : 'bg-white'}`}
-                        animate={{ x: showDemo ? 16 : 0 }}
+                        className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-sm transition-colors ${showDemo ? 'bg-[#171717]' : 'bg-white'}`}
+                        animate={{ x: showDemo ? (window.innerWidth < 640 ? 12 : 16) : 0 }}
                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
                 </div>

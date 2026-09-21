@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 
 import { PackageManagerProvider } from './components/ui/InstallSection'
@@ -14,7 +14,6 @@ import { PackageManagerProvider } from './components/ui/InstallSection'
 // Each page now loads only when its route is actually visited.
 const LandingPage = lazy(() => import('./pages/LandingPage').then((m) => ({ default: m.LandingPage })))
 const ComponentsPage = lazy(() => import('./pages/ComponentsPage').then((m) => ({ default: m.ComponentsPage })))
-const DocumentationPage = lazy(() => import('./pages/DocumentationPage').then((m) => ({ default: m.DocumentationPage })))
 
 // SVG noise filter for grain overlay
 function GrainOverlay() {
@@ -44,7 +43,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/components" element={<ComponentsPage />} />
           <Route path="/components/:slug" element={<ComponentsPage />} />
-          <Route path="/documentation" element={<DocumentationPage />} />
+          <Route path="/documentation" element={<Navigate to="/components/documentation" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
       <Analytics />

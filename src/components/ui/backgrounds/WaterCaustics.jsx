@@ -371,6 +371,7 @@ export default function WaterCaustics({
 
       const w = container.offsetWidth;
       const h = container.offsetHeight;
+      if (w === 0 || h === 0) return;
       renderer.setSize(w, h);
       buildTargets(w, h);
     }, 100);
@@ -487,6 +488,8 @@ export default function WaterCaustics({
     buildTargets(container.offsetWidth, container.offsetHeight);
 
     window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
 
     const startTime = performance.now();
     const animate = () => {
@@ -523,6 +526,7 @@ export default function WaterCaustics({
     return () => {
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       if (resizeTimeoutRef.current) {
         clearTimeout(resizeTimeoutRef.current);
       }
