@@ -63,18 +63,6 @@ export const componentPrompts = {
 - Tech Stack: React, HTML5 Canvas 2D, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install lucide-react clsx tailwind-merge`,
 
-  "shooting-stars": `Create a cinematic Night Sky with Twinkling Stars and Shooting Star Meteor Showers in React:
-- Visual Identity: Ultra-deep midnight gradient backdrop (linear-gradient from #050508 through #0D0C18 to #08060F).
-- Starfield & Meteor Physics:
-  - Static Starfield: 150-200 micro star points with randomized radii (0.5px to 2px) and individualized CSS animation delays creating organic scintillation/twinkling.
-  - Dynamic Shooting Star Meteors:
-    - Periodically spawn from randomized upper-canvas origins at a consistent 45° trajectory.
-    - Each meteor features an intense luminous white head with a 160px tapered gradient tail (fading from pure white #FFF to electric cyan #38BDF8 and transparent).
-    - High-velocity linear glide (duration: 800ms-1200ms) with ease-out dissipation and randomized interval triggers (every 2.5s-6s).
-- Interactive Pulse: Clicking canvas spawns an immediate starburst cluster at cursor location.
-- Tech Stack: React, HTML5 Canvas 2D / CSS Animations, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
   "soft-aurora": `Create an animated Soft Aurora Mesh Gradient background in React:
 - Visual Identity: Dark luxury aesthetic (#09080D) with undulating, translucent aurora borealis ribbon waves blending seamlessly across the viewport.
 - Gradient Architecture:
@@ -470,12 +458,6 @@ export const componentPrompts = {
   "kinetic-lens-sidebar": `Create a vertical Kinetic Lens Rolodex Sidebar Menu in React:
 - Visual Identity: Pitch-black canvas (#000000) with vector typography service items.
 - Mechanics: Active center item is pure white (#FFFFFF), larger scale, semibold, with preceding horizontal dash " -  ". Peripheral items are deep indigo (#282D52) fading toward edges. Continuous mouse wheel scrubbing with inertia, touch drag, and snap physics.
-- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
-- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
-
-  "flightpath-toc": `Create a Supersonic Airplane Flightpath TOC Navigation in React:
-- Visual Identity: Light-mode Rewamp UI Milk/Cream tokens (#FFFDF2, #FAF6ED, #E8E2D5) with hierarchical tree navigation.
-- Mechanics: Continuous curved SVG rail connecting each item node with smooth cubic bezier S-curves. An animated supersonic airplane traveler physically glides along the rail with spring physics (stiffness: 360, damping: 26) pointing toward the active label.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 

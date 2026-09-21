@@ -82,8 +82,8 @@ export default function DocumentationContent() {
         <div className="grid sm:grid-cols-2 gap-4 mt-8">
           <div className="p-5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
             <LayoutTemplate size={20} className="text-[var(--text-2)] mb-4" />
-            <h3 className="text-sm font-semibold mb-2 text-[var(--text)]">Copy & Paste</h3>
-            <p className="text-[13px] text-[var(--text-2)] leading-relaxed">We don't wrap our components in an NPM package. You own the code. Copy, paste, and modify.</p>
+            <h3 className="text-sm font-semibold mb-2 text-[var(--text)]">Any Package Manager</h3>
+            <p className="text-[13px] text-[var(--text-2)] leading-relaxed">Install components with a single command via npm, pnpm, yarn, or bun. The CLI drops the source straight into your project.</p>
           </div>
           <div className="p-5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
             <Zap size={20} className="text-[var(--text-2)] mb-4" />
@@ -186,7 +186,7 @@ ${activeCliRunner} rewampui add --all`, 'light')}</pre>
         </div>
         <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
           Every interactive component in Rewamp UI is driven by Framer Motion springs rather than CSS transitions.
-          Spring physics (stiffness, damping, mass) react naturally to interruption — dragging, re-hovering, or
+          Spring physics (stiffness, damping, mass) react naturally to interruption: dragging, re-hovering, or
           toggling mid-animation never snaps or resets, it just retargets from the current velocity.
         </p>
         <CodeCard
@@ -211,7 +211,7 @@ ${activeCliRunner} rewampui add --all`, 'light')}</pre>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text)]">Tailwind CSS</h2>
         </div>
         <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
-          Styling is utility-first with Tailwind CSS 4 — no separate stylesheet per component. Every reusable
+          Styling is utility-first with Tailwind CSS 4, with no separate stylesheet per component. Every reusable
           token (background, surface, border, text, accent) is exposed as a CSS variable in <code className="px-1 py-0.5 rounded text-[13px] font-mono bg-[var(--elevated)]">index.css</code>,
           so components read <code className="px-1 py-0.5 rounded text-[13px] font-mono bg-[var(--elevated)]">bg-[var(--surface)]</code> instead
           of a hardcoded color, which is what lets the entire library switch between light and dark mode instantly.
@@ -231,7 +231,7 @@ ${activeCliRunner} rewampui add --all`, 'light')}</pre>
         </div>
         <p className="text-[15px] text-[var(--text-2)] leading-[1.8] mb-6">
           The frosted-glass look used across docks, panels, and floating navbars comes from layering a translucent
-          background, a backdrop blur, and a soft inner highlight border — never a flat semi-transparent fill on
+          background, a backdrop blur, and a soft inner highlight border. It's never a flat semi-transparent fill on
           its own, which reads muddy against busy backgrounds.
         </p>
         <CodeCard

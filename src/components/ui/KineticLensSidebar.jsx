@@ -237,19 +237,21 @@ export function KineticLensSidebar({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
       className={`relative w-full max-w-[360px] sm:max-w-[420px] h-[480px] overflow-hidden select-none cursor-grab active:cursor-grabbing px-6 sm:px-10 flex flex-col justify-center transition-colors duration-300 ${
-        isDark ? 'bg-black text-white' : 'bg-[#FAFAFC] text-neutral-900'
+        isDark ? 'text-white' : 'text-neutral-900'
       } ${className}`}
       style={{
         touchAction: 'none',
       }}
     >
-      {/* Top & Bottom Vignette Mask to softly fade peripheral items into background */}
+      {/* Top & Bottom Vignette Mask: fades peripheral items to transparent rather than a
+          solid fill, so the component blends into whatever surface it's placed on instead
+          of reading as a boxed-in rectangle. */}
       <div
         className="absolute inset-0 pointer-events-none z-20"
         style={{
           background: isDark
-            ? 'linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.96) 12%, transparent 28%, transparent 72%, rgba(0, 0, 0, 0.96) 88%, #000000 100%)'
-            : 'linear-gradient(to bottom, #FAFAFC 0%, rgba(250, 250, 252, 0.96) 12%, transparent 28%, transparent 72%, rgba(250, 250, 252, 0.96) 88%, #FAFAFC 100%)',
+            ? 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0, 0, 0, 0.7) 12%, transparent 28%, transparent 72%, rgba(0, 0, 0, 0.7) 88%, rgba(0,0,0,0.9) 100%)'
+            : 'linear-gradient(to bottom, rgba(250,250,252,0.9) 0%, rgba(250, 250, 252, 0.7) 12%, transparent 28%, transparent 72%, rgba(250, 250, 252, 0.7) 88%, rgba(250,250,252,0.9) 100%)',
         }}
       />
 
@@ -326,7 +328,7 @@ export function KineticLensSidebar({
                 <span
                   className={`tracking-[-0.02em] font-sans antialiased select-none whitespace-nowrap transition-colors duration-150 ${
                     isFocal
-                      ? 'text-[28px] sm:text-[34px] font-bold text-white'
+                      ? 'text-[28px] sm:text-[34px] font-bold'
                       : 'text-[18px] sm:text-[20px] font-medium'
                   }`}
                   style={{

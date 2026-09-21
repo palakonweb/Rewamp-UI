@@ -62,7 +62,6 @@ export const categories = [
             makeLazy('Elastic Line Grid', 'elastic-line-grid', () => import('./ui/ElasticLineGridShowcase'), 'ElasticLineGridShowcase'),
             makeLazy('Spotlight Grid', 'spotlight-grid', () => import('./ui/SpotlightGridShowcase'), 'SpotlightGridShowcase'),
             makeLazy('Ripple Grid', 'ripple-grid', () => import('./ui/RippleGridShowcase'), 'RippleGridShowcase'),
-            makeLazy('Shooting Stars', 'shooting-stars', () => import('./ui/ShootingStarsShowcase'), 'ShootingStarsShowcase'),
             makeLazy('Soft Aurora', 'soft-aurora', () => import('./ui/SoftAuroraShowcase'), 'SoftAuroraShowcase'),
             makeLazy('Plexus Engine', 'plexus-engine', () => import('./ui/PlexusEngineShowcase'), 'PlexusEngineShowcase'),
             makeLazy('Particle Wave', 'particle-wave', () => import('./ui/ParticleWaveShowcase'), 'ParticleWaveShowcase'),
@@ -178,7 +177,6 @@ export const categories = [
         description: 'Floating and docked sidebars with sliding active-state highlights and hover micro-animations. Not original work - inspired by the goats of the internet, made with love by Palak aka palakonweb (GitHub: palakonweb · X: @palakonweb).',
         components: [
             makeLazy('Kinetic Lens Sidebar', 'kinetic-lens-sidebar', () => import('./ui/KineticLensSidebarShowcase'), 'KineticLensSidebarShowcase'),
-            makeLazy('Flightpath TOC', 'flightpath-toc', () => import('./ui/FlightpathTOCShowcase'), 'FlightpathTOCShowcase'),
             makeLazy('Sidebar', 'sidebar', () => import('./ui/Sidebar'), 'Sidebar'),
             makeLazy('Flower Sidebar', 'flower-sidebar', () => import('./ui/FlowerSidebarShowcase'), 'FlowerSidebarShowcase'),
         ],

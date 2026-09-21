@@ -28,6 +28,7 @@ import CanvasShimmerSkeleton from '../ui/CanvasShimmerSkeleton';
 import ErrorBoundary from '../ui/ErrorBoundary';
 import InstallSection, { CopyButton } from '../ui/InstallSection';
 import DocumentationContent from '../ui/DocumentationContent';
+import { getComponentDoc } from '../componentDocs';
 import { highlightCode } from '../ui/CodeHighlight';
 import {
   GlowTextChipSkeleton,
@@ -244,8 +245,8 @@ function DockIcon({ children, label, onClick, theme, accent = false, active = fa
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}
         onBlur={() => setHovered(false)}
-        whileHover={{ scale: 1.10, x: -2 }}
-        whileTap={{ scale: 0.94 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.96 }}
         transition={{ type: 'spring', stiffness: 340, damping: 26 }}
         title={label}
         className={`relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full cursor-pointer transition-colors ${
@@ -488,6 +489,11 @@ export default function RewampShowcase() {
       entry: { title: 'Liquid Cursor Gradient', Component: () => null }
     };
   }, [activeSlug, isDocsView]);
+
+  // Structured documentation (description, interaction, props) for the active
+  // component, if it's been written yet - null falls back to the older
+  // auto-generated prompt text in the Description drawer.
+  const activeDoc = useMemo(() => getComponentDoc(activeSlug), [activeSlug]);
 
   // Load real source (+ any CSS + dependency list) for active component
   useEffect(() => {
@@ -1456,7 +1462,72 @@ export default function RewampShowcase() {
 
               {/* Description content */}
               <div className="flex-1 overflow-auto p-5">
-                {sourceInfo.loading ? (
+                {activeDoc ? (
+                  <div className="space-y-5">
+                    <div>
+                      <span className={`block text-[10px] font-mono uppercase tracking-widest font-semibold mb-2 ${
+                        theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                      }`}>
+                        {currentFound?.entry?.title || 'Component'}
+                      </span>
+                      <p className={`text-[14px] leading-relaxed ${theme === 'light' ? 'text-neutral-800' : 'text-neutral-200'}`}>
+                        {activeDoc.description}
+                      </p>
+                    </div>
+
+                    <div>
+                      <span className={`block text-[10px] font-mono uppercase tracking-widest font-semibold mb-2 ${
+                        theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                      }`}>Dependencies</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {(sourceInfo.dependencies && sourceInfo.dependencies.length > 0 ? sourceInfo.dependencies : ['none']).map((dep) => (
+                          <code
+                            key={dep}
+                            className={`px-1.5 py-0.5 rounded font-mono text-[11.5px] ${
+                              theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                            }`}
+                          >
+                            {dep}
+                          </code>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className={`block text-[10px] font-mono uppercase tracking-widest font-semibold mb-2 ${
+                        theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                      }`}>Interaction</span>
+                      <p className={`text-[13px] leading-relaxed ${theme === 'light' ? 'text-neutral-700' : 'text-neutral-300'}`}>
+                        {activeDoc.interaction}
+                      </p>
+                    </div>
+
+                    <div>
+                      <span className={`block text-[10px] font-mono uppercase tracking-widest font-semibold mb-2 ${
+                        theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'
+                      }`}>Props</span>
+                      {activeDoc.props.length > 0 ? (
+                        <div className="space-y-2.5">
+                          {activeDoc.props.map((p) => (
+                            <div key={p.name} className={`pb-2.5 border-b last:border-0 ${theme === 'light' ? 'border-neutral-100' : 'border-[#24202C]'}`}>
+                              <div className="flex items-baseline gap-2 flex-wrap">
+                                <code className={`px-1.5 py-0.5 rounded font-mono text-[11.5px] ${
+                                  theme === 'light' ? 'bg-neutral-100 text-neutral-800' : 'bg-[#24202C] text-neutral-200'
+                                }`}>{p.name}</code>
+                                <span className={`text-[11px] font-mono italic ${theme === 'light' ? 'text-neutral-400' : 'text-neutral-500'}`}>{p.type}</span>
+                              </div>
+                              <p className={`text-[13px] leading-relaxed mt-1 ${theme === 'light' ? 'text-neutral-700' : 'text-neutral-300'}`}>{p.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className={`text-[13px] leading-relaxed ${theme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                          Self-contained demo - no configurable props.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ) : sourceInfo.loading ? (
                   <div className="flex items-center gap-2 text-neutral-400 font-mono text-xs">
                     <RotateCw className="w-3.5 h-3.5 animate-spin" />
                     Loading description…
