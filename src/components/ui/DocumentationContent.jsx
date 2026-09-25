@@ -56,6 +56,8 @@ const CLI_RUNNERS = [
 export default function DocumentationContent() {
   const [cliPm, setCliPm] = useState('npm');
   const activeCliRunner = CLI_RUNNERS.find((p) => p.id === cliPm).runner;
+  const theme = useSiteTheme();
+  const codeTheme = theme === 'dark' ? 'dark' : 'light';
 
   return (
     <motion.div
@@ -109,7 +111,7 @@ export default function DocumentationContent() {
           className="mb-8"
           copyText="npm install framer-motion lucide-react clsx tailwind-merge"
         >
-          <pre className="text-[13px] font-mono whitespace-pre">{highlightCode('npm install framer-motion lucide-react clsx tailwind-merge', 'light')}</pre>
+          <pre className="text-[13px] font-mono whitespace-pre">{highlightCode('npm install framer-motion lucide-react clsx tailwind-merge', codeTheme)}</pre>
         </CodeCard>
 
         <h3 className="text-base font-semibold mb-3 text-[var(--text)]">Utility Setup</h3>
@@ -127,7 +129,7 @@ import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
-}`, 'light')}</pre>
+}`, codeTheme)}</pre>
         </CodeCard>
       </section>
 
@@ -167,7 +169,7 @@ export function cn(...inputs) {
           <pre className="text-[13px] font-mono leading-[1.9] whitespace-pre">{highlightCode(
 `${activeCliRunner} rewampui add theme-toggle
 ${activeCliRunner} rewampui add arch-card-carousel theme-toggle
-${activeCliRunner} rewampui add --all`, 'light')}</pre>
+${activeCliRunner} rewampui add --all`, codeTheme)}</pre>
         </CodeCard>
 
         <p className="text-[13px] text-[var(--text-2)] leading-relaxed">
@@ -199,7 +201,7 @@ ${activeCliRunner} rewampui add --all`, 'light')}</pre>
 <motion.div
   layout
   transition={{ type: "spring", stiffness: 350, damping: 32 }}
-/>`, 'light')}</pre>
+/>`, codeTheme)}</pre>
         </CodeCard>
       </section>
 
@@ -243,7 +245,7 @@ ${activeCliRunner} rewampui add --all`, 'light')}</pre>
   background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
   backdrop-filter: blur(24px);
   border: 1px solid rgba(255,255,255,0.6);
-}`, 'light')}</pre>
+}`, codeTheme)}</pre>
         </CodeCard>
       </section>
 

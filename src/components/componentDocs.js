@@ -182,6 +182,76 @@ export const componentDocs = {
       { name: 'style', type: 'React.CSSProperties', description: 'Inline styles merged onto the root canvas wrapper.' },
     ],
   },
+  'googly-eyes-button': {
+    description: 'A button with two cartoon eyes that track the cursor around the screen; the eyes go smirky and the label swaps text when clicked.',
+    interaction: 'Move the cursor anywhere near the button to make both pupils follow it. Click the button to trigger the smirk expression and swap the label text.',
+    props: [],
+  },
+  'gloss-button': {
+    description: 'A rounded pill button with a marbled, iridescent oil-slick surface that drifts slowly on its own, topped with a fixed glossy highlight arc.',
+    interaction: 'Ambient by default - the marbled surface keeps drifting continuously; hovering adds a subtle lift.',
+    props: [],
+  },
+  'neumorphic-download-button': {
+    description: 'A soft neumorphic circular download button with a progress ring that fills as a simulated download runs, finishing with a checkmark confirmation.',
+    interaction: 'Click to start the simulated download; the ring fills in over a few seconds and swaps to a checkmark on completion before resetting.',
+    props: [],
+  },
+  'rainbow-button': {
+    description: 'A near-white rounded pill button with a thin iridescent pastel-spectrum border that continuously animates around the edge.',
+    interaction: 'Purely visual - the border loops on its own; hover adds a small scale lift and click a slight press-down.',
+    props: [],
+  },
+  'slide-to-confirm-button': {
+    description: 'A dark pill-shaped order button where clicking sends a small truck animation sliding across the track before the label crossfades to a confirmed state.',
+    interaction: 'Click the button to play the slide animation once; the label changes to a confirmation message with a checkmark when the truck reaches the end.',
+    props: [],
+  },
+  'chrome-border-button': {
+    description: 'A rounded white pill button with a thin rotating conic-gradient ring styled to look like polished chrome, and metallic-gradient text that shimmers left to right on a loop.',
+    interaction: 'Ambient by default - the chrome ring and text shimmer keep animating continuously with no interaction required.',
+    props: [],
+  },
+  'book-a-call-button': {
+    description: 'A compact avatar-style button that expands its label on hover to invite booking a call, with a distinct pressed/active state.',
+    interaction: 'Hover to expand the button and reveal its label; click to trigger the onBook callback.',
+    props: [
+      { name: 'onBook', type: '() => void', description: 'Called when the button is clicked, after its active-state animation.' },
+    ],
+  },
+  'shimmer-button': {
+    description: 'A clean white pill button with a subtle grey border and a narrow light streak that periodically sweeps diagonally across the surface.',
+    interaction: 'The shimmer sweeps on a repeating timer by itself; hovering lifts the button slightly and clicking speeds up the next sweep.',
+    props: [],
+  },
+  'kinetic-reel-text': {
+    description: 'A centered 3D cylinder text reel that mechanically rotates through a list of words, like a slot-machine drum, cycling on a timer.',
+    interaction: 'Cycles automatically on the configured interval; when `onSelect` is wired up, clicking the reel can also be used to trigger a selection.',
+    props: [
+      { name: 'prefix', type: 'string', description: 'Static text shown before the rotating word.' },
+      { name: 'items', type: 'string[]', description: 'Words the reel cycles through, in order.' },
+      { name: 'interval', type: 'number', description: 'Milliseconds between automatic word changes.' },
+      { name: 'className', type: 'string', description: 'Extra classes merged onto the root wrapper.' },
+      { name: 'theme', type: "'dark' | 'light'", description: 'Color scheme for the reel text and drum shading.' },
+      { name: 'autoPlay', type: 'boolean', description: 'Whether the reel cycles automatically on its own.' },
+      { name: 'onSelect', type: '(item: string) => void', description: 'Called with the newly active word whenever the reel advances.' },
+    ],
+  },
+  'split-text-reveal': {
+    description: 'A heading where every character flies in from a random vertical offset with staggered timing and a slight blur, settling into place.',
+    interaction: 'Plays automatically once on mount/scroll into view; there is no ongoing pointer interaction.',
+    props: [],
+  },
+  'word-by-word-text': {
+    description: 'A paragraph that reveals one word at a time, each fading in and sliding up in sequence for an editorial, premium reading feel.',
+    interaction: 'Plays automatically once on mount/scroll into view; there is no ongoing pointer interaction.',
+    props: [],
+  },
+  'character-scramble-text': {
+    description: 'A monospace text effect where each character cycles rapidly through random glyphs before settling on its real letter, like a matrix-style decode.',
+    interaction: 'Plays automatically on mount; re-triggering (if wired to a button or hover in your usage) restarts the scramble-to-reveal sequence.',
+    props: [],
+  },
 };
 
 export function getComponentDoc(slug) {
