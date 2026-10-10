@@ -145,8 +145,7 @@ export function MorphSearchCapsule({
           />
         ))}
 
-        {/* ── Seamless Fluid SVG Search Icon ↔ Cursor Morph ── */}
-        <div className="relative w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2">
+        {!isActive && <div className="relative w-6 h-6 flex items-center justify-center flex-shrink-0 mr-2">
           <svg
             viewBox="0 0 24 24"
             className="w-6 h-6 overflow-visible"
@@ -241,7 +240,7 @@ export function MorphSearchCapsule({
               }}
             />
           </svg>
-        </div>
+        </div>}
 
         {/* Real Interactive Text Input */}
         <div className="flex-1 relative flex items-center h-full">
