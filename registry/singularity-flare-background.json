@@ -1,0 +1,12 @@
+{
+  "name": "singularity-flare-background",
+  "category": "bgs",
+  "npmDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "source": "src/components/ui/SingularityFlareBackgroundShowcase.jsx",
+      "target": "SingularityFlareBackgroundShowcase.jsx"
+    }
+  ]
+}

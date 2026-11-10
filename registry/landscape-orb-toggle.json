@@ -2,8 +2,7 @@
   "name": "landscape-orb-toggle",
   "category": "toggles",
   "npmDependencies": [
-    "framer-motion",
-    "lucide-react"
+    "framer-motion"
   ],
   "registryDependencies": [],
   "files": [

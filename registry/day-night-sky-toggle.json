@@ -2,8 +2,7 @@
   "name": "day-night-sky-toggle",
   "category": "toggles",
   "npmDependencies": [
-    "framer-motion",
-    "lucide-react"
+    "framer-motion"
   ],
   "registryDependencies": [],
   "files": [

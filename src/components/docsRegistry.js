@@ -156,6 +156,7 @@ export const categories = [
             makeLazy('Liquid Underline Navbar', 'liquid-underline-navbar', () => import('./ui/LiquidUnderlineNavbarShowcase'), 'LiquidUnderlineNavbarShowcase'),
             makeLazy('Morphing Tab Navbar', 'morphing-tab-navbar', () => import('./ui/MorphingTabNavbarShowcase'), 'MorphingTabNavbarShowcase'),
             makeLazy('Orbiting Planets Navbar', 'orbiting-planets-navbar', () => import('./ui/OrbitingPlanetsNavbarShowcase'), 'OrbitingPlanetsNavbarShowcase'),
+            makeLazy('Account Menu', 'account-menu', () => import('./ui/AccountMenuShowcase'), 'AccountMenuShowcase'),
         ],
     },
     {

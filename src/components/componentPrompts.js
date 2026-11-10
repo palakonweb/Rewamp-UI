@@ -570,6 +570,12 @@ export const componentPrompts = {
 - Visual Identity: Dark analytics dashboard bento grid with animated SVG sparkline drawing, animated donut chart, spring-up bar charts, and eased number counters.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "account-menu": `Create an Account Dropdown Menu in React:
+- Layout: A "Share +" pill button beside a circular rose-ringed avatar trigger (cat-mark SVG icon). Clicking the avatar opens a rounded card menu listing Profile (selected state), Community, Subscription (with a "Pro" badge), Settings, Help Center, and a divider above Sign Out.
+- Mechanics: Framer Motion AnimatePresence scale/fade entrance, click-outside and Escape to close, selectable active row highlight.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 };
 
 export function getPromptForSlug(slug, title) {

@@ -1,10 +1,7 @@
 {
   "name": "sine-ribbons",
   "category": "bgs",
-  "npmDependencies": [
-    "framer-motion",
-    "lucide-react"
-  ],
+  "npmDependencies": [],
   "registryDependencies": [],
   "files": [
     {
