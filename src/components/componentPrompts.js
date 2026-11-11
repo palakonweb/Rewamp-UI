@@ -589,9 +589,21 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
+  "frosted-gel-button": `Create a Frosted Gel Button in React:
+- Visual Identity: A soft, translucent, pill-rounded gel button with a warm peach-to-white radial gradient fill, glassy top sheen, and a large blurred ambient orange glow breathing behind it. Bold white "Button" label with a soft embossed text-shadow for depth.
+- Mechanics: The ambient glow pulses slowly (opacity + scale) on an infinite loop; the button itself springs up on hover and compresses on press.
+- Tech Stack: React, Framer Motion, Tailwind CSS.
+- Dependencies: npm install framer-motion clsx tailwind-merge`,
+
+  "glass-segment-navbar": `Create a Glass Segment Navbar in React:
+- Layout: A pill-shaped three-option segmented control (Dates, Months, Flexible). The active option sits inside a glossy frosted-glass pill with a top inset highlight, floating over a soft color-tinted ambient glow unique to that option (lilac for Dates, orange for Months, green for Flexible).
+- Mechanics: Clicking an option slides both the glass pill and its glow to the new selection via a shared Framer Motion layoutId spring, matching the sliding-pill feel used across the kit's other nav components.
+- Tech Stack: React, Framer Motion, Tailwind CSS.
+- Dependencies: npm install framer-motion clsx tailwind-merge`,
+
   "message-input-bar": `Create a Message Input Bar in React:
-- Layout: A rounded chat composer card with a plain text input ("Message Maya Chen..."), a divider, and a bottom row of four attachment icon buttons (attach, image, document, video) beside a circular gradient send button with an up-arrow.
-- Mechanics: The send button's background is an animated lilac gradient (oversized background-size, tweening background-position in an infinite loop) rather than a static fill; attachment icons tint to the brand color on hover. Theme-aware via the site's data-theme attribute and CSS custom properties, matching light/dark automatically.
+- Layout: A rounded chat composer card with a plain text input ("Follow palakonweb"), a divider, and a bottom row of four attachment icon buttons (attach, image, document, video) beside a circular gradient send button with an up-arrow.
+- Mechanics: Hovering an attachment icon floats a shared-layoutId tooltip with its label; clicking one opens its own dropdown submenu of related actions (e.g. Attach -> Upload from computer / Add from Drive / Recent files), click-outside and Escape to close. The send button's background is an animated lilac gradient (oversized background-size tweening background-position in an infinite loop) plus a diagonal light-sweep overlay layered on top so the motion reads clearly. Theme-aware via the site's data-theme attribute and CSS custom properties, matching light/dark automatically.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 };

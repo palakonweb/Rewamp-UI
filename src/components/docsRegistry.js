@@ -94,6 +94,7 @@ export const categories = [
             makeLazy('Chrome Border Button', 'chrome-border-button', () => import('./ui/ChromeBorderButtonShowcase'), 'ChromeBorderButtonShowcase'),
             makeLazy('Book A Call Button', 'book-a-call-button', () => import('./ui/BookACallButton'), 'BookACallButton'),
             makeLazy('Shimmer Button', 'shimmer-button', () => import('./ui/ShimmerButtonShowcase'), 'ShimmerButtonShowcase'),
+            makeLazy('Frosted Gel Button', 'frosted-gel-button', () => import('./ui/FrostedGelButtonShowcase'), 'FrostedGelButtonShowcase'),
         ],
     },
     {
@@ -159,6 +160,7 @@ export const categories = [
             makeLazy('Account Menu', 'account-menu', () => import('./ui/AccountMenuShowcase'), 'AccountMenuShowcase'),
             makeLazy('Glass Action Dock', 'glass-action-dock', () => import('./ui/GlassActionDockShowcase'), 'GlassActionDockShowcase'),
             makeLazy('Skeleton Nav Reveal', 'skeleton-nav-reveal', () => import('./ui/SkeletonNavRevealShowcase'), 'SkeletonNavRevealShowcase'),
+            makeLazy('Glass Segment Navbar', 'glass-segment-navbar', () => import('./ui/GlassSegmentNavbarShowcase'), 'GlassSegmentNavbarShowcase'),
         ],
     },
     {
