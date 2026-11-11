@@ -576,6 +576,24 @@ export const componentPrompts = {
 - Mechanics: Framer Motion AnimatePresence scale/fade entrance, click-outside and Escape to close, selectable active row highlight.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "glass-action-dock": `Create a Floating Glass Action Dock in React:
+- Layout: A dark, pill-shaped, blurred-glass dock holding six circular icon buttons (Chat, Inbox, Preview, Focus, Share, Menu), with small blue notification dots on Inbox and Menu.
+- Mechanics: A single shared tooltip (Framer Motion layoutId) glides between icons on hover instead of each icon spawning its own, with its label cross-fading; a matching shared circular highlight slides beneath the hovered icon using the same spring physics.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "skeleton-nav-reveal": `Create a Skeleton Nav Reveal in React:
+- Layout: A row of four loading-skeleton pill placeholders (Home, Tasks, Goals, Settings) with a lilac shimmer sweep.
+- Mechanics: Hovering a placeholder floats a black pill tooltip with icon + label just above it; a single shared tooltip (Framer Motion layoutId) glides between items using the same spring physics as the Account Menu's active pill, rather than each item spawning its own.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "message-input-bar": `Create a Message Input Bar in React:
+- Layout: A rounded chat composer card with a plain text input ("Message Maya Chen..."), a divider, and a bottom row of four attachment icon buttons (attach, image, document, video) beside a circular gradient send button with an up-arrow.
+- Mechanics: The send button's background is an animated lilac gradient (oversized background-size, tweening background-position in an infinite loop) rather than a static fill; attachment icons tint to the brand color on hover. Theme-aware via the site's data-theme attribute and CSS custom properties, matching light/dark automatically.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 };
 
 export function getPromptForSlug(slug, title) {

@@ -157,6 +157,8 @@ export const categories = [
             makeLazy('Morphing Tab Navbar', 'morphing-tab-navbar', () => import('./ui/MorphingTabNavbarShowcase'), 'MorphingTabNavbarShowcase'),
             makeLazy('Orbiting Planets Navbar', 'orbiting-planets-navbar', () => import('./ui/OrbitingPlanetsNavbarShowcase'), 'OrbitingPlanetsNavbarShowcase'),
             makeLazy('Account Menu', 'account-menu', () => import('./ui/AccountMenuShowcase'), 'AccountMenuShowcase'),
+            makeLazy('Glass Action Dock', 'glass-action-dock', () => import('./ui/GlassActionDockShowcase'), 'GlassActionDockShowcase'),
+            makeLazy('Skeleton Nav Reveal', 'skeleton-nav-reveal', () => import('./ui/SkeletonNavRevealShowcase'), 'SkeletonNavRevealShowcase'),
         ],
     },
     {
@@ -209,6 +211,7 @@ export const categories = [
             makeLazy('Fluid Morph Orb', 'fluid-morph-orb', () => import('./ui/FluidMorphOrbShowcase'), 'FluidMorphOrbShowcase'),
             makeLazy('Wireframe Ring Orb', 'wireframe-ring-orb', () => import('./ui/WireframeRingOrbShowcase'), 'WireframeRingOrbShowcase'),
             makeLazy('Particle Morph Orb', 'particle-morph-orb', () => import('./ui/ParticleMorphOrbShowcase'), 'ParticleMorphOrbShowcase'),
+            makeLazy('Message Input Bar', 'message-input-bar', () => import('./ui/MessageInputBarShowcase'), 'MessageInputBarShowcase'),
         ],
     },
 ];
