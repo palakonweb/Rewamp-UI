@@ -595,6 +595,12 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS.
 - Dependencies: npm install framer-motion clsx tailwind-merge`,
 
+  "copy-code-button": `Create a Copy Code Button in React:
+- Layout: A light-gray rounded-full pill showing a code string on the left and a smaller white "Copy" pill button on the right.
+- Mechanics: Clicking Copy crossfades the whole pill's content into a centered black checkmark badge + "Code Copied!" confirmation, auto-reverting back to the code/Copy layout after a couple seconds; copies the code to the clipboard.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
   "frosted-gel-button": `Create a Frosted Gel Button in React:
 - Visual Identity: A soft, translucent, pill-rounded gel button with a warm peach-to-white radial gradient fill, glassy top sheen, and a large blurred ambient orange glow breathing behind it. Bold white "Button" label with a soft embossed text-shadow for depth.
 - Mechanics: The ambient glow pulses slowly (opacity + scale) on an infinite loop; the button itself springs up on hover and compresses on press.
@@ -607,9 +613,9 @@ export const componentPrompts = {
 - Tech Stack: React, Tailwind CSS, inline SVG.
 - Dependencies: npm install clsx tailwind-merge`,
 
-  "inverted-segment-nav": `Create an Inverted Segment Nav in React:
-- Layout: A white rounded card holding a black pill-shaped track (Home with a label, then plain Person and Layers icons with no label) plus a separate standalone black circular hexagon-icon button to its right.
-- Mechanics: Clicking an item slides a white pill behind it (Framer Motion layoutId spring) while its icon switches from white-on-black to black-on-white and its label (Home only) grows/shrinks in with its own exit animation; the hexagon button scales on hover/press. All transitions use a snappy, slightly-damped spring for a buttery feel.
+  "glass-stretch-nav": `Create a Glass Stretch Nav in React:
+- Layout: A frosted-glass pill track (Home with a label, then plain Tasks/Files/Chat icons with no label) plus a separate standalone red gradient circular "+" button to its right.
+- Mechanics: A white pill behind the highlighted item follows hover (not just click), falling back to the last clicked item once the cursor leaves; its Framer Motion layoutId spring uses lower damping than the kit's usual sliding pills so it visibly overshoots/stretches as it resizes between an icon-only item and the labeled Home item before settling. The "+" button scales on hover/press.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
@@ -619,9 +625,9 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
-  "inspector-toolbar": `Create an Inspector Toolbar in React:
-- Layout: A centered white rounded-pill toolbar of 4 icon+label buttons: Style, Components, Content, Customize.
-- Mechanics: Hovering a toolbar button opens its own white popover card directly above it with a small triangular speech-bubble pointer connecting down to that button, each popover showing 2 rows (icon+label left, a value or color swatches right) - nested per-button so its position comes from the DOM rather than hardcoded offsets.
+  "share-sheet-toolbar": `Create a Share Sheet Toolbar in React:
+- Layout: A light rounded-pill toolbar (send, delete, a highlighted "share" pill, invite, save).
+- Mechanics: Every icon - not just "share" - opens its own minimal popover on hover: a small white card with 2-3 plain icon+label rows (no colors, no secondary buttons, no footer), connected by a speech-bubble pointer nested in its own button wrapper rather than hardcoded offsets.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 

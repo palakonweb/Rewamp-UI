@@ -95,6 +95,7 @@ export const categories = [
             makeLazy('Book A Call Button', 'book-a-call-button', () => import('./ui/BookACallButton'), 'BookACallButton'),
             makeLazy('Shimmer Button', 'shimmer-button', () => import('./ui/ShimmerButtonShowcase'), 'ShimmerButtonShowcase'),
             makeLazy('Frosted Gel Button', 'frosted-gel-button', () => import('./ui/FrostedGelButtonShowcase'), 'FrostedGelButtonShowcase'),
+            makeLazy('Copy Code Button', 'copy-code-button', () => import('./ui/CopyCodeButtonShowcase'), 'CopyCodeButtonShowcase'),
         ],
     },
     {
@@ -162,8 +163,8 @@ export const categories = [
             makeLazy('Skeleton Nav Reveal', 'skeleton-nav-reveal', () => import('./ui/SkeletonNavRevealShowcase'), 'SkeletonNavRevealShowcase'),
             makeLazy('Glass Segment Navbar', 'glass-segment-navbar', () => import('./ui/GlassSegmentNavbarShowcase'), 'GlassSegmentNavbarShowcase'),
             makeLazy('Connected Bubble Navbar', 'connected-bubble-navbar', () => import('./ui/ConnectedBubbleNavbarShowcase'), 'ConnectedBubbleNavbarShowcase'),
-            makeLazy('Inverted Segment Nav', 'inverted-segment-nav', () => import('./ui/InvertedSegmentNavShowcase'), 'InvertedSegmentNavShowcase'),
-            makeLazy('Inspector Toolbar', 'inspector-toolbar', () => import('./ui/InspectorToolbarShowcase'), 'InspectorToolbarShowcase'),
+            makeLazy('Glass Stretch Nav', 'glass-stretch-nav', () => import('./ui/GlassStretchNavShowcase'), 'GlassStretchNavShowcase'),
+            makeLazy('Share Sheet Toolbar', 'share-sheet-toolbar', () => import('./ui/ShareSheetToolbarShowcase'), 'ShareSheetToolbarShowcase'),
         ],
     },
     {
