@@ -589,11 +589,41 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
+  "glow-peek-card": `Create a Glow Peek Card in React:
+- Layout: A rounded card with a white info panel on top ("light · cabinet · scenario" meta row, a bold "alex's workspace" heading, a "color [dot] intensity: 64%" row, and an "edit" link) sitting above a radial purple glow stage where a two-eyed character peeks up from the bottom.
+- Mechanics: Both eyes share one cursor-tracking gaze (atan2 angle + clamped-radius pupil offset, same technique as the Googly Eyes Button) and blink on a randomized ambient interval rather than a click trigger.
+- Tech Stack: React, Framer Motion, Tailwind CSS.
+- Dependencies: npm install framer-motion clsx tailwind-merge`,
+
   "frosted-gel-button": `Create a Frosted Gel Button in React:
 - Visual Identity: A soft, translucent, pill-rounded gel button with a warm peach-to-white radial gradient fill, glassy top sheen, and a large blurred ambient orange glow breathing behind it. Bold white "Button" label with a soft embossed text-shadow for depth.
 - Mechanics: The ambient glow pulses slowly (opacity + scale) on an infinite loop; the button itself springs up on hover and compresses on press.
 - Tech Stack: React, Framer Motion, Tailwind CSS.
 - Dependencies: npm install framer-motion clsx tailwind-merge`,
+
+  "connected-bubble-navbar": `Create a Connected Bubble Navbar in React:
+- Layout: Three separate glossy black capsule shapes (a circular logo slot with a blue triangular glass mark, a wide pill holding Home/Product/Contact, and a smaller Sign Up pill) joined by short thin rounded connector bars rather than one continuous bar.
+- Visual Identity: Each shape is a glossy dark plastic/metal capsule with a metallic gradient rim (border-gradient trick: padding-box fill + border-box rim) and a soft top-left sheen highlight, sitting on a flat light-gray page.
+- Tech Stack: React, Tailwind CSS, inline SVG.
+- Dependencies: npm install clsx tailwind-merge`,
+
+  "inverted-segment-nav": `Create an Inverted Segment Nav in React:
+- Layout: A white rounded card holding a black pill-shaped track (Home with a label, then plain Person and Layers icons with no label) plus a separate standalone black circular hexagon-icon button to its right.
+- Mechanics: Clicking an item slides a white pill behind it (Framer Motion layoutId spring) while its icon switches from white-on-black to black-on-white and its label (Home only) grows/shrinks in with its own exit animation; the hexagon button scales on hover/press. All transitions use a snappy, slightly-damped spring for a buttery feel.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "smooth-faq-accordion": `Create a Smooth FAQ Accordion in React:
+- Layout: A white rounded card listing FAQ rows, each with an icon, bold title, and a chevron; a row's description reveals beneath it when expanded.
+- Mechanics: Expanding a row lifts it slightly above its neighbors (scale + shadow via a layout spring) while its description height/opacity tweens in with an ease-out curve rather than a spring, and its chevron rotates 180deg - only one row open at a time.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "inspector-toolbar": `Create an Inspector Toolbar in React:
+- Layout: A centered white rounded-pill toolbar of 4 icon+label buttons: Style, Components, Content, Customize.
+- Mechanics: Hovering a toolbar button opens its own white popover card directly above it with a small triangular speech-bubble pointer connecting down to that button, each popover showing 2 rows (icon+label left, a value or color swatches right) - nested per-button so its position comes from the DOM rather than hardcoded offsets.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
   "glass-segment-navbar": `Create a Glass Segment Navbar in React:
 - Layout: A pill-shaped three-option segmented control (Dates, Months, Flexible). The active option sits inside a glossy frosted-glass pill with a top inset highlight, floating over a soft color-tinted ambient glow unique to that option (lilac for Dates, orange for Months, green for Flexible).

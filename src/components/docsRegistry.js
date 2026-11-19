@@ -161,6 +161,9 @@ export const categories = [
             makeLazy('Glass Action Dock', 'glass-action-dock', () => import('./ui/GlassActionDockShowcase'), 'GlassActionDockShowcase'),
             makeLazy('Skeleton Nav Reveal', 'skeleton-nav-reveal', () => import('./ui/SkeletonNavRevealShowcase'), 'SkeletonNavRevealShowcase'),
             makeLazy('Glass Segment Navbar', 'glass-segment-navbar', () => import('./ui/GlassSegmentNavbarShowcase'), 'GlassSegmentNavbarShowcase'),
+            makeLazy('Connected Bubble Navbar', 'connected-bubble-navbar', () => import('./ui/ConnectedBubbleNavbarShowcase'), 'ConnectedBubbleNavbarShowcase'),
+            makeLazy('Inverted Segment Nav', 'inverted-segment-nav', () => import('./ui/InvertedSegmentNavShowcase'), 'InvertedSegmentNavShowcase'),
+            makeLazy('Inspector Toolbar', 'inspector-toolbar', () => import('./ui/InspectorToolbarShowcase'), 'InspectorToolbarShowcase'),
         ],
     },
     {
@@ -199,6 +202,8 @@ export const categories = [
             makeLazy('Editorial 3D Orbit Carousel', 'editorial-3-d-orbit-carousel', () => import('./ui/Editorial3DOrbitCarouselShowcase'), 'Editorial3DOrbitCarouselShowcase'),
             makeLazy('Arch Card Carousel', 'arch-card-carousel', () => import('./ui/ArchCardCarouselShowcase'), 'ArchCardCarouselShowcase'),
             makeLazy('Folder Tab Card', 'folder-tab-card', () => import('./ui/FolderTabCardShowcase'), 'FolderTabCardShowcase'),
+            makeLazy('Glow Peek Card', 'glow-peek-card', () => import('./ui/GlowPeekCardShowcase'), 'GlowPeekCardShowcase'),
+            makeLazy('Smooth FAQ Accordion', 'smooth-faq-accordion', () => import('./ui/SmoothFaqAccordionShowcase'), 'SmoothFaqAccordionShowcase'),
         ],
     },
     {
