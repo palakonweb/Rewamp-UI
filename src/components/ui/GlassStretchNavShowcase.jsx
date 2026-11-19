@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Bell, Folder, MessageCircle, Plus, FileText, FolderPlus, CheckSquare } from 'lucide-react';
 
-// Every item is labeled the same way Home was, instead of three of the four
-// being icon-only - that also removes the width-stretch-on-label-reveal
-// animation, since there's no longer a label that mounts/unmounts.
+// Icon-first: every item shows just its icon by default, and its label
+// mounts in only while that item is hovered/active.
 const navItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'notifications', label: 'Notifications', icon: Bell },
@@ -18,18 +17,19 @@ const createOptions = [
     { id: 'task', label: 'New Task', icon: CheckSquare },
 ];
 
-// Lower damping than the kit's usual sliding-pill spring so the pill still
-// visibly stretches as it resizes between differently-sized labeled items,
-// then settles - the "stretch" in "stretch pill hover". Each button's own
-// padding is now fixed (not animated), so only the shared pill moves/resizes,
-// not the buttons themselves.
-const STRETCH_SPRING = { type: 'spring', stiffness: 380, damping: 22, mass: 0.8 };
+// Near-critically-damped (damping ~2*sqrt(stiffness*mass)) so the pill
+// glides smoothly to its new size/position with no bounce-back overshoot,
+// while still feeling quick rather than sluggish. Each button's own padding
+// is fixed (not animated), so only the shared pill moves/resizes, not the
+// buttons themselves.
+const STRETCH_SPRING = { type: 'spring', stiffness: 340, damping: 32, mass: 0.8 };
 const POPOVER_SPRING = { type: 'spring', stiffness: 420, damping: 34 };
 
 export default function GlassStretchNavShowcase() {
     const [active, setActive] = useState('home');
     const [hovered, setHovered] = useState(null);
     const [createOpen, setCreateOpen] = useState(false);
+    const [createSpins, setCreateSpins] = useState(0);
 
     // The pill previews whatever's hovered, falling back to the clicked
     // item once the cursor leaves - a hover-driven stretch, not just a
@@ -54,12 +54,14 @@ export default function GlassStretchNavShowcase() {
                         const isHighlighted = highlighted === item.id;
 
                         return (
-                            <button
+                            <motion.button
                                 key={item.id}
                                 type="button"
                                 onMouseEnter={() => setHovered(item.id)}
                                 onClick={() => setActive(item.id)}
-                                className="relative z-10 flex items-center gap-2 h-12 px-4 rounded-full cursor-pointer"
+                                className="relative z-10 flex items-center gap-2 h-12 rounded-full cursor-pointer"
+                                animate={{ paddingLeft: isHighlighted ? 16 : 14, paddingRight: isHighlighted ? 18 : 14 }}
+                                transition={STRETCH_SPRING}
                             >
                                 {isHighlighted && (
                                     <motion.span
@@ -75,13 +77,20 @@ export default function GlassStretchNavShowcase() {
                                     className="relative shrink-0 transition-colors duration-150"
                                     style={{ color: isHighlighted ? '#171717' : '#C9C9C9' }}
                                 />
-                                <span
-                                    className="relative text-[15px] font-semibold whitespace-nowrap transition-colors duration-150"
-                                    style={{ color: isHighlighted ? '#171717' : '#C9C9C9' }}
-                                >
-                                    {item.label}
-                                </span>
-                            </button>
+                                <AnimatePresence initial={false}>
+                                    {isHighlighted && (
+                                        <motion.span
+                                            initial={{ opacity: 0, width: 0 }}
+                                            animate={{ opacity: 1, width: 'auto' }}
+                                            exit={{ opacity: 0, width: 0 }}
+                                            transition={STRETCH_SPRING}
+                                            className="relative text-[15px] font-semibold text-neutral-900 whitespace-nowrap overflow-hidden"
+                                        >
+                                            {item.label}
+                                        </motion.span>
+                                    )}
+                                </AnimatePresence>
+                            </motion.button>
                         );
                     })}
                 </div>
@@ -119,6 +128,7 @@ export default function GlassStretchNavShowcase() {
 
                     <motion.button
                         type="button"
+                        onClick={() => setCreateSpins((n) => n + 1)}
                         whileHover={{ scale: 1.06 }}
                         whileTap={{ scale: 0.92 }}
                         transition={{ type: 'spring', stiffness: 420, damping: 30 }}
@@ -126,7 +136,13 @@ export default function GlassStretchNavShowcase() {
                         className="relative z-10 h-16 w-16 shrink-0 rounded-full flex items-center justify-center cursor-pointer bg-white"
                         style={{ boxShadow: '0 14px 26px -10px rgba(0,0,0,0.22)' }}
                     >
-                        <Plus size={24} strokeWidth={2.5} className="text-neutral-900" />
+                        <motion.span
+                            animate={{ rotate: createSpins * 180 + (createOpen ? 90 : 0) }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                            className="flex"
+                        >
+                            <Plus size={24} strokeWidth={2.5} className="text-neutral-900" />
+                        </motion.span>
                     </motion.button>
                 </div>
             </div>

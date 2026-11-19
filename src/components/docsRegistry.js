@@ -221,6 +221,7 @@ export const categories = [
             makeLazy('Wireframe Ring Orb', 'wireframe-ring-orb', () => import('./ui/WireframeRingOrbShowcase'), 'WireframeRingOrbShowcase'),
             makeLazy('Particle Morph Orb', 'particle-morph-orb', () => import('./ui/ParticleMorphOrbShowcase'), 'ParticleMorphOrbShowcase'),
             makeLazy('Message Input Bar', 'message-input-bar', () => import('./ui/MessageInputBarShowcase'), 'MessageInputBarShowcase'),
+            makeLazy('AI Prompt Status Input', 'ai-prompt-status-input', () => import('./ui/AIPromptStatusInputShowcase'), 'AIPromptStatusInputShowcase'),
         ],
     },
 ];

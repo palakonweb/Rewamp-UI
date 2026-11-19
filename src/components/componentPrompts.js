@@ -595,6 +595,12 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS.
 - Dependencies: npm install framer-motion clsx tailwind-merge`,
 
+  "ai-prompt-status-input": `Create an AI Prompt Status Input in React:
+- Layout: A rounded prompt input card with a real editable textarea, a paperclip/apps/model-selector toolbar, and a black send button.
+- Mechanics: The paperclip opens its own hover submenu (Upload file / Upload image / Add from Drive). In place of a static model label, a "Thinking effort" pill opens a hover popover with a Low/Medium/High segmented slider (shared layoutId pill); the sparkle icon scales up and glows at High, with two extra sparkle flecks popping in around it. Typing text and clicking the black button (or pressing Enter) swaps the textarea for "Hold on, we're generating your answer..." and reveals a "Thinking..." banner with a spinner below the card; after a beat it clears back to the empty editable state. A "Shift + Enter to add new line" hint appears while actively typing.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
   "create-new-button": `Create a Create New Button in React:
 - Layout: A minimal white rounded-pill button with a thin "+" icon and "Create New" label, soft drop shadow. Clicking it opens a "Create New" modal: a sand-colored header frame (title + circular close button) behind an inset white content card holding a 3x2 icon grid (Project, Task, Note, Goal, Milestone, Reminder).
 - Mechanics: Button scales up slightly with a lifted shadow on hover and compresses on press. The modal fades in over a blurred backdrop with a spring scale-up entrance; each grid icon scales on hover/press and darkens from light gray to near-black.
