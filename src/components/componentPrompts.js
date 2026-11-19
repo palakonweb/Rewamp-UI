@@ -589,6 +589,18 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 
+  "literal-clipboard": `Create a Literal Clipboard in React:
+- Layout: An iOS-style text-selection edit menu (Cut / Copy / Paste / Select All) above the word "rivera" in "rivera sisterz®", with a selection highlight box and a dashed-border clipboard preview below.
+- Mechanics: Clicking Copy sweeps a highlighter icon across the word, filling a literal yellow highlight behind it, which then fades back to normal once the text is shown copied into the clipboard preview. Clicking Cut sweeps a literal scissors icon across the word while it visually falls away, leaving a dashed gap; clicking Paste flies the clipboard's text back into that gap.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "process-steps-card": `Create a Process Steps Card in React:
+- Layout: A vertical step list (Choose Wallet / Choose Amount / Choose coin), each with a circular icon badge and label, connected by vertical lines.
+- Mechanics: Clicking a step makes it active - its badge becomes a glossy blue gradient circle (earlier steps show a checkmark instead of their own icon, later steps stay flat gray) and the connector lines between completed steps animate filling blue from top to bottom.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
   "glow-peek-card": `Create a Glow Peek Card in React:
 - Layout: A rounded card with a white info panel on top ("light · cabinet · scenario" meta row, a bold "alex's workspace" heading, a "color [dot] intensity: 64%" row, and an "edit" link) sitting above a radial purple glow stage where a two-eyed character peeks up from the bottom.
 - Mechanics: Both eyes share one cursor-tracking gaze (atan2 angle + clamped-radius pupil offset, same technique as the Googly Eyes Button) and blink on a randomized ambient interval rather than a click trigger.
@@ -598,6 +610,12 @@ export const componentPrompts = {
   "ai-prompt-status-input": `Create an AI Prompt Status Input in React:
 - Layout: A rounded prompt input card with a real editable textarea, a paperclip/apps/model-selector toolbar, and a black send button.
 - Mechanics: The paperclip opens its own hover submenu (Upload file / Upload image / Add from Drive). In place of a static model label, a "Thinking effort" pill opens a hover popover with a Low/Medium/High segmented slider (shared layoutId pill); the sparkle icon scales up and glows at High, with two extra sparkle flecks popping in around it. Typing text and clicking the black button (or pressing Enter) swaps the textarea for "Hold on, we're generating your answer..." and reveals a "Thinking..." banner with a spinner below the card; after a beat it clears back to the empty editable state. A "Shift + Enter to add new line" hint appears while actively typing.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
+  "duration-book-call-button": `Create a Duration Book Call Button in React:
+- Layout: A white rounded pill holding a "30 mins" duration readout with a small up/down stepper on the left, and a gradient "Book a Call" CTA inset on the right.
+- Mechanics: The stepper adjusts the duration in 15-minute steps (15-120 clamped). The CTA's peach-to-indigo gradient slowly drifts (animated background-position) with a soft grain overlay for texture, and scales on hover/press.
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 

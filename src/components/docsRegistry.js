@@ -97,6 +97,7 @@ export const categories = [
             makeLazy('Frosted Gel Button', 'frosted-gel-button', () => import('./ui/FrostedGelButtonShowcase'), 'FrostedGelButtonShowcase'),
             makeLazy('Copy Code Button', 'copy-code-button', () => import('./ui/CopyCodeButtonShowcase'), 'CopyCodeButtonShowcase'),
             makeLazy('Create New Button', 'create-new-button', () => import('./ui/CreateNewButtonShowcase'), 'CreateNewButtonShowcase'),
+            makeLazy('Duration Book Call Button', 'duration-book-call-button', () => import('./ui/DurationBookCallButtonShowcase'), 'DurationBookCallButtonShowcase'),
         ],
     },
     {
@@ -115,6 +116,7 @@ export const categories = [
             makeLazy('Flip 3D Text', 'flip-3-d-text', () => import('./ui/Flip3DTextShowcase'), 'Flip3DTextShowcase'),
             makeLazy('Typewriter Text', 'typewriter-text', () => import('./ui/TypewriterTextShowcase'), 'TypewriterTextShowcase'),
             makeLazy('Velocity Marquee Text', 'velocity-marquee-text', () => import('./ui/VelocityMarqueeTextShowcase'), 'VelocityMarqueeTextShowcase'),
+            makeLazy('Literal Clipboard', 'literal-clipboard', () => import('./ui/LiteralClipboardShowcase'), 'LiteralClipboardShowcase'),
         ],
     },
     {
@@ -206,6 +208,7 @@ export const categories = [
             makeLazy('Folder Tab Card', 'folder-tab-card', () => import('./ui/FolderTabCardShowcase'), 'FolderTabCardShowcase'),
             makeLazy('Glow Peek Card', 'glow-peek-card', () => import('./ui/GlowPeekCardShowcase'), 'GlowPeekCardShowcase'),
             makeLazy('Smooth FAQ Accordion', 'smooth-faq-accordion', () => import('./ui/SmoothFaqAccordionShowcase'), 'SmoothFaqAccordionShowcase'),
+            makeLazy('Process Steps Card', 'process-steps-card', () => import('./ui/ProcessStepsCardShowcase'), 'ProcessStepsCardShowcase'),
         ],
     },
     {

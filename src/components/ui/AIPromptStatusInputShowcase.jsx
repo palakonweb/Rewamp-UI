@@ -31,26 +31,14 @@ const CONNECTORS = [
     { id: 'vscode', icon: PenLine, label: 'VS Code', color: '#2680C2' },
 ];
 
-function ConnectorIcon({ connector }) {
-    const [status, setStatus] = useState('idle'); // idle | connecting | connected
+function ConnectorIcon({ connector, status, onClick }) {
     const Icon = connector.icon;
-
-    const handleClick = () => {
-        if (status === 'connecting') return;
-        if (status === 'connected') {
-            setStatus('idle');
-            return;
-        }
-        setStatus('connecting');
-        setTimeout(() => setStatus('connected'), 900);
-    };
-
     const color = status === 'connected' ? connector.color : status === 'connecting' ? '#9A9A9A' : '#C9C9C9';
 
     return (
         <button
             type="button"
-            onClick={handleClick}
+            onClick={onClick}
             aria-label={`${status === 'connected' ? 'Disconnect' : 'Connect'} ${connector.label}`}
             className="relative h-7 w-7 flex items-center justify-center rounded-full cursor-pointer"
         >
@@ -233,22 +221,31 @@ function EffortSparkle({ level }) {
     );
 }
 
+// Popovers in this component open DOWNWARD (below their trigger) - both the
+// attach menu and this one - since opening upward was getting clipped by
+// the showcase frame's top edge.
 function ModelEffortButton() {
     const [open, setOpen] = useState(false);
     const [level, setLevel] = useState(1);
 
     return (
         <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+            <div className="flex items-center gap-1.5 h-9 px-3 rounded-full border border-neutral-200 cursor-pointer">
+                <EffortSparkle level={level} />
+                <span className="text-[13px] font-medium text-neutral-800">{EFFORT_LEVELS[level]}</span>
+            </div>
+
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.94, y: 6 }}
+                        initial={{ opacity: 0, scale: 0.94, y: -6 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.94, y: 6, transition: { duration: 0.12 } }}
+                        exit={{ opacity: 0, scale: 0.94, y: -6, transition: { duration: 0.12 } }}
                         transition={POPOVER_SPRING}
-                        style={{ originY: 1 }}
-                        className="absolute bottom-full left-0 mb-3 w-56 z-20"
+                        style={{ originY: 0 }}
+                        className="absolute top-full left-0 mt-3 w-56 z-20"
                     >
+                        <div className="absolute left-6 bottom-full -mb-1.5 h-2.5 w-2.5 rotate-45 bg-white shadow-[2px_2px_3px_-1px_rgba(0,0,0,0.08)]" />
                         <div className="rounded-2xl bg-white shadow-[0_16px_32px_-12px_rgba(0,0,0,0.25)] p-3">
                             <div className="flex items-center justify-between px-1 pb-2">
                                 <p className="text-[12px] font-medium text-neutral-400">Thinking effort</p>
@@ -260,15 +257,9 @@ function ModelEffortButton() {
                                 <span className="text-[13px] font-medium text-neutral-600">{EFFORT_DESCRIPTIONS[level]}</span>
                             </div>
                         </div>
-                        <div className="absolute left-6 top-full -mt-1.5 h-2.5 w-2.5 rotate-45 bg-white shadow-[2px_2px_3px_-1px_rgba(0,0,0,0.08)]" />
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <div className="flex items-center gap-1.5 h-9 px-3 rounded-full border border-neutral-200 cursor-pointer">
-                <EffortSparkle level={level} />
-                <span className="text-[13px] font-medium text-neutral-800">{EFFORT_LEVELS[level]}</span>
-            </div>
         </div>
     );
 }
@@ -277,16 +268,25 @@ function AttachButton() {
     const [open, setOpen] = useState(false);
     return (
         <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+            <button
+                type="button"
+                aria-label="Attachments"
+                className="h-9 w-9 flex items-center justify-center rounded-full border border-neutral-200 text-neutral-700 cursor-pointer"
+            >
+                <Paperclip size={15} strokeWidth={2} />
+            </button>
+
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.94, y: 6 }}
+                        initial={{ opacity: 0, scale: 0.94, y: -6 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.94, y: 6, transition: { duration: 0.12 } }}
+                        exit={{ opacity: 0, scale: 0.94, y: -6, transition: { duration: 0.12 } }}
                         transition={POPOVER_SPRING}
-                        style={{ originY: 1 }}
-                        className="absolute bottom-full left-0 mb-3 w-44 z-20"
+                        style={{ originY: 0 }}
+                        className="absolute top-full left-0 mt-3 w-44 z-20"
                     >
+                        <div className="absolute left-6 bottom-full -mb-1.5 h-2.5 w-2.5 rotate-45 bg-white shadow-[2px_2px_3px_-1px_rgba(0,0,0,0.08)]" />
                         <div className="rounded-xl bg-white shadow-[0_16px_32px_-12px_rgba(0,0,0,0.25)] p-1.5">
                             {attachOptions.map((option) => {
                                 const OptionIcon = option.icon;
@@ -301,18 +301,9 @@ function AttachButton() {
                                 );
                             })}
                         </div>
-                        <div className="absolute left-6 top-full -mt-1.5 h-2.5 w-2.5 rotate-45 bg-white shadow-[2px_2px_3px_-1px_rgba(0,0,0,0.08)]" />
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <button
-                type="button"
-                aria-label="Attachments"
-                className="h-9 w-9 flex items-center justify-center rounded-full border border-neutral-200 text-neutral-700 cursor-pointer"
-            >
-                <Paperclip size={15} strokeWidth={2} />
-            </button>
         </div>
     );
 }
@@ -321,6 +312,34 @@ export default function AIPromptStatusInputShowcase() {
     const [value, setValue] = useState('');
     const [generating, setGenerating] = useState(false);
     const textareaRef = useRef(null);
+
+    // Connector state lives here (not inside ConnectorIcon) so clicking an
+    // unconnected icon can show a "Please connect your X" banner above the
+    // input - the same banner shape for all three integrations, not just
+    // Slack - before running the per-icon connecting animation.
+    const [connectBanner, setConnectBanner] = useState(null);
+    const [connectingId, setConnectingId] = useState(null);
+    const [connectedIds, setConnectedIds] = useState([]);
+
+    const handleConnectorClick = (connector) => {
+        if (connectedIds.includes(connector.id)) {
+            setConnectedIds((ids) => ids.filter((id) => id !== connector.id));
+            return;
+        }
+        if (connectingId) return;
+        setConnectBanner(connector);
+    };
+
+    const handleConnect = () => {
+        if (!connectBanner) return;
+        const id = connectBanner.id;
+        setConnectBanner(null);
+        setConnectingId(id);
+        setTimeout(() => {
+            setConnectingId(null);
+            setConnectedIds((ids) => [...ids, id]);
+        }, 900);
+    };
 
     const handleSend = () => {
         if (generating || !value.trim()) return;
@@ -331,24 +350,52 @@ export default function AIPromptStatusInputShowcase() {
         setTimeout(() => setGenerating(false), 2400);
     };
 
+    const showFrame = generating || Boolean(connectBanner);
+    const BannerIcon = connectBanner?.icon;
+
     return (
-        <div
-            className="w-full h-full flex items-end justify-center px-6 pb-6 sm:px-10 sm:pb-10 pt-32 sm:pt-40"
-            style={{ backgroundColor: 'var(--bg)' }}
-        >
+        <div className="w-full h-full flex items-center justify-center p-6 sm:p-10" style={{ backgroundColor: 'var(--bg)' }}>
             <div className="w-full max-w-lg">
                 <div
                     className="rounded-[26px] overflow-hidden"
                     style={{
-                        backgroundColor: generating ? '#F3F3F2' : 'transparent',
-                        boxShadow: generating ? '0 20px 44px -18px rgba(0,0,0,0.14)' : 'none',
+                        backgroundColor: showFrame ? '#F3F3F2' : 'transparent',
+                        boxShadow: showFrame ? '0 20px 44px -18px rgba(0,0,0,0.14)' : 'none',
                     }}
                 >
+                    {/* Connect banner - above the input, generalized to
+                        whichever connector was just clicked. */}
+                    <AnimatePresence initial={false}>
+                        {connectBanner && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={SPRING}
+                                className="overflow-hidden"
+                            >
+                                <div className="flex items-center justify-between px-5 py-4">
+                                    <span className="flex items-center gap-2 text-[14px] font-medium text-neutral-700">
+                                        {BannerIcon && <BannerIcon size={16} strokeWidth={2.25} style={{ color: connectBanner.color }} />}
+                                        Please connect your {connectBanner.label}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={handleConnect}
+                                        className="h-8 px-4 rounded-full bg-neutral-900 text-white text-[13px] font-semibold cursor-pointer"
+                                    >
+                                        Connect
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     {/* The input card itself */}
                     <div
                         className="relative m-1.5 rounded-[22px] bg-white pt-5"
                         style={{
-                            boxShadow: generating
+                            boxShadow: showFrame
                                 ? '0 6px 16px -8px rgba(0,0,0,0.12)'
                                 : '0 20px 44px -18px rgba(0,0,0,0.14)',
                         }}
@@ -386,7 +433,18 @@ export default function AIPromptStatusInputShowcase() {
                                 <AttachButton />
                                 <div className="flex items-center gap-1 h-9 px-1.5 rounded-full border border-neutral-200">
                                     {CONNECTORS.map((connector) => (
-                                        <ConnectorIcon key={connector.id} connector={connector} />
+                                        <ConnectorIcon
+                                            key={connector.id}
+                                            connector={connector}
+                                            status={
+                                                connectingId === connector.id
+                                                    ? 'connecting'
+                                                    : connectedIds.includes(connector.id)
+                                                      ? 'connected'
+                                                      : 'idle'
+                                            }
+                                            onClick={() => handleConnectorClick(connector)}
+                                        />
                                     ))}
                                 </div>
                                 <ModelEffortButton />
@@ -429,7 +487,7 @@ export default function AIPromptStatusInputShowcase() {
 
                 {/* Helper hint while actively typing */}
                 <AnimatePresence initial={false}>
-                    {!generating && value.length > 0 && (
+                    {!generating && !connectBanner && value.length > 0 && (
                         <motion.p
                             initial={{ opacity: 0, y: -4 }}
                             animate={{ opacity: 1, y: 0 }}
