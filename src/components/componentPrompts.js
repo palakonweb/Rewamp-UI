@@ -595,6 +595,12 @@ export const componentPrompts = {
 - Tech Stack: React, Framer Motion, Tailwind CSS.
 - Dependencies: npm install framer-motion clsx tailwind-merge`,
 
+  "create-new-button": `Create a Create New Button in React:
+- Layout: A minimal white rounded-pill button with a thin "+" icon and "Create New" label, soft drop shadow. Clicking it opens a "Create New" modal: a sand-colored header frame (title + circular close button) behind an inset white content card holding a 3x2 icon grid (Project, Task, Note, Goal, Milestone, Reminder).
+- Mechanics: Button scales up slightly with a lifted shadow on hover and compresses on press. The modal fades in over a blurred backdrop with a spring scale-up entrance; each grid icon scales on hover/press and darkens from light gray to near-black.
+- Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
+- Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
+
   "copy-code-button": `Create a Copy Code Button in React:
 - Layout: A light-gray rounded-full pill showing a code string on the left and a smaller white "Copy" pill button on the right.
 - Mechanics: Clicking Copy crossfades the whole pill's content into a centered black checkmark badge + "Code Copied!" confirmation, auto-reverting back to the code/Copy layout after a couple seconds; copies the code to the clipboard.
@@ -614,8 +620,8 @@ export const componentPrompts = {
 - Dependencies: npm install clsx tailwind-merge`,
 
   "glass-stretch-nav": `Create a Glass Stretch Nav in React:
-- Layout: A frosted-glass pill track (Home with a label, then plain Tasks/Files/Chat icons with no label) plus a separate standalone red gradient circular "+" button to its right.
-- Mechanics: A white pill behind the highlighted item follows hover (not just click), falling back to the last clicked item once the cursor leaves; its Framer Motion layoutId spring uses lower damping than the kit's usual sliding pills so it visibly overshoots/stretches as it resizes between an icon-only item and the labeled Home item before settling. The "+" button scales on hover/press.
+- Layout: A frosted-glass pill track with four equally-labeled items (Home, Notifications, Files, Messages) plus a separate standalone white circular "+" create button to its right.
+- Mechanics: A white pill behind the highlighted item follows hover (not just click), falling back to the last clicked item once the cursor leaves; each button's own size is fixed (no width-stretch animation), but the shared pill's Framer Motion layoutId spring uses lower damping than the kit's usual sliding pills so it still visibly stretches as it resizes between differently-sized labels before settling. The create button opens its own minimal hover popover (New Note / New Folder / New Task).
 - Tech Stack: React, Framer Motion, Tailwind CSS, Lucide Icons.
 - Dependencies: npm install framer-motion lucide-react clsx tailwind-merge`,
 

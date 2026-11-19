@@ -96,6 +96,7 @@ export const categories = [
             makeLazy('Shimmer Button', 'shimmer-button', () => import('./ui/ShimmerButtonShowcase'), 'ShimmerButtonShowcase'),
             makeLazy('Frosted Gel Button', 'frosted-gel-button', () => import('./ui/FrostedGelButtonShowcase'), 'FrostedGelButtonShowcase'),
             makeLazy('Copy Code Button', 'copy-code-button', () => import('./ui/CopyCodeButtonShowcase'), 'CopyCodeButtonShowcase'),
+            makeLazy('Create New Button', 'create-new-button', () => import('./ui/CreateNewButtonShowcase'), 'CreateNewButtonShowcase'),
         ],
     },
     {
